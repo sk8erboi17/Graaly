@@ -291,7 +291,7 @@ export function onEnable(): void {
         probe("packets.constants-wrapper", () => {
             check(packet.health === 20, "typed packet wrapper construction failed");
             check(api.Component.text("surface").content() === "surface", "typed PacketEvents support call failed");
-            check((api.ClientPacket.CHAT_MESSAGE as api.PacketType).getName().length > 0, "typed packet constant failed");
+            check((api.ClientPacket.CHAT_MESSAGE as api.PacketType).name.length > 0, "typed packet constant failed");
         });
         api.tasks.later(3, () => {
             mark("scheduling.delayed");

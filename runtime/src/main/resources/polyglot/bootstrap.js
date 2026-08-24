@@ -273,8 +273,16 @@
                 if (bridge.hasProperty(target, name)) {
                     return native(bridge.property(target, name));
                 }
+                if (bridge.isPropertyAccessor(target, name)) {
+                    return undefined;
+                }
                 if (bridge.hasMethod(target, name)) {
-                    return (...args) => native(bridge.invokePacked(target, name, args.map(unwrap)));
+                    return (...args) => {
+                        if (bridge.isPropertyAccessorCall(target, name, args.length)) {
+                            throw new TypeError(`Java-style accessor ${name}() is not exposed; use the native property instead`);
+                        }
+                        return native(bridge.invokePacked(target, name, args.map(unwrap)));
+                    };
                 }
                 try {
                     const member = target[name];

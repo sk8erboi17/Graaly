@@ -111,17 +111,16 @@ export type PacketDirection = "receive" | "send";
 export type PacketListenerPriority = EventPriority;
 
 export interface PacketType extends ApiObject {
-    getName(): string;
+    readonly name: string;
 }
 
 export interface PacketEvent extends ApiObject {
-    getPacketType(): PacketType;
-    getPacketName(): string;
-    getUser(): unknown;
-    getPlayer(): Player | null;
-    getClientVersion(): unknown;
-    isCancelled(): boolean;
-    setCancelled(cancelled: boolean): void;
+    readonly packetType: PacketType;
+    readonly packetName: string;
+    readonly user: unknown;
+    readonly player: Player | null;
+    readonly clientVersion: unknown;
+    cancelled: boolean;
     markForReEncode(reencode: boolean): void;
 }
 

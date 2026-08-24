@@ -574,7 +574,7 @@ export const playerTopics: readonly GuideTopic[] = [
     title: "Movement and flight",
     summary: "Control walking speed, flight speed, flying state, sprinting, sneaking, and velocity.",
     when: "Use it for classes, lobbies, movement abilities, and temporary game modes.",
-    does: "Writes through to Java API properties; walk and fly speed must remain between -1 and 1.",
+    does: "Uses native properties only: JavaScript/TypeScript use camelCase and Python uses snake_case. JavaBean get/is/set accessors are not exposed; walk and fly speed must remain between -1 and 1.",
     input: "Booleans, speed values, and Vector",
     output: "Changed movement behavior",
     operations: [

@@ -358,10 +358,7 @@ export interface AbstractMappedEntity extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
     readonly registryData: TypesBuilderData;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
-    getRegistryData(): TypesBuilderData;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -373,10 +370,6 @@ export const AbstractMappedEntity = /* @__PURE__ */ packetSymbol<__GraalyPacketS
 export interface AdvancementHolder extends ApiObject {
     identifier: ResourceLocation;
     advancement: PacketAdvancement;
-    getIdentifier(): ResourceLocation;
-    setIdentifier(arg0: ResourceLocation): void;
-    getAdvancement(): PacketAdvancement;
-    setAdvancement(arg0: PacketAdvancement): void;
 }
 interface __GraalyPacketSymbolAdvancementHolder extends ApiType<AdvancementHolder> {
     (arg0: ResourceLocation, arg1: PacketAdvancement): AdvancementHolder;
@@ -388,8 +381,6 @@ export const AdvancementHolder = /* @__PURE__ */ packetSymbol<__GraalyPacketSymb
 
 export interface AdvancementProgressCriterionProgress extends ApiObject {
     obtainedTimestamp: number;
-    getObtainedTimestamp(): number;
-    setObtainedTimestamp(arg0: number): void;
 }
 interface __GraalyPacketSymbolAdvancementProgressCriterionProgress extends ApiType<AdvancementProgressCriterionProgress> {
     (arg0: number): AdvancementProgressCriterionProgress;
@@ -558,12 +549,7 @@ export interface AttributeType<T = unknown> extends ApiObject {
     readonly synced: boolean;
     readonly valueCodec: NbtCodec<T>;
     readonly modifierCodec: NbtCodec<PacketAttributeModifier<T, unknown>>;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
-    isSynced(): boolean;
-    getValueCodec(): NbtCodec<T>;
-    getModifierCodec(): NbtCodec<PacketAttributeModifier<T, unknown>>;
 }
 interface __GraalyPacketSymbolAttributeType extends ApiClass<AttributeType> {
 }
@@ -651,7 +637,6 @@ export interface BaseChunk extends ApiObject {
     set(arg0: number, arg1: number, arg2: number, arg3: WrappedBlockState): void;
     set(arg0: number, arg1: number, arg2: number, arg3: number): void;
     set(arg0: ClientVersion, arg1: number, arg2: number, arg3: number, arg4: number): void;
-    isEmpty(): boolean;
 }
 interface __GraalyPacketSymbolBaseChunk extends ApiClass<BaseChunk> {
     create(): BaseChunk;
@@ -661,8 +646,6 @@ export const BaseChunk = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolBaseCh
 export interface BaseStorage extends ApiObject {
     readonly data: number[];
     readonly bitsPerEntry: number;
-    getData(): number[];
-    getBitsPerEntry(): number;
     get(arg0: number): number;
     set(arg0: number, arg1: number): void;
 }
@@ -690,8 +673,6 @@ export interface BiomeCategory extends ApiObject {
     readonly id: string;
     readonly name: string;
     readonly ordinal: number;
-    getCodecName(): string;
-    getId(): string;
 }
 interface __GraalyPacketSymbolBiomeCategory extends ApiClass<BiomeCategory> {
     readonly NONE: BiomeCategory;
@@ -735,20 +716,6 @@ export interface BiomeEffects extends ApiObject {
     readonly musics: RandomWeightedList<BiomeEffectsMusicSettings>;
     readonly music: BiomeEffectsMusicSettings | null;
     readonly additionsSound: BiomeEffectsAdditionsSettings | null;
-    getFogColor(): number;
-    getWaterColor(): number;
-    getWaterFogColor(): number;
-    getSkyColor(): number;
-    getFoliageColor(): ApiObject;
-    getDryFoliageColor(): PacketColor;
-    getGrassColor(): ApiObject;
-    getGrassColorModifier(): BiomeEffectsGrassColorModifier;
-    getParticle(): BiomeEffectsParticleSettings | null;
-    getAmbientSound(): PacketSound | null;
-    getMoodSound(): BiomeEffectsMoodSettings | null;
-    getMusics(): RandomWeightedList<BiomeEffectsMusicSettings>;
-    getMusic(): BiomeEffectsMusicSettings | null;
-    getAdditionsSound(): BiomeEffectsAdditionsSettings | null;
 }
 interface __GraalyPacketSymbolBiomeEffects extends ApiType<BiomeEffects> {
     (arg0: number, arg1: number, arg2: number, arg3: number, arg4: ApiObject, arg5: ApiObject, arg6: BiomeEffectsGrassColorModifier, arg7: BiomeEffectsParticleSettings | null, arg8: PacketSound | null, arg9: BiomeEffectsMoodSettings | null, arg10: BiomeEffectsAdditionsSettings | null, arg11: BiomeEffectsMusicSettings | null): BiomeEffects;
@@ -767,8 +734,6 @@ export const BiomeEffects = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolBio
 export interface BiomeEffectsAdditionsSettings extends ApiObject {
     readonly sound: PacketSound;
     readonly tickChance: number;
-    getSound(): PacketSound;
-    getTickChance(): number;
     equals(arg0: unknown): boolean;
     hashCode(): number;
 }
@@ -787,8 +752,6 @@ export interface BiomeEffectsGrassColorModifier extends ApiObject {
     readonly id: string;
     readonly name: string;
     readonly ordinal: number;
-    getCodecName(): string;
-    getId(): string;
 }
 interface __GraalyPacketSymbolBiomeEffectsGrassColorModifier extends ApiClass<BiomeEffectsGrassColorModifier> {
     readonly NONE: BiomeEffectsGrassColorModifier;
@@ -806,10 +769,6 @@ export interface BiomeEffectsMoodSettings extends ApiObject {
     readonly tickDelay: number;
     readonly blockSearchExtent: number;
     readonly soundOffset: number;
-    getSound(): PacketSound;
-    getTickDelay(): number;
-    getBlockSearchExtent(): number;
-    getSoundOffset(): number;
     equals(arg0: unknown): boolean;
     hashCode(): number;
 }
@@ -827,10 +786,6 @@ export interface BiomeEffectsMusicSettings extends ApiObject {
     readonly minDelay: number;
     readonly maxDelay: number;
     readonly replaceMusic: boolean;
-    getSound(): PacketSound;
-    getMinDelay(): number;
-    getMaxDelay(): number;
-    isReplaceMusic(): boolean;
     equals(arg0: unknown): boolean;
     hashCode(): number;
 }
@@ -847,8 +802,6 @@ export const BiomeEffectsMusicSettings = /* @__PURE__ */ packetSymbol<__GraalyPa
 export interface BiomeEffectsParticleSettings extends ApiObject {
     readonly particle: PacketParticle<unknown>;
     readonly probability: number;
-    getParticle(): PacketParticle<unknown>;
-    getProbability(): number;
     equals(arg0: unknown): boolean;
     hashCode(): number;
 }
@@ -866,8 +819,6 @@ export interface BiomePrecipitation extends ApiObject {
     readonly id: string;
     readonly name: string;
     readonly ordinal: number;
-    getCodecName(): string;
-    getId(): string;
 }
 interface __GraalyPacketSymbolBiomePrecipitation extends ApiClass<BiomePrecipitation> {
     readonly NONE: BiomePrecipitation;
@@ -885,8 +836,6 @@ export interface BiomeTemperatureModifier extends ApiObject {
     readonly id: string;
     readonly name: string;
     readonly ordinal: number;
-    getCodecName(): string;
-    getId(): string;
 }
 interface __GraalyPacketSymbolBiomeTemperatureModifier extends ApiClass<BiomeTemperatureModifier> {
     readonly NONE: BiomeTemperatureModifier;
@@ -901,7 +850,6 @@ export const BiomeTemperatureModifier = /* @__PURE__ */ packetSymbol<__GraalyPac
 export interface BlankScoreFormat extends ApiObject {
     readonly type: ScoreFormatType<BlankScoreFormat>;
     format(arg0: number): Component;
-    getType(): ScoreFormatType<BlankScoreFormat>;
 }
 interface __GraalyPacketSymbolBlankScoreFormat extends ApiClass<BlankScoreFormat> {
     readonly INSTANCE: BlankScoreFormat;
@@ -913,9 +861,7 @@ export const BlankScoreFormat = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbo
 export interface BlockEntityType extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
 }
 interface __GraalyPacketSymbolBlockEntityType extends ApiClass<BlockEntityType> {
 }
@@ -1151,7 +1097,6 @@ export interface BookType extends ApiObject {
     readonly id: number;
     readonly name: string;
     readonly ordinal: number;
-    getId(): number;
 }
 interface __GraalyPacketSymbolBookType extends ApiClass<BookType> {
     readonly CRAFTING: BookType;
@@ -1350,8 +1295,6 @@ export const CallableEvent = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolCa
 
 export interface CancellableEvent extends ApiObject {
     cancelled: boolean;
-    isCancelled(): boolean;
-    setCancelled(arg0: boolean): void;
 }
 interface __GraalyPacketSymbolCancellableEvent extends ApiClass<CancellableEvent> {
 }
@@ -1469,12 +1412,8 @@ export const ChatCompletionAction = /* @__PURE__ */ packetSymbol<__GraalyPacketS
 export interface ChatMessage extends ApiObject {
     chatContent: Component;
     type: PacketChatType;
-    getChatContent(): Component;
     getChatContentJson(arg0: ClientVersion): string;
-    setChatContent(arg0: Component): void;
     setChatContentJson(arg0: ClientVersion, arg1: string): void;
-    getType(): PacketChatType;
-    setType(arg0: PacketChatType): void;
 }
 interface __GraalyPacketSymbolChatMessage extends ApiClass<ChatMessage> {
 }
@@ -1484,12 +1423,6 @@ export interface ChatMessage_v1_19_1ChatTypeBoundNetwork extends ApiObject {
     type: PacketChatType;
     name: Component;
     targetName: Component;
-    getType(): PacketChatType;
-    setType(arg0: PacketChatType): void;
-    getName(): Component;
-    setName(arg0: Component): void;
-    getTargetName(): Component;
-    setTargetName(arg0: Component): void;
 }
 interface __GraalyPacketSymbolChatMessage_v1_19_1ChatTypeBoundNetwork extends ApiType<ChatMessage_v1_19_1ChatTypeBoundNetwork> {
     (arg0: PacketChatType, arg1: Component, arg2: Component): ChatMessage_v1_19_1ChatTypeBoundNetwork;
@@ -1502,9 +1435,6 @@ export interface ChatTypeDecoration extends ApiObject {
     readonly parameters: ChatTypeDecorationParameter[];
     readonly style: Style;
     decorate(arg0: Component, arg1: PacketChatTypeBound): Component;
-    getTranslationKey(): string;
-    getParameters(): ChatTypeDecorationParameter[];
-    getStyle(): Style;
     equals(arg0: unknown): boolean;
     hashCode(): number;
 }
@@ -1528,7 +1458,6 @@ export interface ChatTypeDecorationParameter extends ApiObject {
     readonly id: string;
     readonly name: string;
     readonly ordinal: number;
-    getId(): string;
 }
 interface __GraalyPacketSymbolChatTypeDecorationParameter extends ApiClass<ChatTypeDecorationParameter> {
     readonly SENDER: ChatTypeDecorationParameter;
@@ -1545,7 +1474,6 @@ export interface ChatTypeNarrationPriority extends ApiObject {
     readonly id: string;
     readonly name: string;
     readonly ordinal: number;
-    getId(): string;
 }
 interface __GraalyPacketSymbolChatTypeNarrationPriority extends ApiClass<ChatTypeNarrationPriority> {
     readonly CHAT: ChatTypeNarrationPriority;
@@ -1759,11 +1687,7 @@ export interface ClientVersion extends ApiObject {
     readonly protocolVersion: number;
     readonly name: string;
     readonly ordinal: number;
-    isPreRelease(): boolean;
-    isRelease(): boolean;
-    getReleaseName(): string;
     toServerVersion(): ServerVersion;
-    getProtocolVersion(): number;
     isNewerThan(arg0: ClientVersion): boolean;
     isNewerThanOrEquals(arg0: ClientVersion): boolean;
     isOlderThan(arg0: ClientVersion): boolean;
@@ -1840,13 +1764,9 @@ export interface ClockNetworkState extends ApiObject {
     readonly partialTick: number;
     readonly rate: number;
     readonly paused: boolean;
-    getTotalTicks(): number;
     withTotalTicks(arg0: number): ClockNetworkState;
-    getPartialTick(): number;
     withPartialTick(arg0: number): ClockNetworkState;
-    getRate(): number;
     withRate(arg0: number): ClockNetworkState;
-    isPaused(): boolean;
     withPaused(arg0: boolean): ClockNetworkState;
     equals(arg0: unknown): boolean;
     hashCode(): number;
@@ -1887,7 +1807,6 @@ export const CodecEncoder = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolCod
 
 export interface CodecNameable extends ApiObject {
     readonly codecName: string;
-    getCodecName(): string;
 }
 interface __GraalyPacketSymbolCodecNameable extends ApiClass<CodecNameable> {
 }
@@ -1903,17 +1822,8 @@ export interface Column extends ApiObject {
     readonly heightmaps: Map<HeightmapType, number[]>;
     readonly biomeDataInts: number[];
     readonly biomeDataBytes: number[];
-    getX(): number;
-    getZ(): number;
-    isFullChunk(): boolean;
-    getChunks(): BaseChunk[];
-    getTileEntities(): TileEntity[];
     hasHeightMaps(): boolean;
-    getHeightMaps(): NBTCompound;
-    getHeightmaps(): Map<HeightmapType, number[]>;
     hasBiomeData(): boolean;
-    getBiomeDataInts(): number[];
-    getBiomeDataBytes(): number[];
 }
 interface __GraalyPacketSymbolColumn extends ApiType<Column> {
     (arg0: number, arg1: number, arg2: boolean, arg3: BaseChunk[], arg4: TileEntity[], arg5: number[]): Column;
@@ -1937,7 +1847,6 @@ export interface Combat extends ApiObject {
     readonly id: number;
     readonly name: string;
     readonly ordinal: number;
-    getId(): number;
 }
 interface __GraalyPacketSymbolCombat extends ApiClass<Combat> {
     readonly ENTER_COMBAT: Combat;
@@ -2294,8 +2203,6 @@ export interface ComponentPredicate extends ApiObject {
     requiredComponents: ComponentValue<unknown>[];
     asPatches(arg0: StaticComponentMap): PatchableComponentMap;
     test(arg0: IComponentMap): boolean;
-    getRequiredComponents(): ComponentValue<unknown>[];
-    setRequiredComponents(arg0: ComponentValue<unknown>[]): void;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -2337,9 +2244,7 @@ export const ComponentSerializer = /* @__PURE__ */ packetSymbol<__GraalyPacketSy
 export interface ComponentType<T = unknown> extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
     read(arg0: PacketEventsPacketWrapper<unknown>): T;
     write(arg0: PacketEventsPacketWrapper<unknown>, arg1: T): void;
     decode(arg0: NBT, arg1: ClientVersion): T;
@@ -2367,8 +2272,6 @@ export const ComponentTypeEncoder = /* @__PURE__ */ packetSymbol<__GraalyPacketS
 export interface ComponentValue<T = unknown> extends ApiObject {
     readonly type: ComponentType<T>;
     readonly value: T;
-    getType(): ComponentType<T>;
-    getValue(): T;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -2448,8 +2351,6 @@ export interface DamageEffects extends ApiObject {
     readonly id: string;
     readonly name: string;
     readonly ordinal: number;
-    getCodecName(): string;
-    getId(): string;
 }
 interface __GraalyPacketSymbolDamageEffects extends ApiClass<DamageEffects> {
     readonly HURT: DamageEffects;
@@ -2532,9 +2433,7 @@ export const DebugSampleSampleType = /* @__PURE__ */ packetSymbol<__GraalyPacket
 export interface DebugSubscription<T = unknown> extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
     read(arg0: PacketEventsPacketWrapper<unknown>): T;
     write(arg0: PacketEventsPacketWrapper<unknown>, arg1: T): void;
 }
@@ -2545,8 +2444,6 @@ export const DebugSubscription = /* @__PURE__ */ packetSymbol<__GraalyPacketSymb
 export interface DebugSubscriptionEvent<T = unknown> extends ApiObject {
     readonly subscription: DebugSubscription<T>;
     readonly value: T;
-    getSubscription(): DebugSubscription<T>;
-    getValue(): T;
 }
 interface __GraalyPacketSymbolDebugSubscriptionEvent extends ApiType<DebugSubscriptionEvent> {
     <T>(arg0: DebugSubscription<T>, arg1: T): DebugSubscriptionEvent<T>;
@@ -2559,8 +2456,6 @@ export const DebugSubscriptionEvent = /* @__PURE__ */ packetSymbol<__GraalyPacke
 export interface DebugSubscriptionUpdate<T = unknown> extends ApiObject {
     readonly subscription: DebugSubscription<T>;
     readonly value: T;
-    getSubscription(): DebugSubscription<T>;
-    getValue(): T;
 }
 interface __GraalyPacketSymbolDebugSubscriptionUpdate extends ApiType<DebugSubscriptionUpdate> {
     <T>(arg0: DebugSubscription<T>, arg1: T): DebugSubscriptionUpdate<T>;
@@ -2587,9 +2482,7 @@ export const DialogLike = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolDialo
 export interface DialogType<T = unknown> extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
     decode(arg0: NBTCompound, arg1: PacketEventsPacketWrapper<unknown>): T;
     encode(arg0: NBTCompound, arg1: PacketEventsPacketWrapper<unknown>, arg2: T): void;
 }
@@ -2601,7 +2494,6 @@ export interface DiggingAction extends ApiObject {
     readonly id: number;
     readonly name: string;
     readonly ordinal: number;
-    getId(): number;
 }
 interface __GraalyPacketSymbolDiggingAction extends ApiClass<DiggingAction> {
     readonly START_DIGGING: DiggingAction;
@@ -2625,14 +2517,6 @@ export interface Dimension extends ApiObject {
     attributes: NBTCompound;
     asDimensionTypeRef(): DimensionTypeRef;
     asDimensionType(arg0: User, arg1: ClientVersion): DimensionDimensionType;
-    getDimensionName(): string;
-    setDimensionName(arg0: string): void;
-    getId(): number;
-    setId(arg0: number): void;
-    getType(): PacketDimensionType;
-    setType(arg0: PacketDimensionType): void;
-    getAttributes(): NBTCompound;
-    setAttributes(arg0: NBTCompound): void;
 }
 interface __GraalyPacketSymbolDimension extends ApiType<Dimension> {
     (arg0: PacketDimensionType): Dimension;
@@ -2677,45 +2561,17 @@ export interface DimensionDimensionType extends ApiObject {
     readonly attributes: EnvironmentAttributeMap;
     readonly timelines: MappedEntitySet<Timeline>;
     readonly timelinesRef: MappedEntityRefSet<Timeline>;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
     copy(arg0: TypesBuilderData): DimensionDimensionType;
     deepEquals(arg0: unknown): boolean;
     deepHashCode(): number;
     hasFixedTime(): boolean;
-    getFixedTime(): ApiObject;
     hasSkyLight(): boolean;
     hasCeiling(): boolean;
-    isUltraWarm(): boolean;
-    isNatural(): boolean;
-    getCoordinateScale(): number;
-    isShrunk(): boolean;
-    isBedWorking(): boolean;
-    isRespawnAnchorWorking(): boolean;
-    getMinY(): number;
     getMinY(arg0: ClientVersion): number;
-    getHeight(): number;
     getHeight(arg0: ClientVersion): number;
-    getLogicalHeight(): number;
     getLogicalHeight(arg0: ClientVersion): number;
-    getInfiniburn(): TagKey;
-    getInfiniburnTag(): string;
-    getEffectsLocation(): ResourceLocation;
-    getAmbientLight(): number;
-    getCloudHeight(): number;
-    getDefaultClock(): WorldClock;
-    getDefaultClockRef(): MappedEntityRef<WorldClock>;
-    isHasEnderDragonFight(): boolean;
-    isPiglinSafe(): boolean;
     hasRaids(): boolean;
-    getMonsterSpawnLightLevel(): NBT;
-    getMonsterSpawnBlockLightLimit(): number;
-    getSkybox(): DimensionTypeSkybox;
-    getCardinalLight(): DimensionTypeCardinalLight;
-    getAttributes(): EnvironmentAttributeMap;
-    getTimelines(): MappedEntitySet<Timeline>;
-    getTimelinesRef(): MappedEntityRefSet<Timeline>;
     asRef(arg0: PacketEventsPacketWrapper<unknown>): DimensionTypeRef;
     asRef(arg0: ClientVersion): DimensionTypeRef;
 }
@@ -2730,7 +2586,6 @@ export interface DimensionTypeCardinalLight extends ApiObject {
     readonly codecName: string;
     readonly name: string;
     readonly ordinal: number;
-    getCodecName(): string;
 }
 interface __GraalyPacketSymbolDimensionTypeCardinalLight extends ApiClass<DimensionTypeCardinalLight> {
     readonly DEFAULT: DimensionTypeCardinalLight;
@@ -2747,9 +2602,6 @@ export interface DimensionTypeRef extends ApiObject {
     readonly data: NBT;
     resolve(arg0: IRegistry<DimensionDimensionType>, arg1: ClientVersion): DimensionDimensionType;
     resolve(arg0: IRegistry<DimensionDimensionType>, arg1: PacketEventsPacketWrapper<unknown>): DimensionDimensionType;
-    getName(): ResourceLocation;
-    getId(): number;
-    getData(): NBT;
 }
 interface __GraalyPacketSymbolDimensionTypeRef extends ApiClass<DimensionTypeRef> {
     read(arg0: PacketEventsPacketWrapper<unknown>): DimensionTypeRef;
@@ -2761,7 +2613,6 @@ export interface DimensionTypeSkybox extends ApiObject {
     readonly codecName: string;
     readonly name: string;
     readonly ordinal: number;
-    getCodecName(): string;
 }
 interface __GraalyPacketSymbolDimensionTypeSkybox extends ApiClass<DimensionTypeSkybox> {
     readonly NONE: DimensionTypeSkybox;
@@ -2779,9 +2630,6 @@ export interface Direction extends ApiObject {
     readonly axis: PacketAxis;
     readonly name: string;
     readonly ordinal: number;
-    getHorizontalIndex(): number;
-    getVector(): PacketVector3i;
-    getAxis(): PacketAxis;
 }
 interface __GraalyPacketSymbolDirection extends ApiClass<Direction> {
     readonly DOWN: Direction;
@@ -2800,9 +2648,7 @@ export const Direction = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolDirect
 export interface EasingType extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
     apply(arg0: number): number;
 }
 interface __GraalyPacketSymbolEasingType extends ApiClass<EasingType> {
@@ -2832,10 +2678,6 @@ export interface Either<L = unknown, R = unknown> extends ApiObject {
     readonly right: R;
     get(): unknown;
     map<T>(arg0: (value: L) => T, arg1: (value: R) => T): T;
-    isLeft(): boolean;
-    getLeft(): L;
-    isRight(): boolean;
-    getRight(): R;
     equals(arg0: unknown): boolean;
     hashCode(): number;
 }
@@ -2860,8 +2702,6 @@ export const EnchantmentBuilder = /* @__PURE__ */ packetSymbol<__GraalyPacketSym
 export interface EnchantmentCost extends ApiObject {
     readonly base: number;
     readonly perLevelAboveFirst: number;
-    getBase(): number;
-    getPerLevelAboveFirst(): number;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -2885,14 +2725,6 @@ export interface EnchantmentDefinition extends ApiObject {
     readonly maxCost: EnchantmentCost;
     readonly anvilCost: number;
     readonly slots: ItemAttributeModifiersEquipmentSlotGroup[];
-    getSupportedItems(): MappedEntitySet<PacketItemType>;
-    getPrimaryItems(): MappedEntitySet<PacketItemType> | null;
-    getWeight(): number;
-    getMaxLevel(): number;
-    getMinCost(): EnchantmentCost;
-    getMaxCost(): EnchantmentCost;
-    getAnvilCost(): number;
-    getSlots(): ItemAttributeModifiersEquipmentSlotGroup[];
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -2916,17 +2748,10 @@ export interface EnchantmentType extends ApiObject {
     readonly exclusiveSet: MappedEntitySet<EnchantmentType>;
     readonly exclusiveRefSet: MappedEntityRefSet<EnchantmentType>;
     readonly effects: StaticComponentMap;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
     copy(arg0: TypesBuilderData): EnchantmentType;
     deepEquals(arg0: unknown): boolean;
     deepHashCode(): number;
-    getDescription(): Component;
-    getDefinition(): EnchantmentDefinition;
-    getExclusiveSet(): MappedEntitySet<EnchantmentType>;
-    getExclusiveRefSet(): MappedEntityRefSet<EnchantmentType>;
-    getEffects(): StaticComponentMap;
 }
 interface __GraalyPacketSymbolEnchantmentType extends ApiClass<EnchantmentType> {
     decode(arg0: NBT, arg1: ClientVersion, arg2: TypesBuilderData): EnchantmentType;
@@ -2978,12 +2803,6 @@ export interface EntityData<T = unknown> extends ApiObject {
     index: number;
     type: EntityDataType<T>;
     value: T;
-    getIndex(): number;
-    setIndex(arg0: number): void;
-    getType(): EntityDataType<T>;
-    setType(arg0: EntityDataType<T>): void;
-    getValue(): T;
-    setValue(arg0: T): void;
 }
 interface __GraalyPacketSymbolEntityData extends ApiType<EntityData> {
     <T>(arg0: number, arg1: EntityDataType<T>, arg2: T): EntityData<T>;
@@ -2997,17 +2816,12 @@ export interface EntityDataType<T = unknown> extends ApiObject {
     readonly registryData: TypesBuilderData;
     readonly dataDeserializer: (value: PacketEventsPacketWrapper<unknown>) => T;
     readonly dataSerializer: (left: PacketEventsPacketWrapper<unknown>, right: T) => void;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
-    getRegistryData(): TypesBuilderData;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
     read(arg0: PacketEventsPacketWrapper<unknown>): T;
     write(arg0: PacketEventsPacketWrapper<unknown>, arg1: T): void;
-    getDataDeserializer(): (value: PacketEventsPacketWrapper<unknown>) => T;
-    getDataSerializer(): (left: PacketEventsPacketWrapper<unknown>, right: T) => void;
 }
 interface __GraalyPacketSymbolEntityDataType extends ApiType<EntityDataType> {
     <T>(arg0: TypesBuilderData, arg1: PacketWrapperReader<T>, arg2: PacketWrapperWriter<T>): EntityDataType<T>;
@@ -3164,14 +2978,6 @@ export interface EntityPositionData extends ApiObject {
     deltaMovement: PacketVector3d;
     yaw: number;
     pitch: number;
-    getPosition(): PacketVector3d;
-    setPosition(arg0: PacketVector3d): void;
-    getDeltaMovement(): PacketVector3d;
-    setDeltaMovement(arg0: PacketVector3d): void;
-    getYaw(): number;
-    setYaw(arg0: number): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -3190,12 +2996,7 @@ export interface EnvironmentAttribute<T = unknown> extends ApiObject {
     readonly synced: boolean;
     readonly type: AttributeType<T>;
     readonly defaultValue: T;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
-    isSynced(): boolean;
-    getType(): AttributeType<T>;
-    getDefaultValue(): T;
 }
 interface __GraalyPacketSymbolEnvironmentAttribute extends ApiClass<EnvironmentAttribute> {
 }
@@ -3208,14 +3009,12 @@ export interface EnvironmentAttributeMap extends ApiObject {
     copyMutable(): EnvironmentAttributeMap;
     set<T>(arg0: EnvironmentAttribute<T>, arg1: T): EnvironmentAttributeMap;
     set<T, A>(arg0: EnvironmentAttribute<T>, arg1: A, arg2: PacketAttributeModifier<T, A>): EnvironmentAttributeMap;
-    setAll(arg0: EnvironmentAttributeMap): void;
     getOrDefault<T>(arg0: EnvironmentAttribute<T>): T;
     get<T>(arg0: EnvironmentAttribute<T>): EnvironmentAttributeMapEntry<T, unknown>;
     apply<T>(arg0: EnvironmentAttribute<T>, arg1: T): T;
     contains(arg0: EnvironmentAttribute<unknown>): boolean;
     keySet(): Set<EnvironmentAttribute<unknown>>;
     size(): number;
-    isEmpty(): boolean;
     equals(arg0: unknown): boolean;
     hashCode(): number;
 }
@@ -3230,10 +3029,7 @@ export interface EnvironmentAttributeMapEntry<T = unknown, A = unknown> extends 
     readonly override: boolean;
     readonly argument: A;
     readonly modifier: PacketAttributeModifier<T, A>;
-    isOverride(): boolean;
     getValue(arg0: T): T;
-    getArgument(): A;
-    getModifier(): PacketAttributeModifier<T, A>;
     equals(arg0: unknown): boolean;
     hashCode(): number;
 }
@@ -3248,10 +3044,6 @@ export const EnvironmentAttributeMapEntry = /* @__PURE__ */ packetSymbol<__Graal
 export interface Equipment extends ApiObject {
     slot: PacketEquipmentSlot;
     item: PacketItemStack;
-    getSlot(): PacketEquipmentSlot;
-    setSlot(arg0: PacketEquipmentSlot): void;
-    getItem(): PacketItemStack;
-    setItem(arg0: PacketItemStack): void;
     equals(arg0: unknown): boolean;
 }
 interface __GraalyPacketSymbolEquipment extends ApiType<Equipment> {
@@ -3365,9 +3157,6 @@ export interface ExplosionParticleInfo extends PacketWrapper {
     readonly particle: PacketParticle<unknown>;
     readonly scaling: number;
     readonly speed: number;
-    getParticle(): PacketParticle<unknown>;
-    getScaling(): number;
-    getSpeed(): number;
 }
 interface __GraalyPacketSymbolExplosionParticleInfo extends ApiType<ExplosionParticleInfo> {
     (arg0: PacketParticle<unknown>, arg1: number, arg2: number): ExplosionParticleInfo;
@@ -3394,7 +3183,6 @@ export interface FacePlayerEntitySection extends PacketWrapper {
     readonly id: number;
     readonly name: string;
     readonly ordinal: number;
-    getId(): number;
 }
 interface __GraalyPacketSymbolFacePlayerEntitySection extends ApiClass<FacePlayerEntitySection> {
     readonly EYES: FacePlayerEntitySection;
@@ -3408,10 +3196,6 @@ export const FacePlayerEntitySection = /* @__PURE__ */ packetSymbol<__GraalyPack
 export interface FacePlayerTargetEntity extends PacketWrapper {
     entityId: number;
     entitySection: FacePlayerEntitySection;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getEntitySection(): FacePlayerEntitySection;
-    setEntitySection(arg0: FacePlayerEntitySection): void;
 }
 interface __GraalyPacketSymbolFacePlayerTargetEntity extends ApiType<FacePlayerTargetEntity> {
     (arg0: number, arg1: FacePlayerEntitySection): FacePlayerTargetEntity;
@@ -3425,12 +3209,7 @@ export interface FieldAttributes extends ApiObject {
     readonly declaredType: Type;
     readonly declaredClass: ApiClass<unknown>;
     readonly annotations: ApiObject[];
-    getDeclaringClass(): ApiClass<unknown>;
-    getName(): string;
-    getDeclaredType(): Type;
-    getDeclaredClass(): ApiClass<unknown>;
     getAnnotation<T extends ApiObject>(arg0: ApiClass<T>): T;
-    getAnnotations(): ApiObject[];
     hasModifier(arg0: number): boolean;
     toString(): string;
 }
@@ -3470,8 +3249,6 @@ export const FieldNamingStrategy = /* @__PURE__ */ packetSymbol<__GraalyPacketSy
 export interface FilterMask extends ApiObject {
     readonly mask: ApiObject;
     readonly type: FilterMaskType;
-    getMask(): ApiObject;
-    getType(): FilterMaskType;
 }
 interface __GraalyPacketSymbolFilterMask extends ApiType<FilterMask> {
     (arg0: ApiObject): FilterMask;
@@ -3485,7 +3262,6 @@ export interface FilterMaskType extends ApiObject {
     readonly id: number;
     readonly name: string;
     readonly ordinal: number;
-    getId(): number;
 }
 interface __GraalyPacketSymbolFilterMaskType extends ApiClass<FilterMaskType> {
     readonly PASS_THROUGH: FilterMaskType;
@@ -3502,8 +3278,6 @@ export interface FixedScoreFormat extends ApiObject {
     readonly type: ScoreFormatType<FixedScoreFormat>;
     readonly value: Component;
     format(arg0: number): Component;
-    getType(): ScoreFormatType<FixedScoreFormat>;
-    getValue(): Component;
 }
 interface __GraalyPacketSymbolFixedScoreFormat extends ApiType<FixedScoreFormat> {
     (arg0: Component): FixedScoreFormat;
@@ -3529,8 +3303,6 @@ export interface FormattingStyle extends ApiObject {
     withNewline(arg0: string): FormattingStyle;
     withIndent(arg0: string): FormattingStyle;
     withSpaceAfterSeparators(arg0: boolean): FormattingStyle;
-    getNewline(): string;
-    getIndent(): string;
     usesSpaceAfterSeparators(): boolean;
 }
 interface __GraalyPacketSymbolFormattingStyle extends ApiClass<FormattingStyle> {
@@ -3652,28 +3424,17 @@ export interface GsonBuilder extends ApiObject {
     formattingStyle: FormattingStyle;
     strictness: Strictness;
     dateFormat: string;
-    setVersion(arg0: number): GsonBuilder;
     excludeFieldsWithModifiers(...arg0: number[]): GsonBuilder;
     generateNonExecutableJson(): GsonBuilder;
     excludeFieldsWithoutExposeAnnotation(): GsonBuilder;
     serializeNulls(): GsonBuilder;
     enableComplexMapKeySerialization(): GsonBuilder;
     disableInnerClassSerialization(): GsonBuilder;
-    setLongSerializationPolicy(arg0: LongSerializationPolicy): GsonBuilder;
-    setFieldNamingPolicy(arg0: FieldNamingPolicy): GsonBuilder;
-    setFieldNamingStrategy(arg0: FieldNamingStrategy): GsonBuilder;
-    setObjectToNumberStrategy(arg0: ToNumberStrategy): GsonBuilder;
-    setNumberToNumberStrategy(arg0: ToNumberStrategy): GsonBuilder;
-    setExclusionStrategies(...arg0: ExclusionStrategy[]): GsonBuilder;
     addSerializationExclusionStrategy(arg0: ExclusionStrategy): GsonBuilder;
     addDeserializationExclusionStrategy(arg0: ExclusionStrategy): GsonBuilder;
     setPrettyPrinting(): GsonBuilder;
-    setFormattingStyle(arg0: FormattingStyle): GsonBuilder;
     setLenient(): GsonBuilder;
-    setStrictness(arg0: Strictness): GsonBuilder;
     disableHtmlEscaping(): GsonBuilder;
-    setDateFormat(arg0: string): GsonBuilder;
-    setDateFormat(arg0: number): GsonBuilder;
     setDateFormat(arg0: number, arg1: number): GsonBuilder;
     registerTypeAdapter(arg0: Type, arg1: unknown): GsonBuilder;
     registerTypeAdapterFactory(arg0: TypeAdapterFactory): GsonBuilder;
@@ -3759,8 +3520,6 @@ export interface HandshakeConnectionIntention extends PacketWrapper {
     readonly targetState: ConnectionState;
     readonly name: string;
     readonly ordinal: number;
-    getId(): number;
-    getTargetState(): ConnectionState;
 }
 interface __GraalyPacketSymbolHandshakeConnectionIntention extends ApiClass<HandshakeConnectionIntention> {
     readonly STATUS: HandshakeConnectionIntention;
@@ -3775,8 +3534,6 @@ export const HandshakeConnectionIntention = /* @__PURE__ */ packetSymbol<__Graal
 export interface HashedComponentPatchMap extends ApiObject {
     readonly addedComponents: Map<ComponentType<unknown>, number>;
     readonly removedComponents: Set<ComponentType<unknown>>;
-    getAddedComponents(): Map<ComponentType<unknown>, number>;
-    getRemovedComponents(): Set<ComponentType<unknown>>;
 }
 interface __GraalyPacketSymbolHashedComponentPatchMap extends ApiType<HashedComponentPatchMap> {
     (arg0: Map<ComponentType<unknown>, number>, arg1: Set<ComponentType<unknown>>): HashedComponentPatchMap;
@@ -3791,9 +3548,6 @@ export interface HashedStack extends ApiObject {
     readonly count: number;
     readonly components: HashedComponentPatchMap;
     asItemStack(): PacketItemStack;
-    getItem(): PacketItemType;
-    getCount(): number;
-    getComponents(): HashedComponentPatchMap;
 }
 interface __GraalyPacketSymbolHashedStack extends ApiType<HashedStack> {
     (arg0: PacketItemType, arg1: number, arg2: HashedComponentPatchMap): HashedStack;
@@ -3812,8 +3566,6 @@ export interface HeightmapType extends ApiObject {
     readonly client: boolean;
     readonly name: string;
     readonly ordinal: number;
-    getSerializationKey(): string;
-    isClient(): boolean;
 }
 interface __GraalyPacketSymbolHeightmapType extends ApiClass<HeightmapType> {
     readonly WORLD_SURFACE_WG: HeightmapType;
@@ -3962,7 +3714,6 @@ export interface HumanoidArm extends ApiObject {
     readonly id: number;
     readonly name: string;
     readonly ordinal: number;
-    getId(): number;
 }
 interface __GraalyPacketSymbolHumanoidArm extends ApiClass<HumanoidArm> {
     readonly LEFT: HumanoidArm;
@@ -4008,9 +3759,7 @@ export interface IRegistry<T = unknown> extends ApiObject {
     getById(arg0: ClientVersion, arg1: number): T;
     getId(arg0: string, arg1: ClientVersion): number;
     getId(arg0: MappedEntity, arg1: ClientVersion): number;
-    getEntries(): T[];
     size(): number;
-    getRegistryKey(): ResourceLocation;
     apply(arg0: ClientVersion, arg1: number): T;
     apply(arg0: unknown, arg1: unknown): unknown;
 }
@@ -4097,7 +3846,6 @@ export interface InteractionHand extends ApiObject {
     readonly id: number;
     readonly name: string;
     readonly ordinal: number;
-    getId(): number;
 }
 interface __GraalyPacketSymbolInteractionHand extends ApiClass<InteractionHand> {
     readonly MAIN_HAND: InteractionHand;
@@ -4112,7 +3860,6 @@ export interface ItemAttributeModifiersEquipmentSlotGroup extends ApiObject {
     readonly id: string;
     readonly name: string;
     readonly ordinal: number;
-    getId(): string;
 }
 interface __GraalyPacketSymbolItemAttributeModifiersEquipmentSlotGroup extends ApiClass<ItemAttributeModifiersEquipmentSlotGroup> {
     readonly ANY: ItemAttributeModifiersEquipmentSlotGroup;
@@ -4250,8 +3997,6 @@ export interface JointType extends ApiObject {
     readonly translatableName: Component;
     readonly name: string;
     readonly ordinal: number;
-    getSerializedName(): string;
-    getTranslatableName(): Component;
 }
 interface __GraalyPacketSymbolJointType extends ApiClass<JointType> {
     readonly ROLLABLE: JointType;
@@ -4285,26 +4030,6 @@ export interface JsonArray extends ApiObject {
     readonly asShort: number;
     readonly empty: boolean;
     deepCopy(): PacketJsonElement;
-    isJsonArray(): boolean;
-    isJsonObject(): boolean;
-    isJsonPrimitive(): boolean;
-    isJsonNull(): boolean;
-    getAsJsonObject(): JsonObject;
-    getAsJsonArray(): JsonArray;
-    getAsJsonPrimitive(): JsonPrimitive;
-    getAsJsonNull(): JsonNull;
-    getAsBoolean(): boolean;
-    getAsNumber(): number;
-    getAsString(): string;
-    getAsDouble(): number;
-    getAsFloat(): number;
-    getAsLong(): number;
-    getAsInt(): number;
-    getAsByte(): number;
-    getAsCharacter(): string;
-    getAsBigDecimal(): ApiObject;
-    getAsBigInteger(): ApiObject;
-    getAsShort(): number;
     toString(): string;
     add(arg0: boolean): void;
     add(arg0: string): void;
@@ -4317,7 +4042,6 @@ export interface JsonArray extends ApiObject {
     remove(arg0: number): PacketJsonElement;
     contains(arg0: PacketJsonElement): boolean;
     size(): number;
-    isEmpty(): boolean;
     iterator(): PacketJsonElement[];
     get(arg0: number): PacketJsonElement;
     asList(): PacketJsonElement[];
@@ -4364,26 +4088,6 @@ export interface JsonNull extends ApiObject {
     readonly asBigInteger: ApiObject;
     readonly asShort: number;
     deepCopy(): PacketJsonElement;
-    isJsonArray(): boolean;
-    isJsonObject(): boolean;
-    isJsonPrimitive(): boolean;
-    isJsonNull(): boolean;
-    getAsJsonObject(): JsonObject;
-    getAsJsonArray(): JsonArray;
-    getAsJsonPrimitive(): JsonPrimitive;
-    getAsJsonNull(): JsonNull;
-    getAsBoolean(): boolean;
-    getAsNumber(): number;
-    getAsString(): string;
-    getAsDouble(): number;
-    getAsFloat(): number;
-    getAsLong(): number;
-    getAsInt(): number;
-    getAsByte(): number;
-    getAsCharacter(): string;
-    getAsBigDecimal(): ApiObject;
-    getAsBigInteger(): ApiObject;
-    getAsShort(): number;
     toString(): string;
     hashCode(): number;
     equals(arg0: unknown): boolean;
@@ -4418,26 +4122,6 @@ export interface JsonObject extends ApiObject {
     readonly asShort: number;
     readonly empty: boolean;
     deepCopy(): PacketJsonElement;
-    isJsonArray(): boolean;
-    isJsonObject(): boolean;
-    isJsonPrimitive(): boolean;
-    isJsonNull(): boolean;
-    getAsJsonObject(): JsonObject;
-    getAsJsonArray(): JsonArray;
-    getAsJsonPrimitive(): JsonPrimitive;
-    getAsJsonNull(): JsonNull;
-    getAsBoolean(): boolean;
-    getAsNumber(): number;
-    getAsString(): string;
-    getAsDouble(): number;
-    getAsFloat(): number;
-    getAsLong(): number;
-    getAsInt(): number;
-    getAsByte(): number;
-    getAsCharacter(): string;
-    getAsBigDecimal(): ApiObject;
-    getAsBigInteger(): ApiObject;
-    getAsShort(): number;
     toString(): string;
     add(arg0: string, arg1: PacketJsonElement): void;
     remove(arg0: string): PacketJsonElement;
@@ -4448,7 +4132,6 @@ export interface JsonObject extends ApiObject {
     entrySet(): Set<ApiObject>;
     keySet(): Set<string>;
     size(): number;
-    isEmpty(): boolean;
     has(arg0: string): boolean;
     get(arg0: string): PacketJsonElement;
     getAsJsonPrimitive(arg0: string): JsonPrimitive;
@@ -4489,30 +4172,7 @@ export interface JsonPrimitive extends ApiObject {
     readonly number: boolean;
     readonly string: boolean;
     deepCopy(): PacketJsonElement;
-    isJsonArray(): boolean;
-    isJsonObject(): boolean;
-    isJsonPrimitive(): boolean;
-    isJsonNull(): boolean;
-    getAsJsonObject(): JsonObject;
-    getAsJsonArray(): JsonArray;
-    getAsJsonPrimitive(): JsonPrimitive;
-    getAsJsonNull(): JsonNull;
-    getAsBoolean(): boolean;
-    getAsNumber(): number;
-    getAsString(): string;
-    getAsDouble(): number;
-    getAsFloat(): number;
-    getAsLong(): number;
-    getAsInt(): number;
-    getAsByte(): number;
-    getAsCharacter(): string;
-    getAsBigDecimal(): ApiObject;
-    getAsBigInteger(): ApiObject;
-    getAsShort(): number;
     toString(): string;
-    isBoolean(): boolean;
-    isNumber(): boolean;
-    isString(): boolean;
     hashCode(): number;
     equals(arg0: unknown): boolean;
 }
@@ -4534,12 +4194,6 @@ export interface JsonReader extends ApiObject {
     nestingLimit: number;
     readonly path: string;
     readonly previousPath: string;
-    setLenient(arg0: boolean): void;
-    isLenient(): boolean;
-    setStrictness(arg0: Strictness): void;
-    getStrictness(): Strictness;
-    setNestingLimit(arg0: number): void;
-    getNestingLimit(): number;
     beginArray(): void;
     endArray(): void;
     beginObject(): void;
@@ -4556,8 +4210,6 @@ export interface JsonReader extends ApiObject {
     close(): void;
     skipValue(): void;
     toString(): string;
-    getPath(): string;
-    getPreviousPath(): string;
 }
 interface __GraalyPacketSymbolJsonReader extends ApiType<JsonReader> {
     (arg0: ApiObject): JsonReader;
@@ -4592,17 +4244,6 @@ export interface JsonWriter extends ApiObject {
     htmlSafe: boolean;
     serializeNulls: boolean;
     indent: string;
-    setIndent(arg0: string): void;
-    setFormattingStyle(arg0: FormattingStyle): void;
-    getFormattingStyle(): FormattingStyle;
-    setLenient(arg0: boolean): void;
-    isLenient(): boolean;
-    setStrictness(arg0: Strictness): void;
-    getStrictness(): Strictness;
-    setHtmlSafe(arg0: boolean): void;
-    isHtmlSafe(): boolean;
-    setSerializeNulls(arg0: boolean): void;
-    getSerializeNulls(): boolean;
     beginArray(): JsonWriter;
     endArray(): JsonWriter;
     beginObject(): JsonWriter;
@@ -4795,8 +4436,6 @@ export const KeybindComponentKeybindLike = /* @__PURE__ */ packetSymbol<__Graaly
 export interface Keyframe<T = unknown> extends ApiObject {
     readonly ticks: number;
     readonly value: T;
-    getTicks(): number;
-    getValue(): T;
 }
 interface __GraalyPacketSymbolKeyframe extends ApiType<Keyframe> {
     <T>(arg0: number, arg1: T): Keyframe<T>;
@@ -4808,8 +4447,6 @@ export const Keyframe = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolKeyfram
 export interface KeyframeTrack<T = unknown> extends ApiObject {
     readonly keyframes: Keyframe<T>[];
     readonly easingType: EasingType;
-    getKeyframes(): Keyframe<T>[];
-    getEasingType(): EasingType;
 }
 interface __GraalyPacketSymbolKeyframeTrack extends ApiType<KeyframeTrack> {
     <T>(arg0: Keyframe<T>[], arg1: EasingType): KeyframeTrack<T>;
@@ -4822,9 +4459,6 @@ export interface KnownPack extends ApiObject {
     readonly namespace: string;
     readonly id: string;
     readonly version: string;
-    getNamespace(): string;
-    getId(): string;
-    getVersion(): string;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -4838,7 +4472,6 @@ export const KnownPack = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolKnownP
 export interface LastSeenMessages extends ApiObject {
     readonly entries: LastSeenMessagesEntry[];
     updateHash(arg0: ApiObject): void;
-    getEntries(): LastSeenMessagesEntry[];
 }
 interface __GraalyPacketSymbolLastSeenMessages extends ApiType<LastSeenMessages> {
     (arg0: LastSeenMessagesEntry[]): LastSeenMessages;
@@ -4850,8 +4483,6 @@ export const LastSeenMessages = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbo
 export interface LastSeenMessagesEntry extends ApiObject {
     readonly UUID: NativeUuid;
     readonly lastVerifier: number[];
-    getUUID(): NativeUuid;
-    getLastVerifier(): number[];
 }
 interface __GraalyPacketSymbolLastSeenMessagesEntry extends ApiType<LastSeenMessagesEntry> {
     (arg0: NativeUuid, arg1: number[]): LastSeenMessagesEntry;
@@ -4862,8 +4493,6 @@ export const LastSeenMessagesEntry = /* @__PURE__ */ packetSymbol<__GraalyPacket
 export interface LastSeenMessagesLegacyUpdate extends ApiObject {
     readonly lastSeenMessages: LastSeenMessages;
     readonly lastReceived: LastSeenMessagesEntry;
-    getLastSeenMessages(): LastSeenMessages;
-    getLastReceived(): LastSeenMessagesEntry;
 }
 interface __GraalyPacketSymbolLastSeenMessagesLegacyUpdate extends ApiType<LastSeenMessagesLegacyUpdate> {
     (arg0: LastSeenMessages, arg1: LastSeenMessagesEntry): LastSeenMessagesLegacyUpdate;
@@ -4873,8 +4502,6 @@ export const LastSeenMessagesLegacyUpdate = /* @__PURE__ */ packetSymbol<__Graal
 
 export interface LastSeenMessagesPacked extends ApiObject {
     packedMessageSignatures: MessageSignaturePacked[];
-    getPackedMessageSignatures(): MessageSignaturePacked[];
-    setPackedMessageSignatures(arg0: MessageSignaturePacked[]): void;
 }
 interface __GraalyPacketSymbolLastSeenMessagesPacked extends ApiType<LastSeenMessagesPacked> {
     (arg0: MessageSignaturePacked[]): LastSeenMessagesPacked;
@@ -4886,9 +4513,6 @@ export interface LastSeenMessagesUpdate extends ApiObject {
     readonly offset: number;
     readonly acknowledged: ApiObject;
     readonly checksum: number;
-    getOffset(): number;
-    getAcknowledged(): ApiObject;
-    getChecksum(): number;
 }
 interface __GraalyPacketSymbolLastSeenMessagesUpdate extends ApiType<LastSeenMessagesUpdate> {
     (arg0: number, arg1: ApiObject): LastSeenMessagesUpdate;
@@ -4901,8 +4525,6 @@ export const LastSeenMessagesUpdate = /* @__PURE__ */ packetSymbol<__GraalyPacke
 export interface LegacyComponent extends ApiObject {
     readonly component: Component;
     readonly legacy: string;
-    getComponent(): Component;
-    getLegacy(): string;
     equals(arg0: unknown): boolean;
     hashCode(): number;
 }
@@ -4972,7 +4594,6 @@ export const LegacyFormat = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolLeg
 
 export interface LegacyMappedEntity extends ApiObject {
     readonly name: ResourceLocation;
-    getName(): ResourceLocation;
     getLegacyId(arg0: ClientVersion): number;
 }
 interface __GraalyPacketSymbolLegacyMappedEntity extends ApiClass<LegacyMappedEntity> {
@@ -4990,24 +4611,6 @@ export interface LightData extends ApiObject {
     skyLightArray: number[][];
     blockLightArray: number[][];
     clone(): LightData;
-    isTrustEdges(): boolean;
-    setTrustEdges(arg0: boolean): void;
-    getBlockLightMask(): ApiObject;
-    setBlockLightMask(arg0: ApiObject): void;
-    getSkyLightMask(): ApiObject;
-    setSkyLightMask(arg0: ApiObject): void;
-    getEmptyBlockLightMask(): ApiObject;
-    setEmptyBlockLightMask(arg0: ApiObject): void;
-    getEmptySkyLightMask(): ApiObject;
-    setEmptySkyLightMask(arg0: ApiObject): void;
-    getSkyLightCount(): number;
-    setSkyLightCount(arg0: number): void;
-    getBlockLightCount(): number;
-    setBlockLightCount(arg0: number): void;
-    getSkyLightArray(): number[][];
-    setSkyLightArray(arg0: number[][]): void;
-    getBlockLightArray(): number[][];
-    setBlockLightArray(arg0: number[][]): void;
 }
 interface __GraalyPacketSymbolLightData extends ApiType<LightData> {
     (): LightData;
@@ -5038,16 +4641,6 @@ export interface MapDataMapDecoration extends PacketWrapper {
     y: number;
     direction: number;
     displayName: Component;
-    getType(): MapDecorationType;
-    setType(arg0: MapDecorationType): void;
-    getX(): number;
-    setX(arg0: number): void;
-    getY(): number;
-    setY(arg0: number): void;
-    getDirection(): number;
-    setDirection(arg0: number): void;
-    getDisplayName(): Component;
-    setDisplayName(arg0: Component): void;
 }
 interface __GraalyPacketSymbolMapDataMapDecoration extends ApiType<MapDataMapDecoration> {
     (arg0: MapDecorationType, arg1: number, arg2: number, arg3: number, arg4: Component): MapDataMapDecoration;
@@ -5065,14 +4658,7 @@ export interface MapDecorationType extends ApiObject {
     readonly mapColor: number;
     readonly explorationMapElement: boolean;
     readonly trackCount: boolean;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
-    getAssetId(): ResourceLocation;
-    isShowOnItemFrame(): boolean;
-    getMapColor(): number;
-    isExplorationMapElement(): boolean;
-    isTrackCount(): boolean;
 }
 interface __GraalyPacketSymbolMapDecorationType extends ApiClass<MapDecorationType> {
 }
@@ -5081,9 +4667,7 @@ export const MapDecorationType = /* @__PURE__ */ packetSymbol<__GraalyPacketSymb
 export interface MappedEntity extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
 }
 interface __GraalyPacketSymbolMappedEntity extends ApiClass<MappedEntity> {
 }
@@ -5112,7 +4696,6 @@ export interface MappedEntityRefSet<T = unknown> extends ApiObject {
     resolve(arg0: PacketEventsPacketWrapper<unknown>, arg1: IRegistry<T>): MappedEntitySet<T>;
     resolve(arg0: ClientVersion, arg1: IRegistryHolder, arg2: IRegistry<T>): MappedEntitySet<T>;
     resolve(arg0: ClientVersion, arg1: IRegistry<T>): MappedEntitySet<T>;
-    isEmpty(): boolean;
 }
 interface __GraalyPacketSymbolMappedEntityRefSet extends ApiClass<MappedEntityRefSet> {
 }
@@ -5125,9 +4708,6 @@ export interface MappedEntitySet<T = unknown> extends ApiObject {
     resolve(arg0: PacketEventsPacketWrapper<unknown>, arg1: IRegistry<T>): MappedEntitySet<T>;
     resolve(arg0: ClientVersion, arg1: IRegistryHolder, arg2: IRegistry<T>): MappedEntitySet<T>;
     resolve(arg0: ClientVersion, arg1: IRegistry<T>): MappedEntitySet<T>;
-    isEmpty(): boolean;
-    getTagKey(): ResourceLocation;
-    getEntities(): T[];
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -5225,12 +4805,6 @@ export interface MerchantItemCost extends ApiObject {
     count: number;
     predicate: ComponentPredicate;
     asItem(): PacketItemStack;
-    getItem(): PacketItemType;
-    setItem(arg0: PacketItemType): void;
-    getCount(): number;
-    setCount(arg0: number): void;
-    getPredicate(): ComponentPredicate;
-    setPredicate(arg0: ComponentPredicate): void;
 }
 interface __GraalyPacketSymbolMerchantItemCost extends ApiType<MerchantItemCost> {
     (arg0: PacketItemType): MerchantItemCost;
@@ -5261,29 +4835,6 @@ export interface MerchantOffer extends ApiObject {
     demand: number;
     specialPrice: number;
     readonly outOfStock: boolean;
-    getFirstInputCost(): MerchantItemCost;
-    setFirstInputCost(arg0: MerchantItemCost): void;
-    getFirstInputItem(): PacketItemStack;
-    setFirstInputItem(arg0: PacketItemStack): void;
-    getSecondInputCost(): MerchantItemCost;
-    setSecondInputCost(arg0: MerchantItemCost): void;
-    getSecondInputItem(): PacketItemStack;
-    setSecondInputItem(arg0: PacketItemStack): void;
-    getOutputItem(): PacketItemStack;
-    setOutputItem(arg0: PacketItemStack): void;
-    getUses(): number;
-    setUses(arg0: number): void;
-    getMaxUses(): number;
-    setMaxUses(arg0: number): void;
-    getXp(): number;
-    setXp(arg0: number): void;
-    getPriceMultiplier(): number;
-    setPriceMultiplier(arg0: number): void;
-    getDemand(): number;
-    setDemand(arg0: number): void;
-    getSpecialPrice(): number;
-    setSpecialPrice(arg0: number): void;
-    isOutOfStock(): boolean;
 }
 interface __GraalyPacketSymbolMerchantOffer extends ApiClass<MerchantOffer> {
     of(arg0: PacketItemStack, arg1: PacketItemStack, arg2: PacketItemStack, arg3: number, arg4: number, arg5: number, arg6: number, arg7: number, arg8: number): MerchantOffer;
@@ -5299,10 +4850,6 @@ export interface MessageSignData extends ApiObject {
     readonly saltSignature: SaltSignature;
     readonly timestamp: ApiObject;
     signedPreview: boolean;
-    getSaltSignature(): SaltSignature;
-    getTimestamp(): ApiObject;
-    isSignedPreview(): boolean;
-    setSignedPreview(arg0: boolean): void;
 }
 interface __GraalyPacketSymbolMessageSignData extends ApiType<MessageSignData> {
     (arg0: SaltSignature, arg1: ApiObject): MessageSignData;
@@ -5314,8 +4861,6 @@ export const MessageSignData = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbol
 
 export interface MessageSignature extends ApiObject {
     bytes: number[];
-    getBytes(): number[];
-    setBytes(arg0: number[]): void;
 }
 interface __GraalyPacketSymbolMessageSignature extends ApiType<MessageSignature> {
     (arg0: number[]): MessageSignature;
@@ -5326,10 +4871,6 @@ export const MessageSignature = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbo
 export interface MessageSignaturePacked extends ApiObject {
     id: number;
     fullSignature: MessageSignature | null;
-    getId(): number;
-    setId(arg0: number): void;
-    getFullSignature(): MessageSignature | null;
-    setFullSignature(arg0: MessageSignature): void;
 }
 interface __GraalyPacketSymbolMessageSignaturePacked extends ApiType<MessageSignaturePacked> {
     (arg0: MessageSignature): MessageSignaturePacked;
@@ -5377,16 +4918,6 @@ export interface MoveMinecartMinecartStep extends PacketWrapper {
     yaw: number;
     pitch: number;
     weight: number;
-    getPosition(): PacketVector3d;
-    setPosition(arg0: PacketVector3d): void;
-    getMovement(): PacketVector3d;
-    setMovement(arg0: PacketVector3d): void;
-    getYaw(): number;
-    setYaw(arg0: number): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
-    getWeight(): number;
-    setWeight(arg0: number): void;
     equals(arg0: unknown): boolean;
     hashCode(): number;
 }
@@ -5405,16 +4936,7 @@ export interface MultiBlockChangeEncodedBlock extends PacketWrapper {
     z: number;
     blockState: WrappedBlockState;
     toLong(): number;
-    getBlockId(): number;
-    setBlockId(arg0: number): void;
     getBlockState(arg0: ClientVersion): WrappedBlockState;
-    setBlockState(arg0: WrappedBlockState): void;
-    getX(): number;
-    getY(): number;
-    getZ(): number;
-    setX(arg0: number): void;
-    setY(arg0: number): void;
-    setZ(arg0: number): void;
 }
 interface __GraalyPacketSymbolMultiBlockChangeEncodedBlock extends ApiType<MultiBlockChangeEncodedBlock> {
     (arg0: number, arg1: number, arg2: number, arg3: number): MultiBlockChangeEncodedBlock;
@@ -5451,7 +4973,6 @@ export const MutableStyleSetter = /* @__PURE__ */ packetSymbol<__GraalyPacketSym
 
 export interface NBT extends ApiObject {
     readonly type: NBTType<unknown>;
-    getType(): NBTType<unknown>;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -5472,20 +4993,11 @@ export interface NBTByte extends ApiObject {
     readonly asFloat: number;
     readonly asDouble: number;
     readonly asBool: boolean;
-    getType(): NBTType<NBTByte>;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
     copy(): NBT;
     castOrThrow<T>(arg0: ApiClass<T>): T;
-    getAsNumber(): number;
-    getAsByte(): number;
-    getAsShort(): number;
-    getAsInt(): number;
-    getAsLong(): number;
-    getAsFloat(): number;
-    getAsDouble(): number;
-    getAsBool(): boolean;
 }
 interface __GraalyPacketSymbolNBTByte extends ApiType<NBTByte> {
     (arg0: number): NBTByte;
@@ -5498,13 +5010,11 @@ export const NBTByte = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolNBTByte>
 export interface NBTByteArray extends ApiObject {
     readonly type: NBTType<NBTByteArray>;
     readonly value: number[];
-    getType(): NBTType<NBTByteArray>;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
     copy(): NBT;
     castOrThrow<T>(arg0: ApiClass<T>): T;
-    getValue(): number[];
 }
 interface __GraalyPacketSymbolNBTByteArray extends ApiType<NBTByteArray> {
     (arg0: number[]): NBTByteArray;
@@ -5650,16 +5160,12 @@ export interface NBTCompound extends ApiObject {
     readonly empty: boolean;
     readonly tagNames: Set<string>;
     readonly tags: Map<string, NBT>;
-    getType(): NBTType<NBTCompound>;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
     copy(): NBT;
     castOrThrow<T>(arg0: ApiClass<T>): T;
-    isEmpty(): boolean;
     contains(arg0: string): boolean;
-    getTagNames(): Set<string>;
-    getTags(): Map<string, NBT>;
     size(): number;
     getTagOrThrow(arg0: string): NBT;
     getTagOrNull(arg0: string): NBT;
@@ -5719,19 +5225,11 @@ export interface NBTDouble extends ApiObject {
     readonly asLong: number;
     readonly asFloat: number;
     readonly asDouble: number;
-    getType(): NBTType<NBTDouble>;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
     copy(): NBT;
     castOrThrow<T>(arg0: ApiClass<T>): T;
-    getAsNumber(): number;
-    getAsByte(): number;
-    getAsShort(): number;
-    getAsInt(): number;
-    getAsLong(): number;
-    getAsFloat(): number;
-    getAsDouble(): number;
 }
 interface __GraalyPacketSymbolNBTDouble extends ApiType<NBTDouble> {
     (arg0: number): NBTDouble;
@@ -5741,7 +5239,6 @@ export const NBTDouble = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolNBTDou
 
 export interface NBTEnd extends ApiObject {
     readonly type: NBTType<NBTEnd>;
-    getType(): NBTType<NBTEnd>;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -5764,19 +5261,11 @@ export interface NBTFloat extends ApiObject {
     readonly asLong: number;
     readonly asFloat: number;
     readonly asDouble: number;
-    getType(): NBTType<NBTFloat>;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
     copy(): NBT;
     castOrThrow<T>(arg0: ApiClass<T>): T;
-    getAsNumber(): number;
-    getAsByte(): number;
-    getAsShort(): number;
-    getAsInt(): number;
-    getAsLong(): number;
-    getAsFloat(): number;
-    getAsDouble(): number;
 }
 interface __GraalyPacketSymbolNBTFloat extends ApiType<NBTFloat> {
     (arg0: number): NBTFloat;
@@ -5793,19 +5282,11 @@ export interface NBTInt extends ApiObject {
     readonly asLong: number;
     readonly asFloat: number;
     readonly asDouble: number;
-    getType(): NBTType<NBTInt>;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
     copy(): NBT;
     castOrThrow<T>(arg0: ApiClass<T>): T;
-    getAsNumber(): number;
-    getAsByte(): number;
-    getAsShort(): number;
-    getAsInt(): number;
-    getAsLong(): number;
-    getAsFloat(): number;
-    getAsDouble(): number;
 }
 interface __GraalyPacketSymbolNBTInt extends ApiType<NBTInt> {
     (arg0: number): NBTInt;
@@ -5816,13 +5297,11 @@ export const NBTInt = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolNBTInt>("
 export interface NBTIntArray extends ApiObject {
     readonly type: NBTType<NBTIntArray>;
     readonly value: number[];
-    getType(): NBTType<NBTIntArray>;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
     copy(): NBT;
     castOrThrow<T>(arg0: ApiClass<T>): T;
-    getValue(): number[];
 }
 interface __GraalyPacketSymbolNBTIntArray extends ApiType<NBTIntArray> {
     (arg0: number[]): NBTIntArray;
@@ -5835,16 +5314,12 @@ export interface NBTList<T = unknown> extends ApiObject {
     readonly tagsType: NBTType<T>;
     readonly empty: boolean;
     readonly tags: T[];
-    getType(): NBTType<NBTList>;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
     copy(): NBT;
     castOrThrow<T>(arg0: ApiClass<T>): T;
-    getTagsType(): NBTType<T>;
-    isEmpty(): boolean;
     size(): number;
-    getTags(): T[];
     getTag(arg0: number): T;
     setTag(arg0: number, arg1: T): void;
     addTag(arg0: number, arg1: T): void;
@@ -5877,19 +5352,11 @@ export interface NBTLong extends ApiObject {
     readonly asLong: number;
     readonly asFloat: number;
     readonly asDouble: number;
-    getType(): NBTType<NBTLong>;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
     copy(): NBT;
     castOrThrow<T>(arg0: ApiClass<T>): T;
-    getAsNumber(): number;
-    getAsByte(): number;
-    getAsShort(): number;
-    getAsInt(): number;
-    getAsLong(): number;
-    getAsFloat(): number;
-    getAsDouble(): number;
 }
 interface __GraalyPacketSymbolNBTLong extends ApiType<NBTLong> {
     (arg0: number): NBTLong;
@@ -5900,13 +5367,11 @@ export const NBTLong = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolNBTLong>
 export interface NBTLongArray extends ApiObject {
     readonly type: NBTType<NBTLongArray>;
     readonly value: number[];
-    getType(): NBTType<NBTLongArray>;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
     copy(): NBT;
     castOrThrow<T>(arg0: ApiClass<T>): T;
-    getValue(): number[];
 }
 interface __GraalyPacketSymbolNBTLongArray extends ApiType<NBTLongArray> {
     (arg0: number[]): NBTLongArray;
@@ -5923,19 +5388,11 @@ export interface NBTNumber extends ApiObject {
     readonly asLong: number;
     readonly asFloat: number;
     readonly asDouble: number;
-    getType(): NBTType<unknown>;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
     copy(): NBT;
     castOrThrow<T>(arg0: ApiClass<T>): T;
-    getAsNumber(): number;
-    getAsByte(): number;
-    getAsShort(): number;
-    getAsInt(): number;
-    getAsLong(): number;
-    getAsFloat(): number;
-    getAsDouble(): number;
 }
 interface __GraalyPacketSymbolNBTNumber extends ApiClass<NBTNumber> {
 }
@@ -5950,19 +5407,11 @@ export interface NBTShort extends ApiObject {
     readonly asLong: number;
     readonly asFloat: number;
     readonly asDouble: number;
-    getType(): NBTType<NBTShort>;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
     copy(): NBT;
     castOrThrow<T>(arg0: ApiClass<T>): T;
-    getAsNumber(): number;
-    getAsByte(): number;
-    getAsShort(): number;
-    getAsInt(): number;
-    getAsLong(): number;
-    getAsFloat(): number;
-    getAsDouble(): number;
 }
 interface __GraalyPacketSymbolNBTShort extends ApiType<NBTShort> {
     (arg0: number): NBTShort;
@@ -5973,13 +5422,11 @@ export const NBTShort = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolNBTShor
 export interface NBTString extends ApiObject {
     readonly type: NBTType<NBTString>;
     readonly value: string;
-    getType(): NBTType<NBTString>;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
     copy(): NBT;
     castOrThrow<T>(arg0: ApiClass<T>): T;
-    getValue(): string;
 }
 interface __GraalyPacketSymbolNBTString extends ApiType<NBTString> {
     (arg0: string): NBTString;
@@ -5989,7 +5436,6 @@ export const NBTString = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolNBTStr
 
 export interface NBTType<T = unknown> extends ApiObject {
     readonly NBTClass: ApiClass<T>;
-    getNBTClass(): ApiClass<T>;
     toString(): string;
     equals(arg0: unknown): boolean;
     hashCode(): number;
@@ -6434,16 +5880,6 @@ export interface PacketAdvancement extends ApiObject {
     criteria: string[];
     requirements: string[][];
     sendsTelemetryData: boolean;
-    getParent(): ResourceLocation;
-    setParent(arg0: ResourceLocation): void;
-    getDisplay(): PacketAdvancementDisplay;
-    setDisplay(arg0: PacketAdvancementDisplay): void;
-    getCriteria(): string[];
-    setCriteria(arg0: string[]): void;
-    getRequirements(): string[][];
-    setRequirements(arg0: string[][]): void;
-    isSendsTelemetryData(): boolean;
-    setSendsTelemetryData(arg0: boolean): void;
 }
 interface __GraalyPacketSymbolPacketAdvancement extends ApiType<PacketAdvancement> {
     (arg0: ResourceLocation, arg1: PacketAdvancementDisplay, arg2: string[][], arg3: boolean): PacketAdvancement;
@@ -6466,24 +5902,6 @@ export interface PacketAdvancementDisplay extends ApiObject {
     x: number;
     y: number;
     packFlags(): number;
-    getTitle(): Component;
-    setTitle(arg0: Component): void;
-    getDescription(): Component;
-    setDescription(arg0: Component): void;
-    getIcon(): PacketItemStack;
-    setIcon(arg0: PacketItemStack): void;
-    getType(): AdvancementType;
-    setType(arg0: AdvancementType): void;
-    isShowToast(): boolean;
-    setShowToast(arg0: boolean): void;
-    isHidden(): boolean;
-    setHidden(arg0: boolean): void;
-    getBackground(): ResourceLocation;
-    setBackground(arg0: ResourceLocation): void;
-    getX(): number;
-    setX(arg0: number): void;
-    getY(): number;
-    setY(arg0: number): void;
 }
 interface __GraalyPacketSymbolPacketAdvancementDisplay extends ApiType<PacketAdvancementDisplay> {
     (arg0: Component, arg1: Component, arg2: PacketItemStack, arg3: AdvancementType, arg4: ResourceLocation, arg5: boolean, arg6: boolean, arg7: number, arg8: number): PacketAdvancementDisplay;
@@ -6498,8 +5916,6 @@ export const PacketAdvancementDisplay = /* @__PURE__ */ packetSymbol<__GraalyPac
 
 export interface PacketAdvancementProgress extends ApiObject {
     criteria: Map<string, AdvancementProgressCriterionProgress>;
-    getCriteria(): Map<string, AdvancementProgressCriterionProgress>;
-    setCriteria(arg0: Map<string, AdvancementProgressCriterionProgress>): void;
 }
 interface __GraalyPacketSymbolPacketAdvancementProgress extends ApiType<PacketAdvancementProgress> {
     (arg0: Map<string, AdvancementProgressCriterionProgress>): PacketAdvancementProgress;
@@ -6515,15 +5931,10 @@ export interface PacketAttribute extends ApiObject {
     readonly defaultValue: number;
     readonly minValue: number;
     readonly maxValue: number;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
     getName(arg0: ClientVersion): ResourceLocation;
     sanitizeValue(arg0: number): number;
     sanitizeValue(arg0: number, arg1: ClientVersion): number;
-    getDefaultValue(): number;
-    getMinValue(): number;
-    getMaxValue(): number;
 }
 interface __GraalyPacketSymbolPacketAttribute extends ApiClass<PacketAttribute> {
     readonly CODEC: NbtCodec<PacketAttribute>;
@@ -6548,7 +5959,6 @@ export interface PacketAttributeModifierOperation extends ApiObject {
     readonly codecName: string;
     readonly name: string;
     readonly ordinal: number;
-    getCodecName(): string;
 }
 interface __GraalyPacketSymbolPacketAttributeModifierOperation extends ApiClass<PacketAttributeModifierOperation> {
     readonly OVERRIDE: PacketAttributeModifierOperation;
@@ -6596,22 +6006,11 @@ export interface PacketBiome extends ApiObject {
     readonly scale: number;
     readonly effects: BiomeEffects;
     readonly attributes: EnvironmentAttributeMap;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
     copy(arg0: TypesBuilderData): PacketBiome;
     deepEquals(arg0: unknown): boolean;
     deepHashCode(): number;
     hasPrecipitation(): boolean;
-    getPrecipitation(): BiomePrecipitation;
-    getTemperature(): number;
-    getTemperatureModifier(): BiomeTemperatureModifier;
-    getDownfall(): number;
-    getCategory(): BiomeCategory;
-    getDepth(): number;
-    getScale(): number;
-    getEffects(): BiomeEffects;
-    getAttributes(): EnvironmentAttributeMap;
 }
 interface __GraalyPacketSymbolPacketBiome extends ApiClass<PacketBiome> {
     readonly CODEC: NbtCodec<PacketBiome>;
@@ -6631,14 +6030,6 @@ export interface PacketBlockFace extends ApiObject {
     readonly faceValue: number;
     readonly name: string;
     readonly ordinal: number;
-    getModX(): number;
-    getModY(): number;
-    getModZ(): number;
-    getOppositeFace(): PacketBlockFace;
-    getCCW(): PacketBlockFace;
-    getCW(): PacketBlockFace;
-    getHorizontalId(): number;
-    getFaceValue(): number;
 }
 interface __GraalyPacketSymbolPacketBlockFace extends ApiClass<PacketBlockFace> {
     readonly DOWN: PacketBlockFace;
@@ -6704,16 +6095,10 @@ export interface PacketChatType extends ApiObject {
     readonly overlayDecoration: ChatTypeDecoration;
     readonly narrationDecoration: ChatTypeDecoration;
     readonly narrationPriority: ChatTypeNarrationPriority;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
     copy(arg0: TypesBuilderData): PacketChatType;
     deepEquals(arg0: unknown): boolean;
     deepHashCode(): number;
-    getChatDecoration(): ChatTypeDecoration;
-    getOverlayDecoration(): ChatTypeDecoration;
-    getNarrationDecoration(): ChatTypeDecoration;
-    getNarrationPriority(): ChatTypeNarrationPriority;
 }
 interface __GraalyPacketSymbolPacketChatType extends ApiClass<PacketChatType> {
     readDirect(arg0: PacketEventsPacketWrapper<unknown>): PacketChatType;
@@ -6727,12 +6112,6 @@ export interface PacketChatTypeBound extends ApiObject {
     type: PacketChatType;
     name: Component;
     targetName: Component;
-    getType(): PacketChatType;
-    setType(arg0: PacketChatType): void;
-    getName(): Component;
-    setName(arg0: Component): void;
-    getTargetName(): Component;
-    setTargetName(arg0: Component): void;
 }
 interface __GraalyPacketSymbolPacketChatTypeBound extends ApiType<PacketChatTypeBound> {
     (arg0: PacketChatType, arg1: Component, arg2: Component): PacketChatTypeBound;
@@ -6804,8 +6183,6 @@ export interface PacketDamageScaling extends ApiObject {
     readonly id: string;
     readonly name: string;
     readonly ordinal: number;
-    getCodecName(): string;
-    getId(): string;
 }
 interface __GraalyPacketSymbolPacketDamageScaling extends ApiClass<PacketDamageScaling> {
     readonly NEVER: PacketDamageScaling;
@@ -6826,17 +6203,10 @@ export interface PacketDamageType extends ApiObject {
     readonly exhaustion: number;
     readonly effects: DamageEffects;
     readonly deathMessageType: PacketDeathMessageType;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
     copy(arg0: TypesBuilderData): PacketDamageType;
     deepEquals(arg0: unknown): boolean;
     deepHashCode(): number;
-    getMessageId(): string;
-    getScaling(): PacketDamageScaling;
-    getExhaustion(): number;
-    getEffects(): DamageEffects;
-    getDeathMessageType(): PacketDeathMessageType;
 }
 interface __GraalyPacketSymbolPacketDamageType extends ApiClass<PacketDamageType> {
     readonly DIRECT_CODEC: NbtCodec<PacketDamageType>;
@@ -6853,8 +6223,6 @@ export interface PacketDeathMessageType extends ApiObject {
     readonly id: string;
     readonly name: string;
     readonly ordinal: number;
-    getCodecName(): string;
-    getId(): string;
 }
 interface __GraalyPacketSymbolPacketDeathMessageType extends ApiClass<PacketDeathMessageType> {
     readonly DEFAULT: PacketDeathMessageType;
@@ -6871,13 +6239,10 @@ export interface PacketDialog extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
     readonly type: DialogType<unknown>;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
     deepEquals(arg0: unknown): boolean;
     deepHashCode(): number;
     copy(arg0: TypesBuilderData): PacketDialog;
-    getType(): DialogType<unknown>;
 }
 interface __GraalyPacketSymbolPacketDialog extends ApiClass<PacketDialog> {
     read(arg0: PacketEventsPacketWrapper<unknown>): PacketDialog;
@@ -6895,7 +6260,6 @@ export interface PacketDifficulty extends ApiObject {
     readonly id: number;
     readonly name: string;
     readonly ordinal: number;
-    getId(): number;
 }
 interface __GraalyPacketSymbolPacketDifficulty extends ApiClass<PacketDifficulty> {
     readonly PEACEFUL: PacketDifficulty;
@@ -6912,8 +6276,6 @@ export interface PacketDimensionType extends ApiObject {
     readonly id: number;
     readonly name: string;
     readonly ordinal: number;
-    getId(): number;
-    getName(): string;
 }
 interface __GraalyPacketSymbolPacketDimensionType extends ApiClass<PacketDimensionType> {
     readonly NETHER: PacketDimensionType;
@@ -6932,10 +6294,6 @@ export const PacketDimensionType = /* @__PURE__ */ packetSymbol<__GraalyPacketSy
 export interface PacketEnchantment extends ApiObject {
     type: EnchantmentType;
     level: number;
-    getType(): EnchantmentType;
-    setType(arg0: EnchantmentType): void;
-    getLevel(): number;
-    setLevel(arg0: number): void;
 }
 interface __GraalyPacketSymbolPacketEnchantment extends ApiType<PacketEnchantment> {
     (arg0: EnchantmentType, arg1: number): PacketEnchantment;
@@ -6948,12 +6306,9 @@ export interface PacketEntityType extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
     readonly parent: PacketEntityType | null;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
     getLegacyId(arg0: ClientVersion): number;
     isInstanceOf(arg0: PacketEntityType): boolean;
-    getParent(): PacketEntityType | null;
 }
 interface __GraalyPacketSymbolPacketEntityType extends ApiClass<PacketEntityType> {
 }
@@ -6984,7 +6339,6 @@ export const PacketEquipmentSlot = /* @__PURE__ */ packetSymbol<__GraalyPacketSy
 export interface PacketEvent extends ApiObject {
     readonly timestamp: number;
     call(arg0: PacketListenerCommon): void;
-    getTimestamp(): number;
     callPacketEventExternal(arg0: PacketListenerCommon): void;
 }
 interface __GraalyPacketSymbolPacketEvent extends ApiClass<PacketEvent> {
@@ -7008,18 +6362,6 @@ export interface PacketEventsPacketWrapper<T = unknown> extends PacketWrapper {
     write(): void;
     copy(arg0: T): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -7058,7 +6400,6 @@ export interface PacketEventsPacketWrapper<T = unknown> extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -7182,8 +6523,6 @@ export interface PacketEventsPacketWrapper<T = unknown> extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -7231,7 +6570,6 @@ export interface PacketGameMode extends ApiObject {
     readonly id: number;
     readonly name: string;
     readonly ordinal: number;
-    getId(): number;
 }
 interface __GraalyPacketSymbolPacketGameMode extends ApiClass<PacketGameMode> {
     readonly SURVIVAL: PacketGameMode;
@@ -7301,23 +6639,10 @@ export interface PacketItemStack extends ApiObject {
     readonly empty: boolean;
     readonly version: ClientVersion;
     readonly registryHolder: IRegistryHolder;
-    getMaxStackSize(): number;
-    isStackable(): boolean;
-    isDamageableItem(): boolean;
-    isDamaged(): boolean;
-    getDamageValue(): number;
-    setDamageValue(arg0: number): void;
-    getMaxDamage(): number;
-    getOrCreateTag(): NBTCompound;
-    getType(): PacketItemType;
-    getAmount(): number;
     shrink(arg0: number): void;
     grow(arg0: number): void;
-    setAmount(arg0: number): void;
     split(arg0: number): PacketItemStack;
     copy(): PacketItemStack;
-    getNBT(): NBTCompound;
-    setNBT(arg0: NBTCompound): void;
     getComponentOr<T>(arg0: ComponentType<T>, arg1: T): T;
     getComponent<T>(arg0: ComponentType<T>): T | null;
     setComponent<T>(arg0: ComponentType<T>, arg1: T): void;
@@ -7325,26 +6650,15 @@ export interface PacketItemStack extends ApiObject {
     setComponent<T>(arg0: ComponentType<T>, arg1: T | null): void;
     hasComponent(arg0: ComponentType<unknown>): boolean;
     hasComponentPatches(): boolean;
-    getComponents(): PatchableComponentMap;
-    setComponents(arg0: PatchableComponentMap): void;
-    getLegacyData(): number;
-    setLegacyData(arg0: number): void;
-    isEnchantable(): boolean;
     isEnchantable(arg0: ClientVersion): boolean;
-    isEnchanted(): boolean;
     isEnchanted(arg0: ClientVersion): boolean;
-    getEnchantments(): PacketEnchantment[];
     getEnchantments(arg0: ClientVersion): PacketEnchantment[];
     getEnchantmentLevel(arg0: EnchantmentType): number;
     getEnchantmentLevel(arg0: EnchantmentType, arg1: ClientVersion): number;
-    setEnchantments(arg0: PacketEnchantment[]): void;
     setEnchantments(arg0: PacketEnchantment[], arg1: ClientVersion): void;
     getEnchantmentsTagName(arg0: ClientVersion): string;
     canBeDepleted(): boolean;
     is(arg0: PacketItemType): boolean;
-    isEmpty(): boolean;
-    getVersion(): ClientVersion;
-    getRegistryHolder(): IRegistryHolder;
     equals(arg0: unknown): boolean;
     toString(): string;
 }
@@ -7371,17 +6685,8 @@ export interface PacketItemType extends ApiObject {
     readonly placedType: StateType;
     readonly attributes: Set<ItemTypesItemAttribute>;
     readonly components: StaticComponentMap;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
-    getMaxAmount(): number;
-    getMaxDurability(): number;
-    isMusicDisc(): boolean;
-    getCraftRemainder(): PacketItemType;
-    getPlacedType(): StateType;
-    getAttributes(): Set<ItemTypesItemAttribute>;
     hasAttribute(arg0: ItemTypesItemAttribute): boolean;
-    getComponents(): StaticComponentMap;
     getComponents(arg0: ClientVersion): StaticComponentMap;
 }
 interface __GraalyPacketSymbolPacketItemType extends ApiClass<PacketItemType> {
@@ -7410,26 +6715,6 @@ export interface PacketJsonElement extends ApiObject {
     readonly asBigInteger: ApiObject;
     readonly asShort: number;
     deepCopy(): PacketJsonElement;
-    isJsonArray(): boolean;
-    isJsonObject(): boolean;
-    isJsonPrimitive(): boolean;
-    isJsonNull(): boolean;
-    getAsJsonObject(): JsonObject;
-    getAsJsonArray(): JsonArray;
-    getAsJsonPrimitive(): JsonPrimitive;
-    getAsJsonNull(): JsonNull;
-    getAsBoolean(): boolean;
-    getAsNumber(): number;
-    getAsString(): string;
-    getAsDouble(): number;
-    getAsFloat(): number;
-    getAsLong(): number;
-    getAsInt(): number;
-    getAsByte(): number;
-    getAsCharacter(): string;
-    getAsBigDecimal(): ApiObject;
-    getAsBigInteger(): ApiObject;
-    getAsShort(): number;
     toString(): string;
 }
 interface __GraalyPacketSymbolPacketJsonElement extends ApiClass<PacketJsonElement> {
@@ -7468,7 +6753,6 @@ export const PacketLegacyHoverEventSerializer = /* @__PURE__ */ packetSymbol<__G
 
 export interface PacketListenerCommon extends ApiObject {
     readonly priority: PacketListenerPriority;
-    getPriority(): PacketListenerPriority;
     onUserConnect(arg0: UserConnectEvent): void;
     onUserLogin(arg0: UserLoginEvent): void;
     onUserDisconnect(arg0: UserDisconnectEvent): void;
@@ -7482,7 +6766,6 @@ export interface PacketListenerPriority extends ApiObject {
     readonly id: number;
     readonly name: string;
     readonly ordinal: number;
-    getId(): number;
 }
 interface __GraalyPacketSymbolPacketListenerPriority extends ApiClass<PacketListenerPriority> {
     readonly LOWEST: PacketListenerPriority;
@@ -7505,17 +6788,6 @@ export interface PacketLocation extends ApiObject {
     yaw: number;
     pitch: number;
     direction: PacketVector3f;
-    getPosition(): PacketVector3d;
-    getX(): number;
-    getY(): number;
-    getZ(): number;
-    setPosition(arg0: PacketVector3d): void;
-    getYaw(): number;
-    setYaw(arg0: number): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
-    getDirection(): PacketVector3f;
-    setDirection(arg0: PacketVector3f): void;
     clone(): PacketLocation;
     toString(): string;
 }
@@ -7536,22 +6808,6 @@ export interface PacketNode extends ApiObject {
     parserID: number | null;
     properties: unknown[] | null;
     suggestionsType: ResourceLocation | null;
-    getFlags(): number;
-    setFlags(arg0: number): void;
-    getChildren(): number[];
-    setChildren(arg0: number[]): void;
-    getRedirectNodeIndex(): number;
-    setRedirectNodeIndex(arg0: number): void;
-    getName(): string | null;
-    setName(arg0: string | null): void;
-    getParser(): ParsersParser | null;
-    setParser(arg0: ParsersParser | null): void;
-    getParserID(): number | null;
-    setParserID(arg0: number | null): void;
-    getProperties(): unknown[] | null;
-    setProperties(arg0: unknown[] | null): void;
-    getSuggestionsType(): ResourceLocation | null;
-    setSuggestionsType(arg0: ResourceLocation | null): void;
 }
 interface __GraalyPacketSymbolPacketNode extends ApiType<PacketNode> {
     (arg0: number, arg1: number[], arg2: number, arg3: string, arg4: number, arg5: unknown[], arg6: ResourceLocation): PacketNode;
@@ -7587,7 +6843,6 @@ export interface PacketPalette extends ApiObject {
     size(): number;
     stateToId(arg0: number): number;
     idToState(arg0: number): number;
-    getBits(): number;
 }
 interface __GraalyPacketSymbolPacketPalette extends ApiClass<PacketPalette> {
 }
@@ -7596,10 +6851,6 @@ export const PacketPalette = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolPa
 export interface PacketParticle<T = unknown> extends ApiObject {
     type: ParticleType<T>;
     data: T;
-    getType(): ParticleType<T>;
-    setType(arg0: ParticleType<T>): void;
-    getData(): T;
-    setData(arg0: T): void;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -7619,7 +6870,6 @@ export const PacketParticle = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolP
 
 export interface PacketPlayerEvent extends ApiObject {
     readonly player: unknown;
-    getPlayer<T>(): T;
 }
 interface __GraalyPacketSymbolPacketPlayerEvent extends ApiClass<PacketPlayerEvent> {
 }
@@ -7643,9 +6893,7 @@ export const PacketPotentSulfurState = /* @__PURE__ */ packetSymbol<__GraalyPack
 export interface PacketPotionType extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
 }
 interface __GraalyPacketSymbolPacketPotionType extends ApiClass<PacketPotionType> {
 }
@@ -7671,35 +6919,11 @@ export interface PacketReceiveEvent extends ApiObject {
     readonly postTasks: () => void[];
     readonly fullBufferClone: unknown;
     call(arg0: PacketListenerCommon): void;
-    getTimestamp(): number;
     callPacketEventExternal(arg0: PacketListenerCommon): void;
-    getPlayer<T>(): T;
-    isCancelled(): boolean;
-    setCancelled(arg0: boolean): void;
-    getUser(): User;
     markForReEncode(arg0: boolean): void;
     needsReEncode(): boolean;
-    isClone(): boolean;
-    getChannel(): unknown;
-    getAddress(): ApiObject;
-    getSocketAddress(): ApiObject;
-    setPlayer(arg0: unknown): void;
-    getConnectionState(): ConnectionState;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getByteBuf(): unknown;
-    setByteBuf(arg0: unknown): void;
-    getPacketId(): number;
-    getPacketType(): PacketTypeCommon;
-    getPacketName(): string;
-    getLastUsedWrapper(): PacketEventsPacketWrapper<unknown>;
-    setLastUsedWrapper(arg0: PacketEventsPacketWrapper<unknown>): void;
-    getPostTasks(): () => void[];
     hasPostTasks(): boolean;
     cleanUp(): void;
-    getFullBufferClone(): unknown;
 }
 interface __GraalyPacketSymbolPacketReceiveEvent extends ApiClass<PacketReceiveEvent> {
 }
@@ -7711,11 +6935,6 @@ export interface PacketRecipe<T = unknown> extends ApiObject {
     readonly key: ResourceLocation;
     readonly serializer: RecipeSerializer<T>;
     readonly data: T;
-    getType(): RecipeType;
-    getIdentifier(): string;
-    getKey(): ResourceLocation;
-    getSerializer(): RecipeSerializer<T>;
-    getData(): T;
     toString(): string;
 }
 interface __GraalyPacketSymbolPacketRecipe extends ApiType<PacketRecipe> {
@@ -7800,36 +7019,11 @@ export interface PacketSendEvent extends ApiObject {
     readonly fullBufferClone: unknown;
     readonly tasksAfterSend: () => void[];
     call(arg0: PacketListenerCommon): void;
-    getTimestamp(): number;
     callPacketEventExternal(arg0: PacketListenerCommon): void;
-    getPlayer<T>(): T;
-    isCancelled(): boolean;
-    setCancelled(arg0: boolean): void;
-    getUser(): User;
     markForReEncode(arg0: boolean): void;
     needsReEncode(): boolean;
-    isClone(): boolean;
-    getChannel(): unknown;
-    getAddress(): ApiObject;
-    getSocketAddress(): ApiObject;
-    setPlayer(arg0: unknown): void;
-    getConnectionState(): ConnectionState;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getByteBuf(): unknown;
-    setByteBuf(arg0: unknown): void;
-    getPacketId(): number;
-    getPacketType(): PacketTypeCommon;
-    getPacketName(): string;
-    getLastUsedWrapper(): PacketEventsPacketWrapper<unknown>;
-    setLastUsedWrapper(arg0: PacketEventsPacketWrapper<unknown>): void;
-    getPostTasks(): () => void[];
     hasPostTasks(): boolean;
     cleanUp(): void;
-    getFullBufferClone(): unknown;
-    getTasksAfterSend(): () => void[];
     hasTasksAfterSend(): boolean;
 }
 interface __GraalyPacketSymbolPacketSendEvent extends ApiClass<PacketSendEvent> {
@@ -7840,9 +7034,6 @@ export interface PacketServerLinksServerLink extends PacketWrapper {
     readonly knownType: ServerLinksKnownType;
     readonly customType: Component;
     readonly url: string;
-    getKnownType(): ServerLinksKnownType;
-    getCustomType(): Component;
-    getUrl(): string;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -7876,7 +7067,6 @@ export interface PacketSide extends ApiObject {
     readonly opposite: PacketSide;
     readonly name: string;
     readonly ordinal: number;
-    getOpposite(): PacketSide;
 }
 interface __GraalyPacketSymbolPacketSide extends ApiClass<PacketSide> {
     readonly CLIENT: PacketSide;
@@ -7891,13 +7081,9 @@ export interface PacketSound extends ApiObject {
     readonly registered: boolean;
     readonly soundId: ResourceLocation;
     readonly range: number;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
     deepEquals(arg0: unknown): boolean;
     deepHashCode(): number;
-    getSoundId(): ResourceLocation;
-    getRange(): number;
 }
 interface __GraalyPacketSymbolPacketSound extends ApiClass<PacketSound> {
     readonly CODEC: NbtCodec<PacketSound>;
@@ -7975,10 +7161,7 @@ export interface PacketTypeCommon extends ApiObject {
     readonly name: string;
     readonly side: PacketSide;
     readonly wrapperClass: ApiClass<PacketEventsPacketWrapper<unknown>>;
-    getName(): string;
     getId(arg0: ClientVersion): number;
-    getSide(): PacketSide;
-    getWrapperClass(): ApiClass<PacketEventsPacketWrapper<unknown>>;
 }
 interface __GraalyPacketSymbolPacketTypeCommon extends ApiClass<PacketTypeCommon> {
 }
@@ -7987,10 +7170,6 @@ export const PacketTypeCommon = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbo
 export interface PacketTypeData extends PacketWrapper {
     packetType: PacketTypeCommon;
     nativePacketId: number;
-    getPacketType(): PacketTypeCommon;
-    getNativePacketId(): number;
-    setPacketType(arg0: PacketTypeCommon): void;
-    setNativePacketId(arg0: number): void;
 }
 interface __GraalyPacketSymbolPacketTypeData extends ApiType<PacketTypeData> {
     (arg0: PacketTypeCommon, arg1: number): PacketTypeData;
@@ -8002,9 +7181,6 @@ export interface PacketVector3d extends ApiObject {
     readonly x: number;
     readonly y: number;
     readonly z: number;
-    getX(): number;
-    getY(): number;
-    getZ(): number;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     add(arg0: number, arg1: number, arg2: number): PacketVector3d;
@@ -8051,9 +7227,6 @@ export interface PacketVector3f extends ApiObject {
     readonly x: number;
     readonly y: number;
     readonly z: number;
-    getX(): number;
-    getY(): number;
-    getZ(): number;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     add(arg0: number, arg1: number, arg2: number): PacketVector3f;
@@ -8094,10 +7267,6 @@ export interface PacketVector3i extends ApiObject {
     readonly y: number;
     readonly z: number;
     getSerializedPosition(arg0: ServerVersion): number;
-    getSerializedPosition(): number;
-    getX(): number;
-    getY(): number;
-    getZ(): number;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toVector3d(): PacketVector3d;
@@ -8139,10 +7308,7 @@ export interface PacketVillagerProfession extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
     readonly id: number;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
-    getId(): number;
 }
 interface __GraalyPacketSymbolPacketVillagerProfession extends ApiClass<PacketVillagerProfession> {
 }
@@ -8152,10 +7318,7 @@ export interface PacketVillagerType extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
     readonly id: number;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
-    getId(): number;
 }
 interface __GraalyPacketSymbolPacketVillagerType extends ApiClass<PacketVillagerType> {
 }
@@ -8180,10 +7343,6 @@ export interface PaintingType extends ApiObject {
     readonly id: number;
     readonly name: string;
     readonly ordinal: number;
-    getTitle(): string;
-    getWidth(): number;
-    getHeight(): number;
-    getId(): number;
 }
 interface __GraalyPacketSymbolPaintingType extends ApiClass<PaintingType> {
     readonly KEBAB: PaintingType;
@@ -8235,13 +7394,6 @@ export interface PaletteType extends ApiObject {
     readonly ordinal: number;
     read(arg0: PacketEventsPacketWrapper<unknown>): DataPalette;
     create(): DataPalette;
-    getMaxBitsPerEntryForList(): number;
-    getMaxBitsPerEntryForMap(): number;
-    isForceMaxListPaletteSize(): boolean;
-    getBitShift(): number;
-    getStorageSize(): number;
-    getMaxBitsPerEntry(): number;
-    getMinBitsPerEntry(): number;
 }
 interface __GraalyPacketSymbolPaletteType extends ApiClass<PaletteType> {
     readonly BIOME: PaletteType;
@@ -8256,10 +7408,7 @@ export interface ParsersParser extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
     readonly registryData: TypesBuilderData;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
-    getRegistryData(): TypesBuilderData;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -8300,7 +7449,6 @@ export const Part = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolPart>("Part
 
 export interface ParticleData extends ApiObject {
     readonly empty: boolean;
-    isEmpty(): boolean;
 }
 interface __GraalyPacketSymbolParticleData extends ApiType<ParticleData> {
     (): ParticleData;
@@ -8312,9 +7460,7 @@ export const ParticleData = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolPar
 export interface ParticleType<T = unknown> extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
     readData(arg0: PacketEventsPacketWrapper<unknown>): T;
     writeData(arg0: PacketEventsPacketWrapper<unknown>, arg1: T): void;
     decodeData(arg0: NBTCompound, arg1: ClientVersion): T;
@@ -8339,8 +7485,6 @@ export interface PatchableComponentMap extends ApiObject {
     set<T>(arg0: ComponentType<T>, arg1: T | null): void;
     withRegistries(arg0: IRegistryHolder): IComponentMap;
     copy(): PatchableComponentMap;
-    getBase(): Map<ComponentType<unknown>, unknown>;
-    getPatches(): Map<ComponentType<unknown>, unknown | null>;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -8490,18 +7634,6 @@ export interface PlayerInfoPlayerData extends PacketWrapper {
     gameMode: PacketGameMode;
     ping: number;
     displayName: Component;
-    getUserProfile(): UserProfile;
-    setUserProfile(arg0: UserProfile): void;
-    getSignatureData(): SignatureData;
-    setSignatureData(arg0: SignatureData): void;
-    getUser(): UserProfile;
-    setUser(arg0: UserProfile): void;
-    getGameMode(): PacketGameMode;
-    setGameMode(arg0: PacketGameMode): void;
-    getPing(): number;
-    setPing(arg0: number): void;
-    getDisplayName(): Component;
-    setDisplayName(arg0: Component): void;
 }
 interface __GraalyPacketSymbolPlayerInfoPlayerData extends ApiType<PlayerInfoPlayerData> {
     (arg0: Component, arg1: UserProfile, arg2: PacketGameMode, arg3: SignatureData, arg4: number): PlayerInfoPlayerData;
@@ -8540,23 +7672,6 @@ export interface PlayerInfoUpdatePlayerInfo extends PacketWrapper {
     chatSession: RemoteChatSession;
     listOrder: number;
     showHat: boolean;
-    getProfileId(): NativeUuid;
-    getGameProfile(): UserProfile;
-    isListed(): boolean;
-    getLatency(): number;
-    getGameMode(): PacketGameMode;
-    getDisplayName(): Component;
-    getChatSession(): RemoteChatSession;
-    getListOrder(): number;
-    isShowHat(): boolean;
-    setGameProfile(arg0: UserProfile): void;
-    setListed(arg0: boolean): void;
-    setLatency(arg0: number): void;
-    setGameMode(arg0: PacketGameMode): void;
-    setDisplayName(arg0: Component): void;
-    setChatSession(arg0: RemoteChatSession): void;
-    setListOrder(arg0: number): void;
-    setShowHat(arg0: boolean): void;
 }
 interface __GraalyPacketSymbolPlayerInfoUpdatePlayerInfo extends ApiType<PlayerInfoUpdatePlayerInfo> {
     (arg0: PlayerInfoUpdatePlayerInfo): PlayerInfoUpdatePlayerInfo;
@@ -8638,35 +7753,11 @@ export interface ProtocolPacketEvent extends ApiObject {
     readonly postTasks: () => void[];
     readonly fullBufferClone: unknown;
     call(arg0: PacketListenerCommon): void;
-    getTimestamp(): number;
     callPacketEventExternal(arg0: PacketListenerCommon): void;
-    getPlayer<T>(): T;
-    isCancelled(): boolean;
-    setCancelled(arg0: boolean): void;
-    getUser(): User;
     markForReEncode(arg0: boolean): void;
     needsReEncode(): boolean;
-    isClone(): boolean;
-    getChannel(): unknown;
-    getAddress(): ApiObject;
-    getSocketAddress(): ApiObject;
-    setPlayer(arg0: unknown): void;
-    getConnectionState(): ConnectionState;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getByteBuf(): unknown;
-    setByteBuf(arg0: unknown): void;
-    getPacketId(): number;
-    getPacketType(): PacketTypeCommon;
-    getPacketName(): string;
-    getLastUsedWrapper(): PacketEventsPacketWrapper<unknown>;
-    setLastUsedWrapper(arg0: PacketEventsPacketWrapper<unknown>): void;
-    getPostTasks(): () => void[];
     hasPostTasks(): boolean;
     cleanUp(): void;
-    getFullBufferClone(): unknown;
 }
 interface __GraalyPacketSymbolProtocolPacketEvent extends ApiClass<ProtocolPacketEvent> {
 }
@@ -8676,9 +7767,6 @@ export interface PublicProfileKey extends ApiObject {
     readonly expiresAt: ApiObject;
     readonly key: ApiObject;
     readonly keySignature: number[];
-    getExpiresAt(): ApiObject;
-    getKey(): ApiObject;
-    getKeySignature(): number[];
     hasExpired(): boolean;
 }
 interface __GraalyPacketSymbolPublicProfileKey extends ApiType<PublicProfileKey> {
@@ -8700,10 +7788,7 @@ export const RGBLike = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolRGBLike>
 export interface RandomWeightedList<T = unknown> extends ApiObject {
     entries: RandomWeightedListEntry<T>[];
     readonly empty: boolean;
-    getEntries(): RandomWeightedListEntry<T>[];
-    setEntries(arg0: RandomWeightedListEntry<T>[]): void;
     size(): number;
-    isEmpty(): boolean;
     iterator(): RandomWeightedListEntry<T>[];
 }
 interface __GraalyPacketSymbolRandomWeightedList extends ApiType<RandomWeightedList> {
@@ -8724,8 +7809,6 @@ export const RandomWeightedList = /* @__PURE__ */ packetSymbol<__GraalyPacketSym
 export interface RandomWeightedListEntry<T = unknown> extends ApiObject {
     readonly data: T;
     readonly weight: number;
-    getData(): T;
-    getWeight(): number;
 }
 interface __GraalyPacketSymbolRandomWeightedListEntry extends ApiType<RandomWeightedListEntry> {
     <T>(arg0: T, arg1: number): RandomWeightedListEntry<T>;
@@ -8740,12 +7823,6 @@ export interface RecipeBookAddAddEntry extends PacketWrapper {
     contents: RecipeDisplayEntry;
     notification: boolean;
     highlight: boolean;
-    getContents(): RecipeDisplayEntry;
-    setContents(arg0: RecipeDisplayEntry): void;
-    isNotification(): boolean;
-    setNotification(arg0: boolean): void;
-    isHighlight(): boolean;
-    setHighlight(arg0: boolean): void;
     packFlags(): number;
 }
 interface __GraalyPacketSymbolRecipeBookAddAddEntry extends ApiType<RecipeBookAddAddEntry> {
@@ -8761,9 +7838,7 @@ export const RecipeBookAddAddEntry = /* @__PURE__ */ packetSymbol<__GraalyPacket
 export interface RecipeBookCategory extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
 }
 interface __GraalyPacketSymbolRecipeBookCategory extends ApiClass<RecipeBookCategory> {
 }
@@ -8773,7 +7848,6 @@ export interface RecipeBookSettings extends ApiObject {
     readonly states: Map<RecipeBookType, RecipeBookSettingsTypeState>;
     getState(arg0: RecipeBookType): RecipeBookSettingsTypeState;
     setState(arg0: RecipeBookType, arg1: RecipeBookSettingsTypeState): void;
-    getStates(): Map<RecipeBookType, RecipeBookSettingsTypeState>;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -8789,10 +7863,6 @@ export const RecipeBookSettings = /* @__PURE__ */ packetSymbol<__GraalyPacketSym
 export interface RecipeBookSettingsTypeState extends ApiObject {
     open: boolean;
     filtering: boolean;
-    isOpen(): boolean;
-    setOpen(arg0: boolean): void;
-    isFiltering(): boolean;
-    setFiltering(arg0: boolean): void;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -8829,7 +7899,6 @@ export const RecipeData = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolRecip
 
 export interface RecipeDisplay<T = unknown> extends ApiObject {
     readonly type: RecipeDisplayType<T>;
-    getType(): RecipeDisplayType<T>;
 }
 interface __GraalyPacketSymbolRecipeDisplay extends ApiClass<RecipeDisplay> {
     read(arg0: PacketEventsPacketWrapper<unknown>): RecipeDisplay<unknown>;
@@ -8843,16 +7912,6 @@ export interface RecipeDisplayEntry extends ApiObject {
     group: number;
     category: RecipeBookCategory;
     ingredients: MappedEntitySet<PacketItemType>[];
-    getId(): RecipeDisplayId;
-    setId(arg0: RecipeDisplayId): void;
-    getDisplay(): RecipeDisplay<unknown>;
-    setDisplay(arg0: RecipeDisplay<unknown>): void;
-    getGroup(): number;
-    setGroup(arg0: number): void;
-    getCategory(): RecipeBookCategory;
-    setCategory(arg0: RecipeBookCategory): void;
-    getIngredients(): MappedEntitySet<PacketItemType>[];
-    setIngredients(arg0: MappedEntitySet<PacketItemType>[]): void;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -8867,7 +7926,6 @@ export const RecipeDisplayEntry = /* @__PURE__ */ packetSymbol<__GraalyPacketSym
 
 export interface RecipeDisplayId extends ApiObject {
     readonly id: number;
-    getId(): number;
 }
 interface __GraalyPacketSymbolRecipeDisplayId extends ApiType<RecipeDisplayId> {
     (arg0: number): RecipeDisplayId;
@@ -8880,9 +7938,7 @@ export const RecipeDisplayId = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbol
 export interface RecipeDisplayType<T = unknown> extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
     read(arg0: PacketEventsPacketWrapper<unknown>): T;
     write(arg0: PacketEventsPacketWrapper<unknown>, arg1: T): void;
 }
@@ -8892,8 +7948,6 @@ export const RecipeDisplayType = /* @__PURE__ */ packetSymbol<__GraalyPacketSymb
 
 export interface RecipePropertySet extends ApiObject {
     items: Set<PacketItemType>;
-    getItems(): Set<PacketItemType>;
-    setItems(arg0: Set<PacketItemType>): void;
 }
 interface __GraalyPacketSymbolRecipePropertySet extends ApiType<RecipePropertySet> {
     (arg0: Set<PacketItemType>): RecipePropertySet;
@@ -8914,10 +7968,7 @@ export interface RecipeSerializer<T = unknown> extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
     readonly legacyType: RecipeType;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
-    getLegacyType(): RecipeType;
     read(arg0: PacketEventsPacketWrapper<unknown>): T;
     write(arg0: PacketEventsPacketWrapper<unknown>, arg1: T): void;
 }
@@ -8929,7 +7980,6 @@ export interface RecipeType extends ApiObject {
     readonly serializer: RecipeSerializer<unknown>;
     readonly name: string;
     readonly ordinal: number;
-    getSerializer(): RecipeSerializer<unknown>;
 }
 interface __GraalyPacketSymbolRecipeType extends ApiClass<RecipeType> {
     readonly CRAFTING_SHAPELESS: RecipeType;
@@ -8987,8 +8037,6 @@ export const ReflectionAccessFilterFilterResult = /* @__PURE__ */ packetSymbol<_
 export interface RegistryDataRegistryElement extends PacketWrapper {
     readonly id: ResourceLocation;
     readonly data: NBT;
-    getId(): ResourceLocation;
-    getData(): NBT;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -9014,8 +8062,6 @@ export interface RelativeFlag extends ApiObject {
     combine(arg0: RelativeFlag): RelativeFlag;
     isSet(arg0: number): boolean;
     set(arg0: number, arg1: boolean): number;
-    getMask(): number;
-    getFullMask(): number;
 }
 interface __GraalyPacketSymbolRelativeFlag extends ApiType<RelativeFlag> {
     (arg0: number): RelativeFlag;
@@ -9036,8 +8082,6 @@ export const RelativeFlag = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolRel
 export interface RemoteChatSession extends ApiObject {
     readonly sessionId: NativeUuid;
     readonly publicProfileKey: PublicProfileKey;
-    getSessionId(): NativeUuid;
-    getPublicProfileKey(): PublicProfileKey;
 }
 interface __GraalyPacketSymbolRemoteChatSession extends ApiType<RemoteChatSession> {
     (arg0: NativeUuid, arg1: PublicProfileKey): RemoteChatSession;
@@ -9048,8 +8092,6 @@ export const RemoteChatSession = /* @__PURE__ */ packetSymbol<__GraalyPacketSymb
 export interface ResourceLocation extends ApiObject {
     readonly namespace: string;
     readonly key: string;
-    getNamespace(): string;
-    getKey(): string;
     hashCode(): number;
     equals(arg0: unknown): boolean;
     toString(): string;
@@ -9163,10 +8205,6 @@ export const ResourcePackRequestLike = /* @__PURE__ */ packetSymbol<__GraalyPack
 export interface SaltSignature extends ApiObject {
     salt: number;
     signature: number[];
-    getSalt(): number;
-    setSalt(arg0: number): void;
-    getSignature(): number[];
-    setSignature(arg0: number[]): void;
 }
 interface __GraalyPacketSymbolSaltSignature extends ApiType<SaltSignature> {
     (arg0: number, arg1: number[]): SaltSignature;
@@ -9389,7 +8427,6 @@ export const ScoreComponentBuilder = /* @__PURE__ */ packetSymbol<__GraalyPacket
 export interface ScoreFormat extends ApiObject {
     readonly type: ScoreFormatType<unknown>;
     format(arg0: number): Component;
-    getType(): ScoreFormatType<unknown>;
 }
 interface __GraalyPacketSymbolScoreFormat extends ApiClass<ScoreFormat> {
     blankScore(): BlankScoreFormat;
@@ -9404,10 +8441,7 @@ export interface ScoreFormatType<T = unknown> extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
     readonly id: number;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
-    getId(): number;
     read(arg0: PacketEventsPacketWrapper<unknown>): T;
     write(arg0: PacketEventsPacketWrapper<unknown>, arg1: T): void;
 }
@@ -9600,8 +8634,6 @@ export interface ServerVersion extends ApiObject {
     readonly name: string;
     readonly ordinal: number;
     toClientVersion(): ClientVersion;
-    getReleaseName(): string;
-    getProtocolVersion(): number;
     isNewerThan(arg0: ServerVersion): boolean;
     isOlderThan(arg0: ServerVersion): boolean;
     isNewerThanOrEquals(arg0: ServerVersion): boolean;
@@ -9695,8 +8727,6 @@ export const ServerVersion = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolSe
 export interface SetGameRuleEntry extends PacketWrapper {
     readonly gameRule: ResourceLocation;
     readonly value: string;
-    getGameRule(): ResourceLocation;
-    getValue(): string;
 }
 interface __GraalyPacketSymbolSetGameRuleEntry extends ApiType<SetGameRuleEntry> {
     (arg0: ResourceLocation, arg1: string): SetGameRuleEntry;
@@ -9826,9 +8856,6 @@ export interface SignatureData extends ApiObject {
     readonly timestamp: ApiObject;
     readonly publicKey: ApiObject;
     readonly signature: number[];
-    getTimestamp(): ApiObject;
-    getPublicKey(): ApiObject;
-    getSignature(): number[];
 }
 interface __GraalyPacketSymbolSignatureData extends ApiType<SignatureData> {
     (arg0: ApiObject, arg1: ApiObject, arg2: number[]): SignatureData;
@@ -9841,10 +8868,6 @@ export const SignatureData = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolSi
 export interface SignedCommandArgument extends ApiObject {
     argument: string;
     signature: MessageSignature;
-    getArgument(): string;
-    setArgument(arg0: string): void;
-    getSignature(): MessageSignature;
-    setSignature(arg0: MessageSignature): void;
 }
 interface __GraalyPacketSymbolSignedCommandArgument extends ApiType<SignedCommandArgument> {
     (arg0: string, arg1: MessageSignature): SignedCommandArgument;
@@ -9863,7 +8886,6 @@ export interface SignedMessage extends ApiObject {
     signature(): SignedMessageSignature;
     unsignedContent(): Component;
     message(): string;
-    isSystem(): boolean;
     canDelete(): boolean;
 }
 interface __GraalyPacketSymbolSignedMessage extends ApiClass<SignedMessage> {
@@ -9885,10 +8907,6 @@ export const SignedMessageSignature = /* @__PURE__ */ packetSymbol<__GraalyPacke
 export interface SingleInputOptionDisplay extends ApiObject {
     input: MappedEntitySet<PacketItemType>;
     optionDisplay: SlotDisplay<unknown>;
-    getInput(): MappedEntitySet<PacketItemType>;
-    setInput(arg0: MappedEntitySet<PacketItemType>): void;
-    getOptionDisplay(): SlotDisplay<unknown>;
-    setOptionDisplay(arg0: SlotDisplay<unknown>): void;
 }
 interface __GraalyPacketSymbolSingleInputOptionDisplay extends ApiType<SingleInputOptionDisplay> {
     (arg0: MappedEntitySet<PacketItemType>, arg1: SlotDisplay<unknown>): SingleInputOptionDisplay;
@@ -9901,7 +8919,6 @@ export const SingleInputOptionDisplay = /* @__PURE__ */ packetSymbol<__GraalyPac
 export interface SkinSection extends ApiObject {
     readonly mask: number;
     combine(arg0: SkinSection): SkinSection;
-    getMask(): number;
     isSet(arg0: number): boolean;
     set(arg0: number, arg1: boolean): number;
 }
@@ -9921,7 +8938,6 @@ export const SkinSection = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolSkin
 
 export interface SlotDisplay<T = unknown> extends ApiObject {
     readonly type: SlotDisplayType<T>;
-    getType(): SlotDisplayType<T>;
 }
 interface __GraalyPacketSymbolSlotDisplay extends ApiClass<SlotDisplay> {
     read(arg0: PacketEventsPacketWrapper<unknown>): SlotDisplay<unknown>;
@@ -9932,9 +8948,7 @@ export const SlotDisplay = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolSlot
 export interface SlotDisplayType<T = unknown> extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
     read(arg0: PacketEventsPacketWrapper<unknown>): T;
     write(arg0: PacketEventsPacketWrapper<unknown>, arg1: T): void;
 }
@@ -10084,19 +9098,9 @@ export interface StateType extends ApiObject {
     readonly requiresCorrectTool: boolean;
     readonly replaceable: boolean;
     readonly materialType: MaterialType;
-    getMapped(): StateTypeMapped;
     createBlockState(): WrappedBlockState;
     createBlockState(arg0: ClientVersion): WrappedBlockState;
-    getName(): string;
-    getBlastResistance(): number;
-    getHardness(): number;
-    isSolid(): boolean;
-    isBlocking(): boolean;
-    isAir(): boolean;
-    isRequiresCorrectTool(): boolean;
-    isReplaceable(): boolean;
     exceedsCube(): boolean;
-    getMaterialType(): MaterialType;
     toString(): string;
     equals(arg0: unknown): boolean;
     hashCode(): number;
@@ -10112,14 +9116,10 @@ export interface StateTypeMapped extends ApiObject {
     readonly registered: boolean;
     readonly registryData: TypesBuilderData;
     readonly stateType: StateType;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
-    getRegistryData(): TypesBuilderData;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
-    getStateType(): StateType;
 }
 interface __GraalyPacketSymbolStateTypeMapped extends ApiType<StateTypeMapped> {
     (arg0: StateType, arg1: TypesBuilderData): StateTypeMapped;
@@ -10133,9 +9133,6 @@ export interface StateValue extends ApiObject {
     readonly parser: (value: string) => unknown;
     readonly ordinal: number;
     parse(arg0: string): unknown;
-    getName(): string;
-    getDataClass(): ApiClass<unknown>;
-    getParser(): (value: string) => unknown;
 }
 interface __GraalyPacketSymbolStateValue extends ApiClass<StateValue> {
     readonly AGE: StateValue;
@@ -10255,9 +9252,6 @@ export interface StaticComponentMap extends ApiObject {
     set<T>(arg0: ComponentType<T>, arg1: T | null): void;
     withRegistries(arg0: IRegistryHolder): IComponentMap;
     merge(arg0: StaticComponentMap): StaticComponentMap;
-    getKeys(): Set<ComponentType<unknown>>;
-    getDelegate(): Map<ComponentType<unknown>, unknown>;
-    isEmpty(): boolean;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -10277,10 +9271,6 @@ export interface StaticComponentMapBuilder extends ApiObject {
     registries: IRegistryHolder;
     all: StaticComponentMapBuilder;
     build(): StaticComponentMap;
-    setRegistries(arg0: IRegistryHolder): StaticComponentMapBuilder;
-    setAll(arg0: StaticComponentMapBuilder): StaticComponentMapBuilder;
-    setAll(arg0: StaticComponentMap): StaticComponentMapBuilder;
-    setAll(arg0: Map<ComponentType<unknown>, unknown>): StaticComponentMapBuilder;
     set<T>(arg0: ComponentType<T>, arg1: T | null): StaticComponentMapBuilder;
     set<T>(arg0: ComponentType<T>, arg1: T): StaticComponentMapBuilder;
     set<T>(arg0: ComponentType<T>, arg1: ComponentValueRef<T>): StaticComponentMapBuilder;
@@ -10295,10 +9285,7 @@ export interface StaticMappedEntity extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
     readonly id: number;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
-    getId(): number;
 }
 interface __GraalyPacketSymbolStaticMappedEntity extends ApiClass<StaticMappedEntity> {
 }
@@ -10504,7 +9491,6 @@ export interface Style extends ApiObject {
     merge(arg0: Style, arg1: Set<StyleMerge>): Style;
     merge(arg0: Style, arg1: StyleMergeStrategy, arg2: Set<StyleMerge>): Style;
     unmerge(arg0: Style): Style;
-    isEmpty(): boolean;
     hoverEvent(arg0: HoverEventSource): StyleSetter;
     decorations(arg0: Map<unknown, unknown>): StyleSetter;
 }
@@ -10634,8 +9620,6 @@ export interface StyledScoreFormat extends ApiObject {
     readonly type: ScoreFormatType<StyledScoreFormat>;
     readonly style: Style;
     format(arg0: number): Component;
-    getType(): ScoreFormatType<StyledScoreFormat>;
-    getStyle(): Style;
 }
 interface __GraalyPacketSymbolStyledScoreFormat extends ApiType<StyledScoreFormat> {
     (arg0: Style): StyledScoreFormat;
@@ -10648,10 +9632,6 @@ export const StyledScoreFormat = /* @__PURE__ */ packetSymbol<__GraalyPacketSymb
 export interface TabCompleteCommandMatch extends PacketWrapper {
     text: string;
     tooltip: Component | null;
-    getText(): string;
-    setText(arg0: string): void;
-    getTooltip(): Component | null;
-    setTooltip(arg0: Component): void;
 }
 interface __GraalyPacketSymbolTabCompleteCommandMatch extends ApiType<TabCompleteCommandMatch> {
     (arg0: string, arg1: Component): TabCompleteCommandMatch;
@@ -10665,11 +9645,6 @@ export interface TabCompleteCommandRange extends PacketWrapper {
     begin: number;
     end: number;
     readonly length: number;
-    getBegin(): number;
-    setBegin(arg0: number): void;
-    getEnd(): number;
-    setEnd(arg0: number): void;
-    getLength(): number;
 }
 interface __GraalyPacketSymbolTabCompleteCommandRange extends ApiType<TabCompleteCommandRange> {
     (arg0: number, arg1: number): TabCompleteCommandRange;
@@ -10679,7 +9654,6 @@ export const TabCompleteCommandRange = /* @__PURE__ */ packetSymbol<__GraalyPack
 
 export interface TagKey extends ApiObject {
     readonly id: ResourceLocation;
-    getId(): ResourceLocation;
     toString(): string;
 }
 interface __GraalyPacketSymbolTagKey extends ApiType<TagKey> {
@@ -10695,12 +9669,6 @@ export interface TagsTag extends PacketWrapper {
     name: string;
     key: ResourceLocation;
     values: number[];
-    getName(): string;
-    setName(arg0: string): void;
-    getKey(): ResourceLocation;
-    setKey(arg0: ResourceLocation): void;
-    getValues(): number[];
-    setValues(arg0: number[]): void;
 }
 interface __GraalyPacketSymbolTagsTag extends ApiType<TagsTag> {
     (arg0: string, arg1: number[]): TagsTag;
@@ -10716,7 +9684,6 @@ export interface TeamsCollisionRule extends PacketWrapper {
     readonly id: string;
     readonly name: string;
     readonly ordinal: number;
-    getId(): string;
 }
 interface __GraalyPacketSymbolTeamsCollisionRule extends ApiClass<TeamsCollisionRule> {
     readonly ALWAYS: TeamsCollisionRule;
@@ -10733,7 +9700,6 @@ export interface TeamsNameTagVisibility extends PacketWrapper {
     readonly id: string;
     readonly name: string;
     readonly ordinal: number;
-    getId(): string;
 }
 interface __GraalyPacketSymbolTeamsNameTagVisibility extends ApiClass<TeamsNameTagVisibility> {
     readonly ALWAYS: TeamsNameTagVisibility;
@@ -10750,7 +9716,6 @@ export interface TeamsOptionData extends PacketWrapper {
     readonly byteValue: number;
     readonly name: string;
     readonly ordinal: number;
-    getByteValue(): number;
 }
 interface __GraalyPacketSymbolTeamsOptionData extends ApiClass<TeamsOptionData> {
     readonly NONE: TeamsOptionData;
@@ -10774,26 +9739,6 @@ export interface TeamsScoreBoardTeamInfo extends PacketWrapper {
     collisionRule: TeamsCollisionRule;
     color: NamedTextColor;
     optionData: TeamsOptionData;
-    getLegacyDisplayName(): LegacyComponent;
-    setLegacyDisplayName(arg0: LegacyComponent): void;
-    getDisplayName(): Component;
-    setDisplayName(arg0: Component): void;
-    getLegacyPrefix(): LegacyComponent;
-    setLegacyPrefix(arg0: LegacyComponent): void;
-    getPrefix(): Component;
-    setPrefix(arg0: Component): void;
-    getLegacySuffix(): LegacyComponent;
-    setLegacySuffix(arg0: LegacyComponent): void;
-    getSuffix(): Component;
-    setSuffix(arg0: Component): void;
-    getTagVisibility(): TeamsNameTagVisibility;
-    setTagVisibility(arg0: TeamsNameTagVisibility): void;
-    getCollisionRule(): TeamsCollisionRule;
-    setCollisionRule(arg0: TeamsCollisionRule): void;
-    getColor(): NamedTextColor;
-    setColor(arg0: NamedTextColor): void;
-    getOptionData(): TeamsOptionData;
-    setOptionData(arg0: TeamsOptionData): void;
 }
 interface __GraalyPacketSymbolTeamsScoreBoardTeamInfo extends ApiType<TeamsScoreBoardTeamInfo> {
     (arg0: Component, arg1: Component, arg2: Component, arg3: TeamsNameTagVisibility, arg4: TeamsCollisionRule, arg5: NamedTextColor, arg6: TeamsOptionData): TeamsScoreBoardTeamInfo;
@@ -10844,18 +9789,6 @@ export interface TestInstanceData extends ApiObject {
     ignoreEntities: boolean;
     status: TestInstanceDataStatus;
     errorMessage: Component;
-    getTest(): ResourceLocation;
-    setTest(arg0: ResourceLocation): void;
-    getSize(): PacketVector3i;
-    setSize(arg0: PacketVector3i): void;
-    getRotation(): PacketStructureRotation;
-    setRotation(arg0: PacketStructureRotation): void;
-    isIgnoreEntities(): boolean;
-    setIgnoreEntities(arg0: boolean): void;
-    getStatus(): TestInstanceDataStatus;
-    setStatus(arg0: TestInstanceDataStatus): void;
-    getErrorMessage(): Component;
-    setErrorMessage(arg0: Component): void;
 }
 interface __GraalyPacketSymbolTestInstanceData extends ApiType<TestInstanceData> {
     (arg0: ResourceLocation, arg1: PacketVector3i, arg2: PacketStructureRotation, arg3: boolean, arg4: TestInstanceDataStatus, arg5: Component): TestInstanceData;
@@ -11139,9 +10072,6 @@ export interface TextureProperty extends ApiObject {
     readonly name: string;
     readonly value: string;
     readonly signature: string;
-    getName(): string;
-    getValue(): string;
-    getSignature(): string;
     isSignatureValid(arg0: ApiObject): boolean;
 }
 interface __GraalyPacketSymbolTextureProperty extends ApiType<TextureProperty> {
@@ -11173,16 +10103,6 @@ export interface TileEntity extends ApiObject {
     readonly packedByte: number;
     readonly YShort: number;
     readonly NBT: NBTCompound;
-    getX(): number;
-    getZ(): number;
-    getY(): number;
-    setX(arg0: number): void;
-    setY(arg0: number): void;
-    setZ(arg0: number): void;
-    getType(): number;
-    getPackedByte(): number;
-    getYShort(): number;
-    getNBT(): NBTCompound;
 }
 interface __GraalyPacketSymbolTileEntity extends ApiType<TileEntity> {
     (arg0: NBTCompound): TileEntity;
@@ -11196,7 +10116,6 @@ export interface TileEntityType extends ApiObject {
     readonly id: number;
     readonly name: string;
     readonly ordinal: number;
-    getId(): number;
 }
 interface __GraalyPacketSymbolTileEntityType extends ApiClass<TileEntityType> {
     readonly MOB_SPAWNER: TileEntityType;
@@ -11237,8 +10156,6 @@ export const Tilt = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolTilt>("Tilt
 export interface TimeMarkerInfo extends ApiObject {
     readonly ticks: number;
     readonly showInCommands: boolean;
-    getTicks(): number;
-    isShowInCommands(): boolean;
 }
 interface __GraalyPacketSymbolTimeMarkerInfo extends ApiType<TimeMarkerInfo> {
     (arg0: number): TimeMarkerInfo;
@@ -11257,17 +10174,10 @@ export interface Timeline extends ApiObject {
     readonly periodTicks: number;
     readonly tracks: Map<EnvironmentAttribute<unknown>, TimelineTrack<unknown, unknown>>;
     readonly timeMarkers: Map<ResourceLocation, TimeMarkerInfo>;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
     copy(arg0: TypesBuilderData): Timeline;
     deepEquals(arg0: unknown): boolean;
     deepHashCode(): number;
-    getClock(): WorldClock;
-    getClockRef(): MappedEntityRef<WorldClock>;
-    getPeriodTicks(): number;
-    getTracks(): Map<EnvironmentAttribute<unknown>, TimelineTrack<unknown, unknown>>;
-    getTimeMarkers(): Map<ResourceLocation, TimeMarkerInfo>;
 }
 interface __GraalyPacketSymbolTimeline extends ApiClass<Timeline> {
     readonly TRACK_CODEC: NbtCodec<Map<EnvironmentAttribute<unknown>, TimelineTrack<unknown, unknown>>>;
@@ -11279,8 +10189,6 @@ export const Timeline = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolTimelin
 export interface TimelineTrack<T = unknown, A = unknown> extends ApiObject {
     readonly modifier: PacketAttributeModifier<T, A>;
     readonly argumentTrack: KeyframeTrack<A>;
-    getModifier(): PacketAttributeModifier<T, A>;
-    getArgumentTrack(): KeyframeTrack<A>;
 }
 interface __GraalyPacketSymbolTimelineTrack extends ApiType<TimelineTrack> {
     <T, A>(arg0: PacketAttributeModifier<T, A>, arg1: KeyframeTrack<A>): TimelineTrack<T, A>;
@@ -11335,8 +10243,6 @@ export interface TitleTitleAction extends PacketWrapper {
     readonly legacyId: number;
     readonly name: string;
     readonly ordinal: number;
-    getId(): number;
-    getLegacyId(): number;
 }
 interface __GraalyPacketSymbolTitleTitleAction extends ApiClass<TitleTitleAction> {
     readonly SET_TITLE: TitleTitleAction;
@@ -11363,9 +10269,6 @@ export interface TrackedWaypoint extends ApiObject {
     readonly identifier: Either<NativeUuid, string>;
     readonly icon: WaypointIcon;
     readonly info: WaypointInfo;
-    getIdentifier(): Either<NativeUuid, string>;
-    getIcon(): WaypointIcon;
-    getInfo(): WaypointInfo;
 }
 interface __GraalyPacketSymbolTrackedWaypoint extends ApiType<TrackedWaypoint> {
     (arg0: Either<NativeUuid, string>, arg1: WaypointIcon, arg2: WaypointInfo): TrackedWaypoint;
@@ -11603,8 +10506,6 @@ export const TypeAdapterFactory = /* @__PURE__ */ packetSymbol<__GraalyPacketSym
 export interface TypeToken<T = unknown> extends ApiObject {
     readonly rawType: ApiClass<T>;
     readonly type: Type;
-    getRawType(): ApiClass<T>;
-    getType(): Type;
     isAssignableFrom(arg0: ApiClass<unknown>): boolean;
     isAssignableFrom(arg0: Type): boolean;
     isAssignableFrom(arg0: TypeToken<unknown>): boolean;
@@ -11628,16 +10529,10 @@ export interface TypesBuilder extends ApiObject {
     readonly mappingDataLoaded: boolean;
     readonly entries: Map<ClientVersion, Map<string, number>>;
     load(): void;
-    getRegistry(): VersionedRegistry<unknown>;
-    getVersions(): ClientVersion[];
-    getReversedVersions(): ClientVersion[];
     getDataIndex(arg0: ClientVersion): number;
-    getVersionMapper(): VersionMapper;
     addExtraVersionStep(arg0: ClientVersion): void;
-    isMappingDataLoaded(): boolean;
     unloadFileMappings(): void;
     define(arg0: string, arg1: VersionRange): TypesBuilderData;
-    getEntries(): Map<ClientVersion, Map<string, number>>;
 }
 interface __GraalyPacketSymbolTypesBuilder extends ApiType<TypesBuilder> {
     (arg0: string, arg1: boolean): TypesBuilder;
@@ -11652,9 +10547,6 @@ export interface TypesBuilderData extends ApiObject {
     readonly data: number[];
     readonly versions: VersionRange;
     getId(arg0: ClientVersion): number;
-    getName(): ResourceLocation;
-    getData(): number[];
-    getVersions(): VersionRange;
 }
 interface __GraalyPacketSymbolTypesBuilderData extends ApiType<TypesBuilderData> {
     (arg0: ResourceLocation, arg1: number[]): TypesBuilderData;
@@ -11671,19 +10563,11 @@ export interface UpdateAttributesProperty extends PacketWrapper {
     modifiers: UpdateAttributesPropertyModifier[];
     calcValue(): number;
     calcValue0(): number;
-    getAttribute(): PacketAttribute;
-    setAttribute(arg0: PacketAttribute): void;
-    getKey(): string;
-    setKey(arg0: string): void;
-    getValue(): number;
-    setValue(arg0: number): void;
     addModifier(arg0: UpdateAttributesPropertyModifier): void;
     removeModifier(arg0: ResourceLocation): boolean;
     removeModifier(arg0: NativeUuid): boolean;
     removeModifier(arg0: ResourceLocation, arg1: NativeUuid): boolean;
     removeModifierIf(arg0: (value: UpdateAttributesPropertyModifier) => boolean): boolean;
-    getModifiers(): UpdateAttributesPropertyModifier[];
-    setModifiers(arg0: UpdateAttributesPropertyModifier[]): void;
     setDirty(): void;
 }
 interface __GraalyPacketSymbolUpdateAttributesProperty extends ApiType<UpdateAttributesProperty> {
@@ -11699,15 +10583,7 @@ export interface UpdateAttributesPropertyModifier extends PacketWrapper {
     UUID: NativeUuid;
     amount: number;
     operation: UpdateAttributesPropertyModifierOperation;
-    getName(): ResourceLocation;
-    setName(arg0: ResourceLocation): void;
-    getUUID(): NativeUuid;
-    setUUID(arg0: NativeUuid): void;
     setNameAndUUID(arg0: ResourceLocation, arg1: NativeUuid): void;
-    getAmount(): number;
-    setAmount(arg0: number): void;
-    getOperation(): UpdateAttributesPropertyModifierOperation;
-    setOperation(arg0: UpdateAttributesPropertyModifierOperation): void;
 }
 interface __GraalyPacketSymbolUpdateAttributesPropertyModifier extends ApiType<UpdateAttributesPropertyModifier> {
     (arg0: NativeUuid, arg1: number, arg2: UpdateAttributesPropertyModifierOperation): UpdateAttributesPropertyModifier;
@@ -11786,21 +10662,6 @@ export interface User extends ApiObject {
     getRegistry(arg0: ResourceLocation, arg1: ClientVersion): IRegistry<unknown>;
     putRegistry(arg0: IRegistry<unknown>): void;
     finalizeRegistries(arg0: PacketEventsPacketWrapper<unknown>): void;
-    getChannel(): unknown;
-    getAddress(): ApiObject;
-    getConnectionState(): ConnectionState;
-    setConnectionState(arg0: ConnectionState): void;
-    getDecoderState(): ConnectionState;
-    setDecoderState(arg0: ConnectionState): void;
-    getEncoderState(): ConnectionState;
-    setEncoderState(arg0: ConnectionState): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getProfile(): UserProfile;
-    getName(): string;
-    getUUID(): NativeUuid;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
     sendPacket(arg0: unknown): void;
     sendPacket(arg0: PacketEventsPacketWrapper<unknown>): void;
     sendPacketSilently(arg0: unknown): void;
@@ -11821,22 +10682,10 @@ export interface User extends ApiObject {
     sendMessage(arg0: Component, arg1: PacketChatType): void;
     sendTitle(arg0: string, arg1: string, arg2: number, arg3: number, arg4: number): void;
     sendTitle(arg0: Component, arg1: Component, arg2: number, arg3: number, arg4: number): void;
-    getPacketVersion(): ClientVersion;
-    getSerializers(): AdventureSerializer;
-    getMinWorldHeight(): number;
     getMinWorldHeight(arg0: ClientVersion): number;
-    getTotalWorldHeight(): number;
     getTotalWorldHeight(arg0: ClientVersion): number;
-    getDimensionType(): DimensionDimensionType;
-    setDimensionType(arg0: DimensionDimensionType): void;
-    setMinWorldHeight(arg0: number): void;
-    setTotalWorldHeight(arg0: number): void;
     switchDimensionType(arg0: ServerVersion, arg1: Dimension): void;
     setDefaultWorldHeights(arg0: ServerVersion, arg1: Dimension): void;
-    setDefaultWorldHeights(arg0: boolean): void;
-    setWorldNBT(arg0: NBTList<NBTCompound>): void;
-    getDimension(): Dimension;
-    setDimension(arg0: Dimension): void;
     getWorldNBT(arg0: string): NBTCompound;
     getWorldNBT(arg0: number): NBTCompound;
     getWorldNBT(arg0: Dimension): NBTCompound;
@@ -11854,11 +10703,7 @@ export interface UserConnectEvent extends ApiObject {
     cancelled: boolean;
     readonly user: User;
     call(arg0: PacketListenerCommon): void;
-    getTimestamp(): number;
     callPacketEventExternal(arg0: PacketListenerCommon): void;
-    isCancelled(): boolean;
-    setCancelled(arg0: boolean): void;
-    getUser(): User;
 }
 interface __GraalyPacketSymbolUserConnectEvent extends ApiType<UserConnectEvent> {
     (arg0: User): UserConnectEvent;
@@ -11870,9 +10715,7 @@ export interface UserDisconnectEvent extends ApiObject {
     readonly timestamp: number;
     readonly user: User;
     call(arg0: PacketListenerCommon): void;
-    getTimestamp(): number;
     callPacketEventExternal(arg0: PacketListenerCommon): void;
-    getUser(): User;
 }
 interface __GraalyPacketSymbolUserDisconnectEvent extends ApiType<UserDisconnectEvent> {
     (arg0: User): UserDisconnectEvent;
@@ -11882,7 +10725,6 @@ export const UserDisconnectEvent = /* @__PURE__ */ packetSymbol<__GraalyPacketSy
 
 export interface UserEvent extends ApiObject {
     readonly user: User;
-    getUser(): User;
 }
 interface __GraalyPacketSymbolUserEvent extends ApiClass<UserEvent> {
 }
@@ -11893,10 +10735,7 @@ export interface UserLoginEvent extends ApiObject {
     readonly user: User;
     readonly player: unknown;
     call(arg0: PacketListenerCommon): void;
-    getTimestamp(): number;
     callPacketEventExternal(arg0: PacketListenerCommon): void;
-    getUser(): User;
-    getPlayer<T>(): T;
 }
 interface __GraalyPacketSymbolUserLoginEvent extends ApiType<UserLoginEvent> {
     (arg0: User, arg1: unknown): UserLoginEvent;
@@ -11908,12 +10747,6 @@ export interface UserProfile extends ApiObject {
     UUID: NativeUuid;
     name: string;
     textureProperties: TextureProperty[];
-    getUUID(): NativeUuid;
-    setUUID(arg0: NativeUuid): void;
-    getName(): string;
-    setName(arg0: string): void;
-    getTextureProperties(): TextureProperty[];
-    setTextureProperties(arg0: TextureProperty[]): void;
 }
 interface __GraalyPacketSymbolUserProfile extends ApiType<UserProfile> {
     (arg0: NativeUuid, arg1: string): UserProfile;
@@ -11951,8 +10784,6 @@ export interface Vector2i extends ApiObject {
     readonly x: number;
     readonly z: number;
     asLong(): number;
-    getX(): number;
-    getZ(): number;
     equals(arg0: unknown): boolean;
     hashCode(): number;
     toString(): string;
@@ -11985,8 +10816,6 @@ export interface VersionMapper extends ApiObject {
     readonly versions: ClientVersion[];
     readonly reversedVersions: ClientVersion[];
     withExtra(arg0: ClientVersion): VersionMapper;
-    getVersions(): ClientVersion[];
-    getReversedVersions(): ClientVersion[];
     getIndex(arg0: ClientVersion): number;
     size(): number;
 }
@@ -12001,10 +10830,7 @@ export interface VersionRange extends ApiObject {
     readonly minimum: ClientVersion;
     readonly maximum: ClientVersion;
     iterate(arg0: (value: ClientVersion) => void): void;
-    getAll(): ClientVersion[];
     contains(arg0: ClientVersion): boolean;
-    getMinimum(): ClientVersion;
-    getMaximum(): ClientVersion;
     toString(): string;
 }
 interface __GraalyPacketSymbolVersionRange extends ApiType<VersionRange> {
@@ -12032,15 +10858,12 @@ export interface VersionedRegistry<T = unknown> extends ApiObject {
     getById(arg0: ClientVersion, arg1: number): T;
     getId(arg0: string, arg1: ClientVersion): number;
     getId(arg0: MappedEntity, arg1: ClientVersion): number;
-    getEntries(): T[];
     size(): number;
-    getRegistryKey(): ResourceLocation;
     apply(arg0: ClientVersion, arg1: number): T;
     apply(arg0: unknown, arg1: unknown): unknown;
     defineWithBuilder<Z extends T>(arg0: string, arg1: MappedEntityBuilder<Z>): Z;
     define<Z extends T>(arg0: string, arg1: (value: TypesBuilderData) => Z): Z;
     define<Z extends T>(arg0: string, arg1: VersionRange, arg2: (value: TypesBuilderData) => Z): Z;
-    getTypesBuilder(): TypesBuilder;
     postLoadMappings(): void;
     unloadMappings(): void;
     toString(): string;
@@ -12078,14 +10901,6 @@ export interface VillagerData extends ApiObject {
     profession: PacketVillagerProfession;
     level: number;
     readonly villagerLevel: VillagerLevel;
-    getType(): PacketVillagerType;
-    setType(arg0: PacketVillagerType): void;
-    getProfession(): PacketVillagerProfession;
-    setProfession(arg0: PacketVillagerProfession): void;
-    getLevel(): number;
-    getVillagerLevel(): VillagerLevel;
-    setLevel(arg0: number): void;
-    setLevel(arg0: VillagerLevel): void;
 }
 interface __GraalyPacketSymbolVillagerData extends ApiType<VillagerData> {
     (arg0: PacketVillagerType, arg1: PacketVillagerProfession, arg2: VillagerLevel): VillagerData;
@@ -12101,7 +10916,6 @@ export interface VillagerLevel extends ApiObject {
     readonly id: number;
     readonly name: string;
     readonly ordinal: number;
-    getId(): number;
 }
 interface __GraalyPacketSymbolVillagerLevel extends ApiClass<VillagerLevel> {
     readonly NOVICE: VillagerLevel;
@@ -12209,8 +11023,6 @@ export const VirtualComponentRenderer = /* @__PURE__ */ packetSymbol<__GraalyPac
 export interface WaypointIcon extends ApiObject {
     readonly style: ResourceLocation;
     readonly color: PacketColor;
-    getStyle(): ResourceLocation;
-    getColor(): PacketColor;
 }
 interface __GraalyPacketSymbolWaypointIcon extends ApiType<WaypointIcon> {
     (arg0: ResourceLocation, arg1: PacketColor): WaypointIcon;
@@ -12224,7 +11036,6 @@ export const WaypointIcon = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolWay
 
 export interface WaypointInfo extends ApiObject {
     readonly type: WaypointInfoType;
-    getType(): WaypointInfoType;
 }
 interface __GraalyPacketSymbolWaypointInfo extends ApiClass<WaypointInfo> {
 }
@@ -12261,7 +11072,6 @@ export const WaypointOperation = /* @__PURE__ */ packetSymbol<__GraalyPacketSymb
 
 export interface WeightedList<T = unknown> extends ApiObject {
     readonly entries: WeightedListEntry<T>[];
-    getEntries(): WeightedListEntry<T>[];
 }
 interface __GraalyPacketSymbolWeightedList extends ApiType<WeightedList> {
     <T>(): WeightedList<T>;
@@ -12276,8 +11086,6 @@ export const WeightedList = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolWei
 export interface WeightedListEntry<T = unknown> extends ApiObject {
     readonly weight: number;
     readonly value: T;
-    getWeight(): number;
-    getValue(): T;
 }
 interface __GraalyPacketSymbolWeightedListEntry extends ApiType<WeightedListEntry> {
     <T>(arg0: number, arg1: T): WeightedListEntry<T>;
@@ -12307,10 +11115,6 @@ export const West = /* @__PURE__ */ packetSymbol<__GraalyPacketSymbolWest>("West
 export interface WorldBlockPosition extends ApiObject {
     world: ResourceLocation;
     blockPosition: PacketVector3i;
-    getWorld(): ResourceLocation;
-    setWorld(arg0: ResourceLocation): void;
-    getBlockPosition(): PacketVector3i;
-    setBlockPosition(arg0: PacketVector3i): void;
 }
 interface __GraalyPacketSymbolWorldBlockPosition extends ApiType<WorldBlockPosition> {
     (arg0: ResourceLocation, arg1: PacketVector3i): WorldBlockPosition;
@@ -12329,7 +11133,6 @@ export interface WorldBorderWorldBorderAction extends PacketWrapper {
     readonly id: number;
     readonly name: string;
     readonly ordinal: number;
-    getId(): number;
 }
 interface __GraalyPacketSymbolWorldBorderWorldBorderAction extends ApiClass<WorldBorderWorldBorderAction> {
     readonly SET_SIZE: WorldBorderWorldBorderAction;
@@ -12347,9 +11150,7 @@ export const WorldBorderWorldBorderAction = /* @__PURE__ */ packetSymbol<__Graal
 export interface WorldClock extends ApiObject {
     readonly name: ResourceLocation;
     readonly registered: boolean;
-    getName(): ResourceLocation;
     getId(arg0: ClientVersion): number;
-    isRegistered(): boolean;
     copy(arg0: TypesBuilderData): WorldClock;
     deepEquals(arg0: unknown): boolean;
     deepHashCode(): number;
@@ -12464,201 +11265,9 @@ export interface WrappedBlockState extends ApiObject {
     clone(): WrappedBlockState;
     equals(arg0: unknown): boolean;
     hashCode(): number;
-    getType(): StateType;
     getData(arg0: StateValue): unknown;
     setData(arg0: StateValue, arg1: unknown): void;
-    getAge(): number;
-    setAge(arg0: number): void;
-    isAttached(): boolean;
-    setAttached(arg0: boolean): void;
-    getAttachment(): Attachment;
-    setAttachment(arg0: Attachment): void;
-    getAxis(): PacketAxis;
-    setAxis(arg0: PacketAxis): void;
-    isBerries(): boolean;
-    setBerries(arg0: boolean): void;
-    getBites(): number;
-    setBites(arg0: number): void;
-    isBottom(): boolean;
-    setBottom(arg0: boolean): void;
-    getCandles(): number;
-    setCandles(arg0: number): void;
-    getCharges(): number;
-    setCharges(arg0: number): void;
-    isConditional(): boolean;
-    setConditional(arg0: boolean): void;
-    getDelay(): number;
-    setDelay(arg0: number): void;
-    isDisarmed(): boolean;
-    setDisarmed(arg0: boolean): void;
-    getDistance(): number;
-    setDistance(arg0: number): void;
-    isDown(): boolean;
-    setDown(arg0: boolean): void;
-    isDrag(): boolean;
-    setDrag(arg0: boolean): void;
-    isDusted(): boolean;
-    setDusted(arg0: boolean): void;
-    getEggs(): number;
-    setEggs(arg0: number): void;
-    isEnabled(): boolean;
-    setEnabled(arg0: boolean): void;
-    isExtended(): boolean;
-    setExtended(arg0: boolean): void;
-    isEye(): boolean;
-    setEye(arg0: boolean): void;
-    getFace(): Face;
-    setFace(arg0: Face): void;
-    getFacing(): PacketBlockFace;
-    setFacing(arg0: PacketBlockFace): void;
-    getFlowerAmount(): number;
-    setFlowerAmount(arg0: number): void;
-    getHalf(): Half;
-    setHalf(arg0: Half): void;
-    isHanging(): boolean;
-    setHanging(arg0: boolean): void;
-    isHasBook(): boolean;
-    setHasBook(arg0: boolean): void;
-    isHasBottle0(): boolean;
-    setHasBottle0(arg0: boolean): void;
-    isHasBottle1(): boolean;
-    setHasBottle1(arg0: boolean): void;
-    isHasBottle2(): boolean;
-    setHasBottle2(arg0: boolean): void;
-    isHasRecord(): boolean;
-    setHasRecord(arg0: boolean): void;
-    getHatch(): number;
-    setHatch(arg0: number): void;
-    getHinge(): Hinge;
-    setHinge(arg0: Hinge): void;
-    getHoneyLevel(): number;
-    setHoneyLevel(arg0: number): void;
-    isInWall(): boolean;
-    setInWall(arg0: boolean): void;
-    getInstrument(): PacketInstrument;
-    setInstrument(arg0: PacketInstrument): void;
-    isInverted(): boolean;
-    setInverted(arg0: boolean): void;
-    getLayers(): number;
-    setLayers(arg0: number): void;
-    getLeaves(): PacketLeaves;
-    setLeaves(arg0: PacketLeaves): void;
-    getLevel(): number;
-    setLevel(arg0: number): void;
-    isLit(): boolean;
-    setLit(arg0: boolean): void;
-    isTip(): boolean;
-    setTip(arg0: boolean): void;
-    isLocked(): boolean;
-    setLocked(arg0: boolean): void;
-    getMode(): Mode;
-    setMode(arg0: Mode): void;
-    getMoisture(): number;
-    setMoisture(arg0: number): void;
-    getNorth(): North;
-    setNorth(arg0: North): void;
-    getNote(): number;
-    setNote(arg0: number): void;
-    isOccupied(): boolean;
-    setOccupied(arg0: boolean): void;
-    isShrieking(): boolean;
-    setShrieking(arg0: boolean): void;
-    isCanSummon(): boolean;
-    setCanSummon(arg0: boolean): void;
-    isOpen(): boolean;
-    setOpen(arg0: boolean): void;
-    getOrientation(): Orientation;
-    setOrientation(arg0: Orientation): void;
-    getPart(): Part;
-    setPart(arg0: Part): void;
-    isPersistent(): boolean;
-    setPersistent(arg0: boolean): void;
-    getPickles(): number;
-    setPickles(arg0: number): void;
-    getPower(): number;
-    setPower(arg0: number): void;
-    isPowered(): boolean;
-    setPowered(arg0: boolean): void;
-    getRotation(): number;
-    setRotation(arg0: number): void;
-    getSculkSensorPhase(): PacketSculkSensorPhase;
-    setSculkSensorPhase(arg0: PacketSculkSensorPhase): void;
-    getShape(): Shape;
-    setShape(arg0: Shape): void;
-    isShort(): boolean;
-    setShort(arg0: boolean): void;
-    isSignalFire(): boolean;
-    setSignalFire(arg0: boolean): void;
-    isSlotZeroOccupied(): boolean;
-    setSlotZeroOccupied(arg0: boolean): void;
-    isSlotOneOccupied(): boolean;
-    setSlotOneOccupied(arg0: boolean): void;
-    isSlotTwoOccupied(): boolean;
-    setSlotTwoOccupied(arg0: boolean): void;
-    isSlotThreeOccupied(): boolean;
-    setSlotThreeOccupied(arg0: boolean): void;
-    isSlotFourOccupied(): boolean;
-    setSlotFourOccupied(arg0: boolean): void;
-    isSlotFiveOccupied(): boolean;
-    setSlotFiveOccupied(arg0: boolean): void;
-    isSnowy(): boolean;
-    setSnowy(arg0: boolean): void;
-    getStage(): number;
-    setStage(arg0: number): void;
-    getSouth(): South;
-    setSouth(arg0: South): void;
-    getThickness(): Thickness;
-    setThickness(arg0: Thickness): void;
-    getTilt(): Tilt;
-    setTilt(arg0: Tilt): void;
-    isTriggered(): boolean;
-    setTriggered(arg0: boolean): void;
-    getTypeData(): Type;
-    setTypeData(arg0: Type): void;
-    isUnstable(): boolean;
-    setUnstable(arg0: boolean): void;
-    isUp(): boolean;
-    setUp(arg0: boolean): void;
-    getVerticalDirection(): VerticalDirection;
-    setVerticalDirection(arg0: VerticalDirection): void;
-    isWaterlogged(): boolean;
-    setWaterlogged(arg0: boolean): void;
-    getEast(): East;
-    setEast(arg0: East): void;
-    getWest(): West;
-    setWest(arg0: West): void;
-    getBloom(): Bloom;
-    setBloom(arg0: Bloom): void;
-    isCracked(): boolean;
-    setCracked(arg0: boolean): void;
-    isCrafting(): boolean;
-    setCrafting(arg0: boolean): void;
-    getTrialSpawnerState(): PacketTrialSpawnerState;
-    setTrialSpawnerState(arg0: PacketTrialSpawnerState): void;
-    getCreaking(): PacketCreakingHeartState;
-    setCreaking(arg0: PacketCreakingHeartState): void;
-    isActive(): boolean;
-    setActive(arg0: boolean): void;
-    isNatural(): boolean;
-    setNatural(arg0: boolean): void;
-    getSegmentAmount(): number;
-    setSegmentAmount(arg0: number): void;
-    getCreakingHeartState(): PacketCreakingHeartState;
-    setCreakingHeartState(arg0: PacketCreakingHeartState): void;
-    isMap(): boolean;
-    setMap(arg0: boolean): void;
-    getHydration(): number;
-    setHydration(arg0: number): void;
-    getSideChain(): SideChainPart;
-    setSideChain(arg0: SideChainPart): void;
-    getCopperGolemPose(): CopperGolemPose;
-    setCopperGolemPose(arg0: CopperGolemPose): void;
-    getPotentSulfurState(): PacketPotentSulfurState;
-    setPotentSulfurState(arg0: PacketPotentSulfurState): void;
-    getInternalData(): Map<StateValue, unknown>;
-    isFluid(): boolean;
     hasProperty(arg0: StateValue): boolean;
-    getGlobalId(): number;
     toString(): string;
 }
 interface __GraalyPacketSymbolWrappedBlockState extends ApiType<WrappedBlockState> {
@@ -12701,18 +11310,6 @@ export interface WrapperCommonClientCustomClickAction<T = unknown> extends Packe
     write(): void;
     copy(arg0: T): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -12751,7 +11348,6 @@ export interface WrapperCommonClientCustomClickAction<T = unknown> extends Packe
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -12875,8 +11471,6 @@ export interface WrapperCommonClientCustomClickAction<T = unknown> extends Packe
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -12892,10 +11486,6 @@ export interface WrapperCommonClientCustomClickAction<T = unknown> extends Packe
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getId(): ResourceLocation;
-    setId(arg0: ResourceLocation): void;
-    getPayload(): NBT;
-    setPayload(arg0: NBT): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperCommonClientCustomClickAction extends PacketWrapperType<WrapperCommonClientCustomClickAction> {
@@ -12924,18 +11514,6 @@ export interface WrapperCommonClientPluginMessage<T = unknown> extends PacketWra
     write(): void;
     copy(arg0: T): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -12974,7 +11552,6 @@ export interface WrapperCommonClientPluginMessage<T = unknown> extends PacketWra
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -13098,8 +11675,6 @@ export interface WrapperCommonClientPluginMessage<T = unknown> extends PacketWra
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -13115,10 +11690,6 @@ export interface WrapperCommonClientPluginMessage<T = unknown> extends PacketWra
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getChannelName(): string;
-    setChannelName(arg0: string): void;
-    getData(): number[];
-    setData(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperCommonClientPluginMessage extends ApiClass<WrapperCommonClientPluginMessage> {
@@ -13154,18 +11725,6 @@ export interface WrapperCommonClientSettings<T = unknown> extends PacketWrapper 
     write(): void;
     copy(arg0: T): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -13204,7 +11763,6 @@ export interface WrapperCommonClientSettings<T = unknown> extends PacketWrapper 
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -13328,8 +11886,6 @@ export interface WrapperCommonClientSettings<T = unknown> extends PacketWrapper 
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -13345,30 +11901,8 @@ export interface WrapperCommonClientSettings<T = unknown> extends PacketWrapper 
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getLocale(): string;
-    setLocale(arg0: string): void;
-    getViewDistance(): number;
-    setViewDistance(arg0: number): void;
-    getChatVisibility(): PacketSettingsChatVisibility;
-    setChatVisibility(arg0: PacketSettingsChatVisibility): void;
-    isChatColors(): boolean;
-    setChatColors(arg0: boolean): void;
-    getSkinMask(): number;
-    setSkinMask(arg0: number): void;
-    getVisibleSkinSection(): SkinSection;
-    setVisibleSkinSections(arg0: SkinSection): void;
     isSkinSectionVisible(arg0: SkinSection): boolean;
     setSkinSectionVisible(arg0: SkinSection, arg1: boolean): void;
-    getMainHand(): HumanoidArm;
-    setMainHand(arg0: HumanoidArm): void;
-    isTextFilteringEnabled(): boolean;
-    setTextFilteringEnabled(arg0: boolean): void;
-    isServerListingAllowed(): boolean;
-    setServerListingAllowed(arg0: boolean): void;
-    getParticleStatus(): SettingsParticleStatus;
-    setParticleStatus(arg0: SettingsParticleStatus): void;
-    getIgnoredDifficulty(): number;
-    setIgnoredDifficulty(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperCommonClientSettings extends PacketWrapperType<WrapperCommonClientSettings> {
@@ -13396,18 +11930,6 @@ export interface WrapperCommonCookieResponse<T = unknown> extends PacketWrapper 
     write(): void;
     copy(arg0: T): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -13446,7 +11968,6 @@ export interface WrapperCommonCookieResponse<T = unknown> extends PacketWrapper 
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -13570,8 +12091,6 @@ export interface WrapperCommonCookieResponse<T = unknown> extends PacketWrapper 
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -13587,10 +12106,6 @@ export interface WrapperCommonCookieResponse<T = unknown> extends PacketWrapper 
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getKey(): ResourceLocation;
-    setKey(arg0: ResourceLocation): void;
-    getPayload(): number[];
-    setPayload(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperCommonCookieResponse extends ApiClass<WrapperCommonCookieResponse> {
@@ -13615,18 +12130,6 @@ export interface WrapperCommonServerClearDialog<T = unknown> extends PacketWrapp
     write(): void;
     copy(arg0: T): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -13665,7 +12168,6 @@ export interface WrapperCommonServerClearDialog<T = unknown> extends PacketWrapp
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -13789,8 +12291,6 @@ export interface WrapperCommonServerClearDialog<T = unknown> extends PacketWrapp
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -13829,18 +12329,6 @@ export interface WrapperCommonServerCustomReportDetails<T = unknown> extends Pac
     write(): void;
     copy(arg0: T): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -13879,7 +12367,6 @@ export interface WrapperCommonServerCustomReportDetails<T = unknown> extends Pac
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -14003,8 +12490,6 @@ export interface WrapperCommonServerCustomReportDetails<T = unknown> extends Pac
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -14020,8 +12505,6 @@ export interface WrapperCommonServerCustomReportDetails<T = unknown> extends Pac
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getDetails(): Map<string, string>;
-    setDetails(arg0: Map<string, string>): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperCommonServerCustomReportDetails extends ApiClass<WrapperCommonServerCustomReportDetails> {
@@ -14046,18 +12529,6 @@ export interface WrapperCommonServerPing<T = unknown> extends PacketWrapper {
     write(): void;
     copy(arg0: T): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -14096,7 +12567,6 @@ export interface WrapperCommonServerPing<T = unknown> extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -14220,8 +12690,6 @@ export interface WrapperCommonServerPing<T = unknown> extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -14237,8 +12705,6 @@ export interface WrapperCommonServerPing<T = unknown> extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getId(): number;
-    setId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperCommonServerPing extends PacketWrapperType<WrapperCommonServerPing> {
@@ -14266,18 +12732,6 @@ export interface WrapperCommonServerPluginMessage<T = unknown> extends PacketWra
     write(): void;
     copy(arg0: T): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -14316,7 +12770,6 @@ export interface WrapperCommonServerPluginMessage<T = unknown> extends PacketWra
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -14440,8 +12893,6 @@ export interface WrapperCommonServerPluginMessage<T = unknown> extends PacketWra
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -14457,10 +12908,6 @@ export interface WrapperCommonServerPluginMessage<T = unknown> extends PacketWra
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getChannelName(): string;
-    setChannelName(arg0: string): void;
-    getData(): number[];
-    setData(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperCommonServerPluginMessage extends ApiClass<WrapperCommonServerPluginMessage> {
@@ -14485,18 +12932,6 @@ export interface WrapperCommonServerServerLinks<T = unknown> extends PacketWrapp
     write(): void;
     copy(arg0: T): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -14535,7 +12970,6 @@ export interface WrapperCommonServerServerLinks<T = unknown> extends PacketWrapp
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -14659,8 +13093,6 @@ export interface WrapperCommonServerServerLinks<T = unknown> extends PacketWrapp
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -14676,8 +13108,6 @@ export interface WrapperCommonServerServerLinks<T = unknown> extends PacketWrapp
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getLinks(): PacketServerLinksServerLink[];
-    setLinks(arg0: PacketServerLinksServerLink[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperCommonServerServerLinks extends ApiClass<WrapperCommonServerServerLinks> {
@@ -14702,18 +13132,6 @@ export interface WrapperCommonServerShowDialog<T = unknown> extends PacketWrappe
     write(): void;
     copy(arg0: T): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -14752,7 +13170,6 @@ export interface WrapperCommonServerShowDialog<T = unknown> extends PacketWrappe
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -14876,8 +13293,6 @@ export interface WrapperCommonServerShowDialog<T = unknown> extends PacketWrappe
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -14893,8 +13308,6 @@ export interface WrapperCommonServerShowDialog<T = unknown> extends PacketWrappe
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getDialog(): PacketDialog;
-    setDialog(arg0: PacketDialog): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperCommonServerShowDialog extends PacketWrapperType<WrapperCommonServerShowDialog> {
@@ -14920,18 +13333,6 @@ export interface WrapperConfigClientAcceptCodeOfConduct extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigClientAcceptCodeOfConduct): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -14970,7 +13371,6 @@ export interface WrapperConfigClientAcceptCodeOfConduct extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -15094,8 +13494,6 @@ export interface WrapperConfigClientAcceptCodeOfConduct extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -15135,18 +13533,6 @@ export interface WrapperConfigClientConfigurationEndAck extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigClientConfigurationEndAck): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -15185,7 +13571,6 @@ export interface WrapperConfigClientConfigurationEndAck extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -15309,8 +13694,6 @@ export interface WrapperConfigClientConfigurationEndAck extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -15352,18 +13735,6 @@ export interface WrapperConfigClientCookieResponse extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigClientCookieResponse): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -15402,7 +13773,6 @@ export interface WrapperConfigClientCookieResponse extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -15526,8 +13896,6 @@ export interface WrapperConfigClientCookieResponse extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -15543,10 +13911,6 @@ export interface WrapperConfigClientCookieResponse extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getKey(): ResourceLocation;
-    setKey(arg0: ResourceLocation): void;
-    getPayload(): number[];
-    setPayload(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigClientCookieResponse extends PacketWrapperType<WrapperConfigClientCookieResponse> {
@@ -15574,18 +13938,6 @@ export interface WrapperConfigClientCustomClickAction extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigClientCustomClickAction): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -15624,7 +13976,6 @@ export interface WrapperConfigClientCustomClickAction extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -15748,8 +14099,6 @@ export interface WrapperConfigClientCustomClickAction extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -15765,10 +14114,6 @@ export interface WrapperConfigClientCustomClickAction extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getId(): ResourceLocation;
-    setId(arg0: ResourceLocation): void;
-    getPayload(): NBT;
-    setPayload(arg0: NBT): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigClientCustomClickAction extends PacketWrapperType<WrapperConfigClientCustomClickAction> {
@@ -15795,18 +14140,6 @@ export interface WrapperConfigClientKeepAlive extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigClientKeepAlive): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -15845,7 +14178,6 @@ export interface WrapperConfigClientKeepAlive extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -15969,8 +14301,6 @@ export interface WrapperConfigClientKeepAlive extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -15986,8 +14316,6 @@ export interface WrapperConfigClientKeepAlive extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getId(): number;
-    setId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigClientKeepAlive extends PacketWrapperType<WrapperConfigClientKeepAlive> {
@@ -16015,18 +14343,6 @@ export interface WrapperConfigClientPluginMessage extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigClientPluginMessage): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -16065,7 +14381,6 @@ export interface WrapperConfigClientPluginMessage extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -16189,8 +14504,6 @@ export interface WrapperConfigClientPluginMessage extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -16206,10 +14519,6 @@ export interface WrapperConfigClientPluginMessage extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getChannelName(): string;
-    setChannelName(arg0: string): void;
-    getData(): number[];
-    setData(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigClientPluginMessage extends PacketWrapperType<WrapperConfigClientPluginMessage> {
@@ -16238,18 +14547,6 @@ export interface WrapperConfigClientPong extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigClientPong): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -16288,7 +14585,6 @@ export interface WrapperConfigClientPong extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -16412,8 +14708,6 @@ export interface WrapperConfigClientPong extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -16429,8 +14723,6 @@ export interface WrapperConfigClientPong extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getId(): number;
-    setId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigClientPong extends PacketWrapperType<WrapperConfigClientPong> {
@@ -16458,18 +14750,6 @@ export interface WrapperConfigClientResourcePackStatus extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigClientResourcePackStatus): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -16508,7 +14788,6 @@ export interface WrapperConfigClientResourcePackStatus extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -16632,8 +14911,6 @@ export interface WrapperConfigClientResourcePackStatus extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -16649,10 +14926,6 @@ export interface WrapperConfigClientResourcePackStatus extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPackId(): NativeUuid;
-    setPackId(arg0: NativeUuid): void;
-    getResult(): PacketResourcePackStatusResult;
-    setResult(arg0: PacketResourcePackStatusResult): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigClientResourcePackStatus extends PacketWrapperType<WrapperConfigClientResourcePackStatus> {
@@ -16681,18 +14954,6 @@ export interface WrapperConfigClientSelectKnownPacks extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigClientSelectKnownPacks): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -16731,7 +14992,6 @@ export interface WrapperConfigClientSelectKnownPacks extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -16855,8 +15115,6 @@ export interface WrapperConfigClientSelectKnownPacks extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -16872,8 +15130,6 @@ export interface WrapperConfigClientSelectKnownPacks extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getKnownPacks(): KnownPack[];
-    setKnownPacks(arg0: KnownPack[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigClientSelectKnownPacks extends PacketWrapperType<WrapperConfigClientSelectKnownPacks> {
@@ -16916,18 +15172,6 @@ export interface WrapperConfigClientSettings extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigClientSettings): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -16966,7 +15210,6 @@ export interface WrapperConfigClientSettings extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -17090,8 +15333,6 @@ export interface WrapperConfigClientSettings extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -17107,41 +15348,9 @@ export interface WrapperConfigClientSettings extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getLocale(): string;
-    setLocale(arg0: string): void;
-    getViewDistance(): number;
-    setViewDistance(arg0: number): void;
-    getChatVisibility(): PacketSettingsChatVisibility;
-    setChatVisibility(arg0: PacketSettingsChatVisibility): void;
-    isChatColors(): boolean;
-    setChatColors(arg0: boolean): void;
-    getSkinMask(): number;
-    setSkinMask(arg0: number): void;
-    getVisibleSkinSection(): SkinSection;
-    setVisibleSkinSections(arg0: SkinSection): void;
     isSkinSectionVisible(arg0: SkinSection): boolean;
     setSkinSectionVisible(arg0: SkinSection, arg1: boolean): void;
-    getMainHand(): HumanoidArm;
-    setMainHand(arg0: HumanoidArm): void;
-    isTextFilteringEnabled(): boolean;
-    setTextFilteringEnabled(arg0: boolean): void;
-    isServerListingAllowed(): boolean;
-    setServerListingAllowed(arg0: boolean): void;
-    getParticleStatus(): SettingsParticleStatus;
-    setParticleStatus(arg0: SettingsParticleStatus): void;
-    getIgnoredDifficulty(): number;
-    setIgnoredDifficulty(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
-    getVisibility(): ConfigurationSettingsChatVisibility;
-    setVisibility(arg0: ConfigurationSettingsChatVisibility): void;
-    isChatColorable(): boolean;
-    setChatColorable(arg0: boolean): void;
-    getVisibleSkinSectionMask(): number;
-    setVisibleSkinSectionMask(arg0: number): void;
-    getHand(): HumanoidArm;
-    setHand(arg0: HumanoidArm): void;
-    isAllowServerListings(): boolean;
-    setAllowServerListings(arg0: boolean): void;
 }
 interface __GraalyPacketSymbolWrapperConfigClientSettings extends PacketWrapperType<WrapperConfigClientSettings> {
     (arg0: string, arg1: number, arg2: PacketSettingsChatVisibility, arg3: boolean, arg4: number, arg5: HumanoidArm, arg6: boolean, arg7: boolean, arg8: SettingsParticleStatus): WrapperConfigClientSettings;
@@ -17168,18 +15377,6 @@ export interface WrapperConfigServerClearDialog extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigServerClearDialog): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -17218,7 +15415,6 @@ export interface WrapperConfigServerClearDialog extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -17342,8 +15538,6 @@ export interface WrapperConfigServerClearDialog extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -17384,18 +15578,6 @@ export interface WrapperConfigServerCodeOfConduct extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigServerCodeOfConduct): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -17434,7 +15616,6 @@ export interface WrapperConfigServerCodeOfConduct extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -17558,8 +15739,6 @@ export interface WrapperConfigServerCodeOfConduct extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -17575,8 +15754,6 @@ export interface WrapperConfigServerCodeOfConduct extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getCodeOfConduct(): string;
-    setCodeOfConduct(arg0: string): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigServerCodeOfConduct extends PacketWrapperType<WrapperConfigServerCodeOfConduct> {
@@ -17602,18 +15779,6 @@ export interface WrapperConfigServerConfigurationEnd extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigServerConfigurationEnd): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -17652,7 +15817,6 @@ export interface WrapperConfigServerConfigurationEnd extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -17776,8 +15940,6 @@ export interface WrapperConfigServerConfigurationEnd extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -17818,18 +15980,6 @@ export interface WrapperConfigServerCookieRequest extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigServerCookieRequest): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -17868,7 +16018,6 @@ export interface WrapperConfigServerCookieRequest extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -17992,8 +16141,6 @@ export interface WrapperConfigServerCookieRequest extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -18009,8 +16156,6 @@ export interface WrapperConfigServerCookieRequest extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getKey(): ResourceLocation;
-    setKey(arg0: ResourceLocation): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigServerCookieRequest extends PacketWrapperType<WrapperConfigServerCookieRequest> {
@@ -18037,18 +16182,6 @@ export interface WrapperConfigServerCustomReportDetails extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigServerCustomReportDetails): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -18087,7 +16220,6 @@ export interface WrapperConfigServerCustomReportDetails extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -18211,8 +16343,6 @@ export interface WrapperConfigServerCustomReportDetails extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -18228,8 +16358,6 @@ export interface WrapperConfigServerCustomReportDetails extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getDetails(): Map<string, string>;
-    setDetails(arg0: Map<string, string>): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigServerCustomReportDetails extends PacketWrapperType<WrapperConfigServerCustomReportDetails> {
@@ -18256,18 +16384,6 @@ export interface WrapperConfigServerDisconnect extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigServerDisconnect): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -18306,7 +16422,6 @@ export interface WrapperConfigServerDisconnect extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -18430,8 +16545,6 @@ export interface WrapperConfigServerDisconnect extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -18447,8 +16560,6 @@ export interface WrapperConfigServerDisconnect extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getReason(): Component;
-    setReason(arg0: Component): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigServerDisconnect extends PacketWrapperType<WrapperConfigServerDisconnect> {
@@ -18475,18 +16586,6 @@ export interface WrapperConfigServerKeepAlive extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigServerKeepAlive): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -18525,7 +16624,6 @@ export interface WrapperConfigServerKeepAlive extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -18649,8 +16747,6 @@ export interface WrapperConfigServerKeepAlive extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -18666,8 +16762,6 @@ export interface WrapperConfigServerKeepAlive extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getId(): number;
-    setId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigServerKeepAlive extends PacketWrapperType<WrapperConfigServerKeepAlive> {
@@ -18694,18 +16788,6 @@ export interface WrapperConfigServerPing extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigServerPing): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -18744,7 +16826,6 @@ export interface WrapperConfigServerPing extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -18868,8 +16949,6 @@ export interface WrapperConfigServerPing extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -18885,8 +16964,6 @@ export interface WrapperConfigServerPing extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getId(): number;
-    setId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigServerPing extends PacketWrapperType<WrapperConfigServerPing> {
@@ -18914,18 +16991,6 @@ export interface WrapperConfigServerPluginMessage extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigServerPluginMessage): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -18964,7 +17029,6 @@ export interface WrapperConfigServerPluginMessage extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -19088,8 +17152,6 @@ export interface WrapperConfigServerPluginMessage extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -19105,10 +17167,6 @@ export interface WrapperConfigServerPluginMessage extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getChannelName(): string;
-    setChannelName(arg0: string): void;
-    getData(): number[];
-    setData(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigServerPluginMessage extends PacketWrapperType<WrapperConfigServerPluginMessage> {
@@ -19139,18 +17197,6 @@ export interface WrapperConfigServerRegistryData extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigServerRegistryData): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -19189,7 +17235,6 @@ export interface WrapperConfigServerRegistryData extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -19313,8 +17358,6 @@ export interface WrapperConfigServerRegistryData extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -19330,12 +17373,6 @@ export interface WrapperConfigServerRegistryData extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getRegistryData(): NBTCompound;
-    setRegistryData(arg0: NBTCompound): void;
-    getRegistryKey(): ResourceLocation;
-    setRegistryKey(arg0: ResourceLocation): void;
-    getElements(): RegistryDataRegistryElement[];
-    setElements(arg0: RegistryDataRegistryElement[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigServerRegistryData extends PacketWrapperType<WrapperConfigServerRegistryData> {
@@ -19365,18 +17402,6 @@ export interface WrapperConfigServerResetChat extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigServerResetChat): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -19415,7 +17440,6 @@ export interface WrapperConfigServerResetChat extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -19539,8 +17563,6 @@ export interface WrapperConfigServerResetChat extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -19581,18 +17603,6 @@ export interface WrapperConfigServerResourcePackRemove extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigServerResourcePackRemove): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -19631,7 +17641,6 @@ export interface WrapperConfigServerResourcePackRemove extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -19755,8 +17764,6 @@ export interface WrapperConfigServerResourcePackRemove extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -19772,8 +17779,6 @@ export interface WrapperConfigServerResourcePackRemove extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPackId(): NativeUuid;
-    setPackId(arg0: NativeUuid): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigServerResourcePackRemove extends PacketWrapperType<WrapperConfigServerResourcePackRemove> {
@@ -19804,18 +17809,6 @@ export interface WrapperConfigServerResourcePackSend extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigServerResourcePackSend): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -19854,7 +17847,6 @@ export interface WrapperConfigServerResourcePackSend extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -19978,8 +17970,6 @@ export interface WrapperConfigServerResourcePackSend extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -19995,16 +17985,6 @@ export interface WrapperConfigServerResourcePackSend extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPackId(): NativeUuid;
-    setPackId(arg0: NativeUuid): void;
-    getUrl(): string;
-    setUrl(arg0: string): void;
-    getHash(): string;
-    setHash(arg0: string): void;
-    isRequired(): boolean;
-    setRequired(arg0: boolean): void;
-    getPrompt(): Component;
-    setPrompt(arg0: Component): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigServerResourcePackSend extends PacketWrapperType<WrapperConfigServerResourcePackSend> {
@@ -20034,18 +18014,6 @@ export interface WrapperConfigServerSelectKnownPacks extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigServerSelectKnownPacks): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -20084,7 +18052,6 @@ export interface WrapperConfigServerSelectKnownPacks extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -20208,8 +18175,6 @@ export interface WrapperConfigServerSelectKnownPacks extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -20225,8 +18190,6 @@ export interface WrapperConfigServerSelectKnownPacks extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getKnownPacks(): KnownPack[];
-    setKnownPacks(arg0: KnownPack[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigServerSelectKnownPacks extends PacketWrapperType<WrapperConfigServerSelectKnownPacks> {
@@ -20253,18 +18216,6 @@ export interface WrapperConfigServerServerLinks extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigServerServerLinks): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -20303,7 +18254,6 @@ export interface WrapperConfigServerServerLinks extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -20427,8 +18377,6 @@ export interface WrapperConfigServerServerLinks extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -20444,8 +18392,6 @@ export interface WrapperConfigServerServerLinks extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getLinks(): PacketServerLinksServerLink[];
-    setLinks(arg0: PacketServerLinksServerLink[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigServerServerLinks extends PacketWrapperType<WrapperConfigServerServerLinks> {
@@ -20472,18 +18418,6 @@ export interface WrapperConfigServerShowDialog extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigServerShowDialog): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -20522,7 +18456,6 @@ export interface WrapperConfigServerShowDialog extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -20646,8 +18579,6 @@ export interface WrapperConfigServerShowDialog extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -20663,8 +18594,6 @@ export interface WrapperConfigServerShowDialog extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getDialog(): PacketDialog;
-    setDialog(arg0: PacketDialog): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigServerShowDialog extends PacketWrapperType<WrapperConfigServerShowDialog> {
@@ -20692,18 +18621,6 @@ export interface WrapperConfigServerStoreCookie extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigServerStoreCookie): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -20742,7 +18659,6 @@ export interface WrapperConfigServerStoreCookie extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -20866,8 +18782,6 @@ export interface WrapperConfigServerStoreCookie extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -20883,10 +18797,6 @@ export interface WrapperConfigServerStoreCookie extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getKey(): ResourceLocation;
-    setKey(arg0: ResourceLocation): void;
-    getPayload(): number[];
-    setPayload(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigServerStoreCookie extends PacketWrapperType<WrapperConfigServerStoreCookie> {
@@ -20915,18 +18825,6 @@ export interface WrapperConfigServerTransfer extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperConfigServerTransfer): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -20965,7 +18863,6 @@ export interface WrapperConfigServerTransfer extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -21089,8 +18986,6 @@ export interface WrapperConfigServerTransfer extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -21106,10 +19001,6 @@ export interface WrapperConfigServerTransfer extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getHost(): string;
-    setHost(arg0: string): void;
-    getPort(): number;
-    setPort(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigServerTransfer extends PacketWrapperType<WrapperConfigServerTransfer> {
@@ -21136,18 +19027,6 @@ export interface WrapperConfigServerUpdateEnabledFeatures extends PacketWrapper 
     write(): void;
     copy(arg0: WrapperConfigServerUpdateEnabledFeatures): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -21186,7 +19065,6 @@ export interface WrapperConfigServerUpdateEnabledFeatures extends PacketWrapper 
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -21310,8 +19188,6 @@ export interface WrapperConfigServerUpdateEnabledFeatures extends PacketWrapper 
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -21327,8 +19203,6 @@ export interface WrapperConfigServerUpdateEnabledFeatures extends PacketWrapper 
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getFeatures(): Set<ResourceLocation>;
-    setFeatures(arg0: Set<ResourceLocation>): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperConfigServerUpdateEnabledFeatures extends PacketWrapperType<WrapperConfigServerUpdateEnabledFeatures> {
@@ -21359,18 +19233,6 @@ export interface WrapperHandshakingClientHandshake extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperHandshakingClientHandshake): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -21409,7 +19271,6 @@ export interface WrapperHandshakingClientHandshake extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -21533,8 +19394,6 @@ export interface WrapperHandshakingClientHandshake extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -21550,16 +19409,6 @@ export interface WrapperHandshakingClientHandshake extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getProtocolVersion(): number;
-    setProtocolVersion(arg0: number): void;
-    getServerAddress(): string;
-    setServerAddress(arg0: string): void;
-    getServerPort(): number;
-    setServerPort(arg0: number): void;
-    getNextConnectionState(): ConnectionState;
-    setNextConnectionState(arg0: ConnectionState): void;
-    getIntention(): HandshakeConnectionIntention;
-    setIntention(arg0: HandshakeConnectionIntention): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperHandshakingClientHandshake extends PacketWrapperType<WrapperHandshakingClientHandshake> {
@@ -21589,18 +19438,6 @@ export interface WrapperLoginClientCookieResponse extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperLoginClientCookieResponse): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -21639,7 +19476,6 @@ export interface WrapperLoginClientCookieResponse extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -21763,8 +19599,6 @@ export interface WrapperLoginClientCookieResponse extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -21780,10 +19614,6 @@ export interface WrapperLoginClientCookieResponse extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getKey(): ResourceLocation;
-    setKey(arg0: ResourceLocation): void;
-    getPayload(): number[];
-    setPayload(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperLoginClientCookieResponse extends PacketWrapperType<WrapperLoginClientCookieResponse> {
@@ -21812,18 +19642,6 @@ export interface WrapperLoginClientEncryptionResponse extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperLoginClientEncryptionResponse): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -21862,7 +19680,6 @@ export interface WrapperLoginClientEncryptionResponse extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -21986,8 +19803,6 @@ export interface WrapperLoginClientEncryptionResponse extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -22003,14 +19818,8 @@ export interface WrapperLoginClientEncryptionResponse extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEncryptedSharedSecret(): number[];
-    setEncryptedSharedSecret(arg0: number[]): void;
     getSecretKey(arg0: ApiObject): ApiObject;
     setSharedKey(arg0: ApiObject, arg1: ApiObject): void;
-    getEncryptedVerifyToken(): number[] | null;
-    setEncryptedVerifyToken(arg0: number[]): void;
-    getSaltSignature(): SaltSignature | null;
-    setSaltSignature(arg0: SaltSignature): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperLoginClientEncryptionResponse extends PacketWrapperType<WrapperLoginClientEncryptionResponse> {
@@ -22041,18 +19850,6 @@ export interface WrapperLoginClientLoginStart extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperLoginClientLoginStart): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -22091,7 +19888,6 @@ export interface WrapperLoginClientLoginStart extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -22215,8 +20011,6 @@ export interface WrapperLoginClientLoginStart extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -22232,12 +20026,6 @@ export interface WrapperLoginClientLoginStart extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getUsername(): string;
-    setUsername(arg0: string): void;
-    getSignatureData(): SignatureData | null;
-    setSignatureData(arg0: SignatureData): void;
-    getPlayerUUID(): NativeUuid | null;
-    setPlayerUUID(arg0: NativeUuid): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperLoginClientLoginStart extends PacketWrapperType<WrapperLoginClientLoginStart> {
@@ -22267,18 +20055,6 @@ export interface WrapperLoginClientLoginSuccessAck extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperLoginClientLoginSuccessAck): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -22317,7 +20093,6 @@ export interface WrapperLoginClientLoginSuccessAck extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -22441,8 +20216,6 @@ export interface WrapperLoginClientLoginSuccessAck extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -22485,18 +20258,6 @@ export interface WrapperLoginClientPluginResponse extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperLoginClientPluginResponse): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -22535,7 +20296,6 @@ export interface WrapperLoginClientPluginResponse extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -22659,8 +20419,6 @@ export interface WrapperLoginClientPluginResponse extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -22676,12 +20434,6 @@ export interface WrapperLoginClientPluginResponse extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getMessageId(): number;
-    setMessageId(arg0: number): void;
-    isSuccessful(): boolean;
-    setSuccessful(arg0: boolean): void;
-    getData(): number[];
-    setData(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperLoginClientPluginResponse extends PacketWrapperType<WrapperLoginClientPluginResponse> {
@@ -22708,18 +20460,6 @@ export interface WrapperLoginServerCookieRequest extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperLoginServerCookieRequest): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -22758,7 +20498,6 @@ export interface WrapperLoginServerCookieRequest extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -22882,8 +20621,6 @@ export interface WrapperLoginServerCookieRequest extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -22899,8 +20636,6 @@ export interface WrapperLoginServerCookieRequest extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getKey(): ResourceLocation;
-    setKey(arg0: ResourceLocation): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperLoginServerCookieRequest extends PacketWrapperType<WrapperLoginServerCookieRequest> {
@@ -22927,18 +20662,6 @@ export interface WrapperLoginServerDisconnect extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperLoginServerDisconnect): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -22977,7 +20700,6 @@ export interface WrapperLoginServerDisconnect extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -23101,8 +20823,6 @@ export interface WrapperLoginServerDisconnect extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -23118,8 +20838,6 @@ export interface WrapperLoginServerDisconnect extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getReason(): Component;
-    setReason(arg0: Component): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperLoginServerDisconnect extends PacketWrapperType<WrapperLoginServerDisconnect> {
@@ -23150,18 +20868,6 @@ export interface WrapperLoginServerEncryptionRequest extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperLoginServerEncryptionRequest): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -23200,7 +20906,6 @@ export interface WrapperLoginServerEncryptionRequest extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -23324,8 +21029,6 @@ export interface WrapperLoginServerEncryptionRequest extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -23341,16 +21044,6 @@ export interface WrapperLoginServerEncryptionRequest extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getServerId(): string;
-    setServerId(arg0: string): void;
-    getPublicKeyBytes(): number[];
-    setPublicKeyBytes(arg0: number[]): void;
-    getPublicKey(): ApiObject;
-    setPublicKey(arg0: ApiObject): void;
-    getVerifyToken(): number[];
-    setVerifyToken(arg0: number[]): void;
-    isShouldAuthenticate(): boolean;
-    setShouldAuthenticate(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperLoginServerEncryptionRequest extends PacketWrapperType<WrapperLoginServerEncryptionRequest> {
@@ -23385,18 +21078,6 @@ export interface WrapperLoginServerLoginSuccess extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperLoginServerLoginSuccess): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -23435,7 +21116,6 @@ export interface WrapperLoginServerLoginSuccess extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -23559,8 +21239,6 @@ export interface WrapperLoginServerLoginSuccess extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -23576,12 +21254,6 @@ export interface WrapperLoginServerLoginSuccess extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getUserProfile(): UserProfile;
-    setUserProfile(arg0: UserProfile): void;
-    getSessionId(): NativeUuid;
-    setSessionId(arg0: NativeUuid): void;
-    isStrictErrorHandling(): boolean;
-    setStrictErrorHandling(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperLoginServerLoginSuccess extends PacketWrapperType<WrapperLoginServerLoginSuccess> {
@@ -23618,18 +21290,6 @@ export interface WrapperLoginServerPluginRequest extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperLoginServerPluginRequest): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -23668,7 +21328,6 @@ export interface WrapperLoginServerPluginRequest extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -23792,8 +21451,6 @@ export interface WrapperLoginServerPluginRequest extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -23809,12 +21466,6 @@ export interface WrapperLoginServerPluginRequest extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getMessageId(): number;
-    setMessageId(arg0: number): void;
-    getChannelName(): string;
-    setChannelName(arg0: string): void;
-    getData(): number[];
-    setData(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperLoginServerPluginRequest extends PacketWrapperType<WrapperLoginServerPluginRequest> {
@@ -23841,18 +21492,6 @@ export interface WrapperLoginServerSetCompression extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperLoginServerSetCompression): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -23891,7 +21530,6 @@ export interface WrapperLoginServerSetCompression extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -24015,8 +21653,6 @@ export interface WrapperLoginServerSetCompression extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -24032,8 +21668,6 @@ export interface WrapperLoginServerSetCompression extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getThreshold(): number;
-    setThreshold(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperLoginServerSetCompression extends PacketWrapperType<WrapperLoginServerSetCompression> {
@@ -24061,18 +21695,6 @@ export interface WrapperPlayClientAdvancementTab extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientAdvancementTab): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -24111,7 +21733,6 @@ export interface WrapperPlayClientAdvancementTab extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -24235,8 +21856,6 @@ export interface WrapperPlayClientAdvancementTab extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -24252,10 +21871,6 @@ export interface WrapperPlayClientAdvancementTab extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getAction(): AdvancementTabAction;
-    setAction(arg0: AdvancementTabAction): void;
-    getTabId(): string | null;
-    setTabId(arg0: string): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientAdvancementTab extends PacketWrapperType<WrapperPlayClientAdvancementTab> {
@@ -24282,18 +21897,6 @@ export interface WrapperPlayClientAnimation extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientAnimation): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -24332,7 +21935,6 @@ export interface WrapperPlayClientAnimation extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -24456,8 +22058,6 @@ export interface WrapperPlayClientAnimation extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -24473,8 +22073,6 @@ export interface WrapperPlayClientAnimation extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getHand(): InteractionHand;
-    setHand(arg0: InteractionHand): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientAnimation extends PacketWrapperType<WrapperPlayClientAnimation> {
@@ -24501,18 +22099,6 @@ export interface WrapperPlayClientAttack extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientAttack): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -24551,7 +22137,6 @@ export interface WrapperPlayClientAttack extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -24675,8 +22260,6 @@ export interface WrapperPlayClientAttack extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -24692,8 +22275,6 @@ export interface WrapperPlayClientAttack extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientAttack extends PacketWrapperType<WrapperPlayClientAttack> {
@@ -24720,18 +22301,6 @@ export interface WrapperPlayClientChangeGameMode extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientChangeGameMode): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -24770,7 +22339,6 @@ export interface WrapperPlayClientChangeGameMode extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -24894,8 +22462,6 @@ export interface WrapperPlayClientChangeGameMode extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -24911,8 +22477,6 @@ export interface WrapperPlayClientChangeGameMode extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getGameMode(): PacketGameMode;
-    setGameMode(arg0: PacketGameMode): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientChangeGameMode extends PacketWrapperType<WrapperPlayClientChangeGameMode> {
@@ -24940,18 +22504,6 @@ export interface WrapperPlayClientChatAck extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientChatAck): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -24990,7 +22542,6 @@ export interface WrapperPlayClientChatAck extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -25114,8 +22665,6 @@ export interface WrapperPlayClientChatAck extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -25131,10 +22680,6 @@ export interface WrapperPlayClientChatAck extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getOffset(): number;
-    setOffset(arg0: number): void;
-    getLastSeenMessages(): LastSeenMessagesLegacyUpdate;
-    setLastSeenMessages(arg0: LastSeenMessagesLegacyUpdate): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientChatAck extends PacketWrapperType<WrapperPlayClientChatAck> {
@@ -25167,18 +22712,6 @@ export interface WrapperPlayClientChatCommand extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientChatCommand): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -25217,7 +22750,6 @@ export interface WrapperPlayClientChatCommand extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -25341,8 +22873,6 @@ export interface WrapperPlayClientChatCommand extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -25358,16 +22888,6 @@ export interface WrapperPlayClientChatCommand extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getCommand(): string;
-    setCommand(arg0: string): void;
-    getMessageSignData(): MessageSignData;
-    setMessageSignData(arg0: MessageSignData): void;
-    getSignedArguments(): SignedCommandArgument[];
-    setSignedArguments(arg0: SignedCommandArgument[]): void;
-    getLastSeenMessages(): LastSeenMessagesUpdate;
-    setLastSeenMessages(arg0: LastSeenMessagesUpdate): void;
-    getLegacyLastSeenMessages(): LastSeenMessagesLegacyUpdate;
-    setLegacyLastSeenMessages(arg0: LastSeenMessagesLegacyUpdate): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientChatCommand extends PacketWrapperType<WrapperPlayClientChatCommand> {
@@ -25396,18 +22916,6 @@ export interface WrapperPlayClientChatCommandUnsigned extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientChatCommandUnsigned): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -25446,7 +22954,6 @@ export interface WrapperPlayClientChatCommandUnsigned extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -25570,8 +23077,6 @@ export interface WrapperPlayClientChatCommandUnsigned extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -25587,8 +23092,6 @@ export interface WrapperPlayClientChatCommandUnsigned extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getCommand(): string;
-    setCommand(arg0: string): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientChatCommandUnsigned extends PacketWrapperType<WrapperPlayClientChatCommandUnsigned> {
@@ -25618,18 +23121,6 @@ export interface WrapperPlayClientChatMessage extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientChatMessage): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -25668,7 +23159,6 @@ export interface WrapperPlayClientChatMessage extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -25792,8 +23282,6 @@ export interface WrapperPlayClientChatMessage extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -25809,14 +23297,6 @@ export interface WrapperPlayClientChatMessage extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getMessage(): string;
-    setMessage(arg0: string): void;
-    getMessageSignData(): MessageSignData | null;
-    setMessageSignData(arg0: MessageSignData): void;
-    getLastSeenMessages(): LastSeenMessagesUpdate;
-    setLastSeenMessages(arg0: LastSeenMessagesUpdate): void;
-    getLegacyLastSeenMessages(): LastSeenMessagesLegacyUpdate;
-    setLegacyLastSeenMessages(arg0: LastSeenMessagesLegacyUpdate): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientChatMessage extends PacketWrapperType<WrapperPlayClientChatMessage> {
@@ -25846,18 +23326,6 @@ export interface WrapperPlayClientChatPreview extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientChatPreview): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -25896,7 +23364,6 @@ export interface WrapperPlayClientChatPreview extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -26020,8 +23487,6 @@ export interface WrapperPlayClientChatPreview extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -26037,10 +23502,6 @@ export interface WrapperPlayClientChatPreview extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getQueryId(): number;
-    setQueryId(arg0: number): void;
-    getMessage(): string;
-    setMessage(arg0: string): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientChatPreview extends PacketWrapperType<WrapperPlayClientChatPreview> {
@@ -26067,18 +23528,6 @@ export interface WrapperPlayClientChatSessionUpdate extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientChatSessionUpdate): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -26117,7 +23566,6 @@ export interface WrapperPlayClientChatSessionUpdate extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -26241,8 +23689,6 @@ export interface WrapperPlayClientChatSessionUpdate extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -26258,8 +23704,6 @@ export interface WrapperPlayClientChatSessionUpdate extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getChatSession(): RemoteChatSession;
-    setChatSession(arg0: RemoteChatSession): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientChatSessionUpdate extends PacketWrapperType<WrapperPlayClientChatSessionUpdate> {
@@ -26286,18 +23730,6 @@ export interface WrapperPlayClientChunkBatchAck extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientChunkBatchAck): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -26336,7 +23768,6 @@ export interface WrapperPlayClientChunkBatchAck extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -26460,8 +23891,6 @@ export interface WrapperPlayClientChunkBatchAck extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -26477,8 +23906,6 @@ export interface WrapperPlayClientChunkBatchAck extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getDesiredChunksPerTick(): number;
-    setDesiredChunksPerTick(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientChunkBatchAck extends PacketWrapperType<WrapperPlayClientChunkBatchAck> {
@@ -26515,18 +23942,6 @@ export interface WrapperPlayClientClickWindow extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientClickWindow): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -26565,7 +23980,6 @@ export interface WrapperPlayClientClickWindow extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -26689,8 +24103,6 @@ export interface WrapperPlayClientClickWindow extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -26706,28 +24118,6 @@ export interface WrapperPlayClientClickWindow extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getWindowId(): number;
-    setWindowId(arg0: number): void;
-    getStateId(): number | null;
-    setStateID(arg0: number | null): void;
-    getSlot(): number;
-    setSlot(arg0: number): void;
-    getButton(): number;
-    setButton(arg0: number): void;
-    getActionNumber(): number | null;
-    setActionNumber(arg0: number): void;
-    getWindowClickType(): ClickWindowWindowClickType;
-    setWindowClickType(arg0: ClickWindowWindowClickType): void;
-    getSlots(): Map<number, PacketItemStack> | null;
-    setSlots(arg0: Map<number, PacketItemStack>): void;
-    setSlots(arg0: Map<number, PacketItemStack> | null): void;
-    getHashedSlots(): Map<number, HashedStack | null>;
-    setHashedSlots(arg0: Map<number, HashedStack | null>): void;
-    getCarriedItemStack(): PacketItemStack;
-    setCarriedItemStack(arg0: PacketItemStack): void;
-    getCarriedHashedStack(): HashedStack | null;
-    setCarriedHashedStack(arg0: HashedStack): void;
-    setCarriedHashedStack(arg0: HashedStack | null): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientClickWindow extends PacketWrapperType<WrapperPlayClientClickWindow> {
@@ -26757,18 +24147,6 @@ export interface WrapperPlayClientClickWindowButton extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientClickWindowButton): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -26807,7 +24185,6 @@ export interface WrapperPlayClientClickWindowButton extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -26931,8 +24308,6 @@ export interface WrapperPlayClientClickWindowButton extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -26948,10 +24323,6 @@ export interface WrapperPlayClientClickWindowButton extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getWindowId(): number;
-    setWindowId(arg0: number): void;
-    getButtonId(): number;
-    setButtonId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientClickWindowButton extends PacketWrapperType<WrapperPlayClientClickWindowButton> {
@@ -26978,18 +24349,6 @@ export interface WrapperPlayClientClientStatus extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientClientStatus): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -27028,7 +24387,6 @@ export interface WrapperPlayClientClientStatus extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -27152,8 +24510,6 @@ export interface WrapperPlayClientClientStatus extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -27169,8 +24525,6 @@ export interface WrapperPlayClientClientStatus extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getAction(): ClientStatusAction;
-    setAction(arg0: ClientStatusAction): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientClientStatus extends PacketWrapperType<WrapperPlayClientClientStatus> {
@@ -27196,18 +24550,6 @@ export interface WrapperPlayClientClientTickEnd extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientClientTickEnd): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -27246,7 +24588,6 @@ export interface WrapperPlayClientClientTickEnd extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -27370,8 +24711,6 @@ export interface WrapperPlayClientClientTickEnd extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -27412,18 +24751,6 @@ export interface WrapperPlayClientCloseWindow extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientCloseWindow): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -27462,7 +24789,6 @@ export interface WrapperPlayClientCloseWindow extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -27586,8 +24912,6 @@ export interface WrapperPlayClientCloseWindow extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -27603,8 +24927,6 @@ export interface WrapperPlayClientCloseWindow extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getWindowId(): number;
-    setWindowId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientCloseWindow extends PacketWrapperType<WrapperPlayClientCloseWindow> {
@@ -27630,18 +24952,6 @@ export interface WrapperPlayClientConfigurationAck extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientConfigurationAck): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -27680,7 +24990,6 @@ export interface WrapperPlayClientConfigurationAck extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -27804,8 +25113,6 @@ export interface WrapperPlayClientConfigurationAck extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -27847,18 +25154,6 @@ export interface WrapperPlayClientCookieResponse extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientCookieResponse): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -27897,7 +25192,6 @@ export interface WrapperPlayClientCookieResponse extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -28021,8 +25315,6 @@ export interface WrapperPlayClientCookieResponse extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -28038,10 +25330,6 @@ export interface WrapperPlayClientCookieResponse extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getKey(): ResourceLocation;
-    setKey(arg0: ResourceLocation): void;
-    getPayload(): number[];
-    setPayload(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientCookieResponse extends PacketWrapperType<WrapperPlayClientCookieResponse> {
@@ -28072,18 +25360,6 @@ export interface WrapperPlayClientCraftRecipeRequest extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientCraftRecipeRequest): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -28122,7 +25398,6 @@ export interface WrapperPlayClientCraftRecipeRequest extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -28246,8 +25521,6 @@ export interface WrapperPlayClientCraftRecipeRequest extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -28263,16 +25536,6 @@ export interface WrapperPlayClientCraftRecipeRequest extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getWindowId(): number;
-    setWindowId(arg0: number): void;
-    getRecipe<T>(): T;
-    setRecipe<T>(arg0: T): void;
-    getRecipeKey(): ResourceLocation;
-    setRecipeKey(arg0: ResourceLocation): void;
-    getRecipeId(): RecipeDisplayId;
-    setRecipeId(arg0: RecipeDisplayId): void;
-    isMakeAll(): boolean;
-    setMakeAll(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientCraftRecipeRequest extends PacketWrapperType<WrapperPlayClientCraftRecipeRequest> {
@@ -28306,18 +25569,6 @@ export interface WrapperPlayClientCreativeInventoryAction extends PacketWrapper 
     write(): void;
     copy(arg0: WrapperPlayClientCreativeInventoryAction): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -28356,7 +25607,6 @@ export interface WrapperPlayClientCreativeInventoryAction extends PacketWrapper 
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -28480,8 +25730,6 @@ export interface WrapperPlayClientCreativeInventoryAction extends PacketWrapper 
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -28497,10 +25745,6 @@ export interface WrapperPlayClientCreativeInventoryAction extends PacketWrapper 
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSlot(): number;
-    setSlot(arg0: number): void;
-    getItemStack(): PacketItemStack;
-    setItemStack(arg0: PacketItemStack): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientCreativeInventoryAction extends PacketWrapperType<WrapperPlayClientCreativeInventoryAction> {
@@ -28528,18 +25772,6 @@ export interface WrapperPlayClientCustomClickAction extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientCustomClickAction): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -28578,7 +25810,6 @@ export interface WrapperPlayClientCustomClickAction extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -28702,8 +25933,6 @@ export interface WrapperPlayClientCustomClickAction extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -28719,10 +25948,6 @@ export interface WrapperPlayClientCustomClickAction extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getId(): ResourceLocation;
-    setId(arg0: ResourceLocation): void;
-    getPayload(): NBT;
-    setPayload(arg0: NBT): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientCustomClickAction extends PacketWrapperType<WrapperPlayClientCustomClickAction> {
@@ -28749,18 +25974,6 @@ export interface WrapperPlayClientDebugPing extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientDebugPing): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -28799,7 +26012,6 @@ export interface WrapperPlayClientDebugPing extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -28923,8 +26135,6 @@ export interface WrapperPlayClientDebugPing extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -28940,8 +26150,6 @@ export interface WrapperPlayClientDebugPing extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getTimestamp(): number;
-    setTimestamp(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientDebugPing extends PacketWrapperType<WrapperPlayClientDebugPing> {
@@ -28968,18 +26176,6 @@ export interface WrapperPlayClientDebugSampleSubscription extends PacketWrapper 
     write(): void;
     copy(arg0: WrapperPlayClientDebugSampleSubscription): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -29018,7 +26214,6 @@ export interface WrapperPlayClientDebugSampleSubscription extends PacketWrapper 
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -29142,8 +26337,6 @@ export interface WrapperPlayClientDebugSampleSubscription extends PacketWrapper 
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -29159,8 +26352,6 @@ export interface WrapperPlayClientDebugSampleSubscription extends PacketWrapper 
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSampleType(): DebugSampleSampleType;
-    setSampleType(arg0: DebugSampleSampleType): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientDebugSampleSubscription extends PacketWrapperType<WrapperPlayClientDebugSampleSubscription> {
@@ -29187,18 +26378,6 @@ export interface WrapperPlayClientDebugSubscriptionRequest extends PacketWrapper
     write(): void;
     copy(arg0: WrapperPlayClientDebugSubscriptionRequest): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -29237,7 +26416,6 @@ export interface WrapperPlayClientDebugSubscriptionRequest extends PacketWrapper
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -29361,8 +26539,6 @@ export interface WrapperPlayClientDebugSubscriptionRequest extends PacketWrapper
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -29378,8 +26554,6 @@ export interface WrapperPlayClientDebugSubscriptionRequest extends PacketWrapper
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSubscriptions(): Set<DebugSubscription<unknown>>;
-    setSubscriptions(arg0: Set<DebugSubscription<unknown>>): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientDebugSubscriptionRequest extends PacketWrapperType<WrapperPlayClientDebugSubscriptionRequest> {
@@ -29410,18 +26584,6 @@ export interface WrapperPlayClientEditBook extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientEditBook): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -29460,7 +26622,6 @@ export interface WrapperPlayClientEditBook extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -29584,8 +26745,6 @@ export interface WrapperPlayClientEditBook extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -29601,16 +26760,6 @@ export interface WrapperPlayClientEditBook extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSlot(): number;
-    setSlot(arg0: number): void;
-    getPages(): string[];
-    setPages(arg0: string[]): void;
-    getTitle(): string;
-    setTitle(arg0: string): void;
-    getItemStack(): PacketItemStack;
-    setItemStack(arg0: PacketItemStack): void;
-    getSigning(): boolean;
-    setSigning(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientEditBook extends PacketWrapperType<WrapperPlayClientEditBook> {
@@ -29640,18 +26789,6 @@ export interface WrapperPlayClientEntityAction extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientEntityAction): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -29690,7 +26827,6 @@ export interface WrapperPlayClientEntityAction extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -29814,8 +26950,6 @@ export interface WrapperPlayClientEntityAction extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -29831,12 +26965,6 @@ export interface WrapperPlayClientEntityAction extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getAction(): EntityActionAction;
-    setAction(arg0: EntityActionAction): void;
-    getJumpBoost(): number;
-    setJumpBoost(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientEntityAction extends PacketWrapperType<WrapperPlayClientEntityAction> {
@@ -29866,18 +26994,6 @@ export interface WrapperPlayClientGenerateStructure extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientGenerateStructure): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -29916,7 +27032,6 @@ export interface WrapperPlayClientGenerateStructure extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -30040,8 +27155,6 @@ export interface WrapperPlayClientGenerateStructure extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -30057,12 +27170,6 @@ export interface WrapperPlayClientGenerateStructure extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getBlockPosition(): PacketVector3i;
-    setBlockPosition(arg0: PacketVector3i): void;
-    getLevels(): number;
-    setLevels(arg0: number): void;
-    isKeepingJigsaws(): boolean;
-    setKeepJigsaws(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientGenerateStructure extends PacketWrapperType<WrapperPlayClientGenerateStructure> {
@@ -30089,18 +27196,6 @@ export interface WrapperPlayClientHeldItemChange extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientHeldItemChange): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -30139,7 +27234,6 @@ export interface WrapperPlayClientHeldItemChange extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -30263,8 +27357,6 @@ export interface WrapperPlayClientHeldItemChange extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -30280,8 +27372,6 @@ export interface WrapperPlayClientHeldItemChange extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSlot(): number;
-    setSlot(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientHeldItemChange extends PacketWrapperType<WrapperPlayClientHeldItemChange> {
@@ -30313,18 +27403,6 @@ export interface WrapperPlayClientInteractEntity extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientInteractEntity): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -30363,7 +27441,6 @@ export interface WrapperPlayClientInteractEntity extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -30487,8 +27564,6 @@ export interface WrapperPlayClientInteractEntity extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -30504,19 +27579,7 @@ export interface WrapperPlayClientInteractEntity extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getAction(): InteractEntityInteractAction;
-    setAction(arg0: InteractEntityInteractAction): void;
-    getHand(): InteractionHand;
-    setHand(arg0: InteractionHand): void;
-    getLocation(): PacketVector3d;
-    setLocation(arg0: PacketVector3d): void;
-    getTarget(): PacketVector3f | null;
-    setTarget(arg0: PacketVector3f | null): void;
     isSneaking(): boolean | null;
-    setSneaking(arg0: boolean): void;
-    setSneaking(arg0: boolean | null): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientInteractEntity extends PacketWrapperType<WrapperPlayClientInteractEntity> {
@@ -30547,18 +27610,6 @@ export interface WrapperPlayClientKeepAlive extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientKeepAlive): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -30597,7 +27648,6 @@ export interface WrapperPlayClientKeepAlive extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -30721,8 +27771,6 @@ export interface WrapperPlayClientKeepAlive extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -30738,8 +27786,6 @@ export interface WrapperPlayClientKeepAlive extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getId(): number;
-    setId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientKeepAlive extends PacketWrapperType<WrapperPlayClientKeepAlive> {
@@ -30766,18 +27812,6 @@ export interface WrapperPlayClientLockDifficulty extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientLockDifficulty): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -30816,7 +27850,6 @@ export interface WrapperPlayClientLockDifficulty extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -30940,8 +27973,6 @@ export interface WrapperPlayClientLockDifficulty extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -30957,8 +27988,6 @@ export interface WrapperPlayClientLockDifficulty extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    isLocked(): boolean;
-    setLocked(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientLockDifficulty extends PacketWrapperType<WrapperPlayClientLockDifficulty> {
@@ -30985,18 +28014,6 @@ export interface WrapperPlayClientNameItem extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientNameItem): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -31035,7 +28052,6 @@ export interface WrapperPlayClientNameItem extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -31159,8 +28175,6 @@ export interface WrapperPlayClientNameItem extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -31176,8 +28190,6 @@ export interface WrapperPlayClientNameItem extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getItemName(): string;
-    setItemName(arg0: string): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientNameItem extends PacketWrapperType<WrapperPlayClientNameItem> {
@@ -31204,18 +28216,6 @@ export interface WrapperPlayClientPickItem extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientPickItem): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -31254,7 +28254,6 @@ export interface WrapperPlayClientPickItem extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -31378,8 +28377,6 @@ export interface WrapperPlayClientPickItem extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -31395,8 +28392,6 @@ export interface WrapperPlayClientPickItem extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSlot(): number;
-    setSlot(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientPickItem extends PacketWrapperType<WrapperPlayClientPickItem> {
@@ -31424,18 +28419,6 @@ export interface WrapperPlayClientPickItemFromBlock extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientPickItemFromBlock): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -31474,7 +28457,6 @@ export interface WrapperPlayClientPickItemFromBlock extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -31598,8 +28580,6 @@ export interface WrapperPlayClientPickItemFromBlock extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -31615,10 +28595,6 @@ export interface WrapperPlayClientPickItemFromBlock extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getBlockPos(): PacketVector3i;
-    setBlockPos(arg0: PacketVector3i): void;
-    isIncludeData(): boolean;
-    setIncludeData(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientPickItemFromBlock extends PacketWrapperType<WrapperPlayClientPickItemFromBlock> {
@@ -31646,18 +28622,6 @@ export interface WrapperPlayClientPickItemFromEntity extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientPickItemFromEntity): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -31696,7 +28660,6 @@ export interface WrapperPlayClientPickItemFromEntity extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -31820,8 +28783,6 @@ export interface WrapperPlayClientPickItemFromEntity extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -31837,10 +28798,6 @@ export interface WrapperPlayClientPickItemFromEntity extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    isIncludeData(): boolean;
-    setIncludeData(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientPickItemFromEntity extends PacketWrapperType<WrapperPlayClientPickItemFromEntity> {
@@ -31872,18 +28829,6 @@ export interface WrapperPlayClientPlayerAbilities extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientPlayerAbilities): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -31922,7 +28867,6 @@ export interface WrapperPlayClientPlayerAbilities extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -32046,8 +28990,6 @@ export interface WrapperPlayClientPlayerAbilities extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -32063,18 +29005,9 @@ export interface WrapperPlayClientPlayerAbilities extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    isFlying(): boolean;
-    setFlying(arg0: boolean): void;
     isInGodMode(): boolean | null;
-    setInGodMode(arg0: boolean | null): void;
     isFlightAllowed(): boolean | null;
-    setFlightAllowed(arg0: boolean | null): void;
     isInCreativeMode(): boolean | null;
-    setCreativeMode(arg0: boolean | null): void;
-    getFlySpeed(): number | null;
-    setFlySpeed(arg0: number | null): void;
-    getWalkSpeed(): number | null;
-    setWalkSpeed(arg0: number | null): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientPlayerAbilities extends PacketWrapperType<WrapperPlayClientPlayerAbilities> {
@@ -32111,18 +29044,6 @@ export interface WrapperPlayClientPlayerBlockPlacement extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientPlayerBlockPlacement): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -32161,7 +29082,6 @@ export interface WrapperPlayClientPlayerBlockPlacement extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -32285,8 +29205,6 @@ export interface WrapperPlayClientPlayerBlockPlacement extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -32302,24 +29220,6 @@ export interface WrapperPlayClientPlayerBlockPlacement extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getHand(): InteractionHand;
-    setHand(arg0: InteractionHand): void;
-    getBlockPosition(): PacketVector3i;
-    setBlockPosition(arg0: PacketVector3i): void;
-    getFaceId(): number;
-    setFaceId(arg0: number): void;
-    getFace(): PacketBlockFace;
-    setFace(arg0: PacketBlockFace): void;
-    getCursorPosition(): PacketVector3f;
-    setCursorPosition(arg0: PacketVector3f): void;
-    getItemStack(): PacketItemStack | null;
-    setItemStack(arg0: PacketItemStack | null): void;
-    getInsideBlock(): boolean | null;
-    setInsideBlock(arg0: boolean | null): void;
-    getWorldBorderHit(): boolean | null;
-    setWorldBorderHit(arg0: boolean | null): void;
-    getSequence(): number;
-    setSequence(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientPlayerBlockPlacement extends PacketWrapperType<WrapperPlayClientPlayerBlockPlacement> {
@@ -32352,18 +29252,6 @@ export interface WrapperPlayClientPlayerDigging extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientPlayerDigging): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -32402,7 +29290,6 @@ export interface WrapperPlayClientPlayerDigging extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -32526,8 +29413,6 @@ export interface WrapperPlayClientPlayerDigging extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -32543,16 +29428,6 @@ export interface WrapperPlayClientPlayerDigging extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getAction(): DiggingAction;
-    setAction(arg0: DiggingAction): void;
-    getBlockPosition(): PacketVector3i;
-    setBlockPosition(arg0: PacketVector3i): void;
-    getBlockFace(): PacketBlockFace;
-    setBlockFace(arg0: PacketBlockFace): void;
-    getBlockFaceId(): number;
-    setBlockFaceId(arg0: number): void;
-    getSequence(): number;
-    setSequence(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientPlayerDigging extends PacketWrapperType<WrapperPlayClientPlayerDigging> {
@@ -32585,18 +29460,6 @@ export interface WrapperPlayClientPlayerFlying extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientPlayerFlying): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -32635,7 +29498,6 @@ export interface WrapperPlayClientPlayerFlying extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -32759,8 +29621,6 @@ export interface WrapperPlayClientPlayerFlying extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -32776,16 +29636,8 @@ export interface WrapperPlayClientPlayerFlying extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getLocation(): PacketLocation;
-    setLocation(arg0: PacketLocation): void;
     hasPositionChanged(): boolean;
-    setPositionChanged(arg0: boolean): void;
     hasRotationChanged(): boolean;
-    setRotationChanged(arg0: boolean): void;
-    isOnGround(): boolean;
-    setOnGround(arg0: boolean): void;
-    isHorizontalCollision(): boolean;
-    setHorizontalCollision(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientPlayerFlying extends PacketWrapperType<WrapperPlayClientPlayerFlying> {
@@ -32821,18 +29673,6 @@ export interface WrapperPlayClientPlayerInput extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientPlayerInput): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -32871,7 +29711,6 @@ export interface WrapperPlayClientPlayerInput extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -32995,8 +29834,6 @@ export interface WrapperPlayClientPlayerInput extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -33012,20 +29849,6 @@ export interface WrapperPlayClientPlayerInput extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    isForward(): boolean;
-    setForward(arg0: boolean): void;
-    isBackward(): boolean;
-    setBackward(arg0: boolean): void;
-    isLeft(): boolean;
-    setLeft(arg0: boolean): void;
-    isRight(): boolean;
-    setRight(arg0: boolean): void;
-    isJump(): boolean;
-    setJump(arg0: boolean): void;
-    isShift(): boolean;
-    setShift(arg0: boolean): void;
-    isSprint(): boolean;
-    setSprint(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientPlayerInput extends PacketWrapperType<WrapperPlayClientPlayerInput> {
@@ -33051,18 +29874,6 @@ export interface WrapperPlayClientPlayerLoaded extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientPlayerLoaded): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -33101,7 +29912,6 @@ export interface WrapperPlayClientPlayerLoaded extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -33225,8 +30035,6 @@ export interface WrapperPlayClientPlayerLoaded extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -33272,18 +30080,6 @@ export interface WrapperPlayClientPlayerPosition extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientPlayerFlying): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -33322,7 +30118,6 @@ export interface WrapperPlayClientPlayerPosition extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -33446,8 +30241,6 @@ export interface WrapperPlayClientPlayerPosition extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -33463,19 +30256,9 @@ export interface WrapperPlayClientPlayerPosition extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getLocation(): PacketLocation;
-    setLocation(arg0: PacketLocation): void;
     hasPositionChanged(): boolean;
-    setPositionChanged(arg0: boolean): void;
     hasRotationChanged(): boolean;
-    setRotationChanged(arg0: boolean): void;
-    isOnGround(): boolean;
-    setOnGround(arg0: boolean): void;
-    isHorizontalCollision(): boolean;
-    setHorizontalCollision(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
-    getPosition(): PacketVector3d;
-    setPosition(arg0: PacketVector3d): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientPlayerPosition extends PacketWrapperType<WrapperPlayClientPlayerPosition> {
     (arg0: PacketVector3d, arg1: boolean): WrapperPlayClientPlayerPosition;
@@ -33508,18 +30291,6 @@ export interface WrapperPlayClientPlayerPositionAndRotation extends PacketWrappe
     write(): void;
     copy(arg0: WrapperPlayClientPlayerFlying): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -33558,7 +30329,6 @@ export interface WrapperPlayClientPlayerPositionAndRotation extends PacketWrappe
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -33682,8 +30452,6 @@ export interface WrapperPlayClientPlayerPositionAndRotation extends PacketWrappe
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -33699,23 +30467,9 @@ export interface WrapperPlayClientPlayerPositionAndRotation extends PacketWrappe
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getLocation(): PacketLocation;
-    setLocation(arg0: PacketLocation): void;
     hasPositionChanged(): boolean;
-    setPositionChanged(arg0: boolean): void;
     hasRotationChanged(): boolean;
-    setRotationChanged(arg0: boolean): void;
-    isOnGround(): boolean;
-    setOnGround(arg0: boolean): void;
-    isHorizontalCollision(): boolean;
-    setHorizontalCollision(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
-    getPosition(): PacketVector3d;
-    setPosition(arg0: PacketVector3d): void;
-    getYaw(): number;
-    setYaw(arg0: number): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientPlayerPositionAndRotation extends PacketWrapperType<WrapperPlayClientPlayerPositionAndRotation> {
     (arg0: PacketVector3d, arg1: number, arg2: number, arg3: boolean): WrapperPlayClientPlayerPositionAndRotation;
@@ -33749,18 +30503,6 @@ export interface WrapperPlayClientPlayerRotation extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientPlayerFlying): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -33799,7 +30541,6 @@ export interface WrapperPlayClientPlayerRotation extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -33923,8 +30664,6 @@ export interface WrapperPlayClientPlayerRotation extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -33940,21 +30679,9 @@ export interface WrapperPlayClientPlayerRotation extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getLocation(): PacketLocation;
-    setLocation(arg0: PacketLocation): void;
     hasPositionChanged(): boolean;
-    setPositionChanged(arg0: boolean): void;
     hasRotationChanged(): boolean;
-    setRotationChanged(arg0: boolean): void;
-    isOnGround(): boolean;
-    setOnGround(arg0: boolean): void;
-    isHorizontalCollision(): boolean;
-    setHorizontalCollision(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
-    getYaw(): number;
-    setYaw(arg0: number): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientPlayerRotation extends PacketWrapperType<WrapperPlayClientPlayerRotation> {
     (arg0: number, arg1: number, arg2: boolean): WrapperPlayClientPlayerRotation;
@@ -33981,18 +30708,6 @@ export interface WrapperPlayClientPluginMessage extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientPluginMessage): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -34031,7 +30746,6 @@ export interface WrapperPlayClientPluginMessage extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -34155,8 +30869,6 @@ export interface WrapperPlayClientPluginMessage extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -34172,10 +30884,6 @@ export interface WrapperPlayClientPluginMessage extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getChannelName(): string;
-    setChannelName(arg0: string): void;
-    getData(): number[];
-    setData(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientPluginMessage extends PacketWrapperType<WrapperPlayClientPluginMessage> {
@@ -34204,18 +30912,6 @@ export interface WrapperPlayClientPong extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientPong): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -34254,7 +30950,6 @@ export interface WrapperPlayClientPong extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -34378,8 +31073,6 @@ export interface WrapperPlayClientPong extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -34395,8 +31088,6 @@ export interface WrapperPlayClientPong extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getId(): number;
-    setId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientPong extends PacketWrapperType<WrapperPlayClientPong> {
@@ -34424,18 +31115,6 @@ export interface WrapperPlayClientQueryBlockNBT extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientQueryBlockNBT): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -34474,7 +31153,6 @@ export interface WrapperPlayClientQueryBlockNBT extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -34598,8 +31276,6 @@ export interface WrapperPlayClientQueryBlockNBT extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -34615,10 +31291,6 @@ export interface WrapperPlayClientQueryBlockNBT extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getTransactionId(): number;
-    setTransactionId(arg0: number): void;
-    getBlockPosition(): PacketVector3i;
-    setBlockPosition(arg0: PacketVector3i): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientQueryBlockNBT extends PacketWrapperType<WrapperPlayClientQueryBlockNBT> {
@@ -34646,18 +31318,6 @@ export interface WrapperPlayClientQueryEntityNBT extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientQueryEntityNBT): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -34696,7 +31356,6 @@ export interface WrapperPlayClientQueryEntityNBT extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -34820,8 +31479,6 @@ export interface WrapperPlayClientQueryEntityNBT extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -34837,10 +31494,6 @@ export interface WrapperPlayClientQueryEntityNBT extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getTransactionId(): number;
-    setTransactionId(arg0: number): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientQueryEntityNBT extends PacketWrapperType<WrapperPlayClientQueryEntityNBT> {
@@ -34869,18 +31522,6 @@ export interface WrapperPlayClientResourcePackStatus extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientResourcePackStatus): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -34919,7 +31560,6 @@ export interface WrapperPlayClientResourcePackStatus extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -35043,8 +31683,6 @@ export interface WrapperPlayClientResourcePackStatus extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -35060,12 +31698,6 @@ export interface WrapperPlayClientResourcePackStatus extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPackId(): NativeUuid;
-    setPackId(arg0: NativeUuid): void;
-    getResult(): PlayResourcePackStatusResult;
-    setResult(arg0: PlayResourcePackStatusResult): void;
-    getHash(): string;
-    setHash(arg0: string): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientResourcePackStatus extends PacketWrapperType<WrapperPlayClientResourcePackStatus> {
@@ -35097,18 +31729,6 @@ export interface WrapperPlayClientSelectBundleItem extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientSelectBundleItem): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -35147,7 +31767,6 @@ export interface WrapperPlayClientSelectBundleItem extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -35271,8 +31890,6 @@ export interface WrapperPlayClientSelectBundleItem extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -35288,10 +31905,6 @@ export interface WrapperPlayClientSelectBundleItem extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSlotId(): number;
-    setSlotId(arg0: number): void;
-    getSelectedItemIndex(): number;
-    setSelectedItemIndex(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientSelectBundleItem extends PacketWrapperType<WrapperPlayClientSelectBundleItem> {
@@ -35318,18 +31931,6 @@ export interface WrapperPlayClientSelectTrade extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientSelectTrade): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -35368,7 +31969,6 @@ export interface WrapperPlayClientSelectTrade extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -35492,8 +32092,6 @@ export interface WrapperPlayClientSelectTrade extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -35509,8 +32107,6 @@ export interface WrapperPlayClientSelectTrade extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSlot(): number;
-    setSlot(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientSelectTrade extends PacketWrapperType<WrapperPlayClientSelectTrade> {
@@ -35538,18 +32134,6 @@ export interface WrapperPlayClientSetBeaconEffect extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientSetBeaconEffect): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -35588,7 +32172,6 @@ export interface WrapperPlayClientSetBeaconEffect extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -35712,8 +32295,6 @@ export interface WrapperPlayClientSetBeaconEffect extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -35729,10 +32310,6 @@ export interface WrapperPlayClientSetBeaconEffect extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPrimaryEffect(): number;
-    setPrimaryEffect(arg0: number): void;
-    getSecondaryEffect(): number;
-    setSecondaryEffect(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientSetBeaconEffect extends PacketWrapperType<WrapperPlayClientSetBeaconEffect> {
@@ -35759,18 +32336,6 @@ export interface WrapperPlayClientSetDifficulty extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientSetDifficulty): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -35809,7 +32374,6 @@ export interface WrapperPlayClientSetDifficulty extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -35933,8 +32497,6 @@ export interface WrapperPlayClientSetDifficulty extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -35950,8 +32512,6 @@ export interface WrapperPlayClientSetDifficulty extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getDifficulty(): PacketDifficulty;
-    setDifficulty(arg0: PacketDifficulty): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientSetDifficulty extends PacketWrapperType<WrapperPlayClientSetDifficulty> {
@@ -35979,18 +32539,6 @@ export interface WrapperPlayClientSetDisplayedRecipe extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientSetDisplayedRecipe): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -36029,7 +32577,6 @@ export interface WrapperPlayClientSetDisplayedRecipe extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -36153,8 +32700,6 @@ export interface WrapperPlayClientSetDisplayedRecipe extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -36170,10 +32715,6 @@ export interface WrapperPlayClientSetDisplayedRecipe extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getRecipe(): ResourceLocation;
-    setRecipe(arg0: ResourceLocation): void;
-    getRecipeId(): RecipeDisplayId;
-    setRecipeId(arg0: RecipeDisplayId): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientSetDisplayedRecipe extends PacketWrapperType<WrapperPlayClientSetDisplayedRecipe> {
@@ -36202,18 +32743,6 @@ export interface WrapperPlayClientSetGameRule extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientSetGameRule): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -36252,7 +32781,6 @@ export interface WrapperPlayClientSetGameRule extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -36376,8 +32904,6 @@ export interface WrapperPlayClientSetGameRule extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -36393,8 +32919,6 @@ export interface WrapperPlayClientSetGameRule extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntries(): SetGameRuleEntry[];
-    setEntries(arg0: SetGameRuleEntry[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientSetGameRule extends PacketWrapperType<WrapperPlayClientSetGameRule> {
@@ -36423,18 +32947,6 @@ export interface WrapperPlayClientSetRecipeBookState extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientSetRecipeBookState): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -36473,7 +32985,6 @@ export interface WrapperPlayClientSetRecipeBookState extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -36597,8 +33108,6 @@ export interface WrapperPlayClientSetRecipeBookState extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -36614,12 +33123,6 @@ export interface WrapperPlayClientSetRecipeBookState extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getBookType(): BookType;
-    setBookType(arg0: BookType): void;
-    isBookOpen(): boolean;
-    setBookOpen(arg0: boolean): void;
-    isFilterActive(): boolean;
-    setFilterActive(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientSetRecipeBookState extends PacketWrapperType<WrapperPlayClientSetRecipeBookState> {
@@ -36660,18 +33163,6 @@ export interface WrapperPlayClientSetStructureBlock extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientSetStructureBlock): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -36710,7 +33201,6 @@ export interface WrapperPlayClientSetStructureBlock extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -36834,8 +33324,6 @@ export interface WrapperPlayClientSetStructureBlock extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -36851,36 +33339,6 @@ export interface WrapperPlayClientSetStructureBlock extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPosition(): PacketVector3i;
-    setPosition(arg0: PacketVector3i): void;
-    getUpdateType(): SetStructureBlockUpdateType;
-    setUpdateType(arg0: SetStructureBlockUpdateType): void;
-    getMode(): SetStructureBlockStructureMode;
-    setMode(arg0: SetStructureBlockStructureMode): void;
-    getName(): string;
-    setName(arg0: string): void;
-    getOffset(): PacketVector3i;
-    setOffset(arg0: PacketVector3i): void;
-    getSize(): PacketVector3i;
-    setSize(arg0: PacketVector3i): void;
-    getMirror(): StructureMirror;
-    setMirror(arg0: StructureMirror): void;
-    getRotation(): PacketStructureRotation;
-    setRotation(arg0: PacketStructureRotation): void;
-    getData(): string;
-    setData(arg0: string): void;
-    isIgnoreEntities(): boolean;
-    setIgnoreEntities(arg0: boolean): void;
-    isStrict(): boolean;
-    setStrict(arg0: boolean): void;
-    isShowAir(): boolean;
-    setShowAir(arg0: boolean): void;
-    isShowBoundingBox(): boolean;
-    setShowBoundingBox(arg0: boolean): void;
-    getIntegrity(): number;
-    setIntegrity(arg0: number): void;
-    getSeed(): number;
-    setSeed(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientSetStructureBlock extends PacketWrapperType<WrapperPlayClientSetStructureBlock> {
@@ -36911,18 +33369,6 @@ export interface WrapperPlayClientSetTestBlock extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientSetTestBlock): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -36961,7 +33407,6 @@ export interface WrapperPlayClientSetTestBlock extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -37085,8 +33530,6 @@ export interface WrapperPlayClientSetTestBlock extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -37102,12 +33545,6 @@ export interface WrapperPlayClientSetTestBlock extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPosition(): PacketVector3i;
-    setPosition(arg0: PacketVector3i): void;
-    getMode(): SetTestBlockTestBlockMode;
-    setMode(arg0: SetTestBlockTestBlockMode): void;
-    getMessage(): string;
-    setMessage(arg0: string): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientSetTestBlock extends PacketWrapperType<WrapperPlayClientSetTestBlock> {
@@ -37148,18 +33585,6 @@ export interface WrapperPlayClientSettings extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientSettings): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -37198,7 +33623,6 @@ export interface WrapperPlayClientSettings extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -37322,8 +33746,6 @@ export interface WrapperPlayClientSettings extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -37339,37 +33761,9 @@ export interface WrapperPlayClientSettings extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getLocale(): string;
-    setLocale(arg0: string): void;
-    getViewDistance(): number;
-    setViewDistance(arg0: number): void;
-    getChatVisibility(): PacketSettingsChatVisibility;
-    setChatVisibility(arg0: PacketSettingsChatVisibility): void;
-    isChatColors(): boolean;
-    setChatColors(arg0: boolean): void;
-    getSkinMask(): number;
-    setSkinMask(arg0: number): void;
-    getVisibleSkinSection(): SkinSection;
-    setVisibleSkinSections(arg0: SkinSection): void;
     isSkinSectionVisible(arg0: SkinSection): boolean;
     setSkinSectionVisible(arg0: SkinSection, arg1: boolean): void;
-    getMainHand(): HumanoidArm;
-    setMainHand(arg0: HumanoidArm): void;
-    isTextFilteringEnabled(): boolean;
-    setTextFilteringEnabled(arg0: boolean): void;
-    isServerListingAllowed(): boolean;
-    setServerListingAllowed(arg0: boolean): void;
-    getParticleStatus(): SettingsParticleStatus;
-    setParticleStatus(arg0: SettingsParticleStatus): void;
-    getIgnoredDifficulty(): number;
-    setIgnoredDifficulty(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
-    getVisibility(): PlaySettingsChatVisibility;
-    setVisibility(arg0: PlaySettingsChatVisibility): void;
-    isChatColorable(): boolean;
-    setChatColorable(arg0: boolean): void;
-    getVisibleSkinSectionMask(): number;
-    setVisibleSkinSectionMask(arg0: number): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientSettings extends PacketWrapperType<WrapperPlayClientSettings> {
     (arg0: string, arg1: number, arg2: PacketSettingsChatVisibility, arg3: boolean, arg4: number, arg5: HumanoidArm, arg6: boolean, arg7: boolean, arg8: SettingsParticleStatus): WrapperPlayClientSettings;
@@ -37399,18 +33793,6 @@ export interface WrapperPlayClientSlotStateChange extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientSlotStateChange): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -37449,7 +33831,6 @@ export interface WrapperPlayClientSlotStateChange extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -37573,8 +33954,6 @@ export interface WrapperPlayClientSlotStateChange extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -37590,12 +33969,6 @@ export interface WrapperPlayClientSlotStateChange extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSlot(): number;
-    setSlot(arg0: number): void;
-    getWindowId(): number;
-    setWindowId(arg0: number): void;
-    isState(): boolean;
-    setState(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientSlotStateChange extends PacketWrapperType<WrapperPlayClientSlotStateChange> {
@@ -37622,18 +33995,6 @@ export interface WrapperPlayClientSpectate extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientSpectate): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -37672,7 +34033,6 @@ export interface WrapperPlayClientSpectate extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -37796,8 +34156,6 @@ export interface WrapperPlayClientSpectate extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -37813,8 +34171,6 @@ export interface WrapperPlayClientSpectate extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getTargetUUID(): NativeUuid;
-    setTargetUUID(arg0: NativeUuid): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientSpectate extends PacketWrapperType<WrapperPlayClientSpectate> {
@@ -37841,18 +34197,6 @@ export interface WrapperPlayClientSpectateEntity extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientSpectateEntity): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -37891,7 +34235,6 @@ export interface WrapperPlayClientSpectateEntity extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -38015,8 +34358,6 @@ export interface WrapperPlayClientSpectateEntity extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -38033,9 +34374,6 @@ export interface WrapperPlayClientSpectateEntity extends PacketWrapper {
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
     hasEntityId(): boolean;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    setEntityId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientSpectateEntity extends PacketWrapperType<WrapperPlayClientSpectateEntity> {
@@ -38065,18 +34403,6 @@ export interface WrapperPlayClientSteerBoat extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientSteerBoat): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -38115,7 +34441,6 @@ export interface WrapperPlayClientSteerBoat extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -38239,8 +34564,6 @@ export interface WrapperPlayClientSteerBoat extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -38256,10 +34579,6 @@ export interface WrapperPlayClientSteerBoat extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    isLeftPaddleTurning(): boolean;
-    setLeftPaddleTurning(arg0: boolean): void;
-    isRightPaddleTurning(): boolean;
-    setRightPaddleTurning(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientSteerBoat extends PacketWrapperType<WrapperPlayClientSteerBoat> {
@@ -38290,18 +34609,6 @@ export interface WrapperPlayClientSteerVehicle extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientSteerVehicle): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -38340,7 +34647,6 @@ export interface WrapperPlayClientSteerVehicle extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -38464,8 +34770,6 @@ export interface WrapperPlayClientSteerVehicle extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -38481,16 +34785,6 @@ export interface WrapperPlayClientSteerVehicle extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSideways(): number;
-    setSideways(arg0: number): void;
-    getForward(): number;
-    setForward(arg0: number): void;
-    getFlags(): number;
-    setFlags(arg0: number): void;
-    isJump(): boolean;
-    setJump(arg0: boolean): void;
-    isUnmount(): boolean;
-    setUnmount(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientSteerVehicle extends PacketWrapperType<WrapperPlayClientSteerVehicle> {
@@ -38520,18 +34814,6 @@ export interface WrapperPlayClientTabComplete extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientTabComplete): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -38570,7 +34852,6 @@ export interface WrapperPlayClientTabComplete extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -38694,8 +34975,6 @@ export interface WrapperPlayClientTabComplete extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -38711,14 +34990,6 @@ export interface WrapperPlayClientTabComplete extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getText(): string;
-    setText(arg0: string): void;
-    getTransactionId(): number | null;
-    setTransactionId(arg0: number): void;
-    isAssumeCommand(): boolean;
-    setAssumeCommand(arg0: boolean): void;
-    getBlockPosition(): PacketVector3i | null;
-    setBlockPosition(arg0: PacketVector3i): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientTabComplete extends PacketWrapperType<WrapperPlayClientTabComplete> {
@@ -38747,18 +35018,6 @@ export interface WrapperPlayClientTeleportConfirm extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientTeleportConfirm): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -38797,7 +35056,6 @@ export interface WrapperPlayClientTeleportConfirm extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -38921,8 +35179,6 @@ export interface WrapperPlayClientTeleportConfirm extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -38938,8 +35194,6 @@ export interface WrapperPlayClientTeleportConfirm extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getTeleportId(): number;
-    setTeleportId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientTeleportConfirm extends PacketWrapperType<WrapperPlayClientTeleportConfirm> {
@@ -38968,18 +35222,6 @@ export interface WrapperPlayClientTestInstanceBlockAction extends PacketWrapper 
     write(): void;
     copy(arg0: WrapperPlayClientTestInstanceBlockAction): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -39018,7 +35260,6 @@ export interface WrapperPlayClientTestInstanceBlockAction extends PacketWrapper 
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -39142,8 +35383,6 @@ export interface WrapperPlayClientTestInstanceBlockAction extends PacketWrapper 
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -39159,12 +35398,6 @@ export interface WrapperPlayClientTestInstanceBlockAction extends PacketWrapper 
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPosition(): PacketVector3i;
-    setPosition(arg0: PacketVector3i): void;
-    getAction(): TestInstanceBlockActionAction;
-    setAction(arg0: TestInstanceBlockActionAction): void;
-    getData(): TestInstanceData;
-    setData(arg0: TestInstanceData): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientTestInstanceBlockAction extends PacketWrapperType<WrapperPlayClientTestInstanceBlockAction> {
@@ -39197,18 +35430,6 @@ export interface WrapperPlayClientUpdateCommandBlock extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientUpdateCommandBlock): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -39247,7 +35468,6 @@ export interface WrapperPlayClientUpdateCommandBlock extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -39371,8 +35591,6 @@ export interface WrapperPlayClientUpdateCommandBlock extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -39388,20 +35606,6 @@ export interface WrapperPlayClientUpdateCommandBlock extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPosition(): PacketVector3i;
-    setPosition(arg0: PacketVector3i): void;
-    getCommand(): string;
-    setCommand(arg0: string): void;
-    getMode(): UpdateCommandBlockCommandBlockMode;
-    setMode(arg0: UpdateCommandBlockCommandBlockMode): void;
-    isDoesTrackOutput(): boolean;
-    setDoesTrackOutput(arg0: boolean): void;
-    isConditional(): boolean;
-    setConditional(arg0: boolean): void;
-    isAutomatic(): boolean;
-    setAutomatic(arg0: boolean): void;
-    getFlags(): number;
-    setFlags(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientUpdateCommandBlock extends PacketWrapperType<WrapperPlayClientUpdateCommandBlock> {
@@ -39430,18 +35634,6 @@ export interface WrapperPlayClientUpdateCommandBlockMinecart extends PacketWrapp
     write(): void;
     copy(arg0: WrapperPlayClientUpdateCommandBlockMinecart): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -39480,7 +35672,6 @@ export interface WrapperPlayClientUpdateCommandBlockMinecart extends PacketWrapp
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -39604,8 +35795,6 @@ export interface WrapperPlayClientUpdateCommandBlockMinecart extends PacketWrapp
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -39621,12 +35810,6 @@ export interface WrapperPlayClientUpdateCommandBlockMinecart extends PacketWrapp
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getCommand(): string;
-    setCommand(arg0: string): void;
-    isTrackOutput(): boolean;
-    setTrackOutput(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientUpdateCommandBlockMinecart extends PacketWrapperType<WrapperPlayClientUpdateCommandBlockMinecart> {
@@ -39660,18 +35843,6 @@ export interface WrapperPlayClientUpdateJigsawBlock extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientUpdateJigsawBlock): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -39710,7 +35881,6 @@ export interface WrapperPlayClientUpdateJigsawBlock extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -39834,8 +36004,6 @@ export interface WrapperPlayClientUpdateJigsawBlock extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -39851,22 +36019,6 @@ export interface WrapperPlayClientUpdateJigsawBlock extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPosition(): PacketVector3i;
-    setPosition(arg0: PacketVector3i): void;
-    getName(): ResourceLocation;
-    setName(arg0: ResourceLocation): void;
-    getTarget(): ResourceLocation | null;
-    setTarget(arg0: ResourceLocation): void;
-    getPool(): ResourceLocation;
-    setPool(arg0: ResourceLocation): void;
-    getFinalState(): string;
-    setFinalState(arg0: string): void;
-    getJointType(): JointType | null;
-    setJointType(arg0: JointType): void;
-    getSelectionPriority(): number;
-    setSelectionPriority(arg0: number): void;
-    getPlacementPriority(): number;
-    setPlacementPriority(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientUpdateJigsawBlock extends PacketWrapperType<WrapperPlayClientUpdateJigsawBlock> {
@@ -39899,18 +36051,6 @@ export interface WrapperPlayClientUpdateSign extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientUpdateSign): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -39949,7 +36089,6 @@ export interface WrapperPlayClientUpdateSign extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -40073,8 +36212,6 @@ export interface WrapperPlayClientUpdateSign extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -40090,12 +36227,6 @@ export interface WrapperPlayClientUpdateSign extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getBlockPosition(): PacketVector3i;
-    setBlockPosition(arg0: PacketVector3i): void;
-    getTextLines(): string[];
-    setTextLines(arg0: string[]): void;
-    isFrontText(): boolean;
-    setFrontText(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientUpdateSign extends PacketWrapperType<WrapperPlayClientUpdateSign> {
@@ -40125,18 +36256,6 @@ export interface WrapperPlayClientUseItem extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientUseItem): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -40175,7 +36294,6 @@ export interface WrapperPlayClientUseItem extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -40299,8 +36417,6 @@ export interface WrapperPlayClientUseItem extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -40316,14 +36432,6 @@ export interface WrapperPlayClientUseItem extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getHand(): InteractionHand;
-    setHand(arg0: InteractionHand): void;
-    getSequence(): number;
-    setSequence(arg0: number): void;
-    getYaw(): number;
-    setYaw(arg0: number): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientUseItem extends PacketWrapperType<WrapperPlayClientUseItem> {
@@ -40357,18 +36465,6 @@ export interface WrapperPlayClientVehicleMove extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientVehicleMove): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -40407,7 +36503,6 @@ export interface WrapperPlayClientVehicleMove extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -40531,8 +36626,6 @@ export interface WrapperPlayClientVehicleMove extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -40548,14 +36641,6 @@ export interface WrapperPlayClientVehicleMove extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPosition(): PacketVector3d;
-    setPosition(arg0: PacketVector3d): void;
-    getYaw(): number;
-    setYaw(arg0: number): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
-    isOnGround(): boolean;
-    setOnGround(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientVehicleMove extends PacketWrapperType<WrapperPlayClientVehicleMove> {
@@ -40586,18 +36671,6 @@ export interface WrapperPlayClientWindowConfirmation extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayClientWindowConfirmation): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -40636,7 +36709,6 @@ export interface WrapperPlayClientWindowConfirmation extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -40760,8 +36832,6 @@ export interface WrapperPlayClientWindowConfirmation extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -40777,12 +36847,6 @@ export interface WrapperPlayClientWindowConfirmation extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getWindowId(): number;
-    setWindowId(arg0: number): void;
-    getActionId(): number;
-    setActionId(arg0: number): void;
-    isAccepted(): boolean;
-    setAccepted(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayClientWindowConfirmation extends PacketWrapperType<WrapperPlayClientWindowConfirmation> {
@@ -40809,18 +36873,6 @@ export interface WrapperPlayServerAcknowledgeBlockChanges extends PacketWrapper 
     write(): void;
     copy(arg0: WrapperPlayServerAcknowledgeBlockChanges): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -40859,7 +36911,6 @@ export interface WrapperPlayServerAcknowledgeBlockChanges extends PacketWrapper 
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -40983,8 +37034,6 @@ export interface WrapperPlayServerAcknowledgeBlockChanges extends PacketWrapper 
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -41000,8 +37049,6 @@ export interface WrapperPlayServerAcknowledgeBlockChanges extends PacketWrapper 
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSequence(): number;
-    setSequence(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerAcknowledgeBlockChanges extends PacketWrapperType<WrapperPlayServerAcknowledgeBlockChanges> {
@@ -41031,18 +37078,6 @@ export interface WrapperPlayServerAcknowledgePlayerDigging extends PacketWrapper
     write(): void;
     copy(arg0: WrapperPlayServerAcknowledgePlayerDigging): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -41081,7 +37116,6 @@ export interface WrapperPlayServerAcknowledgePlayerDigging extends PacketWrapper
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -41205,8 +37239,6 @@ export interface WrapperPlayServerAcknowledgePlayerDigging extends PacketWrapper
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -41222,14 +37254,6 @@ export interface WrapperPlayServerAcknowledgePlayerDigging extends PacketWrapper
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getAction(): DiggingAction;
-    setAction(arg0: DiggingAction): void;
-    isSuccessful(): boolean;
-    setSuccessful(arg0: boolean): void;
-    getBlockPosition(): PacketVector3i;
-    setBlockPosition(arg0: PacketVector3i): void;
-    getBlockId(): number;
-    setBlockId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerAcknowledgePlayerDigging extends PacketWrapperType<WrapperPlayServerAcknowledgePlayerDigging> {
@@ -41256,18 +37280,6 @@ export interface WrapperPlayServerActionBar extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerActionBar): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -41306,7 +37318,6 @@ export interface WrapperPlayServerActionBar extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -41430,8 +37441,6 @@ export interface WrapperPlayServerActionBar extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -41447,8 +37456,6 @@ export interface WrapperPlayServerActionBar extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getActionBarText(): Component;
-    setActionBarText(arg0: Component): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerActionBar extends PacketWrapperType<WrapperPlayServerActionBar> {
@@ -41477,18 +37484,6 @@ export interface WrapperPlayServerAttachEntity extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerAttachEntity): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -41527,7 +37522,6 @@ export interface WrapperPlayServerAttachEntity extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -41651,8 +37645,6 @@ export interface WrapperPlayServerAttachEntity extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -41668,12 +37660,6 @@ export interface WrapperPlayServerAttachEntity extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getAttachedId(): number;
-    setAttachedId(arg0: number): void;
-    getHoldingId(): number;
-    setHoldingId(arg0: number): void;
-    isLeash(): boolean;
-    setLeash(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerAttachEntity extends PacketWrapperType<WrapperPlayServerAttachEntity> {
@@ -41704,18 +37690,6 @@ export interface WrapperPlayServerBlockAction extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerBlockAction): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -41754,7 +37728,6 @@ export interface WrapperPlayServerBlockAction extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -41878,8 +37851,6 @@ export interface WrapperPlayServerBlockAction extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -41895,16 +37866,6 @@ export interface WrapperPlayServerBlockAction extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getBlockPosition(): PacketVector3i;
-    setBlockPosition(arg0: PacketVector3i): void;
-    getActionId(): number;
-    setActionId(arg0: number): void;
-    getActionData(): number;
-    setActionData(arg0: number): void;
-    getBlockTypeId(): number;
-    setBlockTypeId(arg0: number): void;
-    getBlockType(): WrappedBlockState;
-    setBlockType(arg0: WrappedBlockState): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerBlockAction extends PacketWrapperType<WrapperPlayServerBlockAction> {
@@ -41933,18 +37894,6 @@ export interface WrapperPlayServerBlockBreakAnimation extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerBlockBreakAnimation): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -41983,7 +37932,6 @@ export interface WrapperPlayServerBlockBreakAnimation extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -42107,8 +38055,6 @@ export interface WrapperPlayServerBlockBreakAnimation extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -42124,12 +38070,6 @@ export interface WrapperPlayServerBlockBreakAnimation extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getBlockPosition(): PacketVector3i;
-    setBlockPosition(arg0: PacketVector3i): void;
-    getDestroyStage(): number;
-    setDestroyStage(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerBlockBreakAnimation extends PacketWrapperType<WrapperPlayServerBlockBreakAnimation> {
@@ -42159,18 +38099,6 @@ export interface WrapperPlayServerBlockChange extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerBlockChange): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -42209,7 +38137,6 @@ export interface WrapperPlayServerBlockChange extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -42333,8 +38260,6 @@ export interface WrapperPlayServerBlockChange extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -42350,12 +38275,6 @@ export interface WrapperPlayServerBlockChange extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getBlockPosition(): PacketVector3i;
-    setBlockPosition(arg0: PacketVector3i): void;
-    getBlockId(): number;
-    setBlockID(arg0: number): void;
-    getBlockState(): WrappedBlockState;
-    setBlockState(arg0: WrappedBlockState): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerBlockChange extends PacketWrapperType<WrapperPlayServerBlockChange> {
@@ -42388,18 +38307,6 @@ export interface WrapperPlayServerBlockEntityData extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerBlockEntityData): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -42438,7 +38345,6 @@ export interface WrapperPlayServerBlockEntityData extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -42562,8 +38468,6 @@ export interface WrapperPlayServerBlockEntityData extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -42579,16 +38483,6 @@ export interface WrapperPlayServerBlockEntityData extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPosition(): PacketVector3i;
-    setPosition(arg0: PacketVector3i): void;
-    getType(): number;
-    getBlockEntityType(): BlockEntityType;
-    getAsTileType(): TileEntityType;
-    setType(arg0: number): void;
-    setType(arg0: BlockEntityType): void;
-    setType(arg0: TileEntityType): void;
-    getNBT(): NBTCompound;
-    setNBT(arg0: NBTCompound): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerBlockEntityData extends PacketWrapperType<WrapperPlayServerBlockEntityData> {
@@ -42625,18 +38519,6 @@ export interface WrapperPlayServerBossBar extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerBossBar): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -42675,7 +38557,6 @@ export interface WrapperPlayServerBossBar extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -42799,8 +38680,6 @@ export interface WrapperPlayServerBossBar extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -42816,20 +38695,6 @@ export interface WrapperPlayServerBossBar extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getUUID(): NativeUuid;
-    setUUID(arg0: NativeUuid): void;
-    getAction(): BossBarAction;
-    setAction(arg0: BossBarAction): void;
-    getTitle(): Component;
-    setTitle(arg0: Component): void;
-    getHealth(): number;
-    setHealth(arg0: number): void;
-    getColor(): BossBarColor;
-    setColor(arg0: BossBarColor): void;
-    getOverlay(): BossBarOverlay;
-    setOverlay(arg0: BossBarOverlay): void;
-    getFlags(): Set<BossBarFlag>;
-    setFlags(arg0: Set<BossBarFlag>): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerBossBar extends PacketWrapperType<WrapperPlayServerBossBar> {
@@ -42855,18 +38720,6 @@ export interface WrapperPlayServerBundle extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerBundle): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -42905,7 +38758,6 @@ export interface WrapperPlayServerBundle extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -43029,8 +38881,6 @@ export interface WrapperPlayServerBundle extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -43071,18 +38921,6 @@ export interface WrapperPlayServerCamera extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerCamera): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -43121,7 +38959,6 @@ export interface WrapperPlayServerCamera extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -43245,8 +39082,6 @@ export interface WrapperPlayServerCamera extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -43262,8 +39097,6 @@ export interface WrapperPlayServerCamera extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getCameraId(): number;
-    setCameraId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerCamera extends PacketWrapperType<WrapperPlayServerCamera> {
@@ -43291,18 +39124,6 @@ export interface WrapperPlayServerChangeGameState extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerChangeGameState): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -43341,7 +39162,6 @@ export interface WrapperPlayServerChangeGameState extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -43465,8 +39285,6 @@ export interface WrapperPlayServerChangeGameState extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -43482,10 +39300,6 @@ export interface WrapperPlayServerChangeGameState extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getReason(): ChangeGameStateReason;
-    setReason(arg0: ChangeGameStateReason): void;
-    getValue(): number;
-    setValue(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerChangeGameState extends PacketWrapperType<WrapperPlayServerChangeGameState> {
@@ -43514,18 +39328,6 @@ export interface WrapperPlayServerChatMessage extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerChatMessage): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -43564,7 +39366,6 @@ export interface WrapperPlayServerChatMessage extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -43688,8 +39489,6 @@ export interface WrapperPlayServerChatMessage extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -43705,8 +39504,6 @@ export interface WrapperPlayServerChatMessage extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getMessage(): ChatMessage;
-    setMessage(arg0: ChatMessage): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerChatMessage extends PacketWrapperType<WrapperPlayServerChatMessage> {
@@ -43734,18 +39531,6 @@ export interface WrapperPlayServerChatPreview extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerChatPreview): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -43784,7 +39569,6 @@ export interface WrapperPlayServerChatPreview extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -43908,8 +39692,6 @@ export interface WrapperPlayServerChatPreview extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -43925,10 +39707,6 @@ export interface WrapperPlayServerChatPreview extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getQueryId(): number;
-    setQueryId(arg0: number): void;
-    getMessage(): Component | null;
-    setMessage(arg0: Component): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerChatPreview extends PacketWrapperType<WrapperPlayServerChatPreview> {
@@ -43954,18 +39732,6 @@ export interface WrapperPlayServerChunkBatchBegin extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerChunkBatchBegin): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -44004,7 +39770,6 @@ export interface WrapperPlayServerChunkBatchBegin extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -44128,8 +39893,6 @@ export interface WrapperPlayServerChunkBatchBegin extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -44170,18 +39933,6 @@ export interface WrapperPlayServerChunkBatchEnd extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerChunkBatchEnd): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -44220,7 +39971,6 @@ export interface WrapperPlayServerChunkBatchEnd extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -44344,8 +40094,6 @@ export interface WrapperPlayServerChunkBatchEnd extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -44361,8 +40109,6 @@ export interface WrapperPlayServerChunkBatchEnd extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getBatchSize(): number;
-    setBatchSize(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerChunkBatchEnd extends PacketWrapperType<WrapperPlayServerChunkBatchEnd> {
@@ -44389,18 +40135,6 @@ export interface WrapperPlayServerChunkBiomes extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerChunkBiomes): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -44439,7 +40173,6 @@ export interface WrapperPlayServerChunkBiomes extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -44563,8 +40296,6 @@ export interface WrapperPlayServerChunkBiomes extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -44580,7 +40311,6 @@ export interface WrapperPlayServerChunkBiomes extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getChunks(): Map<Vector2i, ChunkBiomesChunkBiomeData>;
     getChunk(arg0: Vector2i): ChunkBiomesChunkBiomeData;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
@@ -44610,18 +40340,6 @@ export interface WrapperPlayServerChunkData extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerChunkData): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -44660,7 +40378,6 @@ export interface WrapperPlayServerChunkData extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -44784,8 +40501,6 @@ export interface WrapperPlayServerChunkData extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -44801,12 +40516,6 @@ export interface WrapperPlayServerChunkData extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getColumn(): Column;
-    setColumn(arg0: Column): void;
-    getLightData(): LightData;
-    setLightData(arg0: LightData): void;
-    isIgnoreOldData(): boolean;
-    setIgnoreOldData(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerChunkData extends PacketWrapperType<WrapperPlayServerChunkData> {
@@ -44840,18 +40549,6 @@ export interface WrapperPlayServerChunkDataBulk extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerChunkDataBulk): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -44890,7 +40587,6 @@ export interface WrapperPlayServerChunkDataBulk extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -45014,8 +40710,6 @@ export interface WrapperPlayServerChunkDataBulk extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -45031,10 +40725,6 @@ export interface WrapperPlayServerChunkDataBulk extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getX(): number[];
-    getZ(): number[];
-    getChunks(): BaseChunk[][];
-    getBiomeData(): number[][];
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerChunkDataBulk extends ApiClass<WrapperPlayServerChunkDataBulk> {
@@ -45058,18 +40748,6 @@ export interface WrapperPlayServerClearDialog extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerClearDialog): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -45108,7 +40786,6 @@ export interface WrapperPlayServerClearDialog extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -45232,8 +40909,6 @@ export interface WrapperPlayServerClearDialog extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -45274,18 +40949,6 @@ export interface WrapperPlayServerClearTitles extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerClearTitles): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -45324,7 +40987,6 @@ export interface WrapperPlayServerClearTitles extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -45448,8 +41110,6 @@ export interface WrapperPlayServerClearTitles extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -45465,8 +41125,6 @@ export interface WrapperPlayServerClearTitles extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getReset(): boolean;
-    setReset(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerClearTitles extends PacketWrapperType<WrapperPlayServerClearTitles> {
@@ -45493,18 +41151,6 @@ export interface WrapperPlayServerCloseWindow extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerCloseWindow): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -45543,7 +41189,6 @@ export interface WrapperPlayServerCloseWindow extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -45667,8 +41312,6 @@ export interface WrapperPlayServerCloseWindow extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -45684,8 +41327,6 @@ export interface WrapperPlayServerCloseWindow extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getWindowId(): number;
-    setWindowId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerCloseWindow extends PacketWrapperType<WrapperPlayServerCloseWindow> {
@@ -45716,18 +41357,6 @@ export interface WrapperPlayServerCollectItem extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerCollectItem): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -45766,7 +41395,6 @@ export interface WrapperPlayServerCollectItem extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -45890,8 +41518,6 @@ export interface WrapperPlayServerCollectItem extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -45907,12 +41533,6 @@ export interface WrapperPlayServerCollectItem extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getCollectedEntityId(): number;
-    setCollectedEntityId(arg0: number): void;
-    getCollectorEntityId(): number;
-    setCollectorEntityId(arg0: number): void;
-    getPickupItemCount(): number;
-    setPickupItemCount(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerCollectItem extends PacketWrapperType<WrapperPlayServerCollectItem> {
@@ -45943,18 +41563,6 @@ export interface WrapperPlayServerCombatEvent extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerCombatEvent): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -45993,7 +41601,6 @@ export interface WrapperPlayServerCombatEvent extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -46117,8 +41724,6 @@ export interface WrapperPlayServerCombatEvent extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -46134,16 +41739,6 @@ export interface WrapperPlayServerCombatEvent extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getCombat(): Combat;
-    setCombat(arg0: Combat): void;
-    getDuration(): number;
-    setDuration(arg0: number): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getPlayerId(): number;
-    setPlayerId(arg0: number): void;
-    getDeathMessage(): Component | null;
-    setDeathMessage(arg0: Component): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerCombatEvent extends PacketWrapperType<WrapperPlayServerCombatEvent> {
@@ -46173,18 +41768,6 @@ export interface WrapperPlayServerConfigurationStart extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerConfigurationStart): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -46223,7 +41806,6 @@ export interface WrapperPlayServerConfigurationStart extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -46347,8 +41929,6 @@ export interface WrapperPlayServerConfigurationStart extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -46389,18 +41969,6 @@ export interface WrapperPlayServerCookieRequest extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerCookieRequest): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -46439,7 +42007,6 @@ export interface WrapperPlayServerCookieRequest extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -46563,8 +42130,6 @@ export interface WrapperPlayServerCookieRequest extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -46580,8 +42145,6 @@ export interface WrapperPlayServerCookieRequest extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getKey(): ResourceLocation;
-    setKey(arg0: ResourceLocation): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerCookieRequest extends PacketWrapperType<WrapperPlayServerCookieRequest> {
@@ -46612,18 +42175,6 @@ export interface WrapperPlayServerCraftRecipeResponse extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerCraftRecipeResponse): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -46662,7 +42213,6 @@ export interface WrapperPlayServerCraftRecipeResponse extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -46786,8 +42336,6 @@ export interface WrapperPlayServerCraftRecipeResponse extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -46803,16 +42351,6 @@ export interface WrapperPlayServerCraftRecipeResponse extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getWindowId(): number;
-    setWindowId(arg0: number): void;
-    getRecipe<T>(): T;
-    setRecipe<T>(arg0: T): void;
-    getRecipeKey(): ResourceLocation;
-    setRecipeKey(arg0: ResourceLocation): void;
-    getRecipeId(): RecipeDisplayId;
-    setRecipeId(arg0: RecipeDisplayId): void;
-    getRecipeDisplay(): RecipeDisplay<unknown>;
-    setRecipeDisplay(arg0: RecipeDisplay<unknown>): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerCraftRecipeResponse extends PacketWrapperType<WrapperPlayServerCraftRecipeResponse> {
@@ -46848,18 +42386,6 @@ export interface WrapperPlayServerCustomChatCompletions extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerCustomChatCompletions): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -46898,7 +42424,6 @@ export interface WrapperPlayServerCustomChatCompletions extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -47022,8 +42547,6 @@ export interface WrapperPlayServerCustomChatCompletions extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -47039,10 +42562,6 @@ export interface WrapperPlayServerCustomChatCompletions extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getAction(): ChatCompletionAction;
-    setAction(arg0: ChatCompletionAction): void;
-    getEntries(): string[];
-    setEntries(arg0: string[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerCustomChatCompletions extends PacketWrapperType<WrapperPlayServerCustomChatCompletions> {
@@ -47069,18 +42588,6 @@ export interface WrapperPlayServerCustomReportDetails extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerCustomReportDetails): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -47119,7 +42626,6 @@ export interface WrapperPlayServerCustomReportDetails extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -47243,8 +42749,6 @@ export interface WrapperPlayServerCustomReportDetails extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -47260,8 +42764,6 @@ export interface WrapperPlayServerCustomReportDetails extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getDetails(): Map<string, string>;
-    setDetails(arg0: Map<string, string>): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerCustomReportDetails extends PacketWrapperType<WrapperPlayServerCustomReportDetails> {
@@ -47292,18 +42794,6 @@ export interface WrapperPlayServerDamageEvent extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerDamageEvent): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -47342,7 +42832,6 @@ export interface WrapperPlayServerDamageEvent extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -47466,8 +42955,6 @@ export interface WrapperPlayServerDamageEvent extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -47483,16 +42970,6 @@ export interface WrapperPlayServerDamageEvent extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getSourceType(): PacketDamageType;
-    setSourceType(arg0: PacketDamageType): void;
-    getSourceCauseId(): number;
-    setSourceCauseId(arg0: number): void;
-    getSourceDirectId(): number;
-    setSourceDirectId(arg0: number): void;
-    getSourcePosition(): PacketVector3d;
-    setSourcePosition(arg0: PacketVector3d): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerDamageEvent extends PacketWrapperType<WrapperPlayServerDamageEvent> {
@@ -47521,18 +42998,6 @@ export interface WrapperPlayServerDeathCombatEvent extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerDeathCombatEvent): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -47571,7 +43036,6 @@ export interface WrapperPlayServerDeathCombatEvent extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -47695,8 +43159,6 @@ export interface WrapperPlayServerDeathCombatEvent extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -47712,12 +43174,6 @@ export interface WrapperPlayServerDeathCombatEvent extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPlayerId(): number;
-    setPlayerId(arg0: number): void;
-    getEntityId(): number | null;
-    setEntityId(arg0: number): void;
-    getDeathMessage(): Component;
-    setDeathMessage(arg0: Component): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerDeathCombatEvent extends PacketWrapperType<WrapperPlayServerDeathCombatEvent> {
@@ -47745,18 +43201,6 @@ export interface WrapperPlayServerDebugBlockValue extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerDebugBlockValue): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -47795,7 +43239,6 @@ export interface WrapperPlayServerDebugBlockValue extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -47919,8 +43362,6 @@ export interface WrapperPlayServerDebugBlockValue extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -47936,10 +43377,6 @@ export interface WrapperPlayServerDebugBlockValue extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getBlockPos(): PacketVector3i;
-    setBlockPos(arg0: PacketVector3i): void;
-    getUpdate(): DebugSubscriptionUpdate<unknown>;
-    setUpdate(arg0: DebugSubscriptionUpdate<unknown>): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerDebugBlockValue extends PacketWrapperType<WrapperPlayServerDebugBlockValue> {
@@ -47967,18 +43404,6 @@ export interface WrapperPlayServerDebugChunkValue extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerDebugChunkValue): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -48017,7 +43442,6 @@ export interface WrapperPlayServerDebugChunkValue extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -48141,8 +43565,6 @@ export interface WrapperPlayServerDebugChunkValue extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -48158,10 +43580,6 @@ export interface WrapperPlayServerDebugChunkValue extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getChunkPos(): Vector2i;
-    setChunkPos(arg0: Vector2i): void;
-    getUpdate(): DebugSubscriptionUpdate<unknown>;
-    setUpdate(arg0: DebugSubscriptionUpdate<unknown>): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerDebugChunkValue extends PacketWrapperType<WrapperPlayServerDebugChunkValue> {
@@ -48189,18 +43607,6 @@ export interface WrapperPlayServerDebugEntityValue extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerDebugEntityValue): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -48239,7 +43645,6 @@ export interface WrapperPlayServerDebugEntityValue extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -48363,8 +43768,6 @@ export interface WrapperPlayServerDebugEntityValue extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -48380,10 +43783,6 @@ export interface WrapperPlayServerDebugEntityValue extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getUpdate(): DebugSubscriptionUpdate<unknown>;
-    setUpdate(arg0: DebugSubscriptionUpdate<unknown>): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerDebugEntityValue extends PacketWrapperType<WrapperPlayServerDebugEntityValue> {
@@ -48410,18 +43809,6 @@ export interface WrapperPlayServerDebugEvent extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerDebugEvent): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -48460,7 +43847,6 @@ export interface WrapperPlayServerDebugEvent extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -48584,8 +43970,6 @@ export interface WrapperPlayServerDebugEvent extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -48601,8 +43985,6 @@ export interface WrapperPlayServerDebugEvent extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEvent(): DebugSubscriptionEvent<unknown>;
-    setEvent(arg0: DebugSubscriptionEvent<unknown>): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerDebugEvent extends PacketWrapperType<WrapperPlayServerDebugEvent> {
@@ -48629,18 +44011,6 @@ export interface WrapperPlayServerDebugPong extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerDebugPong): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -48679,7 +44049,6 @@ export interface WrapperPlayServerDebugPong extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -48803,8 +44172,6 @@ export interface WrapperPlayServerDebugPong extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -48820,8 +44187,6 @@ export interface WrapperPlayServerDebugPong extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getTimestamp(): number;
-    setTimestamp(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerDebugPong extends PacketWrapperType<WrapperPlayServerDebugPong> {
@@ -48849,18 +44214,6 @@ export interface WrapperPlayServerDebugSample extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerDebugSample): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -48899,7 +44252,6 @@ export interface WrapperPlayServerDebugSample extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -49023,8 +44375,6 @@ export interface WrapperPlayServerDebugSample extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -49040,10 +44390,6 @@ export interface WrapperPlayServerDebugSample extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSample(): number[];
-    setSample(arg0: number[]): void;
-    getSampleType(): DebugSampleSampleType;
-    setSampleType(arg0: DebugSampleSampleType): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerDebugSample extends PacketWrapperType<WrapperPlayServerDebugSample> {
@@ -49071,18 +44417,6 @@ export interface WrapperPlayServerDeclareCommands extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerDeclareCommands): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -49121,7 +44455,6 @@ export interface WrapperPlayServerDeclareCommands extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -49245,8 +44578,6 @@ export interface WrapperPlayServerDeclareCommands extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -49262,10 +44593,6 @@ export interface WrapperPlayServerDeclareCommands extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getNodes(): PacketNode[];
-    setNodes(arg0: PacketNode[]): void;
-    getRootIndex(): number;
-    setRootIndex(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerDeclareCommands extends PacketWrapperType<WrapperPlayServerDeclareCommands> {
@@ -49294,18 +44621,6 @@ export interface WrapperPlayServerDeclareRecipes extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerDeclareRecipes): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -49344,7 +44659,6 @@ export interface WrapperPlayServerDeclareRecipes extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -49468,8 +44782,6 @@ export interface WrapperPlayServerDeclareRecipes extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -49485,12 +44797,6 @@ export interface WrapperPlayServerDeclareRecipes extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getRecipes(): PacketRecipe<unknown>[];
-    setRecipes(arg0: PacketRecipe<unknown>[]): void;
-    getItemSets(): Map<ResourceLocation, RecipePropertySet>;
-    setItemSets(arg0: Map<ResourceLocation, RecipePropertySet>): void;
-    getStonecutterRecipes(): SingleInputOptionDisplay[];
-    setStonecutterRecipes(arg0: SingleInputOptionDisplay[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerDeclareRecipes extends PacketWrapperType<WrapperPlayServerDeclareRecipes> {
@@ -49519,18 +44825,6 @@ export interface WrapperPlayServerDeleteChat extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerDeleteChat): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -49569,7 +44863,6 @@ export interface WrapperPlayServerDeleteChat extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -49693,8 +44986,6 @@ export interface WrapperPlayServerDeleteChat extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -49710,8 +45001,6 @@ export interface WrapperPlayServerDeleteChat extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSignature(): number[];
-    setSignature(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerDeleteChat extends PacketWrapperType<WrapperPlayServerDeleteChat> {
@@ -49738,18 +45027,6 @@ export interface WrapperPlayServerDestroyEntities extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerDestroyEntities): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -49788,7 +45065,6 @@ export interface WrapperPlayServerDestroyEntities extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -49912,8 +45188,6 @@ export interface WrapperPlayServerDestroyEntities extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -49929,8 +45203,6 @@ export interface WrapperPlayServerDestroyEntities extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityIds(): number[];
-    setEntityIds(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerDestroyEntities extends PacketWrapperType<WrapperPlayServerDestroyEntities> {
@@ -49958,18 +45230,6 @@ export interface WrapperPlayServerDifficulty extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerDifficulty): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -50008,7 +45268,6 @@ export interface WrapperPlayServerDifficulty extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -50132,8 +45391,6 @@ export interface WrapperPlayServerDifficulty extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -50149,10 +45406,6 @@ export interface WrapperPlayServerDifficulty extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getDifficulty(): PacketDifficulty;
-    setDifficulty(arg0: PacketDifficulty): void;
-    isLocked(): boolean;
-    setLocked(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerDifficulty extends PacketWrapperType<WrapperPlayServerDifficulty> {
@@ -50179,18 +45432,6 @@ export interface WrapperPlayServerDisconnect extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerDisconnect): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -50229,7 +45470,6 @@ export interface WrapperPlayServerDisconnect extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -50353,8 +45593,6 @@ export interface WrapperPlayServerDisconnect extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -50370,8 +45608,6 @@ export interface WrapperPlayServerDisconnect extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getReason(): Component;
-    setReason(arg0: Component): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerDisconnect extends PacketWrapperType<WrapperPlayServerDisconnect> {
@@ -50400,18 +45636,6 @@ export interface WrapperPlayServerDisguisedChat extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerDisguisedChat): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -50450,7 +45674,6 @@ export interface WrapperPlayServerDisguisedChat extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -50574,8 +45797,6 @@ export interface WrapperPlayServerDisguisedChat extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -50591,12 +45812,6 @@ export interface WrapperPlayServerDisguisedChat extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getMessage(): Component;
-    setMessage(arg0: Component): void;
-    getChatFormatting(): PacketChatTypeBound;
-    setChatFormatting(arg0: PacketChatTypeBound): void;
-    getChatType(): PacketChatTypeBound;
-    setChatType(arg0: PacketChatTypeBound): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerDisguisedChat extends PacketWrapperType<WrapperPlayServerDisguisedChat> {
@@ -50624,18 +45839,6 @@ export interface WrapperPlayServerDisplayScoreboard extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerDisplayScoreboard): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -50674,7 +45877,6 @@ export interface WrapperPlayServerDisplayScoreboard extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -50798,8 +46000,6 @@ export interface WrapperPlayServerDisplayScoreboard extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -50815,10 +46015,6 @@ export interface WrapperPlayServerDisplayScoreboard extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPosition(): number;
-    setPosition(arg0: number): void;
-    getScoreName(): string;
-    setScoreName(arg0: string): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerDisplayScoreboard extends PacketWrapperType<WrapperPlayServerDisplayScoreboard> {
@@ -50848,18 +46044,6 @@ export interface WrapperPlayServerEffect extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerEffect): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -50898,7 +46082,6 @@ export interface WrapperPlayServerEffect extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -51022,8 +46205,6 @@ export interface WrapperPlayServerEffect extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -51039,14 +46220,6 @@ export interface WrapperPlayServerEffect extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getType(): number;
-    setType(arg0: number): void;
-    getPosition(): PacketVector3i;
-    setPosition(arg0: PacketVector3i): void;
-    getData(): number;
-    setData(arg0: number): void;
-    isGlobalEvent(): boolean;
-    setGlobalEvent(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerEffect extends PacketWrapperType<WrapperPlayServerEffect> {
@@ -51074,18 +46247,6 @@ export interface WrapperPlayServerEndCombatEvent extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerEndCombatEvent): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -51124,7 +46285,6 @@ export interface WrapperPlayServerEndCombatEvent extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -51248,8 +46408,6 @@ export interface WrapperPlayServerEndCombatEvent extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -51265,10 +46423,6 @@ export interface WrapperPlayServerEndCombatEvent extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getDuration(): number;
-    setDuration(arg0: number): void;
-    getEntityId(): number | null;
-    setEntityId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerEndCombatEvent extends PacketWrapperType<WrapperPlayServerEndCombatEvent> {
@@ -51294,18 +46448,6 @@ export interface WrapperPlayServerEnterCombatEvent extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerEnterCombatEvent): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -51344,7 +46486,6 @@ export interface WrapperPlayServerEnterCombatEvent extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -51468,8 +46609,6 @@ export interface WrapperPlayServerEnterCombatEvent extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -51512,18 +46651,6 @@ export interface WrapperPlayServerEntityAnimation extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerEntityAnimation): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -51562,7 +46689,6 @@ export interface WrapperPlayServerEntityAnimation extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -51686,8 +46812,6 @@ export interface WrapperPlayServerEntityAnimation extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -51703,10 +46827,6 @@ export interface WrapperPlayServerEntityAnimation extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getType(): EntityAnimationEntityAnimationType;
-    setType(arg0: EntityAnimationEntityAnimationType): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerEntityAnimation extends PacketWrapperType<WrapperPlayServerEntityAnimation> {
@@ -51740,18 +46860,6 @@ export interface WrapperPlayServerEntityEffect extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerEntityEffect): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -51790,7 +46898,6 @@ export interface WrapperPlayServerEntityEffect extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -51914,8 +47021,6 @@ export interface WrapperPlayServerEntityEffect extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -51931,22 +47036,6 @@ export interface WrapperPlayServerEntityEffect extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPotionType(): PacketPotionType;
-    setPotionType(arg0: PacketPotionType): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getEffectAmplifier(): number;
-    setEffectAmplifier(arg0: number): void;
-    getEffectDurationTicks(): number;
-    setEffectDurationTicks(arg0: number): void;
-    getFactorData(): NBTCompound;
-    setFactorData(arg0: NBTCompound): void;
-    isAmbient(): boolean;
-    setAmbient(arg0: boolean): void;
-    isVisible(): boolean;
-    setVisible(arg0: boolean): void;
-    isShowIcon(): boolean;
-    setShowIcon(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerEntityEffect extends PacketWrapperType<WrapperPlayServerEntityEffect> {
@@ -51974,18 +47063,6 @@ export interface WrapperPlayServerEntityEquipment extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerEntityEquipment): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -52024,7 +47101,6 @@ export interface WrapperPlayServerEntityEquipment extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -52148,8 +47224,6 @@ export interface WrapperPlayServerEntityEquipment extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -52165,10 +47239,6 @@ export interface WrapperPlayServerEntityEquipment extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getEquipment(): Equipment[];
-    setEquipment(arg0: Equipment[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerEntityEquipment extends PacketWrapperType<WrapperPlayServerEntityEquipment> {
@@ -52196,18 +47266,6 @@ export interface WrapperPlayServerEntityHeadLook extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerEntityHeadLook): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -52246,7 +47304,6 @@ export interface WrapperPlayServerEntityHeadLook extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -52370,8 +47427,6 @@ export interface WrapperPlayServerEntityHeadLook extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -52387,10 +47442,6 @@ export interface WrapperPlayServerEntityHeadLook extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getHeadYaw(): number;
-    setHeadYaw(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerEntityHeadLook extends PacketWrapperType<WrapperPlayServerEntityHeadLook> {
@@ -52418,18 +47469,6 @@ export interface WrapperPlayServerEntityMetadata extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerEntityMetadata): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -52468,7 +47507,6 @@ export interface WrapperPlayServerEntityMetadata extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -52592,8 +47630,6 @@ export interface WrapperPlayServerEntityMetadata extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -52609,11 +47645,6 @@ export interface WrapperPlayServerEntityMetadata extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getEntityMetadata(): EntityData<unknown>[];
-    setEntityMetadata(arg0: EntityData<unknown>[]): void;
-    setEntityMetadata(arg0: EntityMetadataProvider): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerEntityMetadata extends PacketWrapperType<WrapperPlayServerEntityMetadata> {
@@ -52642,18 +47673,6 @@ export interface WrapperPlayServerEntityMovement extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerEntityMovement): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -52692,7 +47711,6 @@ export interface WrapperPlayServerEntityMovement extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -52816,8 +47834,6 @@ export interface WrapperPlayServerEntityMovement extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -52833,8 +47849,6 @@ export interface WrapperPlayServerEntityMovement extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerEntityMovement extends PacketWrapperType<WrapperPlayServerEntityMovement> {
@@ -52863,18 +47877,6 @@ export interface WrapperPlayServerEntityPositionSync extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerEntityPositionSync): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -52913,7 +47915,6 @@ export interface WrapperPlayServerEntityPositionSync extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -53037,8 +48038,6 @@ export interface WrapperPlayServerEntityPositionSync extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -53054,12 +48053,6 @@ export interface WrapperPlayServerEntityPositionSync extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getId(): number;
-    setId(arg0: number): void;
-    getValues(): EntityPositionData;
-    setValues(arg0: EntityPositionData): void;
-    isOnGround(): boolean;
-    setOnGround(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerEntityPositionSync extends PacketWrapperType<WrapperPlayServerEntityPositionSync> {
@@ -53090,18 +48083,6 @@ export interface WrapperPlayServerEntityRelativeMove extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerEntityRelativeMove): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -53140,7 +48121,6 @@ export interface WrapperPlayServerEntityRelativeMove extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -53264,8 +48244,6 @@ export interface WrapperPlayServerEntityRelativeMove extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -53281,16 +48259,6 @@ export interface WrapperPlayServerEntityRelativeMove extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getDeltaX(): number;
-    setDeltaX(arg0: number): void;
-    getDeltaY(): number;
-    setDeltaY(arg0: number): void;
-    getDeltaZ(): number;
-    setDeltaZ(arg0: number): void;
-    isOnGround(): boolean;
-    setOnGround(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerEntityRelativeMove extends PacketWrapperType<WrapperPlayServerEntityRelativeMove> {
@@ -53323,18 +48291,6 @@ export interface WrapperPlayServerEntityRelativeMoveAndRotation extends PacketWr
     write(): void;
     copy(arg0: WrapperPlayServerEntityRelativeMoveAndRotation): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -53373,7 +48329,6 @@ export interface WrapperPlayServerEntityRelativeMoveAndRotation extends PacketWr
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -53497,8 +48452,6 @@ export interface WrapperPlayServerEntityRelativeMoveAndRotation extends PacketWr
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -53514,20 +48467,6 @@ export interface WrapperPlayServerEntityRelativeMoveAndRotation extends PacketWr
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getDeltaX(): number;
-    setDeltaX(arg0: number): void;
-    getDeltaY(): number;
-    setDeltaY(arg0: number): void;
-    getDeltaZ(): number;
-    setDeltaZ(arg0: number): void;
-    getYaw(): number;
-    setYaw(arg0: number): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
-    isOnGround(): boolean;
-    setOnGround(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerEntityRelativeMoveAndRotation extends PacketWrapperType<WrapperPlayServerEntityRelativeMoveAndRotation> {
@@ -53557,18 +48496,6 @@ export interface WrapperPlayServerEntityRotation extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerEntityRotation): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -53607,7 +48534,6 @@ export interface WrapperPlayServerEntityRotation extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -53731,8 +48657,6 @@ export interface WrapperPlayServerEntityRotation extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -53748,14 +48672,6 @@ export interface WrapperPlayServerEntityRotation extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getYaw(): number;
-    setYaw(arg0: number): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
-    isOnGround(): boolean;
-    setOnGround(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerEntityRotation extends PacketWrapperType<WrapperPlayServerEntityRotation> {
@@ -53788,18 +48704,6 @@ export interface WrapperPlayServerEntitySoundEffect extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerEntitySoundEffect): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -53838,7 +48742,6 @@ export interface WrapperPlayServerEntitySoundEffect extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -53962,8 +48865,6 @@ export interface WrapperPlayServerEntitySoundEffect extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -53979,20 +48880,6 @@ export interface WrapperPlayServerEntitySoundEffect extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSound(): PacketSound;
-    setSound(arg0: PacketSound): void;
-    getSoundId(): number;
-    setSoundId(arg0: number): void;
-    getSoundCategory(): PacketSoundCategory;
-    setSoundCategory(arg0: PacketSoundCategory): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getVolume(): number;
-    setVolume(arg0: number): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
-    getSeed(): number;
-    setSeed(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerEntitySoundEffect extends PacketWrapperType<WrapperPlayServerEntitySoundEffect> {
@@ -54024,18 +48911,6 @@ export interface WrapperPlayServerEntityStatus extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerEntityStatus): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -54074,7 +48949,6 @@ export interface WrapperPlayServerEntityStatus extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -54198,8 +49072,6 @@ export interface WrapperPlayServerEntityStatus extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -54215,10 +49087,6 @@ export interface WrapperPlayServerEntityStatus extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getStatus(): number;
-    setStatus(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerEntityStatus extends PacketWrapperType<WrapperPlayServerEntityStatus> {
@@ -54252,18 +49120,6 @@ export interface WrapperPlayServerEntityTeleport extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerEntityTeleport): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -54302,7 +49158,6 @@ export interface WrapperPlayServerEntityTeleport extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -54426,8 +49281,6 @@ export interface WrapperPlayServerEntityTeleport extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -54443,22 +49296,6 @@ export interface WrapperPlayServerEntityTeleport extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getValues(): EntityPositionData;
-    setValues(arg0: EntityPositionData): void;
-    getPosition(): PacketVector3d;
-    setPosition(arg0: PacketVector3d): void;
-    getDeltaMovement(): PacketVector3d;
-    setDeltaMovement(arg0: PacketVector3d): void;
-    getYaw(): number;
-    setYaw(arg0: number): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
-    getRelativeFlags(): RelativeFlag;
-    setRelativeFlags(arg0: RelativeFlag): void;
-    isOnGround(): boolean;
-    setOnGround(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerEntityTeleport extends PacketWrapperType<WrapperPlayServerEntityTeleport> {
@@ -54492,18 +49329,6 @@ export interface WrapperPlayServerEntityVelocity extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerEntityVelocity): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -54542,7 +49367,6 @@ export interface WrapperPlayServerEntityVelocity extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -54666,8 +49490,6 @@ export interface WrapperPlayServerEntityVelocity extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -54683,10 +49505,6 @@ export interface WrapperPlayServerEntityVelocity extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getVelocity(): PacketVector3d;
-    setVelocity(arg0: PacketVector3d): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerEntityVelocity extends PacketWrapperType<WrapperPlayServerEntityVelocity> {
@@ -54726,18 +49544,6 @@ export interface WrapperPlayServerExplosion extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerExplosion): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -54776,7 +49582,6 @@ export interface WrapperPlayServerExplosion extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -54900,8 +49705,6 @@ export interface WrapperPlayServerExplosion extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -54917,34 +49720,6 @@ export interface WrapperPlayServerExplosion extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPosition(): PacketVector3d;
-    setPosition(arg0: PacketVector3d): void;
-    getStrength(): number;
-    setStrength(arg0: number): void;
-    getBlockCount(): number;
-    setBlockCount(arg0: number): void;
-    getRecords(): PacketVector3i[];
-    setRecords(arg0: PacketVector3i[]): void;
-    getKnockback(): PacketVector3d;
-    setKnockback(arg0: PacketVector3d): void;
-    getPlayerMotion(): PacketVector3f;
-    setPlayerMotion(arg0: PacketVector3f): void;
-    getSmallExplosionParticles(): PacketParticle<unknown>;
-    setSmallExplosionParticles(arg0: PacketParticle<unknown>): void;
-    getParticle(): PacketParticle<unknown>;
-    setParticle(arg0: PacketParticle<unknown>): void;
-    getLargeExplosionParticles(): PacketParticle<unknown>;
-    setLargeExplosionParticles(arg0: PacketParticle<unknown>): void;
-    getBlockInteraction(): ExplosionBlockInteraction;
-    setBlockInteraction(arg0: ExplosionBlockInteraction): void;
-    getExplosionSoundKey(): ResourceLocation;
-    setExplosionSoundKey(arg0: ResourceLocation): void;
-    getExplosionSoundRange(): number;
-    setExplosionSoundRange(arg0: number): void;
-    getExplosionSound(): PacketSound;
-    setExplosionSound(arg0: PacketSound): void;
-    getBlockParticles(): WeightedList<ExplosionParticleInfo>;
-    setBlockParticles(arg0: WeightedList<ExplosionParticleInfo>): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerExplosion extends PacketWrapperType<WrapperPlayServerExplosion> {
@@ -54987,18 +49762,6 @@ export interface WrapperPlayServerFacePlayer extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerFacePlayer): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -55037,7 +49800,6 @@ export interface WrapperPlayServerFacePlayer extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -55161,8 +49923,6 @@ export interface WrapperPlayServerFacePlayer extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -55178,12 +49938,6 @@ export interface WrapperPlayServerFacePlayer extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getAimUnit(): FacePlayerEntitySection;
-    setAimUnit(arg0: FacePlayerEntitySection): void;
-    getTargetPosition(): PacketVector3d;
-    setTargetPosition(arg0: PacketVector3d): void;
-    getTargetEntity(): FacePlayerTargetEntity;
-    setTargetEntity(arg0: FacePlayerTargetEntity): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerFacePlayer extends PacketWrapperType<WrapperPlayServerFacePlayer> {
@@ -55210,18 +49964,6 @@ export interface WrapperPlayServerGameRuleValues extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerGameRuleValues): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -55260,7 +50002,6 @@ export interface WrapperPlayServerGameRuleValues extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -55384,8 +50125,6 @@ export interface WrapperPlayServerGameRuleValues extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -55401,8 +50140,6 @@ export interface WrapperPlayServerGameRuleValues extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getValues(): Map<ResourceLocation, string>;
-    setValues(arg0: Map<ResourceLocation, string>): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerGameRuleValues extends PacketWrapperType<WrapperPlayServerGameRuleValues> {
@@ -55430,18 +50167,6 @@ export interface WrapperPlayServerGameTestHighlightPos extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerGameTestHighlightPos): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -55480,7 +50205,6 @@ export interface WrapperPlayServerGameTestHighlightPos extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -55604,8 +50328,6 @@ export interface WrapperPlayServerGameTestHighlightPos extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -55621,10 +50343,6 @@ export interface WrapperPlayServerGameTestHighlightPos extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getAbsolutePos(): PacketVector3i;
-    setAbsolutePos(arg0: PacketVector3i): void;
-    getRelativePos(): PacketVector3i;
-    setRelativePos(arg0: PacketVector3i): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerGameTestHighlightPos extends PacketWrapperType<WrapperPlayServerGameTestHighlightPos> {
@@ -55651,18 +50369,6 @@ export interface WrapperPlayServerHeldItemChange extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerHeldItemChange): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -55701,7 +50407,6 @@ export interface WrapperPlayServerHeldItemChange extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -55825,8 +50530,6 @@ export interface WrapperPlayServerHeldItemChange extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -55842,8 +50545,6 @@ export interface WrapperPlayServerHeldItemChange extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSlot(): number;
-    setSlot(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerHeldItemChange extends PacketWrapperType<WrapperPlayServerHeldItemChange> {
@@ -55871,18 +50572,6 @@ export interface WrapperPlayServerHurtAnimation extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerHurtAnimation): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -55921,7 +50610,6 @@ export interface WrapperPlayServerHurtAnimation extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -56045,8 +50733,6 @@ export interface WrapperPlayServerHurtAnimation extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -56062,10 +50748,6 @@ export interface WrapperPlayServerHurtAnimation extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getYaw(): number;
-    setYaw(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerHurtAnimation extends PacketWrapperType<WrapperPlayServerHurtAnimation> {
@@ -56099,18 +50781,6 @@ export interface WrapperPlayServerInitializeWorldBorder extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerInitializeWorldBorder): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -56149,7 +50819,6 @@ export interface WrapperPlayServerInitializeWorldBorder extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -56273,8 +50942,6 @@ export interface WrapperPlayServerInitializeWorldBorder extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -56290,22 +50957,6 @@ export interface WrapperPlayServerInitializeWorldBorder extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getX(): number;
-    setX(arg0: number): void;
-    getZ(): number;
-    setZ(arg0: number): void;
-    getOldDiameter(): number;
-    setOldDiameter(arg0: number): void;
-    getNewDiameter(): number;
-    setNewDiameter(arg0: number): void;
-    getSpeed(): number;
-    setSpeed(arg0: number): void;
-    getPortalTeleportBoundary(): number;
-    setPortalTeleportBoundary(arg0: number): void;
-    getWarningBlocks(): number;
-    setWarningBlocks(arg0: number): void;
-    getWarningTime(): number;
-    setWarningTime(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerInitializeWorldBorder extends PacketWrapperType<WrapperPlayServerInitializeWorldBorder> {
@@ -56356,18 +51007,6 @@ export interface WrapperPlayServerJoinGame extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerJoinGame): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -56406,7 +51045,6 @@ export interface WrapperPlayServerJoinGame extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -56530,8 +51168,6 @@ export interface WrapperPlayServerJoinGame extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -56547,56 +51183,6 @@ export interface WrapperPlayServerJoinGame extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    isHardcore(): boolean;
-    setHardcore(arg0: boolean): void;
-    getGameMode(): PacketGameMode;
-    setGameMode(arg0: PacketGameMode): void;
-    getPreviousGameMode(): PacketGameMode;
-    setPreviousGameMode(arg0: PacketGameMode): void;
-    getWorldNames(): string[];
-    setWorldNames(arg0: string[]): void;
-    getDimensionCodec(): NBTCompound;
-    setDimensionCodec(arg0: NBTCompound): void;
-    getDimensionTypeRef(): DimensionTypeRef;
-    setDimensionTypeRef(arg0: DimensionTypeRef): void;
-    getDimensionType(): DimensionDimensionType;
-    setDimensionType(arg0: DimensionDimensionType): void;
-    getDimension(): Dimension;
-    setDimension(arg0: Dimension): void;
-    getDifficulty(): PacketDifficulty;
-    setDifficulty(arg0: PacketDifficulty): void;
-    getWorldName(): string;
-    setWorldName(arg0: string): void;
-    getHashedSeed(): number;
-    setHashedSeed(arg0: number): void;
-    getMaxPlayers(): number;
-    setMaxPlayers(arg0: number): void;
-    getViewDistance(): number;
-    setViewDistance(arg0: number): void;
-    getSimulationDistance(): number;
-    setSimulationDistance(arg0: number): void;
-    isReducedDebugInfo(): boolean;
-    setReducedDebugInfo(arg0: boolean): void;
-    isRespawnScreenEnabled(): boolean;
-    setRespawnScreenEnabled(arg0: boolean): void;
-    isLimitedCrafting(): boolean;
-    setLimitedCrafting(arg0: boolean): void;
-    isDebug(): boolean;
-    setDebug(arg0: boolean): void;
-    isFlat(): boolean;
-    setFlat(arg0: boolean): void;
-    getLastDeathPosition(): WorldBlockPosition;
-    setLastDeathPosition(arg0: WorldBlockPosition): void;
-    getPortalCooldown(): number | null;
-    setPortalCooldown(arg0: number): void;
-    getSeaLevel(): number;
-    setSeaLevel(arg0: number): void;
-    isOnlineMode(): boolean;
-    setOnlineMode(arg0: boolean): void;
-    isEnforcesSecureChat(): boolean;
-    setEnforcesSecureChat(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerJoinGame extends PacketWrapperType<WrapperPlayServerJoinGame> {
@@ -56645,18 +51231,6 @@ export interface WrapperPlayServerKeepAlive extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerKeepAlive): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -56695,7 +51269,6 @@ export interface WrapperPlayServerKeepAlive extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -56819,8 +51392,6 @@ export interface WrapperPlayServerKeepAlive extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -56836,8 +51407,6 @@ export interface WrapperPlayServerKeepAlive extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getId(): number;
-    setId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerKeepAlive extends PacketWrapperType<WrapperPlayServerKeepAlive> {
@@ -56863,18 +51432,6 @@ export interface WrapperPlayServerLowDiskSpaceWarning extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerLowDiskSpaceWarning): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -56913,7 +51470,6 @@ export interface WrapperPlayServerLowDiskSpaceWarning extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -57037,8 +51593,6 @@ export interface WrapperPlayServerLowDiskSpaceWarning extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -57088,18 +51642,6 @@ export interface WrapperPlayServerMapData extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerMapData): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -57138,7 +51680,6 @@ export interface WrapperPlayServerMapData extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -57262,8 +51803,6 @@ export interface WrapperPlayServerMapData extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -57279,26 +51818,6 @@ export interface WrapperPlayServerMapData extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getMapId(): number;
-    setMapId(arg0: number): void;
-    getScale(): number;
-    setScale(arg0: number): void;
-    isTrackingPosition(): boolean;
-    setTrackingPosition(arg0: boolean): void;
-    isLocked(): boolean;
-    setLocked(arg0: boolean): void;
-    getDecorations(): MapDataMapDecoration[];
-    setDecorations(arg0: MapDataMapDecoration[]): void;
-    getColumns(): number;
-    setColumns(arg0: number): void;
-    getRows(): number;
-    setRows(arg0: number): void;
-    getX(): number;
-    setX(arg0: number): void;
-    getZ(): number;
-    setZ(arg0: number): void;
-    getData(): number[];
-    setData(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerMapData extends PacketWrapperType<WrapperPlayServerMapData> {
@@ -57334,18 +51853,6 @@ export interface WrapperPlayServerMerchantOffers extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerMerchantOffers): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -57384,7 +51891,6 @@ export interface WrapperPlayServerMerchantOffers extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -57508,8 +52014,6 @@ export interface WrapperPlayServerMerchantOffers extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -57525,18 +52029,6 @@ export interface WrapperPlayServerMerchantOffers extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getContainerId(): number;
-    setContainerId(arg0: number): void;
-    getMerchantOffers(): MerchantOffer[];
-    setMerchantOffers(arg0: MerchantOffer[]): void;
-    getVillagerLevel(): number;
-    setVillagerLevel(arg0: number): void;
-    getVillagerXp(): number;
-    setVillagerXp(arg0: number): void;
-    isShowProgress(): boolean;
-    setShowProgress(arg0: boolean): void;
-    isCanRestock(): boolean;
-    setCanRestock(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerMerchantOffers extends PacketWrapperType<WrapperPlayServerMerchantOffers> {
@@ -57564,18 +52056,6 @@ export interface WrapperPlayServerMoveMinecart extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerMoveMinecart): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -57614,7 +52094,6 @@ export interface WrapperPlayServerMoveMinecart extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -57738,8 +52217,6 @@ export interface WrapperPlayServerMoveMinecart extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -57755,10 +52232,6 @@ export interface WrapperPlayServerMoveMinecart extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getLerpSteps(): MoveMinecartMinecartStep[];
-    setLerpSteps(arg0: MoveMinecartMinecartStep[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerMoveMinecart extends PacketWrapperType<WrapperPlayServerMoveMinecart> {
@@ -57787,18 +52260,6 @@ export interface WrapperPlayServerMultiBlockChange extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerMultiBlockChange): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -57837,7 +52298,6 @@ export interface WrapperPlayServerMultiBlockChange extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -57961,8 +52421,6 @@ export interface WrapperPlayServerMultiBlockChange extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -57978,12 +52436,6 @@ export interface WrapperPlayServerMultiBlockChange extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getChunkPosition(): PacketVector3i;
-    setChunkPosition(arg0: PacketVector3i): void;
-    getTrustEdges(): boolean;
-    setTrustEdges(arg0: boolean): void;
-    getBlocks(): MultiBlockChangeEncodedBlock[];
-    setBlocks(arg0: MultiBlockChangeEncodedBlock[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerMultiBlockChange extends PacketWrapperType<WrapperPlayServerMultiBlockChange> {
@@ -58011,18 +52463,6 @@ export interface WrapperPlayServerNBTQueryResponse extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerNBTQueryResponse): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -58061,7 +52501,6 @@ export interface WrapperPlayServerNBTQueryResponse extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -58185,8 +52624,6 @@ export interface WrapperPlayServerNBTQueryResponse extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -58202,10 +52639,6 @@ export interface WrapperPlayServerNBTQueryResponse extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getTransactionId(): number;
-    setTransactionId(arg0: number): void;
-    getTag(): NBTCompound;
-    setTag(arg0: NBTCompound): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerNBTQueryResponse extends PacketWrapperType<WrapperPlayServerNBTQueryResponse> {
@@ -58232,18 +52665,6 @@ export interface WrapperPlayServerOpenBook extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerOpenBook): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -58282,7 +52703,6 @@ export interface WrapperPlayServerOpenBook extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -58406,8 +52826,6 @@ export interface WrapperPlayServerOpenBook extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -58423,8 +52841,6 @@ export interface WrapperPlayServerOpenBook extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getHand(): InteractionHand;
-    setHand(arg0: InteractionHand): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerOpenBook extends PacketWrapperType<WrapperPlayServerOpenBook> {
@@ -58453,18 +52869,6 @@ export interface WrapperPlayServerOpenHorseWindow extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerOpenHorseWindow): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -58503,7 +52907,6 @@ export interface WrapperPlayServerOpenHorseWindow extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -58627,8 +53030,6 @@ export interface WrapperPlayServerOpenHorseWindow extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -58644,12 +53045,6 @@ export interface WrapperPlayServerOpenHorseWindow extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getWindowId(): number;
-    setWindowId(arg0: number): void;
-    getSlotCount(): number;
-    setSlotCount(arg0: number): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerOpenHorseWindow extends PacketWrapperType<WrapperPlayServerOpenHorseWindow> {
@@ -58677,18 +53072,6 @@ export interface WrapperPlayServerOpenSignEditor extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerOpenSignEditor): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -58727,7 +53110,6 @@ export interface WrapperPlayServerOpenSignEditor extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -58851,8 +53233,6 @@ export interface WrapperPlayServerOpenSignEditor extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -58868,10 +53248,6 @@ export interface WrapperPlayServerOpenSignEditor extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPosition(): PacketVector3i;
-    setPosition(arg0: PacketVector3i): void;
-    isFrontText(): boolean;
-    setFrontText(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerOpenSignEditor extends PacketWrapperType<WrapperPlayServerOpenSignEditor> {
@@ -58904,18 +53280,6 @@ export interface WrapperPlayServerOpenWindow extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerOpenWindow): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -58954,7 +53318,6 @@ export interface WrapperPlayServerOpenWindow extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -59078,8 +53441,6 @@ export interface WrapperPlayServerOpenWindow extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -59095,20 +53456,6 @@ export interface WrapperPlayServerOpenWindow extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getContainerId(): number;
-    setContainerId(arg0: number): void;
-    getType(): number;
-    setType(arg0: number): void;
-    getLegacyType(): string;
-    setLegacyType(arg0: string): void;
-    getLegacySlots(): number;
-    setLegacySlots(arg0: number): void;
-    getHorseId(): number;
-    setHorseId(arg0: number): void;
-    getTitle(): Component;
-    setTitle(arg0: Component): void;
-    isUseProvidedWindowTitle(): boolean;
-    setUseProvidedWindowTitle(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerOpenWindow extends PacketWrapperType<WrapperPlayServerOpenWindow> {
@@ -59145,18 +53492,6 @@ export interface WrapperPlayServerParticle extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerParticle): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -59195,7 +53530,6 @@ export interface WrapperPlayServerParticle extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -59319,8 +53653,6 @@ export interface WrapperPlayServerParticle extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -59336,20 +53668,6 @@ export interface WrapperPlayServerParticle extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getParticle(): PacketParticle<unknown>;
-    setParticle(arg0: PacketParticle<unknown>): void;
-    isLongDistance(): boolean;
-    setLongDistance(arg0: boolean): void;
-    getPosition(): PacketVector3d;
-    setPosition(arg0: PacketVector3d): void;
-    getOffset(): PacketVector3f;
-    setOffset(arg0: PacketVector3f): void;
-    getMaxSpeed(): number;
-    setMaxSpeed(arg0: number): void;
-    getParticleCount(): number;
-    setParticleCount(arg0: number): void;
-    isAlwaysShow(): boolean;
-    setAlwaysShow(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerParticle extends PacketWrapperType<WrapperPlayServerParticle> {
@@ -59378,18 +53696,6 @@ export interface WrapperPlayServerPing extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerPing): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -59428,7 +53734,6 @@ export interface WrapperPlayServerPing extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -59552,8 +53857,6 @@ export interface WrapperPlayServerPing extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -59569,8 +53872,6 @@ export interface WrapperPlayServerPing extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getId(): number;
-    setId(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerPing extends PacketWrapperType<WrapperPlayServerPing> {
@@ -59602,18 +53903,6 @@ export interface WrapperPlayServerPlayerAbilities extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerPlayerAbilities): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -59652,7 +53941,6 @@ export interface WrapperPlayServerPlayerAbilities extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -59776,8 +54064,6 @@ export interface WrapperPlayServerPlayerAbilities extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -59793,18 +54079,6 @@ export interface WrapperPlayServerPlayerAbilities extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    isInGodMode(): boolean;
-    setInGodMode(arg0: boolean): void;
-    isFlying(): boolean;
-    setFlying(arg0: boolean): void;
-    isFlightAllowed(): boolean;
-    setFlightAllowed(arg0: boolean): void;
-    isInCreativeMode(): boolean;
-    setInCreativeMode(arg0: boolean): void;
-    getFlySpeed(): number;
-    setFlySpeed(arg0: number): void;
-    getFOVModifier(): number;
-    setFOVModifier(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerPlayerAbilities extends PacketWrapperType<WrapperPlayServerPlayerAbilities> {
@@ -59834,18 +54108,6 @@ export interface WrapperPlayServerPlayerChatHeader extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerPlayerChatHeader): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -59884,7 +54146,6 @@ export interface WrapperPlayServerPlayerChatHeader extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -60008,8 +54269,6 @@ export interface WrapperPlayServerPlayerChatHeader extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -60025,14 +54284,6 @@ export interface WrapperPlayServerPlayerChatHeader extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPreviousSignature(): number[] | null;
-    setPreviousSignature(arg0: number[]): void;
-    getPlayerUUID(): NativeUuid;
-    setPlayerUUID(arg0: NativeUuid): void;
-    getSignature(): number[];
-    setSignature(arg0: number[]): void;
-    getHash(): number[];
-    setHash(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerPlayerChatHeader extends PacketWrapperType<WrapperPlayServerPlayerChatHeader> {
@@ -60060,18 +54311,6 @@ export interface WrapperPlayServerPlayerInfo extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerPlayerInfo): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -60110,7 +54349,6 @@ export interface WrapperPlayServerPlayerInfo extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -60234,8 +54472,6 @@ export interface WrapperPlayServerPlayerInfo extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -60251,10 +54487,6 @@ export interface WrapperPlayServerPlayerInfo extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getAction(): PlayerInfoAction;
-    setAction(arg0: PlayerInfoAction): void;
-    getPlayerDataList(): PlayerInfoPlayerData[];
-    setPlayerDataList(arg0: PlayerInfoPlayerData[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerPlayerInfo extends PacketWrapperType<WrapperPlayServerPlayerInfo> {
@@ -60283,18 +54515,6 @@ export interface WrapperPlayServerPlayerInfoRemove extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerPlayerInfoRemove): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -60333,7 +54553,6 @@ export interface WrapperPlayServerPlayerInfoRemove extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -60457,8 +54676,6 @@ export interface WrapperPlayServerPlayerInfoRemove extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -60474,8 +54691,6 @@ export interface WrapperPlayServerPlayerInfoRemove extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getProfileIds(): NativeUuid[];
-    setProfileIds(arg0: NativeUuid[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerPlayerInfoRemove extends PacketWrapperType<WrapperPlayServerPlayerInfoRemove> {
@@ -60505,18 +54720,6 @@ export interface WrapperPlayServerPlayerInfoUpdate extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerPlayerInfoUpdate): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -60555,7 +54758,6 @@ export interface WrapperPlayServerPlayerInfoUpdate extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -60679,8 +54881,6 @@ export interface WrapperPlayServerPlayerInfoUpdate extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -60696,10 +54896,6 @@ export interface WrapperPlayServerPlayerInfoUpdate extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getActions(): Set<PlayerInfoUpdateAction>;
-    setActions(arg0: Set<PlayerInfoUpdateAction>): void;
-    getEntries(): PlayerInfoUpdatePlayerInfo[];
-    setEntries(arg0: PlayerInfoUpdatePlayerInfo[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerPlayerInfoUpdate extends PacketWrapperType<WrapperPlayServerPlayerInfoUpdate> {
@@ -60737,18 +54933,6 @@ export interface WrapperPlayServerPlayerListHeaderAndFooter extends PacketWrappe
     write(): void;
     copy(arg0: WrapperPlayServerPlayerListHeaderAndFooter): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -60787,7 +54971,6 @@ export interface WrapperPlayServerPlayerListHeaderAndFooter extends PacketWrappe
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -60911,8 +55094,6 @@ export interface WrapperPlayServerPlayerListHeaderAndFooter extends PacketWrappe
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -60928,18 +55109,6 @@ export interface WrapperPlayServerPlayerListHeaderAndFooter extends PacketWrappe
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getHeader(): Component;
-    setHeader(arg0: Component): void;
-    getFooter(): Component;
-    setFooter(arg0: Component): void;
-    getHeaderJson(): string;
-    setHeaderJson(arg0: string): void;
-    getFooterJson(): string;
-    setFooterJson(arg0: string): void;
-    getHeaderComponent(): Component;
-    setHeaderComponent(arg0: Component): void;
-    getFooterComponent(): Component;
-    setFooterComponent(arg0: Component): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerPlayerListHeaderAndFooter extends PacketWrapperType<WrapperPlayServerPlayerListHeaderAndFooter> {
@@ -60980,18 +55149,6 @@ export interface WrapperPlayServerPlayerPositionAndLook extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerPlayerPositionAndLook): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -61030,7 +55187,6 @@ export interface WrapperPlayServerPlayerPositionAndLook extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -61154,8 +55310,6 @@ export interface WrapperPlayServerPlayerPositionAndLook extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -61171,32 +55325,8 @@ export interface WrapperPlayServerPlayerPositionAndLook extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getTeleportId(): number;
-    setTeleportId(arg0: number): void;
-    getValues(): EntityPositionData;
-    setValues(arg0: EntityPositionData): void;
-    getPosition(): PacketVector3d;
-    setPosition(arg0: PacketVector3d): void;
-    getX(): number;
-    setX(arg0: number): void;
-    getY(): number;
-    setY(arg0: number): void;
-    getZ(): number;
-    setZ(arg0: number): void;
-    getDeltaMovement(): PacketVector3d;
-    setDeltaMovement(arg0: PacketVector3d): void;
-    getYaw(): number;
-    setYaw(arg0: number): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
-    getRelativeMask(): number;
-    setRelativeMask(arg0: number): void;
     isRelativeFlag(arg0: RelativeFlag): boolean;
     setRelative(arg0: RelativeFlag, arg1: boolean): void;
-    getRelativeFlags(): RelativeFlag;
-    setRelativeFlags(arg0: RelativeFlag): void;
-    isDismountVehicle(): boolean;
-    setDismountVehicle(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerPlayerPositionAndLook extends PacketWrapperType<WrapperPlayServerPlayerPositionAndLook> {
@@ -61236,18 +55366,6 @@ export interface WrapperPlayServerPlayerRotation extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerPlayerRotation): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -61286,7 +55404,6 @@ export interface WrapperPlayServerPlayerRotation extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -61410,8 +55527,6 @@ export interface WrapperPlayServerPlayerRotation extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -61427,14 +55542,6 @@ export interface WrapperPlayServerPlayerRotation extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getYaw(): number;
-    setYaw(arg0: number): void;
-    isRelativeYaw(): boolean;
-    setRelativeYaw(arg0: boolean): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
-    isRelativePitch(): boolean;
-    setRelativePitch(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerPlayerRotation extends PacketWrapperType<WrapperPlayServerPlayerRotation> {
@@ -61464,18 +55571,6 @@ export interface WrapperPlayServerPluginMessage extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerPluginMessage): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -61514,7 +55609,6 @@ export interface WrapperPlayServerPluginMessage extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -61638,8 +55732,6 @@ export interface WrapperPlayServerPluginMessage extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -61655,10 +55747,6 @@ export interface WrapperPlayServerPluginMessage extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getChannelName(): string;
-    setChannelName(arg0: string): void;
-    getData(): number[];
-    setData(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerPluginMessage extends PacketWrapperType<WrapperPlayServerPluginMessage> {
@@ -61691,18 +55779,6 @@ export interface WrapperPlayServerProjectilePower extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerProjectilePower): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -61741,7 +55817,6 @@ export interface WrapperPlayServerProjectilePower extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -61865,8 +55940,6 @@ export interface WrapperPlayServerProjectilePower extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -61882,16 +55955,6 @@ export interface WrapperPlayServerProjectilePower extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getPower(): number;
-    setPower(arg0: number): void;
-    getPowerX(): number;
-    setPowerX(arg0: number): void;
-    getPowerY(): number;
-    setPowerY(arg0: number): void;
-    getPowerZ(): number;
-    setPowerZ(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerProjectilePower extends PacketWrapperType<WrapperPlayServerProjectilePower> {
@@ -61921,18 +55984,6 @@ export interface WrapperPlayServerRecipeBookAdd extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerRecipeBookAdd): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -61971,7 +56022,6 @@ export interface WrapperPlayServerRecipeBookAdd extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -62095,8 +56145,6 @@ export interface WrapperPlayServerRecipeBookAdd extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -62112,10 +56160,6 @@ export interface WrapperPlayServerRecipeBookAdd extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntries(): RecipeBookAddAddEntry[];
-    setEntries(arg0: RecipeBookAddAddEntry[]): void;
-    isReplace(): boolean;
-    setReplace(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerRecipeBookAdd extends PacketWrapperType<WrapperPlayServerRecipeBookAdd> {
@@ -62142,18 +56186,6 @@ export interface WrapperPlayServerRecipeBookRemove extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerRecipeBookRemove): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -62192,7 +56224,6 @@ export interface WrapperPlayServerRecipeBookRemove extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -62316,8 +56347,6 @@ export interface WrapperPlayServerRecipeBookRemove extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -62333,8 +56362,6 @@ export interface WrapperPlayServerRecipeBookRemove extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getRecipeIds(): RecipeDisplayId[];
-    setRecipeIds(arg0: RecipeDisplayId[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerRecipeBookRemove extends PacketWrapperType<WrapperPlayServerRecipeBookRemove> {
@@ -62361,18 +56388,6 @@ export interface WrapperPlayServerRecipeBookSettings extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerRecipeBookSettings): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -62411,7 +56426,6 @@ export interface WrapperPlayServerRecipeBookSettings extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -62535,8 +56549,6 @@ export interface WrapperPlayServerRecipeBookSettings extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -62552,8 +56564,6 @@ export interface WrapperPlayServerRecipeBookSettings extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSettings(): RecipeBookSettings;
-    setSettings(arg0: RecipeBookSettings): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerRecipeBookSettings extends PacketWrapperType<WrapperPlayServerRecipeBookSettings> {
@@ -62581,18 +56591,6 @@ export interface WrapperPlayServerRemoveEntityEffect extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerRemoveEntityEffect): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -62631,7 +56629,6 @@ export interface WrapperPlayServerRemoveEntityEffect extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -62755,8 +56752,6 @@ export interface WrapperPlayServerRemoveEntityEffect extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -62772,10 +56767,6 @@ export interface WrapperPlayServerRemoveEntityEffect extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getPotionType(): PacketPotionType;
-    setPotionType(arg0: PacketPotionType): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerRemoveEntityEffect extends PacketWrapperType<WrapperPlayServerRemoveEntityEffect> {
@@ -62803,18 +56794,6 @@ export interface WrapperPlayServerResetScore extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerResetScore): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -62853,7 +56832,6 @@ export interface WrapperPlayServerResetScore extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -62977,8 +56955,6 @@ export interface WrapperPlayServerResetScore extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -62994,10 +56970,6 @@ export interface WrapperPlayServerResetScore extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getTargetName(): string;
-    setTargetName(arg0: string): void;
-    getObjective(): string;
-    setObjective(arg0: string): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerResetScore extends PacketWrapperType<WrapperPlayServerResetScore> {
@@ -63024,18 +56996,6 @@ export interface WrapperPlayServerResourcePackRemove extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerResourcePackRemove): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -63074,7 +57034,6 @@ export interface WrapperPlayServerResourcePackRemove extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -63198,8 +57157,6 @@ export interface WrapperPlayServerResourcePackRemove extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -63215,8 +57172,6 @@ export interface WrapperPlayServerResourcePackRemove extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPackId(): NativeUuid;
-    setPackId(arg0: NativeUuid): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerResourcePackRemove extends PacketWrapperType<WrapperPlayServerResourcePackRemove> {
@@ -63247,18 +57202,6 @@ export interface WrapperPlayServerResourcePackSend extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerResourcePackSend): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -63297,7 +57240,6 @@ export interface WrapperPlayServerResourcePackSend extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -63421,8 +57363,6 @@ export interface WrapperPlayServerResourcePackSend extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -63438,16 +57378,6 @@ export interface WrapperPlayServerResourcePackSend extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPackId(): NativeUuid;
-    setPackId(arg0: NativeUuid): void;
-    getUrl(): string;
-    setUrl(arg0: string): void;
-    getHash(): string;
-    setHash(arg0: string): void;
-    isRequired(): boolean;
-    setRequired(arg0: boolean): void;
-    getPrompt(): Component;
-    setPrompt(arg0: Component): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerResourcePackSend extends PacketWrapperType<WrapperPlayServerResourcePackSend> {
@@ -63491,18 +57421,6 @@ export interface WrapperPlayServerRespawn extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerRespawn): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -63541,7 +57459,6 @@ export interface WrapperPlayServerRespawn extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -63665,8 +57582,6 @@ export interface WrapperPlayServerRespawn extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -63682,36 +57597,6 @@ export interface WrapperPlayServerRespawn extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getDimensionTypeRef(): DimensionTypeRef;
-    setDimensionTypeRef(arg0: DimensionTypeRef): void;
-    getDimensionType(): DimensionDimensionType;
-    setDimensionType(arg0: DimensionDimensionType): void;
-    getDimension(): Dimension;
-    setDimension(arg0: Dimension): void;
-    getWorldName(): string | null;
-    setWorldName(arg0: string): void;
-    getDifficulty(): PacketDifficulty;
-    setDifficulty(arg0: PacketDifficulty): void;
-    getHashedSeed(): number;
-    setHashedSeed(arg0: number): void;
-    getGameMode(): PacketGameMode;
-    setGameMode(arg0: PacketGameMode): void;
-    getPreviousGameMode(): PacketGameMode;
-    setPreviousGameMode(arg0: PacketGameMode): void;
-    isWorldDebug(): boolean;
-    setWorldDebug(arg0: boolean): void;
-    isWorldFlat(): boolean;
-    setWorldFlat(arg0: boolean): void;
-    isKeepingAllPlayerData(): boolean;
-    setKeepingAllPlayerData(arg0: boolean): void;
-    getKeptData(): number;
-    setKeptData(arg0: number): void;
-    getLastDeathPosition(): WorldBlockPosition;
-    setLastDeathPosition(arg0: WorldBlockPosition): void;
-    getPortalCooldown(): number | null;
-    setPortalCooldown(arg0: number): void;
-    getSeaLevel(): number;
-    setSeaLevel(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerRespawn extends PacketWrapperType<WrapperPlayServerRespawn> {
@@ -63760,18 +57645,6 @@ export interface WrapperPlayServerScoreboardObjective extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerScoreboardObjective): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -63810,7 +57683,6 @@ export interface WrapperPlayServerScoreboardObjective extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -63934,8 +57806,6 @@ export interface WrapperPlayServerScoreboardObjective extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -63951,16 +57821,6 @@ export interface WrapperPlayServerScoreboardObjective extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getName(): string;
-    setName(arg0: string): void;
-    getMode(): ScoreboardObjectiveObjectiveMode;
-    setMode(arg0: ScoreboardObjectiveObjectiveMode): void;
-    getDisplayName(): Component;
-    setDisplayName(arg0: Component): void;
-    getRenderType(): ScoreboardObjectiveRenderType;
-    setRenderType(arg0: ScoreboardObjectiveRenderType): void;
-    getScoreFormat(): ScoreFormat;
-    setScoreFormat(arg0: ScoreFormat): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerScoreboardObjective extends PacketWrapperType<WrapperPlayServerScoreboardObjective> {
@@ -63989,18 +57849,6 @@ export interface WrapperPlayServerSelectAdvancementsTab extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSelectAdvancementsTab): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -64039,7 +57887,6 @@ export interface WrapperPlayServerSelectAdvancementsTab extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -64163,8 +58010,6 @@ export interface WrapperPlayServerSelectAdvancementsTab extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -64180,8 +58025,6 @@ export interface WrapperPlayServerSelectAdvancementsTab extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getIdentifier(): ResourceLocation;
-    setIdentifier(arg0: ResourceLocation): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSelectAdvancementsTab extends PacketWrapperType<WrapperPlayServerSelectAdvancementsTab> {
@@ -64211,18 +58054,6 @@ export interface WrapperPlayServerServerData extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerServerData): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -64261,7 +58092,6 @@ export interface WrapperPlayServerServerData extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -64385,8 +58215,6 @@ export interface WrapperPlayServerServerData extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -64402,14 +58230,6 @@ export interface WrapperPlayServerServerData extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getMOTD(): Component;
-    setMOTD(arg0: Component): void;
-    getIcon(): string | null;
-    setIcon(arg0: string): void;
-    isPreviewsChat(): boolean;
-    setPreviewsChat(arg0: boolean): void;
-    isEnforceSecureChat(): boolean;
-    setEnforceSecureChat(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerServerData extends PacketWrapperType<WrapperPlayServerServerData> {
@@ -64438,18 +58258,6 @@ export interface WrapperPlayServerServerLinks extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerServerLinks): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -64488,7 +58296,6 @@ export interface WrapperPlayServerServerLinks extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -64612,8 +58419,6 @@ export interface WrapperPlayServerServerLinks extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -64629,8 +58434,6 @@ export interface WrapperPlayServerServerLinks extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getLinks(): PacketServerLinksServerLink[];
-    setLinks(arg0: PacketServerLinksServerLink[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerServerLinks extends PacketWrapperType<WrapperPlayServerServerLinks> {
@@ -64657,18 +58460,6 @@ export interface WrapperPlayServerSetCompression extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSetCompression): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -64707,7 +58498,6 @@ export interface WrapperPlayServerSetCompression extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -64831,8 +58621,6 @@ export interface WrapperPlayServerSetCompression extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -64848,8 +58636,6 @@ export interface WrapperPlayServerSetCompression extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getThreshold(): number;
-    setThreshold(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSetCompression extends PacketWrapperType<WrapperPlayServerSetCompression> {
@@ -64878,18 +58664,6 @@ export interface WrapperPlayServerSetCooldown extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSetCooldown): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -64928,7 +58702,6 @@ export interface WrapperPlayServerSetCooldown extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -65052,8 +58825,6 @@ export interface WrapperPlayServerSetCooldown extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -65069,12 +58840,6 @@ export interface WrapperPlayServerSetCooldown extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getCooldownGroup(): ResourceLocation;
-    setCooldownGroup(arg0: ResourceLocation): void;
-    getItem(): PacketItemType;
-    setItem(arg0: PacketItemType): void;
-    getCooldownTicks(): number;
-    setCooldownTicks(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSetCooldown extends PacketWrapperType<WrapperPlayServerSetCooldown> {
@@ -65103,18 +58868,6 @@ export interface WrapperPlayServerSetCursorItem extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSetCursorItem): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -65153,7 +58906,6 @@ export interface WrapperPlayServerSetCursorItem extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -65277,8 +59029,6 @@ export interface WrapperPlayServerSetCursorItem extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -65294,8 +59044,6 @@ export interface WrapperPlayServerSetCursorItem extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getStack(): PacketItemStack;
-    setStack(arg0: PacketItemStack): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSetCursorItem extends PacketWrapperType<WrapperPlayServerSetCursorItem> {
@@ -65322,18 +59070,6 @@ export interface WrapperPlayServerSetDisplayChatPreview extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSetDisplayChatPreview): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -65372,7 +59108,6 @@ export interface WrapperPlayServerSetDisplayChatPreview extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -65496,8 +59231,6 @@ export interface WrapperPlayServerSetDisplayChatPreview extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -65513,8 +59246,6 @@ export interface WrapperPlayServerSetDisplayChatPreview extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    isChatPreviewDisplay(): boolean;
-    setChatPreviewDisplay(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSetDisplayChatPreview extends PacketWrapperType<WrapperPlayServerSetDisplayChatPreview> {
@@ -65543,18 +59274,6 @@ export interface WrapperPlayServerSetExperience extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSetExperience): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -65593,7 +59312,6 @@ export interface WrapperPlayServerSetExperience extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -65717,8 +59435,6 @@ export interface WrapperPlayServerSetExperience extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -65734,12 +59450,6 @@ export interface WrapperPlayServerSetExperience extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getExperienceBar(): number;
-    setExperienceBar(arg0: number): void;
-    getLevel(): number;
-    setLevel(arg0: number): void;
-    getTotalExperience(): number;
-    setTotalExperience(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSetExperience extends PacketWrapperType<WrapperPlayServerSetExperience> {
@@ -65767,18 +59477,6 @@ export interface WrapperPlayServerSetPassengers extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSetPassengers): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -65817,7 +59515,6 @@ export interface WrapperPlayServerSetPassengers extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -65941,8 +59638,6 @@ export interface WrapperPlayServerSetPassengers extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -65958,10 +59653,6 @@ export interface WrapperPlayServerSetPassengers extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getPassengers(): number[];
-    setPassengers(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSetPassengers extends PacketWrapperType<WrapperPlayServerSetPassengers> {
@@ -65989,18 +59680,6 @@ export interface WrapperPlayServerSetPlayerInventory extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSetPlayerInventory): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -66039,7 +59718,6 @@ export interface WrapperPlayServerSetPlayerInventory extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -66163,8 +59841,6 @@ export interface WrapperPlayServerSetPlayerInventory extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -66180,10 +59856,6 @@ export interface WrapperPlayServerSetPlayerInventory extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSlot(): number;
-    setSlot(arg0: number): void;
-    getStack(): PacketItemStack;
-    setStack(arg0: PacketItemStack): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSetPlayerInventory extends PacketWrapperType<WrapperPlayServerSetPlayerInventory> {
@@ -66213,18 +59885,6 @@ export interface WrapperPlayServerSetSlot extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSetSlot): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -66263,7 +59923,6 @@ export interface WrapperPlayServerSetSlot extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -66387,8 +60046,6 @@ export interface WrapperPlayServerSetSlot extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -66404,14 +60061,6 @@ export interface WrapperPlayServerSetSlot extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getWindowId(): number;
-    setWindowId(arg0: number): void;
-    getStateId(): number;
-    setStateId(arg0: number): void;
-    getSlot(): number;
-    setSlot(arg0: number): void;
-    getItem(): PacketItemStack;
-    setItem(arg0: PacketItemStack): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSetSlot extends PacketWrapperType<WrapperPlayServerSetSlot> {
@@ -66439,18 +60088,6 @@ export interface WrapperPlayServerSetTitleSubtitle extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSetTitleSubtitle): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -66489,7 +60126,6 @@ export interface WrapperPlayServerSetTitleSubtitle extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -66613,8 +60249,6 @@ export interface WrapperPlayServerSetTitleSubtitle extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -66630,10 +60264,6 @@ export interface WrapperPlayServerSetTitleSubtitle extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSubtitle(): Component;
-    setSubtitle(arg0: Component): void;
-    getSubtitleJson(): string;
-    setSubtitleJson(arg0: string): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSetTitleSubtitle extends PacketWrapperType<WrapperPlayServerSetTitleSubtitle> {
@@ -66664,18 +60294,6 @@ export interface WrapperPlayServerSetTitleText extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSetTitleText): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -66714,7 +60332,6 @@ export interface WrapperPlayServerSetTitleText extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -66838,8 +60455,6 @@ export interface WrapperPlayServerSetTitleText extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -66855,10 +60470,6 @@ export interface WrapperPlayServerSetTitleText extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getTitle(): Component;
-    setTitle(arg0: Component): void;
-    getTitleJson(): string;
-    setTitleJson(arg0: string): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSetTitleText extends PacketWrapperType<WrapperPlayServerSetTitleText> {
@@ -66890,18 +60501,6 @@ export interface WrapperPlayServerSetTitleTimes extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSetTitleTimes): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -66940,7 +60539,6 @@ export interface WrapperPlayServerSetTitleTimes extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -67064,8 +60662,6 @@ export interface WrapperPlayServerSetTitleTimes extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -67081,12 +60677,6 @@ export interface WrapperPlayServerSetTitleTimes extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getFadeInTicks(): number;
-    setFadeInTicks(arg0: number): void;
-    getStayTicks(): number;
-    setStayTicks(arg0: number): void;
-    getFadeOutTicks(): number;
-    setFadeOutTicks(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSetTitleTimes extends PacketWrapperType<WrapperPlayServerSetTitleTimes> {
@@ -67113,18 +60703,6 @@ export interface WrapperPlayServerShowDialog extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerShowDialog): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -67163,7 +60741,6 @@ export interface WrapperPlayServerShowDialog extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -67287,8 +60864,6 @@ export interface WrapperPlayServerShowDialog extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -67304,8 +60879,6 @@ export interface WrapperPlayServerShowDialog extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getDialog(): PacketDialog;
-    setDialog(arg0: PacketDialog): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerShowDialog extends PacketWrapperType<WrapperPlayServerShowDialog> {
@@ -67339,18 +60912,6 @@ export interface WrapperPlayServerSoundEffect extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSoundEffect): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -67389,7 +60950,6 @@ export interface WrapperPlayServerSoundEffect extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -67513,8 +61073,6 @@ export interface WrapperPlayServerSoundEffect extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -67530,22 +61088,6 @@ export interface WrapperPlayServerSoundEffect extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSound(): PacketSound;
-    setSound(arg0: PacketSound): void;
-    getSoundId(): number;
-    setSoundId(arg0: number): void;
-    getSoundCategory(): PacketSoundCategory;
-    setSoundCategory(arg0: PacketSoundCategory): void;
-    getPosition(): PacketVector3d;
-    setPosition(arg0: PacketVector3d): void;
-    getEffectPosition(): PacketVector3i;
-    setEffectPosition(arg0: PacketVector3i): void;
-    getVolume(): number;
-    setVolume(arg0: number): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
-    getSeed(): number;
-    setSeed(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSoundEffect extends PacketWrapperType<WrapperPlayServerSoundEffect> {
@@ -67594,18 +61136,6 @@ export interface WrapperPlayServerSpawnEntity extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSpawnEntity): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -67644,7 +61174,6 @@ export interface WrapperPlayServerSpawnEntity extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -67768,8 +61297,6 @@ export interface WrapperPlayServerSpawnEntity extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -67785,24 +61312,6 @@ export interface WrapperPlayServerSpawnEntity extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getUUID(): NativeUuid | null;
-    setUUID(arg0: NativeUuid | null): void;
-    getEntityType(): PacketEntityType;
-    setEntityType(arg0: PacketEntityType): void;
-    getPosition(): PacketVector3d;
-    setPosition(arg0: PacketVector3d): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
-    getYaw(): number;
-    setYaw(arg0: number): void;
-    getHeadYaw(): number;
-    setHeadYaw(arg0: number): void;
-    getData(): number;
-    setData(arg0: number): void;
-    getVelocity(): PacketVector3d | null;
-    setVelocity(arg0: PacketVector3d | null): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSpawnEntity extends PacketWrapperType<WrapperPlayServerSpawnEntity> {
@@ -67835,18 +61344,6 @@ export interface WrapperPlayServerSpawnExperienceOrb extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSpawnExperienceOrb): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -67885,7 +61382,6 @@ export interface WrapperPlayServerSpawnExperienceOrb extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -68009,8 +61505,6 @@ export interface WrapperPlayServerSpawnExperienceOrb extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -68026,16 +61520,6 @@ export interface WrapperPlayServerSpawnExperienceOrb extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getX(): number;
-    setX(arg0: number): void;
-    getY(): number;
-    setY(arg0: number): void;
-    getZ(): number;
-    setZ(arg0: number): void;
-    getCount(): number;
-    setCount(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSpawnExperienceOrb extends PacketWrapperType<WrapperPlayServerSpawnExperienceOrb> {
@@ -68070,18 +61554,6 @@ export interface WrapperPlayServerSpawnLivingEntity extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSpawnLivingEntity): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -68120,7 +61592,6 @@ export interface WrapperPlayServerSpawnLivingEntity extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -68244,8 +61715,6 @@ export interface WrapperPlayServerSpawnLivingEntity extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -68261,25 +61730,6 @@ export interface WrapperPlayServerSpawnLivingEntity extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getEntityUUID(): NativeUuid;
-    setEntityUUID(arg0: NativeUuid): void;
-    getEntityType(): PacketEntityType;
-    setEntityType(arg0: PacketEntityType): void;
-    getPosition(): PacketVector3d;
-    setPosition(arg0: PacketVector3d): void;
-    getYaw(): number;
-    setYaw(arg0: number): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
-    getHeadPitch(): number;
-    setHeadPitch(arg0: number): void;
-    getVelocity(): PacketVector3d;
-    setVelocity(arg0: PacketVector3d): void;
-    getEntityMetadata(): EntityData<unknown>[];
-    setEntityMetadata(arg0: EntityData<unknown>[]): void;
-    setEntityMetadata(arg0: EntityMetadataProvider): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSpawnLivingEntity extends PacketWrapperType<WrapperPlayServerSpawnLivingEntity> {
@@ -68316,18 +61766,6 @@ export interface WrapperPlayServerSpawnPainting extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSpawnPainting): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -68366,7 +61804,6 @@ export interface WrapperPlayServerSpawnPainting extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -68490,8 +61927,6 @@ export interface WrapperPlayServerSpawnPainting extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -68507,16 +61942,6 @@ export interface WrapperPlayServerSpawnPainting extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getUUID(): NativeUuid;
-    setUUID(arg0: NativeUuid): void;
-    getType(): PaintingType | null;
-    setType(arg0: PaintingType): void;
-    getPosition(): PacketVector3i;
-    setPosition(arg0: PacketVector3i): void;
-    getDirection(): Direction;
-    setDirection(arg0: Direction): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSpawnPainting extends PacketWrapperType<WrapperPlayServerSpawnPainting> {
@@ -68553,18 +61978,6 @@ export interface WrapperPlayServerSpawnPlayer extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSpawnPlayer): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -68603,7 +62016,6 @@ export interface WrapperPlayServerSpawnPlayer extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -68727,8 +62139,6 @@ export interface WrapperPlayServerSpawnPlayer extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -68744,21 +62154,6 @@ export interface WrapperPlayServerSpawnPlayer extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getUUID(): NativeUuid;
-    setUUID(arg0: NativeUuid): void;
-    getPosition(): PacketVector3d;
-    setPosition(arg0: PacketVector3d): void;
-    getYaw(): number;
-    setYaw(arg0: number): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
-    getEntityMetadata(): EntityData<unknown>[];
-    setEntityMetadata(arg0: EntityData<unknown>[]): void;
-    setEntityMetadata(arg0: EntityMetadataProvider): void;
-    getItem(): PacketItemType;
-    setItem(arg0: PacketItemType): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSpawnPlayer extends PacketWrapperType<WrapperPlayServerSpawnPlayer> {
@@ -68797,18 +62192,6 @@ export interface WrapperPlayServerSpawnPosition extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSpawnPosition): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -68847,7 +62230,6 @@ export interface WrapperPlayServerSpawnPosition extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -68971,8 +62353,6 @@ export interface WrapperPlayServerSpawnPosition extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -68988,16 +62368,6 @@ export interface WrapperPlayServerSpawnPosition extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getDimension(): ResourceLocation;
-    setDimension(arg0: ResourceLocation): void;
-    getPosition(): PacketVector3i;
-    setPosition(arg0: PacketVector3i): void;
-    getAngle(): number | null;
-    setAngle(arg0: number): void;
-    getYaw(): number;
-    setYaw(arg0: number): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSpawnPosition extends PacketWrapperType<WrapperPlayServerSpawnPosition> {
@@ -69032,18 +62402,6 @@ export interface WrapperPlayServerSpawnWeatherEntity extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSpawnWeatherEntity): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -69082,7 +62440,6 @@ export interface WrapperPlayServerSpawnWeatherEntity extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -69206,8 +62563,6 @@ export interface WrapperPlayServerSpawnWeatherEntity extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -69223,16 +62578,6 @@ export interface WrapperPlayServerSpawnWeatherEntity extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getType(): number;
-    setType(arg0: number): void;
-    getX(): number;
-    setX(arg0: number): void;
-    getY(): number;
-    setY(arg0: number): void;
-    getZ(): number;
-    setZ(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSpawnWeatherEntity extends PacketWrapperType<WrapperPlayServerSpawnWeatherEntity> {
@@ -69259,18 +62604,6 @@ export interface WrapperPlayServerStatistics extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerStatistics): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -69309,7 +62642,6 @@ export interface WrapperPlayServerStatistics extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -69433,8 +62765,6 @@ export interface WrapperPlayServerStatistics extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -69450,8 +62780,6 @@ export interface WrapperPlayServerStatistics extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getStatistics(): Map<string, number>;
-    setStatistics(arg0: Map<string, number>): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerStatistics extends PacketWrapperType<WrapperPlayServerStatistics> {
@@ -69479,18 +62807,6 @@ export interface WrapperPlayServerStoreCookie extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerStoreCookie): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -69529,7 +62845,6 @@ export interface WrapperPlayServerStoreCookie extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -69653,8 +62968,6 @@ export interface WrapperPlayServerStoreCookie extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -69670,10 +62983,6 @@ export interface WrapperPlayServerStoreCookie extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getKey(): ResourceLocation;
-    setKey(arg0: ResourceLocation): void;
-    getPayload(): number[];
-    setPayload(arg0: number[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerStoreCookie extends PacketWrapperType<WrapperPlayServerStoreCookie> {
@@ -69704,18 +63013,6 @@ export interface WrapperPlayServerSystemChatMessage extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerSystemChatMessage): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -69754,7 +63051,6 @@ export interface WrapperPlayServerSystemChatMessage extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -69878,8 +63174,6 @@ export interface WrapperPlayServerSystemChatMessage extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -69895,14 +63189,6 @@ export interface WrapperPlayServerSystemChatMessage extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getType(): PacketChatType;
-    setType(arg0: PacketChatType): void;
-    getMessageJson(): string;
-    setMessageJson(arg0: string): void;
-    getMessage(): Component;
-    setMessage(arg0: Component): void;
-    isOverlay(): boolean;
-    setOverlay(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerSystemChatMessage extends PacketWrapperType<WrapperPlayServerSystemChatMessage> {
@@ -69938,18 +63224,6 @@ export interface WrapperPlayServerTabComplete extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerTabComplete): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -69988,7 +63262,6 @@ export interface WrapperPlayServerTabComplete extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -70112,8 +63385,6 @@ export interface WrapperPlayServerTabComplete extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -70129,12 +63400,6 @@ export interface WrapperPlayServerTabComplete extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getTransactionId(): number | null;
-    setTransactionId(arg0: number): void;
-    getCommandRange(): TabCompleteCommandRange | null;
-    setCommandRange(arg0: TabCompleteCommandRange): void;
-    getCommandMatches(): TabCompleteCommandMatch[];
-    setCommandMatches(arg0: TabCompleteCommandMatch[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerTabComplete extends PacketWrapperType<WrapperPlayServerTabComplete> {
@@ -70162,18 +63427,6 @@ export interface WrapperPlayServerTags extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerTags): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -70212,7 +63465,6 @@ export interface WrapperPlayServerTags extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -70336,8 +63588,6 @@ export interface WrapperPlayServerTags extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -70353,10 +63603,6 @@ export interface WrapperPlayServerTags extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getTagMap(): Map<ResourceLocation, TagsTag[]>;
-    setTagMap(arg0: Map<ResourceLocation, TagsTag[]>): void;
-    getTags(): Map<string, TagsTag[]>;
-    setTags(arg0: Map<string, TagsTag[]>): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerTags extends PacketWrapperType<WrapperPlayServerTags> {
@@ -70386,18 +63632,6 @@ export interface WrapperPlayServerTeams extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerTeams): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -70436,7 +63670,6 @@ export interface WrapperPlayServerTeams extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -70560,8 +63793,6 @@ export interface WrapperPlayServerTeams extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -70577,14 +63808,6 @@ export interface WrapperPlayServerTeams extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getTeamName(): string;
-    setTeamName(arg0: string): void;
-    getTeamMode(): TeamsTeamMode;
-    setTeamMode(arg0: TeamsTeamMode): void;
-    getPlayers(): string[];
-    setPlayers(arg0: string[]): void;
-    getTeamInfo(): TeamsScoreBoardTeamInfo | null;
-    setTeamInfo(arg0: TeamsScoreBoardTeamInfo): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerTeams extends PacketWrapperType<WrapperPlayServerTeams> {
@@ -70618,18 +63841,6 @@ export interface WrapperPlayServerTestInstanceBlockStatus extends PacketWrapper 
     write(): void;
     copy(arg0: WrapperPlayServerTestInstanceBlockStatus): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -70668,7 +63879,6 @@ export interface WrapperPlayServerTestInstanceBlockStatus extends PacketWrapper 
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -70792,8 +64002,6 @@ export interface WrapperPlayServerTestInstanceBlockStatus extends PacketWrapper 
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -70809,10 +64017,6 @@ export interface WrapperPlayServerTestInstanceBlockStatus extends PacketWrapper 
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getStatus(): Component;
-    setStatus(arg0: Component): void;
-    getSize(): PacketVector3i;
-    setSize(arg0: PacketVector3i): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerTestInstanceBlockStatus extends PacketWrapperType<WrapperPlayServerTestInstanceBlockStatus> {
@@ -70840,18 +64044,6 @@ export interface WrapperPlayServerTickingState extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerTickingState): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -70890,7 +64082,6 @@ export interface WrapperPlayServerTickingState extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -71014,8 +64205,6 @@ export interface WrapperPlayServerTickingState extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -71031,10 +64220,6 @@ export interface WrapperPlayServerTickingState extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getTickRate(): number;
-    setTickRate(arg0: number): void;
-    isFrozen(): boolean;
-    setFrozen(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerTickingState extends PacketWrapperType<WrapperPlayServerTickingState> {
@@ -71061,18 +64246,6 @@ export interface WrapperPlayServerTickingStep extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerTickingStep): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -71111,7 +64284,6 @@ export interface WrapperPlayServerTickingStep extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -71235,8 +64407,6 @@ export interface WrapperPlayServerTickingStep extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -71252,8 +64422,6 @@ export interface WrapperPlayServerTickingStep extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getTickSteps(): number;
-    setTickSteps(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerTickingStep extends PacketWrapperType<WrapperPlayServerTickingStep> {
@@ -71284,18 +64452,6 @@ export interface WrapperPlayServerTimeUpdate extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerTimeUpdate): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -71334,7 +64490,6 @@ export interface WrapperPlayServerTimeUpdate extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -71458,8 +64613,6 @@ export interface WrapperPlayServerTimeUpdate extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -71475,18 +64628,8 @@ export interface WrapperPlayServerTimeUpdate extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getWorldAge(): number;
-    setWorldAge(arg0: number): void;
-    getClockUpdates(): Map<WorldClock, ClockNetworkState>;
-    setClockUpdates(arg0: Map<WorldClock, ClockNetworkState>): void;
     getClockState(arg0: WorldClock): ClockNetworkState;
     setClockState(arg0: WorldClock, arg1: ClockNetworkState): void;
-    getClockState(): ClockNetworkState;
-    setClockState(arg0: ClockNetworkState): void;
-    getTimeOfDay(): number;
-    setTimeOfDay(arg0: number): void;
-    isTickTime(): boolean;
-    setTickTime(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerTimeUpdate extends PacketWrapperType<WrapperPlayServerTimeUpdate> {
@@ -71526,18 +64669,6 @@ export interface WrapperPlayServerTitle extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerTitle): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -71576,7 +64707,6 @@ export interface WrapperPlayServerTitle extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -71700,8 +64830,6 @@ export interface WrapperPlayServerTitle extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -71717,26 +64845,6 @@ export interface WrapperPlayServerTitle extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getAction(): TitleTitleAction;
-    setAction(arg0: TitleTitleAction): void;
-    getTitle(): Component;
-    setTitle(arg0: Component): void;
-    getTitleJson(): string;
-    setTitleJson(arg0: string): void;
-    getSubtitle(): Component;
-    setSubtitle(arg0: Component): void;
-    getSubtitleJson(): string;
-    setSubtitleJson(arg0: string): void;
-    getActionBar(): Component;
-    setActionBar(arg0: Component): void;
-    getActionBarJson(): string;
-    setActionBarJson(arg0: string): void;
-    getFadeInTicks(): number;
-    setFadeInTicks(arg0: number): void;
-    getStayTicks(): number;
-    setStayTicks(arg0: number): void;
-    getFadeOutTicks(): number;
-    setFadeOutTicks(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerTitle extends PacketWrapperType<WrapperPlayServerTitle> {
@@ -71767,18 +64875,6 @@ export interface WrapperPlayServerTransfer extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerTransfer): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -71817,7 +64913,6 @@ export interface WrapperPlayServerTransfer extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -71941,8 +65036,6 @@ export interface WrapperPlayServerTransfer extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -71958,10 +65051,6 @@ export interface WrapperPlayServerTransfer extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getHost(): string;
-    setHost(arg0: string): void;
-    getPort(): number;
-    setPort(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerTransfer extends PacketWrapperType<WrapperPlayServerTransfer> {
@@ -71989,18 +65078,6 @@ export interface WrapperPlayServerUnloadChunk extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerUnloadChunk): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -72039,7 +65116,6 @@ export interface WrapperPlayServerUnloadChunk extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -72163,8 +65239,6 @@ export interface WrapperPlayServerUnloadChunk extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -72180,10 +65254,6 @@ export interface WrapperPlayServerUnloadChunk extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getChunkX(): number;
-    setChunkX(arg0: number): void;
-    getChunkZ(): number;
-    setChunkZ(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerUnloadChunk extends PacketWrapperType<WrapperPlayServerUnloadChunk> {
@@ -72214,18 +65284,6 @@ export interface WrapperPlayServerUpdateAdvancements extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerUpdateAdvancements): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -72264,7 +65322,6 @@ export interface WrapperPlayServerUpdateAdvancements extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -72388,8 +65445,6 @@ export interface WrapperPlayServerUpdateAdvancements extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -72405,16 +65460,6 @@ export interface WrapperPlayServerUpdateAdvancements extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    isReset(): boolean;
-    setReset(arg0: boolean): void;
-    getAddedAdvancements(): AdvancementHolder[];
-    setAddedAdvancements(arg0: AdvancementHolder[]): void;
-    getRemovedAdvancements(): Set<ResourceLocation>;
-    setRemovedAdvancements(arg0: Set<ResourceLocation>): void;
-    getProgress(): Map<ResourceLocation, PacketAdvancementProgress>;
-    setProgress(arg0: Map<ResourceLocation, PacketAdvancementProgress>): void;
-    isShowAdvancements(): boolean;
-    setShowAdvancements(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerUpdateAdvancements extends PacketWrapperType<WrapperPlayServerUpdateAdvancements> {
@@ -72442,18 +65487,6 @@ export interface WrapperPlayServerUpdateAttributes extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerUpdateAttributes): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -72492,7 +65525,6 @@ export interface WrapperPlayServerUpdateAttributes extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -72616,8 +65648,6 @@ export interface WrapperPlayServerUpdateAttributes extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -72633,10 +65663,6 @@ export interface WrapperPlayServerUpdateAttributes extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getProperties(): UpdateAttributesProperty[];
-    setProperties(arg0: UpdateAttributesProperty[]): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerUpdateAttributes extends PacketWrapperType<WrapperPlayServerUpdateAttributes> {
@@ -72663,18 +65689,6 @@ export interface WrapperPlayServerUpdateEnabledFeatures extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerUpdateEnabledFeatures): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -72713,7 +65727,6 @@ export interface WrapperPlayServerUpdateEnabledFeatures extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -72837,8 +65850,6 @@ export interface WrapperPlayServerUpdateEnabledFeatures extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -72854,8 +65865,6 @@ export interface WrapperPlayServerUpdateEnabledFeatures extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getFeatures(): Set<ResourceLocation>;
-    setFeatures(arg0: Set<ResourceLocation>): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerUpdateEnabledFeatures extends PacketWrapperType<WrapperPlayServerUpdateEnabledFeatures> {
@@ -72883,18 +65892,6 @@ export interface WrapperPlayServerUpdateEntityNBT extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerUpdateEntityNBT): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -72933,7 +65930,6 @@ export interface WrapperPlayServerUpdateEntityNBT extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -73057,8 +66053,6 @@ export interface WrapperPlayServerUpdateEntityNBT extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -73074,10 +66068,6 @@ export interface WrapperPlayServerUpdateEntityNBT extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getNBTCompound(): NBTCompound;
-    setNBTCompound(arg0: NBTCompound): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerUpdateEntityNBT extends PacketWrapperType<WrapperPlayServerUpdateEntityNBT> {
@@ -73106,18 +66096,6 @@ export interface WrapperPlayServerUpdateHealth extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerUpdateHealth): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -73156,7 +66134,6 @@ export interface WrapperPlayServerUpdateHealth extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -73280,8 +66257,6 @@ export interface WrapperPlayServerUpdateHealth extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -73297,12 +66272,6 @@ export interface WrapperPlayServerUpdateHealth extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getHealth(): number;
-    setHealth(arg0: number): void;
-    getFood(): number;
-    setFood(arg0: number): void;
-    getFoodSaturation(): number;
-    setFoodSaturation(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerUpdateHealth extends PacketWrapperType<WrapperPlayServerUpdateHealth> {
@@ -73331,18 +66300,6 @@ export interface WrapperPlayServerUpdateLight extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerUpdateLight): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -73381,7 +66338,6 @@ export interface WrapperPlayServerUpdateLight extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -73505,8 +66461,6 @@ export interface WrapperPlayServerUpdateLight extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -73522,12 +66476,6 @@ export interface WrapperPlayServerUpdateLight extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getX(): number;
-    setX(arg0: number): void;
-    getZ(): number;
-    setZ(arg0: number): void;
-    getLightData(): LightData;
-    setLightData(arg0: LightData): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerUpdateLight extends PacketWrapperType<WrapperPlayServerUpdateLight> {
@@ -73559,18 +66507,6 @@ export interface WrapperPlayServerUpdateScore extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerUpdateScore): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -73609,7 +66545,6 @@ export interface WrapperPlayServerUpdateScore extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -73733,8 +66668,6 @@ export interface WrapperPlayServerUpdateScore extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -73750,18 +66683,6 @@ export interface WrapperPlayServerUpdateScore extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityName(): string;
-    setEntityName(arg0: string): void;
-    getAction(): UpdateScoreAction;
-    setAction(arg0: UpdateScoreAction): void;
-    getObjectiveName(): string;
-    setObjectiveName(arg0: string): void;
-    getValue(): number | null;
-    setValue(arg0: number | null): void;
-    getEntityDisplayName(): Component;
-    setEntityDisplayName(arg0: Component): void;
-    getScoreFormat(): ScoreFormat;
-    setScoreFormat(arg0: ScoreFormat): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerUpdateScore extends PacketWrapperType<WrapperPlayServerUpdateScore> {
@@ -73790,18 +66711,6 @@ export interface WrapperPlayServerUpdateSimulationDistance extends PacketWrapper
     write(): void;
     copy(arg0: WrapperPlayServerUpdateSimulationDistance): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -73840,7 +66749,6 @@ export interface WrapperPlayServerUpdateSimulationDistance extends PacketWrapper
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -73964,8 +66872,6 @@ export interface WrapperPlayServerUpdateSimulationDistance extends PacketWrapper
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -73981,8 +66887,6 @@ export interface WrapperPlayServerUpdateSimulationDistance extends PacketWrapper
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getSimulationDistance(): number;
-    setSimulationDistance(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerUpdateSimulationDistance extends PacketWrapperType<WrapperPlayServerUpdateSimulationDistance> {
@@ -74009,18 +66913,6 @@ export interface WrapperPlayServerUpdateViewDistance extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerUpdateViewDistance): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -74059,7 +66951,6 @@ export interface WrapperPlayServerUpdateViewDistance extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -74183,8 +67074,6 @@ export interface WrapperPlayServerUpdateViewDistance extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -74200,8 +67089,6 @@ export interface WrapperPlayServerUpdateViewDistance extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getViewDistance(): number;
-    setViewDistance(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerUpdateViewDistance extends PacketWrapperType<WrapperPlayServerUpdateViewDistance> {
@@ -74229,18 +67116,6 @@ export interface WrapperPlayServerUpdateViewPosition extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerUpdateViewPosition): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -74279,7 +67154,6 @@ export interface WrapperPlayServerUpdateViewPosition extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -74403,8 +67277,6 @@ export interface WrapperPlayServerUpdateViewPosition extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -74420,10 +67292,6 @@ export interface WrapperPlayServerUpdateViewPosition extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getChunkX(): number;
-    setChunkX(arg0: number): void;
-    getChunkZ(): number;
-    setChunkZ(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerUpdateViewPosition extends PacketWrapperType<WrapperPlayServerUpdateViewPosition> {
@@ -74451,18 +67319,6 @@ export interface WrapperPlayServerUseBed extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerUseBed): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -74501,7 +67357,6 @@ export interface WrapperPlayServerUseBed extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -74625,8 +67480,6 @@ export interface WrapperPlayServerUseBed extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -74642,10 +67495,6 @@ export interface WrapperPlayServerUseBed extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getEntityId(): number;
-    setEntityId(arg0: number): void;
-    getPosition(): PacketVector3i;
-    setPosition(arg0: PacketVector3i): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerUseBed extends PacketWrapperType<WrapperPlayServerUseBed> {
@@ -74674,18 +67523,6 @@ export interface WrapperPlayServerVehicleMove extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerVehicleMove): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -74724,7 +67561,6 @@ export interface WrapperPlayServerVehicleMove extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -74848,8 +67684,6 @@ export interface WrapperPlayServerVehicleMove extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -74865,12 +67699,6 @@ export interface WrapperPlayServerVehicleMove extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getPosition(): PacketVector3d;
-    setPosition(arg0: PacketVector3d): void;
-    getYaw(): number;
-    setYaw(arg0: number): void;
-    getPitch(): number;
-    setPitch(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerVehicleMove extends PacketWrapperType<WrapperPlayServerVehicleMove> {
@@ -74898,18 +67726,6 @@ export interface WrapperPlayServerWaypoint extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerWaypoint): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -74948,7 +67764,6 @@ export interface WrapperPlayServerWaypoint extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -75072,8 +67887,6 @@ export interface WrapperPlayServerWaypoint extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -75089,10 +67902,6 @@ export interface WrapperPlayServerWaypoint extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getOperation(): WaypointOperation;
-    setOperation(arg0: WaypointOperation): void;
-    getWaypoint(): TrackedWaypoint;
-    setWaypoint(arg0: TrackedWaypoint): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerWaypoint extends PacketWrapperType<WrapperPlayServerWaypoint> {
@@ -75121,18 +67930,6 @@ export interface WrapperPlayServerWindowConfirmation extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerWindowConfirmation): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -75171,7 +67968,6 @@ export interface WrapperPlayServerWindowConfirmation extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -75295,8 +68091,6 @@ export interface WrapperPlayServerWindowConfirmation extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -75312,12 +68106,6 @@ export interface WrapperPlayServerWindowConfirmation extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getWindowId(): number;
-    setWindowId(arg0: number): void;
-    getActionId(): number;
-    setActionId(arg0: number): void;
-    isAccepted(): boolean;
-    setAccepted(arg0: boolean): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerWindowConfirmation extends PacketWrapperType<WrapperPlayServerWindowConfirmation> {
@@ -75347,18 +68135,6 @@ export interface WrapperPlayServerWindowItems extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerWindowItems): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -75397,7 +68173,6 @@ export interface WrapperPlayServerWindowItems extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -75521,8 +68296,6 @@ export interface WrapperPlayServerWindowItems extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -75538,14 +68311,6 @@ export interface WrapperPlayServerWindowItems extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getWindowId(): number;
-    setWindowId(arg0: number): void;
-    getStateId(): number;
-    setStateId(arg0: number): void;
-    getItems(): PacketItemStack[];
-    setItems(arg0: PacketItemStack[]): void;
-    getCarriedItem(): PacketItemStack | null;
-    setCarriedItem(arg0: PacketItemStack): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerWindowItems extends PacketWrapperType<WrapperPlayServerWindowItems> {
@@ -75576,18 +68341,6 @@ export interface WrapperPlayServerWindowProperty extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerWindowProperty): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -75626,7 +68379,6 @@ export interface WrapperPlayServerWindowProperty extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -75750,8 +68502,6 @@ export interface WrapperPlayServerWindowProperty extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -75767,14 +68517,6 @@ export interface WrapperPlayServerWindowProperty extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getContainerId(): number;
-    setContainerId(arg0: number): void;
-    getWindowIdB(): number;
-    setWindowId(arg0: number): void;
-    getId(): number;
-    setId(arg0: number): void;
-    getValue(): number;
-    setValue(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerWindowProperty extends PacketWrapperType<WrapperPlayServerWindowProperty> {
@@ -75812,18 +68554,6 @@ export interface WrapperPlayServerWorldBorder extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerWorldBorder): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -75862,7 +68592,6 @@ export interface WrapperPlayServerWorldBorder extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -75986,8 +68715,6 @@ export interface WrapperPlayServerWorldBorder extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -76003,26 +68730,6 @@ export interface WrapperPlayServerWorldBorder extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getAction(): WorldBorderWorldBorderAction;
-    getRadius(): number;
-    getOldRadius(): number;
-    getNewRadius(): number;
-    getSpeed(): number;
-    getCenterX(): number;
-    getCenterZ(): number;
-    getPortalTeleportBoundary(): number;
-    getWarningTime(): number;
-    getWarningBlocks(): number;
-    setAction(arg0: WorldBorderWorldBorderAction): void;
-    setRadius(arg0: number): void;
-    setOldRadius(arg0: number): void;
-    setNewRadius(arg0: number): void;
-    setSpeed(arg0: number): void;
-    setCenterX(arg0: number): void;
-    setCenterZ(arg0: number): void;
-    setPortalTeleportBoundary(arg0: number): void;
-    setWarningTime(arg0: number): void;
-    setWarningBlocks(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerWorldBorder extends PacketWrapperType<WrapperPlayServerWorldBorder> {
@@ -76058,18 +68765,6 @@ export interface WrapperPlayServerWorldBorderCenter extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerWorldBorderCenter): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -76108,7 +68803,6 @@ export interface WrapperPlayServerWorldBorderCenter extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -76232,8 +68926,6 @@ export interface WrapperPlayServerWorldBorderCenter extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -76249,10 +68941,6 @@ export interface WrapperPlayServerWorldBorderCenter extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getX(): number;
-    getZ(): number;
-    setX(arg0: number): void;
-    setZ(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerWorldBorderCenter extends PacketWrapperType<WrapperPlayServerWorldBorderCenter> {
@@ -76279,18 +68967,6 @@ export interface WrapperPlayServerWorldBorderSize extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayServerWorldBorderSize): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -76329,7 +69005,6 @@ export interface WrapperPlayServerWorldBorderSize extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -76453,8 +69128,6 @@ export interface WrapperPlayServerWorldBorderSize extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -76470,8 +69143,6 @@ export interface WrapperPlayServerWorldBorderSize extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getDiameter(): number;
-    setDiameter(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerWorldBorderSize extends PacketWrapperType<WrapperPlayServerWorldBorderSize> {
@@ -76498,18 +69169,6 @@ export interface WrapperPlayServerWorldBorderWarningReach extends PacketWrapper 
     write(): void;
     copy(arg0: WrapperPlayServerWorldBorderWarningReach): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -76548,7 +69207,6 @@ export interface WrapperPlayServerWorldBorderWarningReach extends PacketWrapper 
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -76672,8 +69330,6 @@ export interface WrapperPlayServerWorldBorderWarningReach extends PacketWrapper 
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -76689,8 +69345,6 @@ export interface WrapperPlayServerWorldBorderWarningReach extends PacketWrapper 
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getWarningBlocks(): number;
-    setWarningBlocks(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayServerWorldBorderWarningReach extends PacketWrapperType<WrapperPlayServerWorldBorderWarningReach> {
@@ -76719,18 +69373,6 @@ export interface WrapperPlayWorldBorderLerpSize extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayWorldBorderLerpSize): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -76769,7 +69411,6 @@ export interface WrapperPlayWorldBorderLerpSize extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -76893,8 +69534,6 @@ export interface WrapperPlayWorldBorderLerpSize extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -76910,12 +69549,6 @@ export interface WrapperPlayWorldBorderLerpSize extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getOldDiameter(): number;
-    getNewDiameter(): number;
-    getSpeed(): number;
-    setOldDiameter(arg0: number): void;
-    setNewDiameter(arg0: number): void;
-    setSpeed(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperPlayWorldBorderLerpSize extends PacketWrapperType<WrapperPlayWorldBorderLerpSize> {
@@ -76941,18 +69574,6 @@ export interface WrapperPlayWorldBorderWarningDelay extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperPlayWorldBorderWarningDelay): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -76991,7 +69612,6 @@ export interface WrapperPlayWorldBorderWarningDelay extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -77115,8 +69735,6 @@ export interface WrapperPlayWorldBorderWarningDelay extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -77158,18 +69776,6 @@ export interface WrapperStatusClientPing extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperStatusClientPing): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -77208,7 +69814,6 @@ export interface WrapperStatusClientPing extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -77332,8 +69937,6 @@ export interface WrapperStatusClientPing extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -77349,8 +69952,6 @@ export interface WrapperStatusClientPing extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getTime(): number;
-    setTime(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperStatusClientPing extends PacketWrapperType<WrapperStatusClientPing> {
@@ -77376,18 +69977,6 @@ export interface WrapperStatusClientRequest extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperStatusClientRequest): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -77426,7 +70015,6 @@ export interface WrapperStatusClientRequest extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -77550,8 +70138,6 @@ export interface WrapperStatusClientRequest extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -77593,18 +70179,6 @@ export interface WrapperStatusServerPong extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperStatusServerPong): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -77643,7 +70217,6 @@ export interface WrapperStatusServerPong extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -77767,8 +70340,6 @@ export interface WrapperStatusServerPong extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -77784,8 +70355,6 @@ export interface WrapperStatusServerPong extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getTime(): number;
-    setTime(arg0: number): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperStatusServerPong extends PacketWrapperType<WrapperStatusServerPong> {
@@ -77813,18 +70382,6 @@ export interface WrapperStatusServerResponse extends PacketWrapper {
     write(): void;
     copy(arg0: WrapperStatusServerResponse): void;
     readEvent(arg0: ProtocolPacketEvent): void;
-    getClientVersion(): ClientVersion;
-    setClientVersion(arg0: ClientVersion): void;
-    getServerVersion(): ServerVersion;
-    setServerVersion(arg0: ServerVersion): void;
-    getBuffer(): unknown;
-    setBuffer(arg0: unknown): void;
-    getPacketId(): number;
-    setPacketId(arg0: number): void;
-    getNativePacketId(): number;
-    setNativePacketId(arg0: number): void;
-    getPacketTypeData(): PacketTypeData;
-    getMaxMessageLength(): number;
     resetByteBuf(): void;
     resetBuffer(): void;
     readByte(): number;
@@ -77863,7 +70420,6 @@ export interface WrapperStatusServerResponse extends PacketWrapper {
     writeString(arg0: string): void;
     writeString(arg0: string, arg1: number): void;
     writeString(arg0: string, arg1: number, arg2: boolean): void;
-    getSerializers(): AdventureSerializer;
     writeComponentJSON(arg0: string): void;
     readComponent(): Component;
     readComponentAsNBT(): Component;
@@ -77987,8 +70543,6 @@ export interface WrapperStatusServerResponse extends PacketWrapper {
     readMappedEntity<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: Z): Z;
     replaceRegistry<Z extends MappedEntity>(arg0: IRegistry<Z>): IRegistry<Z>;
-    getRegistryHolder(): IRegistryHolder;
-    setRegistryHolder(arg0: IRegistryHolder): void;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: (left: ClientVersion, right: number) => Z, arg1: PacketWrapperReader<Z>): Z;
     readMappedEntity<Z extends MappedEntity>(arg0: IRegistry<Z>): Z;
     readMappedEntityOrDirect<Z extends MappedEntity>(arg0: IRegistry<Z>, arg1: PacketWrapperReader<Z>): Z;
@@ -78004,10 +70558,6 @@ export interface WrapperStatusServerResponse extends PacketWrapper {
     writeNullableVarInt(arg0: number): void;
     readLengthPrefixed<Z>(arg0: number, arg1: PacketWrapperReader<Z>): Z;
     writeLengthPrefixed<Z>(arg0: Z, arg1: PacketWrapperWriter<Z>): void;
-    getComponent(): JsonObject;
-    setComponent(arg0: JsonObject): void;
-    getComponentJson(): string;
-    setComponentJson(arg0: string): void;
     copy(arg0: PacketEventsPacketWrapper): void;
 }
 interface __GraalyPacketSymbolWrapperStatusServerResponse extends PacketWrapperType<WrapperStatusServerResponse> {

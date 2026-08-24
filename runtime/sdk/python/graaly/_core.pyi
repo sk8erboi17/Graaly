@@ -63,7 +63,7 @@ class CommandContext:
 
 
 class PacketTypeValue(ApiObject, Protocol):
-    def get_name(self) -> str: ...
+    name: str
 
 
 class PacketEvent(ApiObject, Protocol):

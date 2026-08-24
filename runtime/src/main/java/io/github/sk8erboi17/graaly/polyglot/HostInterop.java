@@ -198,6 +198,46 @@ final class HostInterop {
         return false;
     }
 
+    /** True when a method name is represented by a native JS/Python property instead. */
+    static boolean isPropertyAccessor(Object targetValue, String name) {
+        Object target = unwrap(targetValue);
+        if (target == null || target instanceof Class<?> || name == null || name.isEmpty()) {
+            return false;
+        }
+        boolean accessor = false;
+        for (Method method : target.getClass().getMethods()) {
+            if (!method.getName().equals(name) || Modifier.isStatic(method.getModifiers())) {
+                continue;
+            }
+            if (accessorPropertyName(method) == null) {
+                // Preserve a real overload such as getBlockAt(x, y, z).
+                return false;
+            }
+            accessor = true;
+        }
+        return accessor;
+    }
+
+    /** True when this argument count selects only a JavaBean accessor overload. */
+    static boolean isPropertyAccessorCall(Object targetValue, String name, int argumentCount) {
+        Object target = unwrap(targetValue);
+        if (target == null || target instanceof Class<?> || name == null || argumentCount < 0) {
+            return false;
+        }
+        boolean accessor = false;
+        for (Method method : target.getClass().getMethods()) {
+            if (!method.getName().equals(name) || Modifier.isStatic(method.getModifiers())
+                    || !acceptsArgumentCount(method, argumentCount)) {
+                continue;
+            }
+            if (accessorPropertyName(method) == null) {
+                return false;
+            }
+            accessor = true;
+        }
+        return accessor;
+    }
+
     static boolean hasStaticMember(Object classValue, String name) {
         Object rawClass = unwrap(classValue);
         if (!(rawClass instanceof Class<?>) || name == null) {
@@ -624,6 +664,36 @@ final class HostInterop {
 
     private static boolean isEnumProperty(Object target, String name) {
         return target instanceof Enum<?> && ("name".equals(name) || "ordinal".equals(name));
+    }
+
+    private static String accessorPropertyName(Method method) {
+        String methodName = method.getName();
+        String stem = null;
+        if (methodName.startsWith("get") && methodName.length() > 3
+                && method.getParameterCount() == 0 && method.getReturnType() != Void.TYPE) {
+            stem = methodName.substring(3);
+        } else if (methodName.startsWith("is") && methodName.length() > 2
+                && method.getParameterCount() == 0
+                && (method.getReturnType() == Boolean.TYPE || method.getReturnType() == Boolean.class)) {
+            stem = methodName.substring(2);
+        } else if (methodName.startsWith("set") && methodName.length() > 3
+                && method.getParameterCount() == 1) {
+            stem = methodName.substring(3);
+        }
+        if (stem == null || stem.isEmpty()) {
+            return null;
+        }
+        if (stem.length() > 1 && Character.isUpperCase(stem.charAt(0))
+                && Character.isUpperCase(stem.charAt(1))) {
+            return stem;
+        }
+        return Character.toLowerCase(stem.charAt(0)) + stem.substring(1);
+    }
+
+    private static boolean acceptsArgumentCount(Method method, int argumentCount) {
+        return method.isVarArgs()
+                ? argumentCount >= method.getParameterCount() - 1
+                : argumentCount == method.getParameterCount();
     }
 
     private static String propertySuffix(String name) {

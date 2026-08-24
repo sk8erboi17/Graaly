@@ -84,6 +84,8 @@ def on_join(join):
 
 In JavaScript, TypeScript, and Python scripts, Graaly automatically translates `&` color codes passed to `CommandSender.sendMessage` (including `Player`), `context.reply`, and `players.broadcast`. Use `text.color(...)` when another Bukkit API expects an already-colored string.
 
+Graaly exposes Java-backed object state only through the native property style of each language. In TypeScript and JavaScript write `player.allowFlight = true` and read `player.flying`; in Python use `player.allow_flight = True` and `player.flying`. Instance accessors such as `setAllowFlight(...)`, `isFlying()`, `set_allow_flight(...)`, and `is_flying()` are intentionally not part of the scripting API. Real methods that perform an operation or accept domain arguments, such as `player.hasPermission(node)` and `world.getBlockAt(x, y, z)`, remain methods (`has_permission` and `get_block_at` in Python).
+
 The editor always exposes the same symbols and signatures. At runtime Graaly resolves the actual server type, walks legacy aliases, and adapts known renames. Capability checks are explicit when gameplay semantics changed:
 
 The canonical `EntityTypes` catalog is type-aware: `entities.spawn(location, EntityTypes.ZOMBIE)` is inferred as `Zombie`, while `EntityTypes.HORSE` returns `Horse`. All 159 current entity constants carry the corresponding TypeScript and Python editor type without a cast.

@@ -230,6 +230,22 @@ public final class GraalyScriptApi {
         return hasMethod(target, method);
     }
 
+    public boolean isPropertyAccessor(Object target, String method) {
+        return HostInterop.isPropertyAccessor(target, method);
+    }
+
+    public boolean is_property_accessor(Object target, String method) {
+        return isPropertyAccessor(target, method);
+    }
+
+    public boolean isPropertyAccessorCall(Object target, String method, int argumentCount) {
+        return HostInterop.isPropertyAccessorCall(target, method, argumentCount);
+    }
+
+    public boolean is_property_accessor_call(Object target, String method, int argumentCount) {
+        return isPropertyAccessorCall(target, method, argumentCount);
+    }
+
     public boolean hasStaticMember(Object type, String name) {
         return HostInterop.hasStaticMember(type, name)
                 || compatibility.canRequestPortableConstant(type, name);

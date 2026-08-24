@@ -360,7 +360,7 @@ def on_enable() -> None:
             check(health.health == 20, "PacketEvents wrapper construction failed")
             check(Component.text("surface").content() == "surface",
                   "PacketEvents support static method failed")
-            check(bool(ClientPacket.CHAT_MESSAGE.get_name()), "packet constant resolution failed")
+            check(bool(ClientPacket.CHAT_MESSAGE.name), "packet constant resolution failed")
         probe("packets.constants-wrapper", verify_packets)
         info(f"PORTING-PY SURFACE PASS apiSymbols={report['api_symbols']} wrappers={report['wrappers']} packetTypes={report['packet_types']} constants={report['packet_constants']}")
         info("PORTING-PY WORLD PASS")

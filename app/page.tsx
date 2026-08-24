@@ -4832,6 +4832,11 @@ export default function Home() {
               {catalogCounts.packetSupportTypes} supporting packet types, and {catalogCounts.packetConstants} packet constants.
               TypeScript, Python, and Java signatures are shown side by side, including inherited members and overloads.
             </SectionHeading>
+            <p className="availability-note">
+              <strong>Native property rule:</strong> JavaScript and TypeScript use properties such as <code>player.flying</code> and
+              <code> player.allowFlight = true</code>; Python uses <code>player.flying</code> and <code>player.allow_flight = True</code>.
+              JavaBean instance accessors such as <code>isFlying()</code> and <code>setFlying(...)</code> are intentionally not exposed.
+            </p>
             <ApiExplorer />
           </section>
 

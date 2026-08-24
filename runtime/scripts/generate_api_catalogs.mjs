@@ -1516,6 +1516,7 @@ function generateTypeScriptPacketType(lines, name, fqcn, detail, allTypes, detai
   const instanceFields = members.filter(member => member.kind === "field" && !member.static
     && !propertyNames.has(member.name));
   const instanceMethods = members.filter(member => member.kind === "method" && !member.static
+    && !beanPropertyName(member) && !setterPropertyName(member)
     && !propertyNames.has(member.name)
     && !(enumType && (member.name === "name" || member.name === "ordinal")));
   const constructors = members.filter(member => member.kind === "constructor"
@@ -2142,6 +2143,7 @@ function documentationMembers(exportedName, fqcn, detail, types, { enumConstants
     });
   }
   const methodRows = members.filter(member => member.kind === "method"
+    && !beanPropertyName(member) && !setterPropertyName(member)
     && !(enumType && (member.name === "name" || member.name === "ordinal")));
   for (const method of methodRows) {
     const typeScriptContext = typeReferencesWithParameters(references, method, "typeScript");
@@ -2257,6 +2259,8 @@ function canonicalMemberContract(types, details) {
     const staticMembers = new Set();
     for (const member of members) {
       if (member.kind === "constructor") continue;
+      if (!member.static && member.kind === "method"
+          && (beanPropertyName(member) || setterPropertyName(member))) continue;
       (member.static ? staticMembers : instance).add(member.name);
       if (!member.static && member.kind === "field" && !member.final) writable.add(member.name);
     }

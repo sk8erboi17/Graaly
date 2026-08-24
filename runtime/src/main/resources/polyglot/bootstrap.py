@@ -144,8 +144,16 @@ def _install(bridge_value, plugin_value, server_value, logger_value, data_folder
             java_name = _snake_to_camel(name)
             if _bridge.has_property(self._raw, java_name):
                 return _native(_bridge.property(self._raw, java_name))
+            if _bridge.is_property_accessor(self._raw, java_name):
+                raise AttributeError(
+                    f"Java-style accessor {name!r} is not exposed; use the native property instead"
+                )
             if _bridge.has_method(self._raw, java_name):
                 def method(*args):
+                    if _bridge.is_property_accessor_call(self._raw, java_name, len(args)):
+                        raise AttributeError(
+                            f"Java-style accessor {name!r} is not exposed; use the native property instead"
+                        )
                     return _native(_bridge.invoke_packed(self._raw, java_name, [_unwrap(arg) for arg in args]))
                 method.__name__ = str(name)
                 return method

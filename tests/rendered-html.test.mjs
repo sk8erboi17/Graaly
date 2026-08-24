@@ -424,6 +424,12 @@ test("publishes the full Java API and PacketEvents catalogs", async () => {
   assert.ok(world);
   assert.ok(player.members.length >= 150);
   assert.ok(world.members.length >= 150);
+  const playerMemberNames = new Set(player.members.map(member => member.name));
+  assert.ok(playerMemberNames.has("flying"));
+  assert.ok(playerMemberNames.has("allowFlight"));
+  assert.ok(!playerMemberNames.has("isFlying"));
+  assert.ok(!playerMemberNames.has("setFlying"));
+  assert.ok(!playerMemberNames.has("setAllowFlight"));
   assert.ok(packetTypeCatalog.includes("Play.Client.CHAT_MESSAGE"));
   assert.ok(packetTypeCatalog.includes("Play.Server.UPDATE_HEALTH"));
   assert.ok(packetWrapperCatalog.some(entry => entry.name === "WrapperPlayServerUpdateHealth"));
@@ -438,9 +444,32 @@ test("publishes the full Java API and PacketEvents catalogs", async () => {
   assert.match(html, /ClientPacket\.CHAT_MESSAGE/);
   assert.match(html, /WrapperPlayServerUpdateHealth/);
   assert.match(html, /TypeScript, Python, and Java signatures are shown side by side/);
+  assert.match(html, /JavaBean instance accessors/);
+  assert.match(html, /player\.allowFlight = true/);
+  assert.match(html, /player\.allow_flight = True/);
   assert.match(html, /Every packet name tells you its direction and how to listen for it/);
   assert.match(html, /Loading the complete searchable catalog/);
   assert.match(page, /The client submits a chat message to the server/);
+});
+
+test("publishes Java-backed instance state only as native properties", async () => {
+  const [typeScriptApi, pythonApi, javaScriptRuntime, pythonRuntime] = await Promise.all([
+    readFile(runtimeFile("sdk/typescript/generated-api.mts"), "utf8"),
+    readFile(runtimeFile("sdk/python/graaly/api/__init__.pyi"), "utf8"),
+    readFile(runtimeFile("src/main/resources/polyglot/bootstrap.js"), "utf8"),
+    readFile(runtimeFile("src/main/resources/polyglot/bootstrap.py"), "utf8"),
+  ]);
+  const typeScriptPlayer = typeScriptApi.match(/export interface Player extends ApiObject \{[\s\S]*?\n\}/)?.[0] ?? "";
+  const pythonPlayer = pythonApi.match(/class Player\([^\n]+\):[\s\S]*?(?=\nclass )/)?.[0] ?? "";
+
+  assert.match(typeScriptPlayer, /allowFlight: boolean;/);
+  assert.match(typeScriptPlayer, /flying: boolean;/);
+  assert.doesNotMatch(typeScriptPlayer, /(?:isFlying|setFlying|setAllowFlight)\(/);
+  assert.match(pythonPlayer, /allow_flight: bool/);
+  assert.match(pythonPlayer, /flying: bool/);
+  assert.doesNotMatch(pythonPlayer, /(?:is_flying|set_flying|set_allow_flight)\(/);
+  assert.match(javaScriptRuntime, /isPropertyAccessorCall/);
+  assert.match(pythonRuntime, /is_property_accessor_call/);
 });
 
 test("documents the auditable vertical API conformance boundary", async () => {

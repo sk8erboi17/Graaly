@@ -342,7 +342,7 @@ export function onEnable() {
         probe("packets.constants-wrapper", () => {
             check(health.health === 20, "PacketEvents wrapper construction failed");
             check(Component.text("surface").content().length > 0, "PacketEvents support static method failed");
-            check(ClientPacket.CHAT_MESSAGE.getName().length > 0, "packet constant resolution failed");
+            check(ClientPacket.CHAT_MESSAGE.name.length > 0, "packet constant resolution failed");
         });
         info(`PORTING-JS SURFACE PASS apiSymbols=${report.apiSymbols} wrappers=${report.wrappers} packetTypes=${report.packetTypes} constants=${report.packetConstants}`);
         info("PORTING-JS WORLD PASS");
