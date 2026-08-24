@@ -44,7 +44,7 @@ test("renders the complete documentation in English", async () => {
 
   const html = await response.text();
   assert.match(html, /<html[^>]*lang="en"/i);
-  assert.match(html, /Build Minecraft plugins with TypeScript, JavaScript, or Python/);
+  assert.match(html, /Minecraft plugins in TypeScript, JavaScript, and Python/);
   assert.match(html, /Build Graaly plugins/);
   assert.match(html, /Know exactly when your code runs/);
   assert.match(html, /Every common Player workflow in one searchable browser/);
@@ -137,7 +137,7 @@ test("ships minimal navigation with valid anchors and accessible controls", asyn
   for (const target of targets) assert.ok(ids.includes(target), `missing target #${target}`);
 });
 
-test("keeps the supplied Graaly Docs visual language", async () => {
+test("uses a restrained light-first Graaly Docs visual language", async () => {
   const response = await render();
   const html = await response.text();
   const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
@@ -145,17 +145,20 @@ test("keeps the supplied Graaly Docs visual language", async () => {
 
   assert.match(html, /class="docs-meta-bar"/);
   assert.match(html, /class="global-language-tabs"/);
-  assert.match(html, /aria-label="Switch to light theme"/);
+  assert.match(html, /<html[^>]*data-theme="light"/);
+  assert.match(html, /aria-label="Switch to dark theme"/);
+  assert.match(html, /class="hero-facts"/);
   assert.match(html, /Code language/);
   assert.match(layout, /Chivo/);
   assert.match(layout, /IBM_Plex_Mono/);
-  assert.match(css, /--canvas: #090811/);
-  assert.match(css, /--paper: #100f18/);
-  assert.match(css, /--panel-2: #1b1827/);
-  assert.match(css, /Graaly Docs reference skin/);
-  assert.match(css, /:root\[data-theme="light"\]/);
+  assert.match(css, /--canvas: #f7f7f8/);
+  assert.match(css, /--paper: #ffffff/);
+  assert.match(css, /--panel-2: #fbfafc/);
+  assert.match(css, /restrained documentation chrome/);
+  assert.match(css, /:root\[data-theme="dark"\]/);
   assert.match(css, /font-size: clamp\(34px, 9vw, 46px\)/);
   assert.doesNotMatch(html, /class="hero-code"/);
+  assert.doesNotMatch(html, /class="hero-runtime-map"/);
   assert.match(css, /\.doc-section\.academy-section/);
 });
 
@@ -400,9 +403,9 @@ test("publishes the full Java API and PacketEvents catalogs", async () => {
   const response = await render();
   const html = await response.text();
   const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
-  assert.match(html, new RegExp(`${bukkitCatalog.length}(?:<!-- -->|<\\/strong>) Graaly API symbols`));
-  assert.match(html, new RegExp(`${bukkitEventCatalog.length}(?:<!-- -->|<\\/strong>) explained events`));
-  assert.match(html, new RegExp(`${packetWrapperCatalog.length}(?:<!-- -->|<\\/strong>) packet wrappers`));
+  assert.match(html, new RegExp(`${bukkitCatalog.length}(?:<!-- -->)? API symbols`));
+  assert.match(html, new RegExp(`${bukkitEventCatalog.length}(?:<!-- -->)? events`));
+  assert.match(html, new RegExp(`${packetWrapperCatalog.length}(?:<!-- -->)? wrappers`));
   assert.match(html, /ClientPacket\.CHAT_MESSAGE/);
   assert.match(html, /WrapperPlayServerUpdateHealth/);
   assert.match(html, /TypeScript, Python, and Java signatures are shown side by side/);

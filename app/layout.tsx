@@ -72,7 +72,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html data-theme="light" lang="en" suppressHydrationWarning>
       <body className={graalySans.variable + " " + graalyMono.variable}>
         {children}
       </body>

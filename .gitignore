@@ -48,6 +48,7 @@ yarn-error.log*
 /runtime/reports/runtime/
 /runtime/reports/compatibility/*-result.json
 /runtime/**/node_modules/
+/runtime/**/dist/
 /runtime/**/.venv/
 /runtime/**/*.egg-info/
 /runtime/**/.pytest_cache/

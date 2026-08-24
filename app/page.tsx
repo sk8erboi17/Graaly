@@ -3779,7 +3779,7 @@ export default function Home() {
   const [language, setLanguage] = useState<QuickstartLanguage>("ts");
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
     let stored: string | null = null;
@@ -3788,7 +3788,7 @@ export default function Home() {
     } catch {
       // Storage can be disabled without preventing the documentation from rendering.
     }
-    const initial: Theme = stored === "light" ? "light" : "dark";
+    const initial: Theme = stored === "dark" ? "dark" : "light";
     document.documentElement.dataset.theme = initial;
     const frame = window.requestAnimationFrame(() => setTheme(initial));
     return () => window.cancelAnimationFrame(frame);
@@ -3896,40 +3896,23 @@ export default function Home() {
         <main id="content">
           <section className="hero" id="overview">
             <div className="hero-copy">
-              <span className="hero-kicker">Graaly · Java 17+</span>
-              <h1>Build Minecraft plugins with TypeScript, JavaScript, or Python.</h1>
+              <span className="hero-kicker">Graaly documentation</span>
+              <h1>Minecraft plugins in TypeScript, JavaScript, and Python.</h1>
               <p>
-                One language-native API for Minecraft {graalyContract.supportedGameVersions.minimum} through {graalyContract.supportedGameVersions.current}.
-                Graaly translates release differences internally and runs your TypeScript or Python in-process.
+                Use one language-native API from Minecraft {graalyContract.supportedGameVersions.minimum} through {graalyContract.supportedGameVersions.current}.
+                Graaly handles release differences and downloads verified language runtimes only when they are needed.
               </p>
               <div className="hero-actions">
                 <a className="primary-button" href="#prerequisites">Check prerequisites <ArrowRight size={16} /></a>
                 <a className="secondary-button" href="#api-reference">Browse the API</a>
               </div>
-              <div className="coverage-line" aria-label="Verified API coverage">
-                <span><strong>{catalogCounts.api}</strong> API symbols</span>
-                <span><strong>{bukkitEventCatalog.length}</strong> explained events</span>
-                <span><strong>{catalogCounts.packetWrappers}</strong> packet wrappers</span>
-              </div>
             </div>
-            <div className="hero-runtime-map" aria-label="Graaly runtime translation model">
-              <div className="runtime-map-head">
-                <span>Stable language contract</span>
-                <strong>One API</strong>
-              </div>
-              <div className="runtime-languages" aria-label="Supported plugin languages">
-                <span>TypeScript</span><span>JavaScript</span><span>Python</span>
-              </div>
-              <div className="runtime-core">
-                <span>G</span>
-                <div><strong>Graaly</strong><small>version adapter</small></div>
-                <i aria-hidden="true">→</i>
-              </div>
-              <div className="runtime-versions">
-                <span>1.7.10</span><span>1.12</span><span>1.20</span><span>26.2</span>
-              </div>
-              <p>Imports stay fixed. Graaly resolves the server implementation at runtime.</p>
-            </div>
+            <dl className="hero-facts" aria-label="Graaly compatibility summary">
+              <div><dt>Server versions</dt><dd>{graalyContract.supportedGameVersions.minimum} → {graalyContract.supportedGameVersions.current}</dd></div>
+              <div><dt>Java</dt><dd>17 or newer</dd></div>
+              <div><dt>Plugin languages</dt><dd>TypeScript · JavaScript · Python</dd></div>
+              <div><dt>Runtime</dt><dd>Downloaded on demand and SHA-256 verified</dd></div>
+            </dl>
           </section>
 
           <section className="doc-section prerequisites-section" id="prerequisites">
