@@ -197,6 +197,15 @@ Use the local SDK package and compile with standard TypeScript tooling:
 }
 ```
 
+Command handlers may live in separate modules. Import each module from the bundled entry point so esbuild includes and evaluates its registrations:
+
+```ts
+// src/main.mts
+import "./commands/fly.mts";
+```
+
+The module can register its handler at top level with `commands.on("fly", handler)`, while `plugin.yml` declares the same `fly` name under `commands`. After `npm run build`, `/graaly reload` re-reads `plugin.yml` and synchronizes added, removed, or edited command names, aliases, usage, and permissions without restarting the server. Structural changes to `name`, `main`, `depend`, `softdepend`, or `loadbefore` still require a full restart.
+
 See [`runtime/examples/TypeScriptHello.jsplugin`](runtime/examples/TypeScriptHello.jsplugin/).
 
 ### JavaScript

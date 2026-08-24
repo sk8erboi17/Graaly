@@ -59,7 +59,7 @@ public final class PolyglotPlugin implements InvocationHandler {
 
     private final PolyglotPluginLoader polyglotLoader;
     private final Server server;
-    private final PluginDescriptionFile description;
+    private volatile PluginDescriptionFile description;
     private final File dataFolder;
     private final File bundleFile;
     private final PolyglotLanguage language;
@@ -496,6 +496,7 @@ public final class PolyglotPlugin implements InvocationHandler {
             if (!enabled) {
                 return;
             }
+            PluginDescriptionFile refreshedDescription = refreshedDescription();
             invokeLifecycle("onDisable", "on_disable");
             if (scriptApi != null) {
                 scriptApi.clear();
@@ -510,6 +511,7 @@ public final class PolyglotPlugin implements InvocationHandler {
                 initializeRuntime(polyglotLoader.acquireEngine());
             }
 
+            applyReloadedDescription(refreshedDescription);
             invokeLifecycle("onLoad", "on_load");
             scriptApi.activate();
             invokeLifecycle("onEnable", "on_enable");
@@ -517,6 +519,39 @@ public final class PolyglotPlugin implements InvocationHandler {
             throw new IllegalStateException("Could not reload " + getName(), failure);
         } finally {
             executionLock.unlock();
+        }
+    }
+
+    private PluginDescriptionFile refreshedDescription() {
+        final PluginDescriptionFile refreshed;
+        try {
+            refreshed = polyglotLoader.getPluginDescription(bundleFile);
+        } catch (org.bukkit.plugin.InvalidDescriptionException failure) {
+            throw new IllegalArgumentException("Cannot reload invalid plugin.yml for " + getName(), failure);
+        }
+        ReloadablePluginCommands.validateReload(description, refreshed);
+        return refreshed;
+    }
+
+    private void applyReloadedDescription(PluginDescriptionFile refreshed) {
+        PluginDescriptionFile previous = description;
+        boolean commandsChanged = ReloadablePluginCommands.declarationsChanged(previous, refreshed);
+        description = refreshed;
+        if (!commandsChanged) {
+            return;
+        }
+
+        try {
+            int count = ReloadablePluginCommands.replace(server, pluginProxy);
+            logger.info("Reloaded " + count + " command declaration(s) from plugin.yml");
+        } catch (RuntimeException failure) {
+            description = previous;
+            try {
+                ReloadablePluginCommands.replace(server, pluginProxy);
+            } catch (RuntimeException rollbackFailure) {
+                failure.addSuppressed(rollbackFailure);
+            }
+            throw new IllegalStateException("Could not reload commands from plugin.yml for " + getName(), failure);
         }
     }
 

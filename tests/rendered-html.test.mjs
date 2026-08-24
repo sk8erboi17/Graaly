@@ -508,10 +508,10 @@ test("documents the complete install, deploy, load, and verification path", asyn
 test("uses the event-style browser for every core developer workflow", async () => {
   const response = await render();
   const html = await response.text();
-  assert.equal(guideTopicCount, 44);
+  assert.equal(guideTopicCount, 45);
   assert.deepEqual(
     [commandTopics.length, playerTopics.length, worldTopics.length, entityTopics.length, packetTopics.length],
-    [9, 9, 9, 9, 8],
+    [10, 9, 9, 9, 8],
   );
   for (const browser of ["commands and tasks", "player api", "world api", "entity api", "packetevents workflows"]) {
     assert.match(html, new RegExp(`data-guide-browser="${browser}"`));
@@ -532,6 +532,11 @@ test("uses the event-style browser for every core developer workflow", async () 
   assert.match(commandPlayerTopic.code.ts, /players\.isPlayer\(context\.sender\)/);
   assert.match(commandPlayerTopic.code.ts, /const player = context\.sender/);
   assert.match(commandPlayerTopic.note ?? "", /players\.broadcast/);
+
+  const commandModuleTopic = commandTopics.find(topic => topic.id === "command-modules");
+  assert.ok(commandModuleTopic, "the command module registration guide is missing");
+  assert.match(commandModuleTopic.code.ts, /import "\.\/commands\/fly\.mts"/);
+  assert.match(commandModuleTopic.note ?? "", /npm run build before \/graaly reload/);
 });
 
 test("documents location, custom worlds, entities, and every canonical attribute", async () => {
