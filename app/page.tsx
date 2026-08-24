@@ -4503,6 +4503,9 @@ export default function Home() {
       <a className="skip-link" href="#content">Skip to content</a>
       <header className="topbar">
         <a className="brand" href="#overview" aria-label="Graaly documentation home">
+          {/* A relative asset path works on both GitHub Pages and the hosted root. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt="" className="brand-logo" height="36" src="./graaly-logo-96.png" width="36" />
           <span><strong>Graaly</strong></span>
           <span className="docs-badge">Docs</span>
         </a>

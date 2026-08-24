@@ -44,6 +44,7 @@ test("renders the complete documentation in English", async () => {
 
   const html = await response.text();
   assert.match(html, /<html[^>]*lang="en"/i);
+  assert.match(html, /class="brand-logo"[^>]*graaly-logo-96\.png/);
   assert.match(html, /Minecraft plugins in TypeScript, JavaScript, and Python/);
   assert.match(html, /Build Graaly plugins/);
   assert.match(html, /Know exactly when your code runs/);
@@ -58,6 +59,8 @@ test("renders the complete documentation in English", async () => {
   assert.doesNotMatch(html, /Niente stringhe da ricordare|Cerca nella documentazione|Mostra altri eventi|annullabile|proprietà|scrivibile/);
   assert.doesNotMatch(html, /Native-feeling|language you already think in|Graaly-flavoured imitation|REAL-WORLD PATTERNS|real IDE/i);
   assert.doesNotMatch(html, /—/);
+  assert.ok(existsSync(new URL("../public/graaly-logo.png", import.meta.url)));
+  assert.ok(existsSync(new URL("../public/graaly-logo-96.png", import.meta.url)));
 });
 
 test("does not use em dashes in the documentation source or README", async () => {
@@ -863,6 +866,7 @@ test("ships a complete 36-lesson Graaly Academy with a minimal interactive playg
   assert.match(css, /\.academy-api-grid textarea\s*\{[\s\S]*?background: var\(--paper\);[\s\S]*?color: var\(--ink\);/);
   assert.match(css, /\.academy-pipeline > div\.is-done > span\s*\{[\s\S]*?color: #fff;/);
   assert.match(css, /\.academy-item-sprite/);
+  assert.match(css, /\.academy-lesson-footer\s*\{[\s\S]*?grid-template-columns: repeat\(3, minmax\(132px, 180px\)\);[\s\S]*?justify-content: center;/);
   assert.match(css, /\.docs-layout\s*\{[\s\S]*?width: min\(1920px, 100%\)/);
   assert.match(css, /\.academy-section\s*\{[\s\S]*?width: calc\(100% - 32px\)/);
   assert.match(css, /container: academy-content \/ inline-size/);

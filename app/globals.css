@@ -4859,9 +4859,10 @@ footer > a {
 
 .academy-lesson-footer {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 10px;
-  padding: 20px;
+  grid-template-columns: repeat(3, minmax(132px, 180px));
+  justify-content: center;
+  gap: 12px;
+  padding: 24px 20px;
 }
 
 .academy-lesson-footer button {
@@ -4876,14 +4877,7 @@ footer > a {
   cursor: pointer;
   font-size: 0.75rem;
   font-weight: 650;
-}
-
-.academy-lesson-footer button:first-child {
-  justify-self: start;
-}
-
-.academy-lesson-footer button:last-child {
-  justify-self: end;
+  white-space: nowrap;
 }
 
 .academy-lesson-footer button:hover:not(:disabled) {
@@ -6310,6 +6304,15 @@ body {
   font-size: 15px;
   font-weight: 900;
   isolation: isolate;
+}
+
+.brand-logo {
+  display: block;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 7px;
+  object-fit: cover;
 }
 
 .brand-mark::after {

@@ -22,6 +22,10 @@ export const metadata: Metadata = {
   },
   description:
     "Build Graaly plugins with one stable JavaScript, TypeScript, and Python API from Minecraft 1.7.10 through 26.2.",
+  icons: {
+    icon: "graaly-logo-96.png",
+    apple: "graaly-logo.png",
+  },
   keywords: [
     "Graaly",
     "Minecraft 1.7.10 to 26.2",
