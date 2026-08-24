@@ -1,0 +1,77 @@
+name: Verify Graaly
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  runtime:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        java: ["17", "21", "25", "26"]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+          cache: maven
+      - name: Build and test the standalone runtime on Java ${{ matrix.java }}
+        working-directory: runtime
+        run: mvn --batch-mode --no-transfer-progress clean package
+      - name: Verify the generated language contract
+        working-directory: runtime
+        run: python3 scripts/verify_contract.py --docs .. --matrix reports/compatibility/matrix.json
+
+  documentation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: npm ci
+      - name: Compile the complete TypeScript SDK
+        run: npm run typecheck:sdk
+      - name: Type-check the native Python surface
+        run: npm run typecheck:python
+      - name: Test the React renderer SDK
+        run: |
+          npm --prefix runtime/sdk/react ci
+          npm --prefix runtime/sdk/react test
+          npm --prefix runtime/sdk/react-test ci
+          npm --prefix runtime/sdk/react-test test
+      - name: Build every JavaScript and TypeScript plugin example
+        run: |
+          for package in runtime/examples/*.jsplugin/package.json; do
+            example="${package%/package.json}"
+            npm --prefix "$example" ci
+            npm --prefix "$example" run build
+          done
+          npm --prefix runtime/examples/GraalyAcademy.jsplugin test
+          for manifest in runtime/examples/*plugin/plugin.yml; do
+            example="${manifest%/plugin.yml}"
+            entry="$(awk -F': *' '$1 == "main" { print $2; exit }' "$manifest")"
+            test -z "$entry" || test -f "$example/$entry"
+          done
+          python -m compileall -q runtime/examples runtime/sdk/python
+      - name: Test the FastAPI service
+        run: |
+          python -m pip install -e 'runtime/examples/ReactFastApi.jsplugin/backend[test]'
+          python -m pytest -q runtime/examples/ReactFastApi.jsplugin/backend
+      - name: Build and test documentation
+        run: npm test
+      - name: Lint authored source
+        run: npm run lint
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high

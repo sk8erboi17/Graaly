@@ -1,0 +1,11 @@
+app/generated*.ts linguist-generated=true
+app/generated/** linguist-generated=true
+public/contracts/** linguist-generated=true
+runtime/contract/latest-api-members.json linguist-generated=true
+runtime/contract/latest-constants.json linguist-generated=true
+runtime/sdk/python/graaly/api/** linguist-generated=true
+runtime/sdk/python/graaly/constants.pyi linguist-generated=true
+runtime/sdk/python/graaly/packetevents/** linguist-generated=true
+runtime/sdk/typescript/constants.mts linguist-generated=true
+runtime/sdk/typescript/generated-api.mts linguist-generated=true
+runtime/sdk/typescript/generated-packets.mts linguist-generated=true

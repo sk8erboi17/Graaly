@@ -1,0 +1,9 @@
+name: JavaScriptHello
+version: 1.0.0
+main: dist/main.mjs
+author: Graaly
+description: Example plugin written with the GraalJS-native Graaly API.
+commands:
+  jshello:
+    description: Greets the command sender from JavaScript.
+    usage: /jshello [name]

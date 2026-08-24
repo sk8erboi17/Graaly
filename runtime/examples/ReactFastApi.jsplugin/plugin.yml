@@ -1,0 +1,12 @@
+name: ReactFastApi
+version: 1.0.0
+main: dist/main.mjs
+author: Graaly
+description: Real React interfaces backed by FastAPI and SQLAlchemy.
+commands:
+  graalyui:
+    description: Opens the React shop interface.
+    usage: /graalyui
+  graalypermissions:
+    description: Opens the web-style role editor for an online player.
+    usage: /graalypermissions [player]

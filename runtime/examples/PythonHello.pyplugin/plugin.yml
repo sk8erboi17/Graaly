@@ -1,0 +1,9 @@
+name: PythonHello
+version: 1.0.0
+main: main.py
+author: Graaly
+description: Example plugin written with the GraalPy-native Graaly API.
+commands:
+  pyhello:
+    description: Greets the command sender from Python.
+    usage: /pyhello [name]

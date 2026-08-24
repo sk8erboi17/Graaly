@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noEmit": true,
+    "strict": true,
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": false,
+    "target": "ES2024",
+    "lib": ["ES2024"]
+  },
+  "include": ["main.mjs", "../../sdk/typescript/**/*.mts"]
+}

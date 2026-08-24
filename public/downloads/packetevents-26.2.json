@@ -1,0 +1,23 @@
+{
+  "version": "26.2",
+  "server": "spigot-26.2.jar",
+  "packetevents": "packetevents-spigot-2.13.0.jar",
+  "packeteventsVersion": "2.13.0",
+  "packeteventsSha256": "6d9ece0d87ee727a79a20b7ffbd432021609c6f52bafcb654fc2d3e9b6f064c5",
+  "graalySha256": "ca435273c14a61a92c7c48db6cc8476052509554e02668dbfcb8bd425659351a",
+  "java": 25,
+  "runtimeMode": "preseeded-offline",
+  "downloadCount": 0,
+  "found": [
+    "PORTING-JS SURFACE PASS",
+    "PORTING-PY SURFACE PASS",
+    "PORTING-TS SURFACE PASS",
+    "ready for JavaScript",
+    "ready for Python",
+    "ready for TypeScript"
+  ],
+  "missing": [],
+  "fatalSignals": [],
+  "exitCode": 0,
+  "passed": true
+}

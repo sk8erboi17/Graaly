@@ -1,0 +1,9 @@
+name: TypeScriptHello
+version: 1.0.0
+main: dist/main.mjs
+author: Graaly
+description: Example TypeScript plugin compiled for GraalJS.
+commands:
+  tshello:
+    description: Greets the command sender from TypeScript.
+    usage: /tshello [name]

@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "Graaly",
+  "contractVersion": "1.0",
+  "supportedGameVersions": {
+    "minimum": "1.7.10",
+    "current": "26.2"
+  },
+  "policy": {
+    "sameLanguageSurfaceOnEveryVersion": true,
+    "translateVersionNamesInternally": true,
+    "neverSilentlyApproximateMissingMechanics": true,
+    "unsupportedError": "GraalyUnsupportedFeature",
+    "featureDiscovery": "compatibility.supports"
+  },
+  "constantCatalog": {
+    "file": "latest-constants.json",
+    "canonicalApiVersion": "26.2",
+    "directExports": ["Materials", "Sounds", "Particles", "DyeColors", "EntityTypes", "Attributes", "GameModes", "Difficulties", "WorldEnvironments", "WorldTypes", "Biomes", "PotionEffects", "Enchantments"]
+  },
+  "apiCatalog": {
+    "canonicalApiVersion": "26.2",
+    "memberFile": "latest-api-members.json",
+    "resolution": "lazy-version-adapter",
+    "missingTypeOrMember": "GraalyUnsupportedFeature",
+    "advancedSurfaceIsAlwaysDocumented": true
+  },
+  "modules": {
+    "events": {
+      "javascript": ["on", "listen"],
+      "typescript": ["on", "listen"],
+      "python": ["event", "on"]
+    },
+    "commands": {
+      "javascript": ["on", "handle", "complete", "completer", "dispatch"],
+      "typescript": ["on", "handle", "complete", "completer", "dispatch"],
+      "python": ["command", "tab_complete"]
+    },
+    "tasks": {
+      "javascript": ["ticks", "run", "later", "repeat", "runAsync", "laterAsync", "repeatAsync", "cancel", "delay", "sleep"],
+      "typescript": ["ticks", "run", "later", "repeat", "runAsync", "laterAsync", "repeatAsync", "cancel", "delay", "sleep"],
+      "python": ["create_task", "sleep_ticks", "to_thread", "is_main_thread"]
+    },
+    "config": {
+      "javascript": ["get", "set", "contains", "save", "reload"],
+      "typescript": ["get", "set", "contains", "save", "reload"],
+      "python": ["get", "set", "contains", "save", "reload"]
+    },
+    "players": {
+      "javascript": ["online", "get", "exact", "isPlayer", "broadcast"],
+      "typescript": ["online", "get", "exact", "isPlayer", "broadcast"],
+      "python": ["online", "get", "exact", "is_player", "broadcast"]
+    },
+    "worlds": {
+      "javascript": ["all", "get", "location", "create", "generator", "populator", "unload"],
+      "typescript": ["all", "get", "location", "create", "generator", "populator", "unload"],
+      "python": ["all", "get", "location", "create", "generator", "populator", "unload"]
+    },
+    "entities": {
+      "javascript": ["type", "attributeType", "spawn", "configure", "attribute", "remove"],
+      "typescript": ["type", "attributeType", "spawn", "configure", "attribute", "remove"],
+      "python": ["type", "attribute_type", "spawn", "configure", "attribute", "remove"]
+    },
+    "http": {
+      "javascript": ["request", "get", "post", "put", "delete"],
+      "typescript": ["request", "get", "post", "put", "delete"],
+      "python": ["request", "get", "post", "put", "delete"]
+    },
+    "websocket": {
+      "javascript": ["connect"],
+      "typescript": ["connect"],
+      "python": ["connect"]
+    },
+    "ui": {
+      "javascript": ["render", "clear", "dismiss"],
+      "typescript": ["render", "clear", "dismiss"],
+      "python": ["render", "clear", "dismiss"]
+    },
+    "boards": {
+      "javascript": ["state", "onMessage", "listen", "refresh"],
+      "typescript": ["state", "onMessage", "listen", "refresh"],
+      "python": ["state", "on_message", "refresh"]
+    },
+    "packets": {
+      "javascript": ["create", "wrap", "onReceive", "listenReceive", "onSend", "listenSend", "send", "sendToAll", "receive", "user", "clientVersion", "ping"],
+      "typescript": ["create", "wrap", "onReceive", "listenReceive", "onSend", "listenSend", "send", "sendToAll", "receive", "user", "clientVersion", "ping"],
+      "python": ["create", "wrap", "on_receive", "listen_receive", "on_send", "listen_send", "send", "send_to_all", "receive", "user", "client_version", "ping"]
+    },
+    "compatibility": {
+      "javascript": ["contractVersion", "minimumGameVersion", "minecraftVersion", "serverVersion", "supports", "require", "typeAvailable", "material"],
+      "typescript": ["contractVersion", "minimumGameVersion", "minecraftVersion", "serverVersion", "supports", "require", "typeAvailable", "material"],
+      "python": ["contract_version", "minimum_game_version", "minecraft_version", "server_version", "supports", "require", "type_available", "material"]
+    },
+    "diagnostics": {
+      "javascript": ["verify"],
+      "typescript": ["verify"],
+      "python": ["verify"]
+    }
+  },
+  "capabilities": {
+    "off_hand": "1.9",
+    "attributes": "1.9",
+    "entity_ai": "1.9",
+    "entity_invulnerable": "1.9",
+    "glowing": "1.9",
+    "elytra": "1.9",
+    "entity_gravity": "1.10",
+    "persistent_data": "1.14",
+    "custom_model_data": "1.14",
+    "allay": "1.19",
+    "display_entities": "1.19.4",
+    "data_components": "1.20.5",
+    "bundles": "1.21.2",
+    "dialogs": "1.21.6"
+  },
+  "canonicalConstants": {
+    "Material": ["GRASS_BLOCK", "OAK_LOG", "OAK_PLANKS", "OAK_LEAVES", "OAK_SAPLING", "OAK_SIGN", "OAK_DOOR", "BRICKS", "MELON", "LILY_PAD", "CRAFTING_TABLE", "STONE_BRICKS"],
+    "EntityType": ["ZOMBIFIED_PIGLIN", "MOOSHROOM", "SNOW_GOLEM", "LEASH_KNOT"],
+    "Attribute": ["MAX_HEALTH", "FOLLOW_RANGE", "KNOCKBACK_RESISTANCE", "MOVEMENT_SPEED", "FLYING_SPEED", "ATTACK_DAMAGE", "ATTACK_KNOCKBACK", "ATTACK_SPEED", "ARMOR", "ARMOR_TOUGHNESS", "FALL_DAMAGE_MULTIPLIER", "LUCK", "MAX_ABSORPTION", "SAFE_FALL_DISTANCE", "SCALE", "STEP_HEIGHT", "GRAVITY", "JUMP_STRENGTH", "BURNING_TIME", "CAMERA_DISTANCE", "EXPLOSION_KNOCKBACK_RESISTANCE", "MOVEMENT_EFFICIENCY", "OXYGEN_BONUS", "WATER_MOVEMENT_EFFICIENCY", "TEMPT_RANGE", "BLOCK_INTERACTION_RANGE", "ENTITY_INTERACTION_RANGE", "BLOCK_BREAK_SPEED", "MINING_EFFICIENCY", "SNEAKING_SPEED", "SUBMERGED_MINING_SPEED", "SWEEPING_DAMAGE_RATIO", "SPAWN_REINFORCEMENTS", "WAYPOINT_TRANSMIT_RANGE", "WAYPOINT_RECEIVE_RANGE", "AIR_DRAG_MODIFIER", "BELOW_NAME_DISTANCE", "BOUNCINESS", "FRICTION_MODIFIER", "NAME_TAG_DISTANCE"],
+    "DyeColor": ["LIGHT_GRAY"],
+    "MapCursorType": ["PLAYER"],
+    "PotionEffectType": ["STRENGTH"],
+    "Sound": ["ENTITY_PLAYER_LEVELUP", "BLOCK_NOTE_BLOCK_PLING", "ENTITY_EXPERIENCE_ORB_PICKUP"]
+  }
+}

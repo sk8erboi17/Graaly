@@ -1,0 +1,10 @@
+name: PortingSurfaceTypeScript
+version: 1.0.0
+main: dist/main.mjs
+author: Graaly
+description: Vertical Graaly and PacketEvents conformance probe for TypeScript.
+depend: [packetevents]
+commands:
+  portingts:
+    description: Prints the TypeScript porting probe status.
+    usage: /portingts

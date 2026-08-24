@@ -1,0 +1,23 @@
+{
+  "name": "graaly-academy-plugin",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "npm run typecheck && esbuild src/main.tsx --bundle --platform=neutral --format=esm --target=es2024 --define:process.env.NODE_ENV='\"production\"' --outfile=dist/main.mjs",
+    "test": "npm run build && node --test test/academy.test.mjs"
+  },
+  "dependencies": {
+    "@graaly/react": "file:../../sdk/react",
+    "graaly": "file:../../sdk/typescript",
+    "react": "19.2.8",
+    "react-reconciler": "0.33.0"
+  },
+  "devDependencies": {
+    "@graaly/react-test": "file:../../sdk/react-test",
+    "@types/react": "19.2.18",
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2"
+  }
+}

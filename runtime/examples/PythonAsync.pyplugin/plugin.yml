@@ -1,0 +1,9 @@
+name: PythonAsync
+version: 1.0.0
+main: main.py
+author: Graaly
+description: Python async/await example driven safely by the Bukkit scheduler.
+commands:
+  pyasync:
+    description: Demonstrates native Python coroutines.
+    usage: /pyasync

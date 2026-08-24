@@ -1,0 +1,7 @@
+name: GraalyMatrixJS
+version: 1.0.0
+main: main.mjs
+load: STARTUP
+commands:
+  graalyjsprobe:
+    description: Graaly JavaScript matrix probe.

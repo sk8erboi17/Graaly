@@ -1,0 +1,10 @@
+name: PortingSurfacePython
+version: 1.0.0
+main: main.py
+author: Graaly
+description: Vertical Graaly and PacketEvents conformance probe for Python.
+depend: [packetevents]
+commands:
+  portingpy:
+    description: Prints the Python porting probe status.
+    usage: /portingpy

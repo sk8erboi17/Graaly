@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "auditedAt": "2026-08-24",
+  "scope": {
+    "structuralContract": "Every compiled public Graaly API type is exported to JavaScript, TypeScript, and Python; every generated member has Java, JavaScript, TypeScript, and Python signatures.",
+    "behavioralContract": "Representative vertical plugins execute each runtime family and its failure boundaries. Context-bound operations are additionally exercised by live-server probes.",
+    "honestyBoundary": "Structural coverage is exhaustive. Behavioral coverage is family-based because blindly invoking every world, player, network, shutdown, and destructive overload would not be safe or meaningful without its required server state."
+  },
+  "expectedCatalog": {
+    "graalyApiExports": 1421,
+    "packetWrappers": 289,
+    "packetSupportingTypes": 533,
+    "packetConstants": 288,
+    "concreteEvents": 265
+  },
+  "plugins": {
+    "javascript": "examples/PortingSurfaceJavaScript.jsplugin",
+    "typescript": "examples/PortingSurfaceTypeScript.jsplugin",
+    "python": "examples/PortingSurfacePython.pyplugin"
+  },
+  "liveVerificationCommand": "python3 scripts/test_matrix.py --servers /path/to/servers --workers 2 --timeout 300",
+  "cases": [
+    { "id": "catalog.symbol-resolution", "family": "catalog", "execution": "headless", "edge": "all generated counts and optional PacketEvents presence" },
+    { "id": "compatibility.canonical-version-adapters", "family": "compatibility", "execution": "real-server-matrix", "edge": "canonical materials, potion effects, attributes, map cursors, and renamed members resolve on historical and current servers" },
+    { "id": "core.data-path-contained", "family": "core", "execution": "headless", "edge": "nested paths remain in the plugin data directory" },
+    { "id": "core.data-path-traversal", "family": "core", "execution": "headless", "edge": "parent traversal is rejected" },
+    { "id": "core.text-color", "family": "core", "execution": "headless", "edge": "legacy color translation" },
+    { "id": "constructors.overload-coercion", "family": "interop", "execution": "headless", "edge": "guest numbers select Java overloads" },
+    { "id": "constructors.invalid-overload", "family": "interop", "execution": "headless", "edge": "invalid argument types become native language exceptions" },
+    { "id": "properties.read-write", "family": "interop", "execution": "headless", "edge": "getter/setter pairs behave as native properties" },
+    { "id": "collections.array-view", "family": "collections", "execution": "headless", "edge": "iteration, length, negative indexing, and enum values" },
+    { "id": "configuration.fallback-roundtrip", "family": "configuration", "execution": "headless", "edge": "missing fallback, scalar persistence, and deletion" },
+    { "id": "scheduling.boundaries", "family": "scheduling", "execution": "headless", "edge": "time conversion plus negative and zero-period rejection" },
+    { "id": "scheduling.delayed", "family": "scheduling", "execution": "headless", "edge": "delayed callback/coroutine resumes through the server scheduler" },
+    { "id": "players.missing-lookup", "family": "players", "execution": "headless", "edge": "partial/exact misses and native collection shape" },
+    { "id": "worlds.missing-lookup", "family": "worlds", "execution": "headless", "edge": "missing world returns null/None" },
+    { "id": "worlds.location-block-restore", "family": "worlds", "execution": "headless", "edge": "location yaw/pitch, block mutation, and restoration" },
+    { "id": "items.clone-independence", "family": "inventory", "execution": "headless", "edge": "clone mutation does not alter the source item" },
+    { "id": "permissions.value-object", "family": "permissions", "execution": "headless", "edge": "permission constructor and properties" },
+    { "id": "maps.value-object", "family": "maps", "execution": "headless", "edge": "map cursor overload and enum value" },
+    { "id": "adapters.callback", "family": "adapters", "execution": "headless", "edge": "abstract callback implementation without exposed Java interop" },
+    { "id": "ui.invalid-snapshot", "family": "react-ui", "execution": "headless", "edge": "invalid player/tree inputs fail before mutation" },
+    { "id": "boards.optional-provider", "family": "website-board", "execution": "headless", "edge": "optional provider reports a stable boolean" },
+    { "id": "events.join", "family": "events", "execution": "live-event", "edge": "join payload, player iterable, and world iterable" },
+    { "id": "events.move", "family": "events", "execution": "live-event", "edge": "from/to aliases and world identity" },
+    { "id": "events.chat", "family": "events", "execution": "live-event", "edge": "async chat message access" },
+    { "id": "events.quit", "family": "events", "execution": "live-event", "edge": "quit payload and player identity" },
+    { "id": "entities.effects-attributes-cleanup", "family": "entities", "execution": "live-event", "edge": "spawn, custom names, effects, every attribute supported by the current release, and entity removal" },
+    { "id": "packets.constants-wrapper", "family": "packets", "execution": "headless", "edge": "named constants, wrapper constructors, and Adventure support types" },
+    { "id": "packets.receive", "family": "packets", "execution": "live-packet", "edge": "filtered client packet and wrapper read" },
+    { "id": "packets.send", "family": "packets", "execution": "live-packet", "edge": "filtered server packet and wrapper read" },
+    { "id": "commands.context", "family": "commands", "execution": "headless", "edge": "native argument array/list and boolean permission result" },
+    { "id": "lifecycle.cleanup", "family": "lifecycle", "execution": "lifecycle", "edge": "disable callback and resource teardown" }
+  ],
+  "hostRegressionMethods": [
+    "comparesHistoricalAndCalendarVersionsNumerically",
+    "canonicalConstantNamespacesAlsoResolveAsPublicTypes",
+    "canonicalLatestMembersRemainKnownWhenCompilingAgainstTheOldBaseline",
+    "canonicalEnumsAdaptToHistoricalNumericConstructors"
+  ]
+}

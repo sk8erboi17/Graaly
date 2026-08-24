@@ -1,0 +1,16 @@
+name: Graaly
+version: ${project.version}
+main: io.github.sk8erboi17.graaly.GraalyPlugin
+load: STARTUP
+authors: [sk8erboi17]
+description: Standalone GraalJS and GraalPy runtime for Graaly plugins.
+softdepend: [packetevents, PacketEvents, GraalyBoard]
+commands:
+  graaly:
+    description: Inspect or reload Graaly script plugins.
+    usage: /graaly <status|reload>
+    permission: graaly.admin
+permissions:
+  graaly.admin:
+    description: Allows Graaly administration.
+    default: op

@@ -1,0 +1,7 @@
+name: GraalyMatrixPy
+version: 1.0.0
+main: main.py
+load: STARTUP
+commands:
+  graalypyprobe:
+    description: Graaly Python matrix probe.

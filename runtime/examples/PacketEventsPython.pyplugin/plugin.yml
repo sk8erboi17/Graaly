@@ -1,0 +1,10 @@
+name: PacketEventsPython
+version: 1.0.0
+main: main.py
+author: Graaly
+description: PacketEvents example using the Graaly Python SDK.
+depend: [packetevents]
+commands:
+  packethealthpy:
+    description: Sends a custom health packet to the sender.
+    usage: /packethealthpy

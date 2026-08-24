@@ -1,0 +1,81 @@
+{
+  "_framework-DTZGTDtF.js": {
+    "file": "_next/static/chunks/framework-DTZGTDtF.js",
+    "name": "framework",
+    "imports": [
+      "_rolldown-runtime-hePW80VL.js"
+    ]
+  },
+  "_rolldown-runtime-hePW80VL.js": {
+    "file": "_next/static/chunks/rolldown-runtime-hePW80VL.js",
+    "name": "rolldown-runtime"
+  },
+  "_vinext-WQ-9u9Q2.js": {
+    "file": "_next/static/chunks/vinext-WQ-9u9Q2.js",
+    "name": "vinext",
+    "imports": [
+      "_rolldown-runtime-hePW80VL.js",
+      "_framework-DTZGTDtF.js"
+    ],
+    "dynamicImports": [
+      "_vinext-WQ-9u9Q2.js"
+    ]
+  },
+  "app/generated-api-reference.ts": {
+    "file": "_next/static/chunks/generated-api-reference-BHQ6DP7e.js",
+    "name": "generated-api-reference",
+    "src": "app/generated-api-reference.ts",
+    "isDynamicEntry": true
+  },
+  "app/page.tsx": {
+    "file": "_next/static/chunks/page-BYWViDm8.js",
+    "name": "page",
+    "src": "app/page.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-hePW80VL.js",
+      "_framework-DTZGTDtF.js",
+      "_vinext-WQ-9u9Q2.js"
+    ],
+    "dynamicImports": [
+      "node_modules/sucrase/dist/esm/index.js",
+      "app/generated-api-reference.ts"
+    ]
+  },
+  "node_modules/sucrase/dist/esm/index.js": {
+    "file": "_next/static/chunks/esm-DRkY3hIK.js",
+    "name": "esm",
+    "src": "node_modules/sucrase/dist/esm/index.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-hePW80VL.js"
+    ]
+  },
+  "node_modules/vinext/dist/shims/layout-segment-context.js": {
+    "file": "_next/static/chunks/layout-segment-context-D_sK6p5V.js",
+    "name": "layout-segment-context",
+    "src": "node_modules/vinext/dist/shims/layout-segment-context.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-hePW80VL.js",
+      "_framework-DTZGTDtF.js",
+      "_vinext-WQ-9u9Q2.js"
+    ]
+  },
+  "virtual:vinext-app-browser-entry": {
+    "file": "_next/static/chunks/index-CW06RagU.js",
+    "name": "index",
+    "src": "virtual:vinext-app-browser-entry",
+    "isEntry": true,
+    "imports": [
+      "_rolldown-runtime-hePW80VL.js",
+      "_framework-DTZGTDtF.js",
+      "_vinext-WQ-9u9Q2.js"
+    ],
+    "dynamicImports": [
+      "_vinext-WQ-9u9Q2.js",
+      "node_modules/vinext/dist/shims/layout-segment-context.js",
+      "app/page.tsx"
+    ]
+  }
+}

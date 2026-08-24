@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "strict": true,
+    "target": "ES2024"
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
+}
+

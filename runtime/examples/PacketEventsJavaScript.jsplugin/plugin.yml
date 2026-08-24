@@ -1,0 +1,10 @@
+name: PacketEventsJavaScript
+version: 1.0.0
+main: dist/main.mjs
+author: Graaly
+description: PacketEvents example using the Graaly JavaScript SDK.
+depend: [packetevents]
+commands:
+  packethealthjs:
+    description: Sends a custom health packet to the sender.
+    usage: /packethealthjs

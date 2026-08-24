@@ -1,0 +1,10 @@
+name: GraalyBoardPython
+version: 1.0.0
+main: main.py
+author: Graaly
+description: Connects a Graaly Python plugin to an interactive website board.
+depend: [GraalyBoard]
+commands:
+  boardpy:
+    description: Refreshes the website board state for the command sender.
+    usage: /boardpy

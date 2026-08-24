@@ -1,0 +1,17 @@
+{
+  "name": "graaly-packetevents-typescript",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "npm run typecheck && esbuild src/main.mts --bundle --platform=neutral --format=esm --target=es2024 --outfile=dist/main.mjs"
+  },
+  "dependencies": {
+    "graaly": "file:../../sdk/typescript"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2"
+  }
+}

@@ -1,0 +1,9 @@
+name: GraalyAcademy
+version: 1.0.0
+main: dist/main.mjs
+description: In-game playground for the Graaly React and FastAPI Academy
+commands:
+  academy:
+    description: Open the Graaly Academy playground
+    usage: /academy [lesson]
+    aliases: [learngraaly]

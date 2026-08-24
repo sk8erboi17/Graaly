@@ -1,0 +1,10 @@
+# Graaly downloads only the enabled language runtimes on first start.
+# Every artifact and SHA-256 is pinned by this Graaly release.
+runtime:
+  auto-download: true
+  languages:
+    javascript: true
+    python: true
+  connect-timeout-seconds: 20
+  request-timeout-seconds: 180
+  retry-attempts: 2

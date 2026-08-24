@@ -1,0 +1,10 @@
+/target/
+/.idea/
+/.vscode/
+*.iml
+*.log
+*.pyc
+__pycache__/
+/reports/runtime/
+/.matrix-work/
+.DS_Store

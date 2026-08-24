@@ -1,0 +1,10 @@
+name: GraalyBoardTypeScript
+version: 1.0.0
+main: dist/main.mjs
+author: Graaly
+description: Connects a Graaly TypeScript plugin to an interactive website board.
+depend: [GraalyBoard]
+commands:
+  boardts:
+    description: Refreshes the website board state for the command sender.
+    usage: /boardts

@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-08-24T07:37:04.378Z",
+  "contractVersion": "1.0",
+  "canonicalApiVersion": "26.2-R0.1-SNAPSHOT",
+  "api": {
+    "publicTypes": 1411,
+    "exportedNames": 1421,
+    "directPublicMembers": 19339,
+    "concreteEvents": 265,
+    "unresolvedTypeScriptTypes": [],
+    "unresolvedPythonTypes": []
+  },
+  "packetEvents": {
+    "wrapperTypes": 289,
+    "supportingTypes": 533,
+    "packetConstants": 288,
+    "unresolvedTypeScriptTypes": [],
+    "unresolvedPythonTypes": []
+  }
+}

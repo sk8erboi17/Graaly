@@ -1,0 +1,54 @@
+{
+  "name": "graaly-documentation",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext dev",
+    "build": "npm run sync:contract && npm run package:downloads && WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext build",
+    "sync:contract": "node scripts/sync-runtime-contract.mjs",
+    "package:downloads": "node scripts/package-downloads.mjs",
+    "export": "node scripts/export-static.mjs",
+    "pages": "npm run build && npm run export && node scripts/stage-pages.mjs",
+    "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
+    "typecheck:sdk": "tsc --noEmit --allowImportingTsExtensions --target ES2022 --module NodeNext --moduleResolution NodeNext runtime/sdk/typescript/graaly.mts",
+    "typecheck:python": "pyright --project runtime/examples/PortingSurfacePython.pyplugin/pyrightconfig.json",
+    "test": "npm run typecheck:sdk && npm run typecheck:python && npm run build && node --test tests/rendered-html.test.mjs",
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern docs --ignore-pattern .next --ignore-pattern runtime --ignore-pattern 'app/generated*.ts' --ignore-pattern app/generated"
+  },
+  "dependencies": {
+    "@speed-highlight/core": "^1.2.24",
+    "lucide-react": "1.33.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "sucrase": "3.35.1"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "1.53.1",
+    "@eslint/js": "9.39.4",
+    "@next/eslint-plugin-next": "16.3.2",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "22.19.19",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.5",
+    "@vitejs/plugin-react": "6.1.0",
+    "@vitejs/plugin-rsc": "0.5.34",
+    "archiver": "8.0.0",
+    "eslint": "9.39.4",
+    "eslint-plugin-jsx-a11y": "6.10.2",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "16.4.0",
+    "pyright": "1.1.413",
+    "react-server-dom-webpack": "19.2.8",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.67.0",
+    "vinext": "1.0.0-beta.8",
+    "vite": "8.2.2",
+    "wrangler": "4.125.0"
+  },
+  "type": "module"
+}

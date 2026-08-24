@@ -1,0 +1,29 @@
+{
+  "name": "@graaly/react-test",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "esbuild src/index.ts --bundle --platform=node --format=esm --target=es2024 --external:@graaly/react --external:react --outfile=dist/index.mjs",
+    "test": "npm run typecheck && npm run build && node --test test/react-test.test.mjs"
+  },
+  "dependencies": {
+    "@graaly/react": "file:../react",
+    "react": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.18",
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2"
+  },
+  "peerDependencies": {
+    "react": "^19.2.0"
+  }
+}

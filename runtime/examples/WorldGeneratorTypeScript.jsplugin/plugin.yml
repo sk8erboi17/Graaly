@@ -1,0 +1,14 @@
+name: WorldGeneratorTypeScript
+version: 1.0.0
+main: dist/main.mjs
+author: Graaly
+description: Custom void-island world generator written in TypeScript.
+commands:
+  voidworldts:
+    description: Creates or loads the TypeScript tutorial world.
+    usage: /voidworldts
+    permission: graaly.world.create.ts
+permissions:
+  graaly.world.create.ts:
+    description: Allows creation of tutorial worlds.
+    default: op

@@ -1,0 +1,10 @@
+name: PortingSurfaceJavaScript
+version: 1.0.0
+main: dist/main.mjs
+author: Graaly
+description: Vertical Graaly and PacketEvents conformance probe for JavaScript.
+depend: [packetevents]
+commands:
+  portingjs:
+    description: Prints the JavaScript porting probe status.
+    usage: /portingjs

@@ -1,0 +1,14 @@
+name: WorldGeneratorPython
+version: 1.0.0
+main: main.py
+author: Graaly
+description: Custom void-island world generator written in Python.
+commands:
+  voidworldpy:
+    description: Creates or loads the Python tutorial world.
+    usage: /voidworldpy
+    permission: graaly.world.create.py
+permissions:
+  graaly.world.create.py:
+    description: Allows creation of tutorial worlds.
+    default: op

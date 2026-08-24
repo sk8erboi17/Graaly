@@ -1,0 +1,10 @@
+name: PacketEventsTypeScript
+version: 1.0.0
+main: dist/main.mjs
+author: Graaly
+description: Typed PacketEvents example for Graaly.
+depend: [packetevents]
+commands:
+  packethealthts:
+    description: Sends a custom health packet to the sender.
+    usage: /packethealthts
