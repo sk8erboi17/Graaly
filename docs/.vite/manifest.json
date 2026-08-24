@@ -10,32 +10,32 @@
     "file": "_next/static/chunks/rolldown-runtime-hePW80VL.js",
     "name": "rolldown-runtime"
   },
-  "_vinext-BBGfU2BP.js": {
-    "file": "_next/static/chunks/vinext-BBGfU2BP.js",
+  "_vinext-Da0j1Rh3.js": {
+    "file": "_next/static/chunks/vinext-Da0j1Rh3.js",
     "name": "vinext",
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js"
     ],
     "dynamicImports": [
-      "_vinext-BBGfU2BP.js"
+      "_vinext-Da0j1Rh3.js"
     ]
   },
   "app/generated-api-reference.ts": {
-    "file": "_next/static/chunks/generated-api-reference-BHQ6DP7e.js",
+    "file": "_next/static/chunks/generated-api-reference-BLBva10g.js",
     "name": "generated-api-reference",
     "src": "app/generated-api-reference.ts",
     "isDynamicEntry": true
   },
   "app/page.tsx": {
-    "file": "_next/static/chunks/page-w3faRIOt.js",
+    "file": "_next/static/chunks/page-DIZYW77c.js",
     "name": "page",
     "src": "app/page.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
-      "_vinext-BBGfU2BP.js"
+      "_vinext-Da0j1Rh3.js"
     ],
     "dynamicImports": [
       "node_modules/sucrase/dist/esm/index.js",
@@ -52,28 +52,28 @@
     ]
   },
   "node_modules/vinext/dist/shims/layout-segment-context.js": {
-    "file": "_next/static/chunks/layout-segment-context-BFonm1qd.js",
+    "file": "_next/static/chunks/layout-segment-context-C2n4dTYL.js",
     "name": "layout-segment-context",
     "src": "node_modules/vinext/dist/shims/layout-segment-context.js",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
-      "_vinext-BBGfU2BP.js"
+      "_vinext-Da0j1Rh3.js"
     ]
   },
   "virtual:vinext-app-browser-entry": {
-    "file": "_next/static/chunks/index-DzVoJ_hV.js",
+    "file": "_next/static/chunks/index-BeL1j6cV.js",
     "name": "index",
     "src": "virtual:vinext-app-browser-entry",
     "isEntry": true,
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
-      "_vinext-BBGfU2BP.js"
+      "_vinext-Da0j1Rh3.js"
     ],
     "dynamicImports": [
-      "_vinext-BBGfU2BP.js",
+      "_vinext-Da0j1Rh3.js",
       "node_modules/vinext/dist/shims/layout-segment-context.js",
       "app/page.tsx"
     ]
