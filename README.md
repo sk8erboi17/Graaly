@@ -62,7 +62,7 @@ events.on(PlayerJoinEvent, event => {
     customNameVisible: true,
   });
 
-  event.player.sendMessage(`Graaly loaded ${Materials.STONE.name}`);
+  event.player.sendMessage(`&aGraaly loaded ${Materials.STONE.name}`);
 });
 ```
 
@@ -79,8 +79,10 @@ def on_join(join):
         custom_name="Guide",
         custom_name_visible=True,
     )
-    join.player.send_message(f"Graaly loaded {Materials.STONE.name}")
+    join.player.send_message(f"&aGraaly loaded {Materials.STONE.name}")
 ```
+
+In JavaScript, TypeScript, and Python scripts, Graaly automatically translates `&` color codes passed to `CommandSender.sendMessage` (including `Player`), `context.reply`, and `players.broadcast`. Use `text.color(...)` when another Bukkit API expects an already-colored string.
 
 The editor always exposes the same symbols and signatures. At runtime Graaly resolves the actual server type, walks legacy aliases, and adapts known renames. Capability checks are explicit when gameplay semantics changed:
 

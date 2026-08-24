@@ -2,6 +2,7 @@ package io.github.sk8erboi17.graaly.polyglot;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventException;
 import org.bukkit.event.EventPriority;
@@ -194,15 +195,31 @@ public final class GraalyScriptApi {
 
     /** Invoke a Java-backed SDK method while unwrapping native language views. */
     public Object invoke(Object target, String method, Object... arguments) {
-        return HostInterop.invoke(target, method, arguments);
+        return HostInterop.invoke(target, method, messageArguments(target, method, arguments));
     }
 
     public Object invokePacked(Object target, String method, Object arguments) {
-        return HostInterop.invoke(target, method, HostInterop.packedArguments(arguments));
+        return invoke(target, method, HostInterop.packedArguments(arguments));
     }
 
     public Object invoke_packed(Object target, String method, Object arguments) {
         return invokePacked(target, method, arguments);
+    }
+
+    /** Translate ampersand colors for every language-native CommandSender.sendMessage call. */
+    static Object[] messageArguments(Object target, String method, Object[] arguments) {
+        Object rawTarget = HostInterop.unwrap(target);
+        if (!(rawTarget instanceof CommandSender) || !"sendMessage".equals(method)) {
+            return arguments;
+        }
+        Object[] translated = arguments.clone();
+        for (int index = 0; index < translated.length; index++) {
+            Object value = HostInterop.unwrap(translated[index]);
+            if (value instanceof String) {
+                translated[index] = ChatColor.translateAlternateColorCodes('&', (String) value);
+            }
+        }
+        return translated;
     }
 
     public boolean hasMethod(Object target, String method) {

@@ -803,11 +803,11 @@ const learningConceptExamples: Record<Language, readonly { file: string; code: s
 
 const quickstartCode: Record<QuickstartLanguage, string> = {
   js: [
-    "import { commands, events, PlayerJoinEvent, text } from \"graaly\";",
+    "import { commands, events, PlayerJoinEvent } from \"graaly\";",
     "",
     "events.on(PlayerJoinEvent, event => {",
     "  event.joinMessage = `§a${event.player.name} joined`;",
-    "  event.player.sendMessage(text.color(\"&aWelcome!\"));",
+    "  event.player.sendMessage(\"&aWelcome!\");",
     "});",
     "",
     "commands.on(\"hello\", context => {",
@@ -816,12 +816,12 @@ const quickstartCode: Record<QuickstartLanguage, string> = {
     "});",
   ].join("\n"),
   ts: [
-    "import { commands, events, PlayerJoinEvent, text }",
+    "import { commands, events, PlayerJoinEvent }",
     "  from \"graaly\";",
     "",
     "events.on(PlayerJoinEvent, event => {",
     "  event.joinMessage = `§b${event.player.name} joined`;",
-    "  event.player.sendMessage(text.color(\"&bWelcome!\"));",
+    "  event.player.sendMessage(\"&bWelcome!\");",
     "});",
     "",
     "commands.on(\"hello\", context => {",
@@ -830,12 +830,12 @@ const quickstartCode: Record<QuickstartLanguage, string> = {
     "});",
   ].join("\n"),
   py: [
-    "from graaly import PlayerJoinEvent, command, event, text",
+    "from graaly import PlayerJoinEvent, command, event",
     "",
     "@event(PlayerJoinEvent)",
     "def on_join(event):",
     "    event.join_message = f\"§d{event.player.name} joined\"",
-    "    event.player.send_message(text.color(\"&dWelcome!\"))",
+    "    event.player.send_message(\"&dWelcome!\")",
     "",
     "@command(\"hello\")",
     "def hello(context):",
@@ -2525,18 +2525,18 @@ function eventExample(entry: BukkitEventEntry, language: GuideLanguage) {
       "}",
     ].join("\n");
     if (language === "py") return [
-      "from graaly import PlayerJoinEvent, event, text",
+      "from graaly import PlayerJoinEvent, event",
       "",
       "@event(PlayerJoinEvent)",
       "def welcome(event):",
       "    event.join_message = f\"§a{event.player.name} joined\"",
-      "    event.player.send_message(text.color(\"&aWelcome!\"))",
+      "    event.player.send_message(\"&aWelcome!\")",
     ].join("\n");
-    const prefix = ["import { events, PlayerJoinEvent, text } from \"graaly\";", ""];
+    const prefix = ["import { events, PlayerJoinEvent } from \"graaly\";", ""];
     return [...prefix,
       "events.on(PlayerJoinEvent, event => {",
       "  event.joinMessage = `§a${event.player.name} joined`;",
-      "  event.player.sendMessage(text.color(\"&aWelcome!\"));",
+      "  event.player.sendMessage(\"&aWelcome!\");",
       "});",
     ].join("\n");
   }

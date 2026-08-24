@@ -480,6 +480,10 @@ test("includes a complete Java quick start beside Graaly languages", async () =>
   assert.match(source, /getServer\(\)\.getPluginManager\(\)\.registerEvents/);
   assert.match(source, /from \\"graaly\\"/);
   assert.match(source, /from graaly import PlayerJoinEvent/);
+  assert.match(source, /event\.player\.sendMessage\(\\"&aWelcome!\\"\)/);
+  assert.match(source, /event\.player\.send_message\(\\"&dWelcome!\\"\)/);
+  assert.doesNotMatch(source, /sendMessage\(text\.color/);
+  assert.doesNotMatch(source, /send_message\(text\.color/);
   assert.match(source, /WelcomePlugin\.java/);
   assert.match(html, />Java</);
   assert.match(html, /Java deploys a compiled JAR/);

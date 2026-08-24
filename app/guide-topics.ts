@@ -474,7 +474,7 @@ export const playerTopics: readonly GuideTopic[] = [
     title: "Messages and titles",
     summary: "Send chat messages, titles, subtitles, and broadcasts.",
     when: "Use it for feedback, announcements, onboarding, and game-state cues.",
-    does: "Calls the normal Player messaging API; text.color translates ampersand color codes for helper messages.",
+    does: "Calls the normal Player messaging API. Graaly automatically translates ampersand color codes in CommandSender.sendMessage, context.reply, and players.broadcast; use text.color for other text APIs such as titles.",
     input: "Text, title, subtitle, and optional timings",
     output: "Visible client feedback",
     operations: [
@@ -483,10 +483,10 @@ export const playerTopics: readonly GuideTopic[] = [
       op("players.broadcast(text)", "players.broadcast(text)", "Bukkit.broadcastMessage(String)"),
     ],
     code: nativeCode(
-      ["players", "text"],
-      ["player.sendMessage(text.color(\"&aQuest complete!\"));", "player.sendTitle(\"§6Victory\", \"§fThe arena is yours\");", "players.broadcast(`&e${player.name} won the match`);"],
-      ["players", "text"],
-      ["player.send_message(text.color(\"&aQuest complete!\"))", "player.send_title(\"§6Victory\", \"§fThe arena is yours\")", "players.broadcast(f\"&e{player.name} won the match\")"],
+      ["players"],
+      ["player.sendMessage(\"&aQuest complete!\");", "player.sendTitle(\"§6Victory\", \"§fThe arena is yours\");", "players.broadcast(`&e${player.name} won the match`);"],
+      ["players"],
+      ["player.send_message(\"&aQuest complete!\")", "player.send_title(\"§6Victory\", \"§fThe arena is yours\")", "players.broadcast(f\"&e{player.name} won the match\")"],
       ["player.sendMessage(\"§aQuest complete!\");", "player.sendTitle(\"§6Victory\", \"§fThe arena is yours\");", "Bukkit.broadcastMessage(\"§e\" + player.getName() + \" won the match\");"],
     ),
     javaEquivalent: "Player#sendMessage / sendTitle and Bukkit#broadcastMessage",
