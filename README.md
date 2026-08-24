@@ -105,17 +105,6 @@ except GraalyUnsupportedFeature as unavailable:
 
 An ordinary typo remains an ordinary missing property. Only a real member from the canonical Graaly contract that is absent on the current server becomes `GraalyUnsupportedFeature`, so errors stay actionable.
 
-## Current generated surface
-
-- 1,421 public import names backed by 1,388 canonical API types
-- 19,339 directly declared public members plus inherited signatures
-- 265 concrete events with editable/read-only property metadata
-- 4,629 canonical constants, including 40 current entity attributes
-- 289 PacketEvents wrappers, 533 supporting types, and 288 packet constants
-- 14 stable high-level modules: events, commands, tasks, config, players, worlds, entities, HTTP, WebSocket, UI, boards, packets, compatibility, and diagnostics
-
-These totals are produced by [`runtime/scripts/generate_api_catalogs.mjs`](runtime/scripts/generate_api_catalogs.mjs), not maintained by hand.
-
 ## Build the runtime
 
 ```bash
