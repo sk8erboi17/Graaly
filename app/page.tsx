@@ -147,6 +147,7 @@ const navigation = [
       { id: "players", title: "Players" },
       { id: "worlds", title: "Worlds & generators" },
       { id: "entities", title: "Entities & attributes" },
+      { id: "html-css-gui", title: "HTML & CSS GUI" },
       { id: "react-ui", title: "React UI & FastAPI" },
       { id: "academy", title: "Graaly Academy" },
       { id: "boards", title: "Website boards (Soon)" },
@@ -1317,7 +1318,7 @@ const studioLessons: readonly StudioLesson[] = [
     summary: "Your component still returns JSX and React still reconciles state. Graaly implements a renderer that turns that tree into native game UI.",
     why: "The genuine React programming model transfers to web work: components, props, state, Hooks, Context, composition, and one-way data flow all keep their meaning.",
     webDifference: "A website calls react-dom createRoot on an HTMLElement and produces DOM nodes. Graaly calls createRoot(player) and produces a scoreboard, inventory, boss bar, tab list, or message for that player.",
-    decision: "A custom renderer was chosen instead of pretending game UI is HTML. There is no layout engine or DOM inside the game process, so fake div and button elements would teach the wrong mental model.",
+    decision: "The React renderer uses explicit native host elements because there is no DOM inside the game process. For small non-React menus, the separate ui.renderHtml helper compiles semantic HTML and a limited CSS grid into the same native snapshots.",
     remember: "React decides what UI should exist; the renderer decides how that UI becomes real.",
   },
   {
@@ -1591,7 +1592,7 @@ const studioLessons: readonly StudioLesson[] = [
     focus: [3, 13],
     summary: "Scoreboard, boss bar, tab, and inventory derive from one Profile value. React updates only the native surfaces whose props changed.",
     why: "A single source of truth prevents the balance shown in one surface from drifting away from another. progress is derived during render rather than copied into state.",
-    webDifference: "Scoreboard and Inventory replace div and button. There is no CSS layout, DOM query, or SyntheticEvent; Item supplies a game UiAction containing the player, slot, and click type.",
+    webDifference: "In the React path, Scoreboard and Inventory replace div and button and there is no DOM query or SyntheticEvent. The separate direct HTML/CSS helper is a server-side compiler for inventory slots, not a browser renderer.",
     decision: "React is valuable when several surfaces share changing state. One static message or tiny menu is simpler with Graaly's direct UI helpers.",
     remember: "Store domain state once; derive every visual projection from it.",
   },
@@ -3600,6 +3601,110 @@ export function WebsiteBoardGuide() {
   );
 }
 
+function HtmlCssGuiGuide() {
+  const typescript = [
+    'import { commands, players, ui } from "graaly";',
+    "",
+    "const menu = `",
+    '<div id="profile" aria-label="Profilo" data-rows="3">',
+    "  <style>",
+    "    #profile {",
+    "      display: grid;",
+    "      grid-template-columns: repeat(9, 1fr);",
+    "      grid-template-rows: repeat(3, 1fr);",
+    "      background: white;",
+    "      border: 1px solid black;",
+    "      border-radius: 8px;",
+    "    }",
+    "    span { grid-column: 2 / 9; grid-row: 1; color: yellow; }",
+    "    input { grid-column: 3 / 8; grid-row: 2; background: lightblue; }",
+    "    button { grid-column: 4 / 7; grid-row: 3; --minecraft-material: EMERALD_BLOCK; }",
+    "  </style>",
+    "  <span>Configura il profilo</span>",
+    '  <input id="player-name" placeholder="Scrivi sul cartello">',
+    '  <button id="confirm">Conferma</button>',
+    "</div>`;",
+    "",
+    'commands.on("htmlgui", context => {',
+    "  if (!players.isPlayer(context.sender)) return true;",
+    "  const player = context.sender;",
+    "  ui.renderHtml(player, menu, { actions: {",
+    '    "player-name": action => player.sendMessage(`Testo: ${action.value ?? ""}`),',
+    "    confirm: () => ui.renderHtml(player, `",
+    '      <dialog id="save" open aria-label="Sei sicuro?">',
+    '        <button id="yes" style="background: lime">Sì</button>',
+    '        <button id="no" style="background: red">No</button>',
+    "      </dialog>",
+    "    `, { actions: {",
+    '      yes: () => player.sendMessage("Confermato"),',
+    '      no: () => player.sendMessage("Annullato"),',
+    "    }}),",
+    "  }});",
+    "  return true;",
+    "});",
+  ].join("\n");
+
+  const python = [
+    "from graaly import command, players, ui",
+    "",
+    '@command("pyhtmlgui")',
+    "def open_gui(context):",
+    "    if not players.is_player(context.sender):",
+    "        return True",
+    "    ui.render_html(",
+    "        context.sender,",
+    '        \'<input id="name" placeholder="Scrivi sul cartello">\',',
+    "        css='input { background: white; }',",
+    "        actions={\"name\": lambda action: context.reply(action.value or \"\")},",
+    "    )",
+    "    return True",
+  ].join("\n");
+
+  const mappings = [
+    ["div · main · section · form", "Native panel/container; its grid area groups child elements."],
+    ["span · p · label · h1…h6", "Text item: content becomes the item display name and tooltip."],
+    ["button", "Clickable inventory item; id or data-action selects the handler."],
+    ["input", "Clickable field that opens the native four-line sign editor."],
+    ["dialog open", "Anvil modal; exactly two button children occupy slots 0 and 1."],
+    ["hr", "One horizontal stained-glass line across the current grid row."],
+  ] as const;
+
+  return (
+    <div className="guide-stack">
+      <div className="note-line">
+        <strong>Standard semantics, native result.</strong> The source uses real <code>div</code>, <code>span</code>, <code>button</code>,
+        <code> input</code>, and <code>dialog</code>. Graaly parses them on the server and creates Minecraft inventory, sign,
+        and anvil screens; it does not send HTML to the client.
+      </div>
+
+      <div className="compatibility-rules">
+        {mappings.map(([tag, meaning]) => (
+          <div key={tag}><strong><code>{tag}</code></strong><p>{meaning}</p></div>
+        ))}
+      </div>
+
+      <div className="two-code-columns">
+        <CodeBlock accent="ts" code={typescript} label="TypeScript · src/main.mts" />
+        <CodeBlock accent="py" code={python} label="Python · main.py" />
+      </div>
+
+      <div className="compatibility-rules">
+        <div><strong>Grid</strong><p><code>grid-template-rows</code>, <code>grid-row</code>, and <code>grid-column</code> map to 9 columns and 1–6 inventory rows.</p></div>
+        <div><strong>Colors</strong><p>Named, hex, and <code>rgb()</code> colors map to the nearest dye. <code>white</code> is <code>WHITE_STAINED_GLASS_PANE</code>.</p></div>
+        <div><strong>Lines and corners</strong><p><code>border</code> paints the perimeter; <code>border-radius</code> leaves the four corner slots empty for a rounded-panel shape.</p></div>
+        <div><strong>Text</strong><p><code>color</code>, <code>font-weight</code>, <code>font-style</code>, and text decoration become Minecraft formatting codes.</p></div>
+        <div><strong>Native item</strong><p><code>--minecraft-material</code>, <code>--minecraft-amount</code>, <code>--minecraft-durability</code>, and <code>--minecraft-lore</code> select item details.</p></div>
+        <div><strong>Events</strong><p>Use <code>data-action</code> on controls and <code>data-close-action</code> on a container. Scripts, DOM APIs, and inline <code>onclick</code> are rejected.</p></div>
+      </div>
+
+      <div className="note-line warning">
+        Minecraft has slots, not pixels. Graaly implements only CSS with a faithful native meaning; arbitrary positioning,
+        animation, fonts, shadows, and browser layout are intentionally unsupported.
+      </div>
+    </div>
+  );
+}
+
 function SectionHeading({ eyebrow, title, children }: {
   eyebrow: string;
   title: string;
@@ -4771,8 +4876,17 @@ export default function Home() {
             />
           </section>
 
+          <section className="doc-section" hidden={activeSection !== "html-css-gui"} id="html-css-gui">
+            <SectionHeading eyebrow="10 · HTML & CSS GUI" title="Write semantic HTML and map CSS to native Minecraft screens">
+              Build small menus with familiar tags while keeping a faithful game result: inventory grids and stained-glass
+              panels, sign-based text input, and two-choice anvil dialogs. The same compiler and action model are exposed to
+              TypeScript, JavaScript, and Python.
+            </SectionHeading>
+            <HtmlCssGuiGuide />
+          </section>
+
           <section className="doc-section react-ui-section" hidden={activeSection !== "react-ui"} id="react-ui">
-            <SectionHeading eyebrow="10 · React UI & FastAPI" title="Use real React for game UI and Python for persistent services">
+            <SectionHeading eyebrow="11 · React UI & FastAPI" title="Use real React for game UI and Python for persistent services">
               Follow the animated IDE from the first React root to a tested FastAPI transaction. Every lesson explains the code,
               how it differs from browser React, why that boundary was chosen, which simpler alternative exists, and when the
               additional architecture becomes justified.
@@ -4781,7 +4895,7 @@ export default function Home() {
           </section>
 
           <section className="doc-section academy-section" hidden={activeSection !== "academy"} id="academy">
-            <SectionHeading eyebrow="11 · Graaly Academy" title="From your first component to a production realtime plugin">
+            <SectionHeading eyebrow="12 · Graaly Academy" title="From your first component to a production realtime plugin">
               These are 36 long-form lessons, not a list of snippets. Edit and execute real TypeScript React against a
               Minecraft surface simulator, trace the FastAPI request lifecycle, and then run the same
               architecture in the checked-in plugin and backend tests.
@@ -4790,7 +4904,7 @@ export default function Home() {
           </section>
 
           <section className="doc-section board-section" hidden={activeSection !== "boards"} id="boards">
-            <SectionHeading eyebrow="12 · Website boards" title="Website boards are coming soon.">
+            <SectionHeading eyebrow="13 · Website boards" title="Website boards are coming soon.">
               The board renderer is still experimental and is not part of Graaly&apos;s stable public contract yet.
               Documentation and examples will return when rendering, input, scrolling, and lifecycle behavior are ready to support.
             </SectionHeading>
@@ -4798,7 +4912,7 @@ export default function Home() {
           </section>
 
           <section className="doc-section" hidden={activeSection !== "packets"} id="packets">
-            <SectionHeading eyebrow="13 · PacketEvents" title="Learn the workflow, then search every packet and wrapper">
+            <SectionHeading eyebrow="14 · PacketEvents" title="Learn the workflow, then search every packet and wrapper">
               PacketEvents stays a separate 2.13.0 plugin. Start with practical receive, send, wrapper, cancellation, player-data,
               and threading guides; then search every client packet, server packet, wrapper, and supporting type below, including
               <code> ClientPacket.CHAT_MESSAGE</code>, <code>ServerPacket.UPDATE_HEALTH</code>, and
@@ -4827,7 +4941,7 @@ export default function Home() {
           </section>
 
           <section className="doc-section api-reference-section" hidden={activeSection !== "api-reference"} id="api-reference">
-            <SectionHeading eyebrow="14 · Complete reference" title="Every cataloged type and signature, searchable in one place">
+            <SectionHeading eyebrow="15 · Complete reference" title="Every cataloged type and signature, searchable in one place">
               Search the full public surface: {catalogCounts.api} Graaly API symbols, {catalogCounts.packetWrappers} packet wrappers,
               {catalogCounts.packetSupportTypes} supporting packet types, and {catalogCounts.packetConstants} packet constants.
               TypeScript, Python, and Java signatures are shown side by side, including inherited members and overloads.

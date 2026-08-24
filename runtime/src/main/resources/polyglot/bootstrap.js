@@ -790,6 +790,35 @@
             uiBridge.render(unwrap(player), JSON.stringify(snapshot), raw =>
                 onAction(JSON.parse(String(raw))));
         },
+        renderHtml(player, markup, options = {}) {
+            if (typeof markup !== "string") {
+                throw new TypeError("ui.renderHtml markup must be a string");
+            }
+            if (options == null || typeof options !== "object" || Array.isArray(options)) {
+                throw new TypeError("ui.renderHtml options must be an object");
+            }
+            const actions = options.actions || {};
+            if (actions == null || typeof actions !== "object" || Array.isArray(actions)) {
+                throw new TypeError("ui.renderHtml actions must be an object");
+            }
+            if (options.onAction != null && typeof options.onAction !== "function") {
+                throw new TypeError("ui.renderHtml onAction must be a function");
+            }
+            const snapshot = JSON.parse(String(uiBridge.compileHtml(markup, String(options.css || ""))));
+            ui.render(player, snapshot, action => {
+                const selected = actions[action.actionId];
+                for (const handler of [selected, options.onAction]) {
+                    if (typeof handler !== "function") continue;
+                    try {
+                        Promise.resolve(handler(action)).catch(failure => bridge.error(
+                            failure && failure.stack ? failure.stack : String(failure)
+                        ));
+                    } catch (failure) {
+                        bridge.error(failure && failure.stack ? failure.stack : String(failure));
+                    }
+                }
+            });
+        },
         clear(player) {
             uiBridge.clear(unwrap(player));
         },

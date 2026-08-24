@@ -1,0 +1,13 @@
+name: HtmlCssGui
+version: 1.0.0
+main: dist/main.mjs
+author: Graaly
+description: Semantic HTML and CSS rendered as native Minecraft GUIs.
+commands:
+  htmlgui:
+    description: Opens the HTML and CSS GUI example.
+    usage: /htmlgui
+  confirmgui:
+    description: Opens the two-choice anvil dialog example.
+    usage: /confirmgui
+

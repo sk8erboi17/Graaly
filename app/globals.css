@@ -635,6 +635,15 @@ main {
   gap: 14px;
 }
 
+.guide-stack {
+  display: grid;
+  gap: 24px;
+}
+
+.guide-stack .note-line {
+  margin-top: 0;
+}
+
 .code-block {
   min-width: 0;
   overflow: hidden;

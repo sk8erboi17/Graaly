@@ -5,9 +5,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelDuplexHandler;
+import io.netty.channel.ChannelHandlerContext;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -15,6 +20,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
@@ -61,6 +67,7 @@ public final class GraalyUiScriptApi {
     private final UiListener listener = new UiListener();
     private final Map<UUID, PlayerSession> sessions = new ConcurrentHashMap<>();
     private final Map<Inventory, InventorySession> inventories = new IdentityHashMap<>();
+    private final Map<Inventory, ModalSession> modals = new IdentityHashMap<>();
     private BukkitTask bossBarTracker;
     private boolean active;
     private boolean listenersRegistered;
@@ -86,6 +93,16 @@ public final class GraalyUiScriptApi {
         } else {
             plugin.getServer().getScheduler().runTask(plugin.asPlugin(), apply);
         }
+    }
+
+    /** Compile semantic HTML and CSS into the same native snapshot consumed by render. */
+    public String compileHtml(String markup, String css) {
+        return GraalyHtmlUiCompiler.compile(markup, css);
+    }
+
+    /** Python spelling for compileHtml. */
+    public String compile_html(String markup, String css) {
+        return compileHtml(markup, css);
     }
 
     public void clear(Object viewer) {
@@ -135,6 +152,7 @@ public final class GraalyUiScriptApi {
         }
         sessions.clear();
         inventories.clear();
+        modals.clear();
     }
 
     private void apply(Player player, JsonObject snapshot, Value callback) {
@@ -147,6 +165,7 @@ public final class GraalyUiScriptApi {
         session.callback = callback;
         renderMessages(session, array(snapshot, "messages"));
         renderInventory(session, object(snapshot, "inventory"));
+        renderModal(session, object(snapshot, "modal"));
         renderScoreboard(session, object(snapshot, "scoreboard"));
         renderBossBar(session, object(snapshot, "bossBar"));
         renderTab(session, object(snapshot, "tab"));
@@ -213,6 +232,7 @@ public final class GraalyUiScriptApi {
 
         inventorySession.closeActionId = text(definition, "closeActionId", "");
         inventorySession.actions.clear();
+        inventorySession.inputs.clear();
         Set<Integer> nextSlots = new LinkedHashSet<>();
         for (JsonElement itemElement : array(definition, "items")) {
             if (!itemElement.isJsonObject()) {
@@ -234,6 +254,16 @@ public final class GraalyUiScriptApi {
             if (!actionId.isEmpty()) {
                 inventorySession.actions.put(slot, actionId);
             }
+            JsonObject input = object(item, "input");
+            if (input != null) {
+                inventorySession.inputs.put(slot, new SignInput(
+                        requiredText(input, "id", "HTML input id"),
+                        text(input, "title", "Enter text"),
+                        text(input, "placeholder", "Enter text"),
+                        text(input, "value", ""),
+                        text(input, "submitActionId", actionId),
+                        text(input, "cancelActionId", "")));
+            }
         }
         for (Integer previousSlot : new ArrayList<>(inventorySession.itemFingerprints.keySet())) {
             if (!nextSlots.contains(previousSlot)) {
@@ -249,6 +279,10 @@ public final class GraalyUiScriptApi {
         int amount = clamp(integer(definition, "amount", 1), 1, Math.max(1, material.getMaxStackSize()));
         ItemStack stack = new ItemStack(material, amount);
         int durability = integer(definition, "durability", 0);
+        if (materialName.endsWith("_STAINED_GLASS_PANE")
+                && !"STAINED_GLASS_PANE".equals(material.name())) {
+            durability = 0;
+        }
         if (durability != 0) {
             stack.setDurability((short) durability);
         }
@@ -268,6 +302,42 @@ public final class GraalyUiScriptApi {
             stack.setItemMeta(meta);
         }
         return stack;
+    }
+
+    private void renderModal(PlayerSession session, JsonObject definition) {
+        if (definition == null) {
+            removeModal(session, true);
+            return;
+        }
+        String viewId = requiredText(definition, "id", "HTML dialog id");
+        String title = clip(color(text(definition, "title", "Are you sure?")), 32);
+        InventorySession parent = session.inventory;
+        ModalSession current = session.modal;
+        if (current != null && current.viewId.equals(viewId) && current.title.equals(title)
+                && current.parent == parent) {
+            return;
+        }
+        removeModal(session, false);
+        Inventory inventory = Bukkit.createInventory(session.player, InventoryType.ANVIL, title);
+        ModalSession modal = new ModalSession(viewId, title, inventory, parent);
+        modal.closeActionId = text(definition, "closeActionId", "");
+        for (JsonElement element : array(definition, "choices")) {
+            if (!element.isJsonObject()) continue;
+            JsonObject choice = element.getAsJsonObject();
+            int slot = integer(choice, "slot", -1);
+            if (slot < 0 || slot > 1) {
+                throw new IllegalArgumentException("Anvil dialog choices can only use slots 0 and 1");
+            }
+            inventory.setItem(slot, createItem(choice));
+            modal.actions.put(slot, requiredText(choice, "actionId", "Dialog choice action"));
+        }
+        if (modal.actions.size() != 2) {
+            throw new IllegalArgumentException("An anvil dialog requires exactly two choices");
+        }
+        if (parent != null) parent.switchingSurface = true;
+        session.modal = modal;
+        modals.put(inventory, modal);
+        session.player.openInventory(inventory);
     }
 
     private void renderScoreboard(PlayerSession session, JsonObject definition) {
@@ -696,16 +766,309 @@ public final class GraalyUiScriptApi {
     }
 
     private void removeInventory(PlayerSession session, boolean close) {
+        removeSign(session);
         InventorySession current = session.inventory;
         if (current == null) {
             return;
         }
+        if (session.modal != null && session.modal.parent == current) removeModal(session, close);
         inventories.remove(current.inventory);
         session.inventory = null;
         if (close && session.player.getOpenInventory() != null
                 && session.player.getOpenInventory().getTopInventory() == current.inventory) {
             session.player.closeInventory();
         }
+    }
+
+    private void openSign(PlayerSession session, InventorySession parent, SignInput input) {
+        if (!active || !session.player.isOnline() || session.inventory != parent) {
+            return;
+        }
+        removeSign(session);
+        try {
+            ensureSignInterceptor(session);
+            parent.switchingSurface = true;
+            session.player.closeInventory();
+            Location base = session.player.getLocation();
+            int minimumY = 0;
+            try {
+                minimumY = ((Number) call(base.getWorld(), "getMinHeight")).intValue();
+            } catch (Throwable ignored) {
+                // Minecraft 1.7-1.16 worlds start at Y=0.
+            }
+            Location location = new Location(base.getWorld(), base.getBlockX(),
+                    Math.max(minimumY, base.getBlockY() - 4), base.getBlockZ());
+            Block previous = location.getBlock();
+            SignSession sign = new SignSession(parent, input, location,
+                    previous.getType(), previous.getData());
+            session.sign = sign;
+            Material signMaterial = Material.matchMaterial("OAK_SIGN");
+            if (signMaterial == null) signMaterial = Material.matchMaterial("SIGN_POST");
+            if (signMaterial == null) signMaterial = Material.matchMaterial("SIGN");
+            if (signMaterial == null) throw new IllegalStateException("This server has no sign material");
+            session.player.sendBlockChange(location, signMaterial, (byte) 0);
+            session.player.sendSignChange(location, sign.initialLines());
+            plugin.getServer().getScheduler().runTaskLater(plugin.asPlugin(), () -> {
+                if (active && session.player.isOnline() && session.sign == sign) {
+                    try {
+                        sendOpenSignPacket(session.player, location);
+                    } catch (Throwable failure) {
+                        plugin.getLogger().log(Level.SEVERE, "Could not open the HTML sign input", failure);
+                        removeSign(session);
+                        reopenParent(session, parent);
+                    }
+                }
+            }, 2L);
+        } catch (Throwable failure) {
+            plugin.getLogger().log(Level.SEVERE, "Could not prepare the HTML sign input", failure);
+            removeSign(session);
+            parent.switchingSurface = false;
+            reopenParent(session, parent);
+        }
+    }
+
+    private void finishSign(PlayerSession session, SignSession sign, String[] lines) {
+        if (session.sign != sign) return;
+        restoreSign(session, sign);
+        session.sign = null;
+        List<String> selectedLines = new ArrayList<>();
+        for (String line : lines) selectedLines.add(line == null ? "" : line);
+        Map<String, Object> action = new LinkedHashMap<>();
+        action.put("type", "input.submit");
+        action.put("viewId", sign.input.inputId);
+        action.put("actionId", sign.input.submitActionId);
+        action.put("value", String.join("\n", selectedLines));
+        action.put("lines", selectedLines);
+        emitAction(session, action);
+        reopenParent(session, sign.parent);
+    }
+
+    private void reopenParent(PlayerSession session, InventorySession parent) {
+        plugin.getServer().getScheduler().runTask(plugin.asPlugin(), () -> {
+            if (active && parent != null && session.player.isOnline() && session.inventory == parent
+                    && session.modal == null && session.sign == null) {
+                session.player.openInventory(parent.inventory);
+            }
+        });
+    }
+
+    private void removeSign(PlayerSession session) {
+        SignSession current = session.sign;
+        if (current == null) return;
+        restoreSign(session, current);
+        session.sign = null;
+    }
+
+    private static void restoreSign(PlayerSession session, SignSession sign) {
+        if (session.player.isOnline()) {
+            session.player.sendBlockChange(sign.location, sign.previousMaterial, sign.previousData);
+        }
+    }
+
+    private void finishModal(PlayerSession session, ModalSession modal, String actionId, int slot) {
+        if (session.modal != modal || modal.finished) return;
+        modal.finished = true;
+        modals.remove(modal.inventory);
+        session.modal = null;
+        Map<String, Object> action = new LinkedHashMap<>();
+        action.put("type", "modal.choice");
+        action.put("viewId", modal.viewId);
+        action.put("actionId", actionId);
+        action.put("slot", slot);
+        emitAction(session, action);
+        if (session.player.getOpenInventory() != null
+                && session.player.getOpenInventory().getTopInventory() == modal.inventory) {
+            session.player.closeInventory();
+        }
+        reopenParent(session, modal.parent);
+    }
+
+    private void removeModal(PlayerSession session, boolean close) {
+        ModalSession current = session.modal;
+        if (current == null) return;
+        current.finished = true;
+        modals.remove(current.inventory);
+        session.modal = null;
+        if (close && session.player.getOpenInventory() != null
+                && session.player.getOpenInventory().getTopInventory() == current.inventory) {
+            session.player.closeInventory();
+        }
+    }
+
+    private void ensureSignInterceptor(PlayerSession session) throws Exception {
+        Channel channel = networkChannel(session.player);
+        String name = "graaly-sign-" + session.player.getUniqueId().toString().replace("-", "");
+        if (channel.pipeline().get(name) == null) {
+            Runnable install = () -> {
+                if (channel.pipeline().get(name) != null) return;
+                ChannelDuplexHandler handler = new ChannelDuplexHandler() {
+                    @Override
+                    public void channelRead(ChannelHandlerContext context, Object packet) throws Exception {
+                        PlayerSession current = sessions.get(session.player.getUniqueId());
+                        SignSession sign = current == null ? null : current.sign;
+                        if (sign != null && isSignUpdatePacket(packet)) {
+                            String[] lines = signLines(packet);
+                            plugin.getServer().getScheduler().runTask(plugin.asPlugin(), () -> {
+                                PlayerSession selected = sessions.get(session.player.getUniqueId());
+                                if (selected != null && selected.sign == sign) finishSign(selected, sign, lines);
+                            });
+                            return;
+                        }
+                        super.channelRead(context, packet);
+                    }
+                };
+                if (channel.pipeline().get("packet_handler") != null) {
+                    channel.pipeline().addBefore("packet_handler", name, handler);
+                } else {
+                    channel.pipeline().addLast(name, handler);
+                }
+            };
+            if (channel.eventLoop().inEventLoop()) install.run();
+            else channel.eventLoop().submit(install).syncUninterruptibly();
+        }
+        session.channel = channel;
+        session.channelHandlerName = name;
+    }
+
+    private static boolean isSignUpdatePacket(Object packet) {
+        String name = packet == null ? "" : packet.getClass().getSimpleName();
+        return "PacketPlayInUpdateSign".equals(name) || "ServerboundSignUpdatePacket".equals(name)
+                || name.contains("SignUpdate");
+    }
+
+    private static String[] signLines(Object packet) {
+        for (String methodName : new String[]{"getLines", "lines", "b"}) {
+            try {
+                Method method = packet.getClass().getMethod(methodName);
+                if (method.getParameterCount() == 0 && method.getReturnType().isArray()) {
+                    return textArray(method.invoke(packet));
+                }
+            } catch (ReflectiveOperationException ignored) {
+            }
+        }
+        for (Class<?> current = packet.getClass(); current != null; current = current.getSuperclass()) {
+            for (Field candidate : current.getDeclaredFields()) {
+                if (!candidate.getType().isArray()) continue;
+                try {
+                    candidate.setAccessible(true);
+                    Object value = candidate.get(packet);
+                    if (value != null && Array.getLength(value) <= 4) return textArray(value);
+                } catch (ReflectiveOperationException ignored) {
+                }
+            }
+        }
+        return new String[]{"", "", "", ""};
+    }
+
+    private static String[] textArray(Object value) {
+        String[] result = new String[4];
+        int length = value == null ? 0 : Math.min(4, Array.getLength(value));
+        for (int index = 0; index < result.length; index++) {
+            Object line = index < length ? Array.get(value, index) : "";
+            result[index] = componentText(line);
+        }
+        return result;
+    }
+
+    private static String componentText(Object component) {
+        if (component == null) return "";
+        if (component instanceof String) return (String) component;
+        for (String methodName : new String[]{"getString", "getText", "c"}) {
+            try {
+                Object result = call(component, methodName);
+                if (result instanceof String) return (String) result;
+            } catch (Throwable ignored) {
+            }
+        }
+        return String.valueOf(component);
+    }
+
+    private static Channel networkChannel(Player player) throws Exception {
+        Object handle = call(player, "getHandle");
+        Object connection = firstField(handle, "playerConnection", "connection", "c");
+        Object manager = firstField(connection, "networkManager", "connection", "h");
+        Object channel = firstField(manager, "channel", "m");
+        if (channel instanceof Channel) return (Channel) channel;
+        throw new IllegalStateException("Could not locate the player's network channel");
+    }
+
+    private static Object firstField(Object target, String... names) throws Exception {
+        if (target == null) throw new IllegalStateException("Network object is unavailable");
+        for (String name : names) {
+            try {
+                return field(target, name);
+            } catch (NoSuchFieldException ignored) {
+            }
+        }
+        for (Class<?> current = target.getClass(); current != null; current = current.getSuperclass()) {
+            for (Field candidate : current.getDeclaredFields()) {
+                String typeName = candidate.getType().getName();
+                if (!(Channel.class.isAssignableFrom(candidate.getType())
+                        || typeName.contains("Connection") || typeName.contains("NetworkManager"))) continue;
+                candidate.setAccessible(true);
+                Object value = candidate.get(target);
+                if (value != null) return value;
+            }
+        }
+        throw new NoSuchFieldException(target.getClass().getName());
+    }
+
+    private static void sendOpenSignPacket(Player player, Location location) throws Exception {
+        ClassLoader loader = player.getClass().getClassLoader();
+        Class<?> positionType = firstClass(loader,
+                legacyNmsName(player, "BlockPosition"),
+                "net.minecraft.core.BlockPosition", "net.minecraft.core.BlockPos");
+        Object position = construct(positionType, location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        Class<?> packetType = firstClass(loader,
+                legacyNmsName(player, "PacketPlayOutOpenSignEditor"),
+                "net.minecraft.network.protocol.game.PacketPlayOutOpenSignEditor",
+                "net.minecraft.network.protocol.game.ClientboundOpenSignEditorPacket");
+        Object packet;
+        try {
+            packet = construct(packetType, position, true);
+        } catch (Exception modernConstructorUnavailable) {
+            packet = construct(packetType, position);
+        }
+        Object handle = call(player, "getHandle");
+        Object connection = firstField(handle, "playerConnection", "connection", "c");
+        try {
+            call(connection, "sendPacket", packet);
+        } catch (Exception oldMethodUnavailable) {
+            call(connection, "send", packet);
+        }
+    }
+
+    private static String legacyNmsName(Player player, String simpleName) {
+        String craftPackage = player.getClass().getPackage().getName();
+        String prefix = "org.bukkit.craftbukkit";
+        String version = craftPackage.startsWith(prefix + ".")
+                ? craftPackage.substring(prefix.length() + 1).split("\\.")[0] : "";
+        return version.startsWith("v")
+                ? "net.minecraft.server." + version + '.' + simpleName
+                : "net.minecraft.server." + simpleName;
+    }
+
+    private static Class<?> firstClass(ClassLoader loader, String... names) throws ClassNotFoundException {
+        for (String name : names) {
+            try {
+                return Class.forName(name, false, loader);
+            } catch (ClassNotFoundException ignored) {
+            }
+        }
+        throw new ClassNotFoundException(String.join(", ", names));
+    }
+
+    private static void removeSignInterceptor(PlayerSession session) {
+        Channel channel = session.channel;
+        String name = session.channelHandlerName;
+        session.channel = null;
+        session.channelHandlerName = null;
+        if (channel == null || name == null) return;
+        Runnable remove = () -> {
+            if (channel.pipeline().get(name) != null) channel.pipeline().remove(name);
+        };
+        if (channel.eventLoop().inEventLoop()) remove.run();
+        else channel.eventLoop().submit(remove);
     }
 
     private void removeScoreboard(PlayerSession session) {
@@ -731,6 +1094,8 @@ public final class GraalyUiScriptApi {
         if (session == null) {
             return;
         }
+        removeSign(session);
+        removeModal(session, closeInventory);
         removeInventory(session, closeInventory);
         removeScoreboard(session);
         removeBossBar(session);
@@ -738,6 +1103,7 @@ public final class GraalyUiScriptApi {
             setTab(session.player, "", "");
         }
         session.input = null;
+        removeSignInterceptor(session);
     }
 
     private void dismissSurface(UUID playerId, String surface) {
@@ -748,6 +1114,9 @@ public final class GraalyUiScriptApi {
         switch (surface.toLowerCase(java.util.Locale.ENGLISH)) {
             case "inventory":
                 removeInventory(session, true);
+                return;
+            case "modal":
+                removeModal(session, true);
                 return;
             case "scoreboard":
                 removeScoreboard(session);
@@ -765,6 +1134,7 @@ public final class GraalyUiScriptApi {
                 return;
             case "input":
                 session.input = null;
+                removeSign(session);
                 return;
             default:
                 throw new IllegalArgumentException("Unknown Graaly UI surface " + surface);
@@ -883,6 +1253,17 @@ public final class GraalyUiScriptApi {
         @EventHandler
         public void onClick(InventoryClickEvent event) {
             Inventory top = event.getView().getTopInventory();
+            ModalSession modal = modals.get(top);
+            if (modal != null && event.getWhoClicked() instanceof Player) {
+                PlayerSession session = sessions.get(event.getWhoClicked().getUniqueId());
+                if (session == null || session.modal != modal) {
+                    return;
+                }
+                event.setCancelled(true);
+                String actionId = modal.actions.get(event.getRawSlot());
+                if (actionId != null) finishModal(session, modal, actionId, event.getRawSlot());
+                return;
+            }
             InventorySession inventory = inventories.get(top);
             if (inventory == null || !(event.getWhoClicked() instanceof Player)) {
                 return;
@@ -893,6 +1274,12 @@ public final class GraalyUiScriptApi {
             }
             event.setCancelled(true);
             if (event.getRawSlot() < 0 || event.getRawSlot() >= top.getSize()) {
+                return;
+            }
+            SignInput input = inventory.inputs.get(event.getRawSlot());
+            if (input != null) {
+                plugin.getServer().getScheduler().runTask(plugin.asPlugin(),
+                        () -> openSign(session, inventory, input));
                 return;
             }
             String actionId = inventory.actions.get(event.getRawSlot());
@@ -912,19 +1299,40 @@ public final class GraalyUiScriptApi {
 
         @EventHandler
         public void onDrag(InventoryDragEvent event) {
-            if (inventories.containsKey(event.getView().getTopInventory())) {
+            if (inventories.containsKey(event.getView().getTopInventory())
+                    || modals.containsKey(event.getView().getTopInventory())) {
                 event.setCancelled(true);
             }
         }
 
         @EventHandler
         public void onClose(InventoryCloseEvent event) {
+            ModalSession modal = modals.get(event.getInventory());
+            if (modal != null && event.getPlayer() instanceof Player) {
+                PlayerSession session = sessions.get(event.getPlayer().getUniqueId());
+                if (session != null && session.modal == modal && !modal.finished) {
+                    modal.finished = true;
+                    modals.remove(modal.inventory);
+                    session.modal = null;
+                    Map<String, Object> action = new LinkedHashMap<>();
+                    action.put("type", "modal.close");
+                    action.put("viewId", modal.viewId);
+                    action.put("actionId", modal.closeActionId);
+                    emitAction(session, action);
+                    reopenParent(session, modal.parent);
+                }
+                return;
+            }
             InventorySession inventory = inventories.get(event.getInventory());
             if (inventory == null || !(event.getPlayer() instanceof Player)) {
                 return;
             }
             PlayerSession session = sessions.get(event.getPlayer().getUniqueId());
             if (session == null || session.inventory != inventory) {
+                return;
+            }
+            if (inventory.switchingSurface) {
+                inventory.switchingSurface = false;
                 return;
             }
             Map<String, Object> action = new LinkedHashMap<>();
@@ -945,6 +1353,10 @@ public final class GraalyUiScriptApi {
         private Value callback;
         private final Set<String> deliveredMessages = new LinkedHashSet<>();
         private InventorySession inventory;
+        private ModalSession modal;
+        private volatile SignSession sign;
+        private Channel channel;
+        private String channelHandlerName;
         private ScoreboardSession scoreboard;
         private BossBarSession bossBar;
         private volatile ChatInputSession input;
@@ -975,13 +1387,76 @@ public final class GraalyUiScriptApi {
         private final String title;
         private final Inventory inventory;
         private final Map<Integer, String> actions = new LinkedHashMap<>();
+        private final Map<Integer, SignInput> inputs = new LinkedHashMap<>();
         private final Map<Integer, String> itemFingerprints = new LinkedHashMap<>();
         private String closeActionId = "";
+        private boolean switchingSurface;
 
         private InventorySession(String viewId, String title, Inventory inventory) {
             this.viewId = viewId;
             this.title = title;
             this.inventory = inventory;
+        }
+    }
+
+    private static final class SignInput {
+        private final String inputId;
+        private final String title;
+        private final String placeholder;
+        private final String value;
+        private final String submitActionId;
+        private final String cancelActionId;
+
+        private SignInput(String inputId, String title, String placeholder, String value,
+                          String submitActionId, String cancelActionId) {
+            this.inputId = inputId;
+            this.title = title;
+            this.placeholder = placeholder;
+            this.value = value;
+            this.submitActionId = submitActionId;
+            this.cancelActionId = cancelActionId;
+        }
+    }
+
+    private static final class SignSession {
+        private final InventorySession parent;
+        private final SignInput input;
+        private final Location location;
+        private final Material previousMaterial;
+        private final byte previousData;
+
+        private SignSession(InventorySession parent, SignInput input, Location location,
+                            Material previousMaterial, byte previousData) {
+            this.parent = parent;
+            this.input = input;
+            this.location = location;
+            this.previousMaterial = previousMaterial;
+            this.previousData = previousData;
+        }
+
+        private String[] initialLines() {
+            String selected = input.value.isEmpty() ? input.placeholder : input.value;
+            String[] split = selected.split("\\n", -1);
+            String[] lines = new String[]{"", "", "", ""};
+            for (int index = 0; index < Math.min(4, split.length); index++) lines[index] = split[index];
+            return lines;
+        }
+    }
+
+    private static final class ModalSession {
+        private final String viewId;
+        private final String title;
+        private final Inventory inventory;
+        private final InventorySession parent;
+        private final Map<Integer, String> actions = new LinkedHashMap<>();
+        private String closeActionId = "";
+        private boolean finished;
+
+        private ModalSession(String viewId, String title, Inventory inventory, InventorySession parent) {
+            this.viewId = viewId;
+            this.title = title;
+            this.inventory = inventory;
+            this.parent = parent;
         }
     }
 

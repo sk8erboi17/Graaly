@@ -34,6 +34,7 @@ export const metadata: Metadata = {
     "TypeScript",
     "PacketEvents",
     "React renderer",
+    "HTML CSS Minecraft GUI",
     "FastAPI",
     "SQLAlchemy",
     "GraalyBoard",
@@ -56,7 +57,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Graaly: Minecraft plugins with TypeScript, JavaScript, and Python",
-    description: "Build plugins, React game UI, Python services and website boards in JavaScript, TypeScript, Python, and Java.",
+    description: "Build plugins, native HTML/CSS and React game UI, Python services, and website boards in JavaScript, TypeScript, Python, and Java.",
     images: ["og.png"],
   },
 };

@@ -1,0 +1,7 @@
+{
+  "include": ["main.py"],
+  "extraPaths": ["../../sdk/python"],
+  "typeCheckingMode": "strict",
+  "pythonVersion": "3.13"
+}
+

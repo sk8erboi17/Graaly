@@ -36,7 +36,7 @@ Java 17 is the functional minimum for Graaly, not a promise that every game-serv
 | [`app/`](app/) | Responsive Graaly documentation and searchable API reference |
 | [`runtime/sdk/typescript/`](runtime/sdk/typescript/) | TypeScript/JavaScript package imported as `graaly` |
 | [`runtime/sdk/python/graaly/`](runtime/sdk/python/graaly/) | Python stubs and native facade imported as `graaly` |
-| [`runtime/examples/`](runtime/examples/) | Working JS, TS, Python, PacketEvents, worlds, React UI, FastAPI, and board examples |
+| [`runtime/examples/`](runtime/examples/) | Working JS, TS, Python, PacketEvents, worlds, HTML/CSS GUI, React UI, FastAPI, and board examples |
 | [`runtime/contract/`](runtime/contract/) | Machine-readable stable API, canonical constants, members, and capability policy |
 
 No Minecraft server JAR is stored or redistributed by this repository.
@@ -278,6 +278,10 @@ See the six focused and vertical PacketEvents examples under [`runtime/examples/
 ## React UI and FastAPI
 
 Graaly’s React package uses real React semantics, including components, JSX, props, state, reducers, Context, effects, Suspense, transitions, and reconciliation. It commits to native game surfaces such as inventories, messages, scoreboards, boss bars, tab lists, and chat input instead of a browser DOM.
+
+For a small native menu without React, `ui.renderHtml` (or Python `ui.render_html`) accepts ordinary semantic HTML and a documented CSS subset. `div` remains a container, `span` remains inline text, `button` remains an action, `input` opens a four-line sign editor, and an open `dialog` becomes an anvil confirmation with its two buttons in slots 0 and 1. CSS grid maps to the 9×1–6 inventory grid; colors map to stained-glass panes (`white` → `WHITE_STAINED_GLASS_PANE`); borders become pane lines; and `border-radius` omits the four corner slots to approximate a rounded panel. See [`runtime/examples/HtmlCssGui.jsplugin`](runtime/examples/HtmlCssGui.jsplugin/) and [`runtime/examples/HtmlCssGui.pyplugin`](runtime/examples/HtmlCssGui.pyplugin/).
+
+This is a server-side compiler into native inventory items, not a browser or pixel renderer. It intentionally supports layout and styling that have a faithful Minecraft representation; arbitrary web CSS, scripts, DOM APIs, and inline `onclick` handlers are rejected. Bind handlers with `data-action` and the `actions` map.
 
 Python can remain the full plugin, or it can own persistence and domain services with FastAPI, Pydantic, SQLAlchemy, WebSockets, dependency injection, migrations, idempotent purchases, and authorization. The server plugin remains the trusted gameplay boundary.
 

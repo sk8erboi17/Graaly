@@ -276,6 +276,7 @@ class UiAction:
     shift: bool
     right: bool
     value: str | None
+    lines: tuple[str, ...]
     player: BoardPlayer
 
 
@@ -337,11 +338,20 @@ class _Ui:
         snapshot: dict[str, Any],
         on_action: Callable[[UiAction], R | Awaitable[R]] | None = None,
     ) -> None: ...
+    def render_html(
+        self,
+        player: Player,
+        markup: str,
+        *,
+        css: str = "",
+        actions: dict[str, Callable[[UiAction], R | Awaitable[R]]] | None = None,
+        on_action: Callable[[UiAction], R | Awaitable[R]] | None = None,
+    ) -> None: ...
     def clear(self, player: Player) -> None: ...
     def dismiss(
         self,
         player: Player,
-        surface: Literal["inventory", "scoreboard", "bossBar", "tab", "input"],
+        surface: Literal["inventory", "modal", "scoreboard", "bossBar", "tab", "input"],
     ) -> None: ...
 
 

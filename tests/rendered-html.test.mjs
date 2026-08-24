@@ -135,6 +135,7 @@ test("ships minimal navigation with valid anchors and accessible controls", asyn
     "players",
     "worlds",
     "entities",
+    "html-css-gui",
     "react-ui",
     "academy",
     "boards",
@@ -160,6 +161,30 @@ test("ships minimal navigation with valid anchors and accessible controls", asyn
   assert.equal(new Set(ids).size, ids.length, "duplicate HTML ids");
   const targets = [...html.matchAll(/href="#([^"]+)"/g)].map(match => match[1]);
   for (const target of targets) assert.ok(ids.includes(target), `missing target #${target}`);
+});
+
+test("documents and ships semantic HTML CSS native GUI controls", async () => {
+  const response = await render();
+  const html = await response.text();
+  const typeScript = await readFile(runtimeFile("sdk/typescript/graaly.mts"), "utf8");
+  const python = await readFile(runtimeFile("sdk/python/graaly/_core.pyi"), "utf8");
+  const javaBridge = await readFile(
+    runtimeFile("src/main/java/io/github/sk8erboi17/graaly/polyglot/GraalyUiScriptApi.java"),
+    "utf8",
+  );
+
+  assert.match(html, /Write semantic HTML and map CSS to native Minecraft screens/);
+  assert.match(html, /WHITE_STAINED_GLASS_PANE/);
+  assert.match(html, /native four-line sign editor/);
+  assert.match(html, /slots 0 and 1/);
+  assert.match(html, /border-radius/);
+  assert.match(html, /--minecraft-material/);
+  assert.match(typeScript, /renderHtml\(player: Player, markup: string/);
+  assert.match(python, /def render_html\(/);
+  assert.match(javaBridge, /PacketPlayOutOpenSignEditor/);
+  assert.match(javaBridge, /InventoryType\.ANVIL/);
+  assert.ok(existsSync(runtimeFile("examples/HtmlCssGui.jsplugin/dist/main.mjs")));
+  assert.ok(existsSync(runtimeFile("examples/HtmlCssGui.pyplugin/main.py")));
 });
 
 test("uses a restrained light-first Graaly Docs visual language", async () => {

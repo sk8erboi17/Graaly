@@ -375,7 +375,8 @@ export interface WebSocketApi {
 }
 
 export interface UiAction {
-    readonly type: "inventory.click" | "inventory.close" | "input.submit" | "input.cancel" | string;
+    readonly type: "inventory.click" | "inventory.close" | "input.submit" | "input.cancel"
+        | "modal.choice" | "modal.close" | string;
     readonly viewId?: string;
     readonly actionId?: string;
     readonly slot?: number;
@@ -383,16 +384,29 @@ export interface UiAction {
     readonly shift?: boolean;
     readonly right?: boolean;
     readonly value?: string;
+    /** The four submitted sign lines for an HTML <input>. */
+    readonly lines?: readonly string[];
     readonly player: {
         readonly id: string;
         readonly name: string;
     };
 }
 
+export interface HtmlUiOptions {
+    /** Additional CSS; a normal <style> element inside the markup is also supported. */
+    readonly css?: string;
+    /** Handlers selected by data-action or data-cancel-action. */
+    readonly actions?: Readonly<Record<string, (action: UiAction) => unknown>>;
+    /** Optional observer called after the matching action handler. */
+    readonly onAction?: (action: UiAction) => unknown;
+}
+
 export interface UiApi {
     render(player: Player, snapshot: Readonly<Record<string, unknown>>, onAction?: (action: UiAction) => unknown): void;
+    /** Render semantic HTML/CSS natively. An <input> opens a sign; an open <dialog> uses an anvil. */
+    renderHtml(player: Player, markup: string, options?: HtmlUiOptions): void;
     clear(player: Player): void;
-    dismiss(player: Player, surface: "inventory" | "scoreboard" | "bossBar" | "tab" | "input"): void;
+    dismiss(player: Player, surface: "inventory" | "modal" | "scoreboard" | "bossBar" | "tab" | "input"): void;
 }
 
 export interface WorldsApi extends Iterable<World> {

@@ -1,0 +1,10 @@
+name: HtmlCssGuiPython
+version: 1.0.0
+main: main.py
+author: Graaly
+description: The same semantic HTML and CSS GUI API from Python.
+commands:
+  pyhtmlgui:
+    description: Opens the Python HTML and CSS GUI example.
+    usage: /pyhtmlgui
+

@@ -960,7 +960,7 @@ def _install(bridge_value, plugin_value, server_value, logger_value, data_folder
 
 
     class UiAction:
-        __slots__ = ("type", "view_id", "action_id", "slot", "click", "shift", "right", "value", "player")
+        __slots__ = ("type", "view_id", "action_id", "slot", "click", "shift", "right", "value", "lines", "player")
 
         def __init__(self, payload):
             self.type = str(payload.get("type", ""))
@@ -971,6 +971,7 @@ def _install(bridge_value, plugin_value, server_value, logger_value, data_folder
             self.shift = bool(payload.get("shift", False))
             self.right = bool(payload.get("right", False))
             self.value = payload.get("value")
+            self.lines = tuple(str(line) for line in payload.get("lines", ()))
             self.player = payload.get("player") or {}
 
 
@@ -1113,6 +1114,31 @@ def _install(bridge_value, plugin_value, server_value, logger_value, data_folder
             _ui_bridge.render(
                 _unwrap(player), _json.dumps(clean, separators=(",", ":")), adapted
             )
+
+        @staticmethod
+        def render_html(player, markup, *, css="", actions=None, on_action=None):
+            if not isinstance(markup, str):
+                raise TypeError("ui.render_html markup must be str")
+            selected_actions = {} if actions is None else actions
+            if not isinstance(selected_actions, dict):
+                raise TypeError("ui.render_html actions must be a dict")
+            for action_id, handler in selected_actions.items():
+                if not callable(handler):
+                    raise TypeError(f"ui.render_html action {action_id!r} must be callable")
+            if on_action is not None and not callable(on_action):
+                raise TypeError("ui.render_html on_action must be callable")
+            snapshot = _json.loads(str(_ui_bridge.compile_html(str(markup), str(css))))
+
+            def dispatch(action):
+                handler = selected_actions.get(action.action_id)
+                if handler is not None:
+                    result = handler(action)
+                    _handle_callback_result(result, f"ui-action:{_callback_name(handler, 'handler')}")
+                if on_action is not None:
+                    result = on_action(action)
+                    _handle_callback_result(result, f"ui-action:{_callback_name(on_action, 'handler')}")
+
+            _Ui.render(player, snapshot, dispatch)
 
         @staticmethod
         def clear(player):
