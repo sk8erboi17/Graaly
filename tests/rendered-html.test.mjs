@@ -508,10 +508,10 @@ test("documents the complete install, deploy, load, and verification path", asyn
 test("uses the event-style browser for every core developer workflow", async () => {
   const response = await render();
   const html = await response.text();
-  assert.equal(guideTopicCount, 43);
+  assert.equal(guideTopicCount, 44);
   assert.deepEqual(
     [commandTopics.length, playerTopics.length, worldTopics.length, entityTopics.length, packetTopics.length],
-    [8, 9, 9, 9, 8],
+    [9, 9, 9, 9, 8],
   );
   for (const browser of ["commands and tasks", "player api", "world api", "entity api", "packetevents workflows"]) {
     assert.match(html, new RegExp(`data-guide-browser="${browser}"`));
@@ -526,6 +526,12 @@ test("uses the event-style browser for every core developer workflow", async () 
   assert.match(html, /YOU PROVIDE/);
   assert.match(html, /YOU GET/);
   assert.match(html, /Java mapped/);
+
+  const commandPlayerTopic = commandTopics.find(topic => topic.id === "command-player");
+  assert.ok(commandPlayerTopic, "the command sender Player guide is missing");
+  assert.match(commandPlayerTopic.code.ts, /players\.isPlayer\(context\.sender\)/);
+  assert.match(commandPlayerTopic.code.ts, /const player = context\.sender/);
+  assert.match(commandPlayerTopic.note ?? "", /players\.broadcast/);
 });
 
 test("documents location, custom worlds, entities, and every canonical attribute", async () => {
