@@ -56,3 +56,6 @@ yarn-error.log*
 /runtime/**/*.log
 /runtime/**/*.pyc
 /runtime/**/__pycache__/
+/runtime/examples/PortingSurfaceJavaScript/
+/runtime/examples/PortingSurfacePython/
+/runtime/examples/PortingSurfaceTypeScript/

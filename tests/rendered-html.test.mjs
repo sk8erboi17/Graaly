@@ -4,11 +4,11 @@ import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 import {
   bukkitCatalog,
-  bukkitEventCatalog,
   packetSupportTypeCatalog,
   packetTypeCatalog,
   packetWrapperCatalog,
-} from "../app/generated-catalogs.ts";
+} from "../app/generated-api-reference.ts";
+import { bukkitEventCatalog } from "../app/generated-events.ts";
 import {
   commandTopics,
   entityTopics,

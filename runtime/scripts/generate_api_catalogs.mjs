@@ -24,10 +24,10 @@ const apiJar = process.env.GRAALY_API_JAR || join(
   canonicalApiVersion,
   `spigot-api-${canonicalApiVersion}.jar`,
 );
-const documentationCatalogPath = process.env.GRAALY_DOCS_CATALOG || join(
+const documentationCatalogDirectory = dirname(process.env.GRAALY_DOCS_CATALOG || join(
   repository,
-  "../app/generated-catalogs.ts",
-);
+  "../app/generated-api-reference.ts",
+));
 const packetEventsVersion = process.env.PACKETEVENTS_VERSION || "2.13.0";
 const packetEventsJar = process.env.PACKETEVENTS_API_JAR || join(
   homedir(),
@@ -2011,51 +2011,6 @@ function packetTypes() {
   return [...new Set(result)].sort();
 }
 
-function documentationEvents(bukkit, sourceByClass) {
-  const memberCache = new Map();
-  return [...bukkit]
-    .flatMap(([name, javaName]) => {
-      if (!javaName.includes(".event.") || !name.endsWith("Event")) return [];
-      const source = sourceByClass.get(javaName)?.text;
-      if (!source) return [];
-      const declaredName = javaName.slice(javaName.lastIndexOf(".") + 1);
-      const declaration = stripJavaComments(source).match(new RegExp(
-        `public\\s+((?:(?:abstract|final|static)\\s+)*)class\\s+${declaredName}\\b`,
-      ));
-      if (!declaration || /\babstract\b/.test(declaration[1])) return [];
-      const members = inheritedSourceMembers(javaName, bukkit, sourceByClass, memberCache);
-      if (!members.some(member => member.kind === "method" && member.name === "getHandlers")) return [];
-      const eventPackage = javaName.slice(0, javaName.lastIndexOf(".")).split(".event.")[1] || "general";
-      const category = eventPackage.split(".")[0];
-      const eventProperties = memberProperties(members)
-        .filter(property => !["handlers", "eventName", "asynchronous"].includes(property.name))
-        .map(property => ({
-          name: property.name,
-          pythonName: safePythonMemberName(property.name),
-          javaType: cleanJavaType(property.type),
-          typeScriptType: typeScriptType(
-            property.type,
-            availableTypeReferences(bukkit, property.ownerFqcn || javaName),
-          ),
-          pythonType: pythonType(
-            property.type,
-            availableTypeReferences(bukkit, property.ownerFqcn || javaName),
-          ),
-          javaRead: property.getter ? `${property.getter.name}()` : property.name,
-          javaWrite: property.setter ? `${property.setter.name}(value)` : null,
-          writable: property.writable,
-        }));
-      return [{
-        name,
-        javaName,
-        category: category || "general",
-        cancellable: eventProperties.some(property => property.name === "cancelled"),
-        properties: eventProperties,
-      }];
-    })
-    .sort((left, right) => left.name.localeCompare(right.name));
-}
-
 function javapEnumConstants(detail, fqcn) {
   if (detail?.kind !== "enum") return [];
   return detail.members
@@ -2221,54 +2176,6 @@ function documentationParentNames(fqcn, detail, types) {
   }))];
 }
 
-function documentationCatalog(bukkit, sourceByClass, wrappers, packetSupportTypes, packetPaths, packetDetails) {
-  const allPacketTypes = new Map([...packetSupportTypes, ...wrappers]);
-  unresolvedTypeDomain = "bukkit";
-  const bukkitEntries = [...bukkit].sort(([left], [right]) => left.localeCompare(right))
-    .map(([name, javaName]) => {
-      const source = sourceByClass.get(javaName)?.text || "";
-      const detail = sourceTypeInfo(source, javaName);
-      return {
-        name,
-        javaName,
-        parents: documentationParentNames(javaName, detail, bukkit),
-        members: documentationMembers(name, javaName, detail, bukkit, {
-          enumConstants: enumConstants(source, simpleTypeName(javaName)),
-        }),
-      };
-    });
-  unresolvedTypeDomain = "packetEvents";
-  const wrapperEntries = [...wrappers].sort(([left], [right]) => left.localeCompare(right))
-    .map(([name, javaName]) => {
-      const detail = packetDetails.get(javaName);
-      return {
-        name,
-        javaName,
-        parents: documentationParentNames(javaName, detail, allPacketTypes),
-        members: documentationMembers(name, javaName, detail, allPacketTypes, { wrapper: true }),
-      };
-    });
-  const supportEntries = [...packetSupportTypes].sort(([left], [right]) => left.localeCompare(right))
-    .map(([name, javaName]) => {
-      const detail = packetDetails.get(javaName);
-      return {
-        name,
-        javaName,
-        parents: documentationParentNames(javaName, detail, allPacketTypes),
-        members: documentationMembers(name, javaName, detail, allPacketTypes),
-      };
-    });
-  const eventEntries = documentationEvents(bukkit, sourceByClass);
-  return [
-    "/** Generated searchable API catalog. Do not edit by hand. */",
-    `export const bukkitCatalog = ${JSON.stringify(bukkitEntries, null, 2)} as const;`,
-    `export const bukkitEventCatalog = ${JSON.stringify(eventEntries, null, 2)} as const;`,
-    `export const packetWrapperCatalog = ${JSON.stringify(wrapperEntries, null, 2)} as const;`,
-    `export const packetSupportTypeCatalog = ${JSON.stringify(supportEntries, null, 2)} as const;`,
-    `export const packetTypeCatalog = ${JSON.stringify(packetPaths, null, 2)} as const;`,
-  ].join("\n\n");
-}
-
 function documentationCatalogJavap(api, apiDetails, wrappers, packetSupportTypes, packetPaths, packetDetails) {
   const allPacketTypes = new Map([...packetSupportTypes, ...wrappers]);
   unresolvedTypeDomain = "bukkit";
@@ -2320,7 +2227,6 @@ function documentationCatalogJavap(api, apiDetails, wrappers, packetSupportTypes
     packetConstants: packetPaths.length,
   }, null, 2)} as const;`;
   return {
-    combined: [heading, apiExport, eventExport, wrapperExport, supportExport, packetExport].join("\n\n"),
     events: [heading, eventExport].join("\n\n"),
     reference: [heading, apiExport, wrapperExport, supportExport, packetExport].join("\n\n"),
     meta: [heading, metaExport].join("\n\n"),
@@ -2440,13 +2346,9 @@ writeGenerated(join(repository, "sdk/typescript/generated-api.mts"), generatedTy
 writeGenerated(join(repository, "sdk/typescript/generated-packets.mts"), generatedTypeScriptPackets);
 writeGenerated(join(repository, "sdk/python/graaly/api/__init__.pyi"), generatedPythonBukkit);
 writeGenerated(join(repository, "sdk/python/graaly/packetevents/__init__.pyi"), generatedPythonPackets);
-writeGenerated(
-  documentationCatalogPath,
-  generatedDocumentationCatalog.combined,
-);
-writeGenerated(join(dirname(documentationCatalogPath), "generated-events.ts"), generatedDocumentationCatalog.events);
-writeGenerated(join(dirname(documentationCatalogPath), "generated-api-reference.ts"), generatedDocumentationCatalog.reference);
-writeGenerated(join(dirname(documentationCatalogPath), "generated-catalog-meta.ts"), generatedDocumentationCatalog.meta);
+writeGenerated(join(documentationCatalogDirectory, "generated-events.ts"), generatedDocumentationCatalog.events);
+writeGenerated(join(documentationCatalogDirectory, "generated-api-reference.ts"), generatedDocumentationCatalog.reference);
+writeGenerated(join(documentationCatalogDirectory, "generated-catalog-meta.ts"), generatedDocumentationCatalog.meta);
 writeGenerated(
   join(resources, "packetevents-wrappers.properties"),
   properties(wrappers, `PacketEvents ${packetEventsVersion} wrapper classes exported as SDK symbols.`),
