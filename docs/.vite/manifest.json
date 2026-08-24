@@ -10,15 +10,15 @@
     "file": "_next/static/chunks/rolldown-runtime-hePW80VL.js",
     "name": "rolldown-runtime"
   },
-  "_vinext-BMBLs2vD.js": {
-    "file": "_next/static/chunks/vinext-BMBLs2vD.js",
+  "_vinext-BDUxZa4E.js": {
+    "file": "_next/static/chunks/vinext-BDUxZa4E.js",
     "name": "vinext",
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js"
     ],
     "dynamicImports": [
-      "_vinext-BMBLs2vD.js"
+      "_vinext-BDUxZa4E.js"
     ]
   },
   "app/generated-api-reference.ts": {
@@ -28,14 +28,14 @@
     "isDynamicEntry": true
   },
   "app/page.tsx": {
-    "file": "_next/static/chunks/page-CGpHErcO.js",
+    "file": "_next/static/chunks/page-bxyihq2m.js",
     "name": "page",
     "src": "app/page.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
-      "_vinext-BMBLs2vD.js"
+      "_vinext-BDUxZa4E.js"
     ],
     "dynamicImports": [
       "node_modules/sucrase/dist/esm/index.js",
@@ -52,28 +52,28 @@
     ]
   },
   "node_modules/vinext/dist/shims/layout-segment-context.js": {
-    "file": "_next/static/chunks/layout-segment-context-tdV9cUSw.js",
+    "file": "_next/static/chunks/layout-segment-context-BeuC9sfG.js",
     "name": "layout-segment-context",
     "src": "node_modules/vinext/dist/shims/layout-segment-context.js",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
-      "_vinext-BMBLs2vD.js"
+      "_vinext-BDUxZa4E.js"
     ]
   },
   "virtual:vinext-app-browser-entry": {
-    "file": "_next/static/chunks/index-eW0Sozgp.js",
+    "file": "_next/static/chunks/index-uwfCyNKv.js",
     "name": "index",
     "src": "virtual:vinext-app-browser-entry",
     "isEntry": true,
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
-      "_vinext-BMBLs2vD.js"
+      "_vinext-BDUxZa4E.js"
     ],
     "dynamicImports": [
-      "_vinext-BMBLs2vD.js",
+      "_vinext-BDUxZa4E.js",
       "node_modules/vinext/dist/shims/layout-segment-context.js",
       "app/page.tsx"
     ]

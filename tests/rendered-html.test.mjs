@@ -785,7 +785,7 @@ test("contains no starter or removed promotional card", async () => {
   assert.doesNotMatch(html, /Niente stringhe da ricordare|No strings to remember/);
 });
 
-test("ships a complete 36-lesson Graaly Academy with an honest interactive playground", async () => {
+test("ships a complete 36-lesson Graaly Academy with a minimal interactive playground", async () => {
   const response = await render();
   const html = await response.text();
   const data = await readFile(new URL("../app/academy-data.ts", import.meta.url), "utf8");
@@ -793,9 +793,9 @@ test("ships a complete 36-lesson Graaly Academy with an honest interactive playg
   const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
 
   assert.match(html, /36 long-form lessons/);
-  assert.match(html, /Minecraft React lab/);
+  assert.match(html, /aria-label="React playground"/);
   assert.match(html, /FastAPI lifecycle lab/);
-  assert.doesNotMatch(html, /Hard lab|Definition of done/);
+  assert.doesNotMatch(html, /Hard lab|Definition of done|Minecraft React lab|browser host simulator|Run this lesson|waiting for Run/);
   assert.equal((data.match(/\n\s+number: \d+,/g) ?? []).length, 36);
   for (const concept of [
     "State snapshot",
@@ -826,12 +826,18 @@ test("ships a complete 36-lesson Graaly Academy with an honest interactive playg
   }
   assert.match(playground, /import\("sucrase"\)/);
   assert.match(playground, /transforms: \["typescript", "jsx", "imports"\]/);
-  assert.match(playground, /browser preview executes real React/);
+  assert.match(playground, /compileAcademyComponent\(currentFile\.code\)/);
+  assert.match(playground, /--academy-editor-height/);
+  assert.match(playground, /academy-workbench-toolbar/);
+  assert.doesNotMatch(playground, /browser preview executes real React|Run TSX|Minecraft surface preview|academy-lab-truth/);
   assert.match(playground, /not Python emulation/);
   assert.match(playground, /const materialSprites/);
   assert.match(playground, /className="academy-item-sprite"/);
   assert.match(playground, /className={`shj-lang-\$\{languageFor\(currentFile\)\}`}/);
   assert.match(css, /\.academy-workbench/);
+  assert.match(css, /\.academy-workbench-toolbar/);
+  assert.match(css, /\.academy-workbench-grid\.is-source-only/);
+  assert.match(css, /height: var\(--academy-editor-height/);
   assert.match(css, /\.academy-lesson-scroll/);
   assert.match(css, /\.academy-editor-layer \.shj-syn-kwd/);
   assert.match(css, /\.academy-run-actions button\.is-primary:hover:not\(:disabled\)/);

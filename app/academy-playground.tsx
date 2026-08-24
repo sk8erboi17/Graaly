@@ -11,7 +11,6 @@ import {
   RotateCcw,
   Search,
   Server,
-  TerminalSquare,
 } from "lucide-react";
 import React, {
   Component,
@@ -409,6 +408,7 @@ function MinecraftPlayground({ lesson }: { lesson: AcademyLesson }) {
   const [error, setError] = useState("");
   const [runVersion, setRunVersion] = useState(0);
   const highlightedRef = useRef<HTMLPreElement>(null);
+  const editorHeight = Math.min(520, Math.max(320, currentFile.code.split("\n").length * 21 + 64));
 
   useEffect(() => {
     let active = true;
@@ -420,6 +420,24 @@ function MinecraftPlayground({ lesson }: { lesson: AcademyLesson }) {
     };
   }, [currentFile, source]);
 
+  useEffect(() => {
+    if (!currentFile.runnable) return;
+    let active = true;
+    void compileAcademyComponent(currentFile.code).then(component => {
+      if (!active) return;
+      setRendered(() => component);
+      setRunVersion(version => version + 1);
+      setError("");
+    }).catch(failure => {
+      if (!active) return;
+      setRendered(null);
+      setError(failure instanceof Error ? failure.message : String(failure));
+    });
+    return () => {
+      active = false;
+    };
+  }, [currentFile.code, currentFile.name, currentFile.runnable]);
+
   function selectFile(file: AcademyFile) {
     setFileName(file.name);
     setSource(file.code);
@@ -427,10 +445,9 @@ function MinecraftPlayground({ lesson }: { lesson: AcademyLesson }) {
     setError("");
   }
 
-  async function run() {
-    if (!currentFile.runnable) return;
+  async function renderPreview(nextSource: string) {
     try {
-      const ComponentToRender = await compileAcademyComponent(source);
+      const ComponentToRender = await compileAcademyComponent(nextSource);
       setRendered(() => ComponentToRender);
       setRunVersion(version => version + 1);
       setError("");
@@ -440,43 +457,45 @@ function MinecraftPlayground({ lesson }: { lesson: AcademyLesson }) {
     }
   }
 
+  async function run() {
+    if (!currentFile.runnable) return;
+    await renderPreview(source);
+  }
+
   function reset() {
     setSource(currentFile.code);
-    setRendered(null);
-    setError("");
-    setRunVersion(version => version + 1);
+    if (currentFile.runnable) void renderPreview(currentFile.code);
   }
 
   return (
-    <section className="academy-workbench" aria-label="Minecraft React playground">
-      <header>
-        <div>
-          <TerminalSquare size={17} aria-hidden="true" />
-          <span>Minecraft React lab</span>
-          <small>real TSX · browser host simulator</small>
+    <section
+      className="academy-workbench"
+      aria-label="React playground"
+      style={{ "--academy-editor-height": `${editorHeight}px` } as React.CSSProperties}
+    >
+      <div className="academy-workbench-toolbar">
+        <div className="academy-file-tabs" role="tablist" aria-label="Lesson files">
+          {lesson.files.map(file => (
+            <button
+              aria-selected={file.name === currentFile.name}
+              className={file.name === currentFile.name ? "is-active" : ""}
+              key={file.name}
+              onClick={() => selectFile(file)}
+              role="tab"
+              type="button"
+            >
+              <i className={"is-" + file.language} />{file.name}
+            </button>
+          ))}
         </div>
-        <div className="academy-run-actions">
-          <button onClick={reset} type="button"><RotateCcw size={14} />Reset</button>
-          <button className="is-primary" disabled={!currentFile.runnable} onClick={run} type="button">
-            <Play size={14} fill="currentColor" />Run TSX
-          </button>
-        </div>
-      </header>
-      <div className="academy-file-tabs" role="tablist" aria-label="Lesson files">
-        {lesson.files.map(file => (
-          <button
-            aria-selected={file.name === currentFile.name}
-            className={file.name === currentFile.name ? "is-active" : ""}
-            key={file.name}
-            onClick={() => selectFile(file)}
-            role="tab"
-            type="button"
-          >
-            <i className={"is-" + file.language} />{file.name}
-          </button>
-        ))}
+        {currentFile.runnable && (
+          <div className="academy-run-actions">
+            <button onClick={reset} type="button"><RotateCcw size={14} />Reset</button>
+            <button className="is-primary" onClick={run} type="button">Run</button>
+          </div>
+        )}
       </div>
-      <div className="academy-workbench-grid">
+      <div className={`academy-workbench-grid${currentFile.runnable ? "" : " is-source-only"}`}>
         <div className="academy-editor">
           <div className="academy-editor-meta">
             <span>{currentFile.language.toUpperCase()}</span>
@@ -506,35 +525,24 @@ function MinecraftPlayground({ lesson }: { lesson: AcademyLesson }) {
             </p>
           )}
         </div>
-        <div className="academy-preview">
-          <div className="academy-preview-meta">
-            <span>Minecraft surface preview</span>
-            <small>{rendered ? "commit " + runVersion : "waiting for Run"}</small>
+        {currentFile.runnable && (
+          <div className="academy-preview">
+            <div className="academy-preview-meta"><span>Preview</span></div>
+            <div className="academy-preview-stage" aria-busy={!rendered && !error}>
+              {error ? (
+                <div className="academy-preview-error">
+                  <CircleAlert size={18} aria-hidden="true" />
+                  <div><strong>Compile failed</strong><span>{error}</span></div>
+                </div>
+              ) : rendered ? (
+                <PlaygroundBoundary resetKey={runVersion}>
+                  {React.createElement(rendered)}
+                </PlaygroundBoundary>
+              ) : null}
+            </div>
           </div>
-          <div className="academy-preview-stage">
-            {error ? (
-              <div className="academy-preview-error">
-                <CircleAlert size={18} aria-hidden="true" />
-                <div><strong>Compile failed</strong><span>{error}</span></div>
-              </div>
-            ) : rendered ? (
-              <PlaygroundBoundary resetKey={runVersion}>
-                {React.createElement(rendered)}
-              </PlaygroundBoundary>
-            ) : (
-              <div className="academy-preview-empty">
-                <Play size={22} aria-hidden="true" />
-                <strong>{currentFile.runnable ? "Run this lesson" : "Select a runnable TSX file"}</strong>
-                <span>The same React component targets native surfaces on Graaly.</span>
-              </div>
-            )}
-          </div>
-        </div>
+        )}
       </div>
-      <p className="academy-lab-truth">
-        The browser preview executes real React and the lesson TSX. It swaps only the host renderer for visible web controls.
-        Server integration is verified separately against Graaly, GraalJS/GraalPy, and FastAPI.
-      </p>
     </section>
   );
 }
