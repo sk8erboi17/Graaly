@@ -114,8 +114,8 @@ mvn clean package
 
 The build produces two files in `runtime/target/`:
 
-- `Graaly-<version>.jar` — place this in the server `plugins/` directory;
-- `graaly-<version>-legacy-launcher-agent.jar` — pass this only when a historical launcher rejects a newer JVM before plugins load.
+- `Graaly-<version>.jar`: place this in the server `plugins/` directory;
+- `graaly-<version>-legacy-launcher-agent.jar`: pass this only when a historical launcher rejects a newer JVM before plugins load.
 
 Recommended launch shape:
 
@@ -264,7 +264,7 @@ See the six focused and vertical PacketEvents examples under [`runtime/examples/
 
 ## React UI and FastAPI
 
-Graaly’s React package uses real React semantics—components, JSX, props, state, reducers, Context, effects, Suspense, transitions, and reconciliation—but commits to native game surfaces such as inventories, messages, scoreboards, boss bars, tab lists, and chat input instead of a browser DOM.
+Graaly’s React package uses real React semantics, including components, JSX, props, state, reducers, Context, effects, Suspense, transitions, and reconciliation. It commits to native game surfaces such as inventories, messages, scoreboards, boss bars, tab lists, and chat input instead of a browser DOM.
 
 Python can remain the full plugin, or it can own persistence and domain services with FastAPI, Pydantic, SQLAlchemy, WebSockets, dependency injection, migrations, idempotent purchases, and authorization. The server plugin remains the trusted gameplay boundary.
 
@@ -347,7 +347,7 @@ The full 11 MB source catalog is code-split: events and totals are available imm
 
 Graaly scripts have plugin-level authority over the server. Install only code you trust.
 
-- Language contexts are isolated per bundle, but isolation is lifecycle ownership—not a sandbox for hostile code.
+- Language contexts are isolated per bundle, but isolation is lifecycle ownership, not a sandbox for hostile code.
 - Live world, player, inventory, and entity state belongs on the main server thread.
 - HTTP, database, parsing, and other blocking work belongs off-thread; return through Graaly’s task or coroutine APIs.
 - Packet listeners are synchronous and run on the networking thread.

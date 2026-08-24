@@ -397,7 +397,7 @@ export const playerTopics: readonly GuideTopic[] = [
     title: "Location and teleportation",
     summary: "Read a player's position or move them to a typed Location.",
     when: "Use it for warps, arenas, checkpoints, respawns, and portals.",
-    does: "worlds.location constructs the adapted Location directly and accepts only finite numeric values—numeric strings, booleans, bigint, and Python integers outside ±(2^53−1) are rejected.",
+    does: "worlds.location constructs the adapted Location directly and accepts only finite numeric values. Numeric strings, booleans, bigint, and Python integers outside ±(2^53−1) are rejected.",
     input: "World, x, y, z, optional yaw and pitch",
     output: "Location and teleport success",
     operations: [

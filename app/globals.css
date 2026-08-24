@@ -4118,14 +4118,14 @@ footer > a {
 .academy-api-grid button {
   border-color: var(--forest);
   background: var(--forest);
-  color: #07100b;
+  color: #fff;
 }
 
 .academy-run-actions button.is-primary:hover:not(:disabled) {
   border-color: color-mix(in oklab, var(--forest) 78%, white);
   background: color-mix(in oklab, var(--forest) 88%, white);
   box-shadow: 0 0 0 3px color-mix(in oklab, var(--forest) 16%, transparent);
-  color: #07100b;
+  color: #fff;
   transform: translateY(-1px);
 }
 
@@ -4596,12 +4596,6 @@ footer > a {
   font-size: 0.62rem;
 }
 
-.academy-api-lab > header strong {
-  color: var(--forest);
-  font: 600 0.62rem var(--font-geist-mono), monospace;
-  text-transform: uppercase;
-}
-
 .academy-api-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(360px, 1.15fr);
@@ -4623,8 +4617,31 @@ footer > a {
 }
 
 .academy-api-grid label {
-  color: var(--muted);
-  font: 550 0.7rem var(--font-geist-mono), monospace;
+  color: var(--faint);
+  font: 600 0.62rem var(--font-geist-mono), monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.academy-request-endpoint {
+  display: grid;
+  gap: 6px;
+}
+
+.academy-request-endpoint > span {
+  color: var(--faint);
+  font: 600 0.62rem var(--font-geist-mono), monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.academy-request-endpoint > strong {
+  color: var(--ink);
+  font: 650 0.8rem var(--font-geist-mono), monospace;
+}
+
+.academy-request-endpoint code {
+  color: var(--forest-dark);
 }
 
 .academy-api-grid textarea {
@@ -4632,8 +4649,10 @@ footer > a {
   resize: vertical;
   border: 1px solid var(--line-strong);
   outline: 0;
-  background: var(--code);
-  color: #dbe4df;
+  background: var(--paper);
+  caret-color: var(--forest);
+  color: var(--ink);
+  -webkit-text-fill-color: currentColor;
   padding: 14px;
   font: 500 0.72rem/1.65 var(--font-geist-mono), monospace;
 }
@@ -4647,6 +4666,12 @@ footer > a {
   min-height: 38px;
 }
 
+.academy-api-grid button:hover {
+  border-color: var(--forest-dark);
+  background: var(--forest-dark);
+  color: #fff;
+}
+
 .academy-pipeline {
   display: grid;
   gap: 0;
@@ -4656,11 +4681,23 @@ footer > a {
   position: relative;
   display: grid;
   min-height: 40px;
-  grid-template-columns: 28px 1fr;
+  grid-template-columns: 28px minmax(0, 1fr);
   gap: 10px;
   align-items: center;
   color: var(--faint);
   font-size: 0.72rem;
+}
+
+.academy-pipeline > div > div {
+  display: grid;
+  gap: 2px;
+}
+
+.academy-pipeline > div small {
+  color: var(--faint);
+  font-size: 0.62rem;
+  font-weight: 450;
+  line-height: 1.45;
 }
 
 .academy-pipeline > div:not(:last-child)::after {
@@ -4698,7 +4735,17 @@ footer > a {
 .academy-pipeline > div.is-done > span {
   border-color: var(--forest);
   background: var(--forest);
-  color: #07100b;
+  color: #fff;
+}
+
+.academy-pipeline > div.is-error {
+  color: var(--ink);
+}
+
+.academy-pipeline > div.is-error > span {
+  border-color: #c53f3f;
+  background: #c53f3f;
+  color: #fff;
 }
 
 .academy-api-grid output {
@@ -4715,8 +4762,8 @@ footer > a {
 }
 
 .academy-api-grid output.is-error {
-  border-color: #ff7373;
-  color: #ff8b8b;
+  border-color: #c53f3f;
+  color: color-mix(in oklab, #c53f3f 72%, var(--ink));
 }
 
 .academy-challenge {

@@ -356,7 +356,7 @@ export const academyLessons: readonly AcademyLesson[] = [
       "Normalized state avoids editing duplicate copies. Store items once by id and an ordered list of ids. Calculate totals and visible items during render or through memoized selectors when computation is expensive.",
     ],
     minecraft: "A shop reducer can represent opening, pending purchase, success, and failure without mixing that state into connection or player lifecycle code.",
-    webDifference: "The pattern is identical. Only effectful adapters—HTTP and native reward grants—are game-specific.",
+    webDifference: "The pattern is identical. Only effectful adapters, such as HTTP and native reward grants, are game-specific.",
     decision: "Start with useState. Move to a reducer when named transitions and coordinated fields make the code easier to audit.",
     files: [
       {
@@ -1309,7 +1309,7 @@ export const academyLessons: readonly AcademyLesson[] = [
     title: "State machines for trades, queues, and reconnect",
     concepts: ["Finite state machine", "Events", "Guards", "Transitions", "Impossible states", "Reducer", "Statechart", "Workflow timeout"],
     outcomes: ["Model a workflow before writing callbacks.", "Reject illegal transitions explicitly.", "Test every state/event pair as a table."],
-    mentalModel: "A workflow is a finite set of states plus accepted events. If a transition is absent, it is illegal—not an accidental boolean combination.",
+    mentalModel: "A workflow is a finite set of states plus accepted events. If a transition is absent, it is illegal, not an accidental boolean combination.",
     explanation: [
       "Three booleans such as open, accepted and expired produce eight combinations, several nonsensical. A discriminated union names only idle, offered, confirming, committed, cancelled and expired.",
       "Keep the transition function pure. Effects execute commands produced by a transition; timeouts and network responses return as events carrying correlation IDs so late results can be ignored.",

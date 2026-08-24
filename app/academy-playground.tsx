@@ -7,10 +7,8 @@ import {
   ChevronLeft,
   ChevronRight,
   CircleAlert,
-  Play,
   RotateCcw,
   Search,
-  Server,
 } from "lucide-react";
 import React, {
   Component,
@@ -547,12 +545,20 @@ function MinecraftPlayground({ lesson }: { lesson: AcademyLesson }) {
   );
 }
 
-const pipeline = ["Parse", "Validate", "Dependencies", "Endpoint", "Serialize", "Response"] as const;
+const requestPipeline = [
+  { title: "Parse JSON", detail: "Convert the request body into a Python value." },
+  { title: "Validate PurchaseRequest", detail: "Check player_id, item, and quantity with Pydantic." },
+  { title: "Resolve dependencies", detail: "Load authorization and the database session." },
+  { title: "Execute purchase", detail: "Run the endpoint logic inside its transaction." },
+  { title: "Validate PurchaseResponse", detail: "Check the value returned by the endpoint." },
+  { title: "Return HTTP 201", detail: "Serialize the response and send it to the caller." },
+] as const;
 
-function FastApiLifecycleLab({ lesson }: { lesson: AcademyLesson }) {
+function FastApiRequestInspector() {
   const [body, setBody] = useState('{\n  "player_id": "Graaly03",\n  "item": "diamond",\n  "quantity": 1\n}');
   const [stage, setStage] = useState(-1);
-  const [result, setResult] = useState("Ready");
+  const [failedStage, setFailedStage] = useState<number | null>(null);
+  const [result, setResult] = useState("Ready to run");
   const timer = useRef<number | null>(null);
 
   useEffect(() => () => {
@@ -561,29 +567,32 @@ function FastApiLifecycleLab({ lesson }: { lesson: AcademyLesson }) {
 
   function sendRequest() {
     if (timer.current !== null) window.clearInterval(timer.current);
+    setFailedStage(null);
     let parsed: unknown;
     try {
       parsed = JSON.parse(body);
     } catch {
-      setStage(1);
-      setResult("422 · body is not valid JSON");
+      setStage(0);
+      setFailedStage(0);
+      setResult("422 Unprocessable Entity · invalid JSON body");
       return;
     }
     const value = parsed as Record<string, unknown>;
     if (!value.player_id || !value.item || typeof value.quantity !== "number" || value.quantity < 1) {
       setStage(1);
-      setResult("422 · Pydantic rejected the request shape");
+      setFailedStage(1);
+      setResult("422 Unprocessable Entity · check player_id, item, and quantity");
       return;
     }
     setStage(0);
-    setResult("Request in flight");
+    setResult("Running request");
     timer.current = window.setInterval(() => {
       setStage(current => {
-        if (current >= pipeline.length - 1) {
+        if (current >= requestPipeline.length - 1) {
           if (timer.current !== null) window.clearInterval(timer.current);
           timer.current = null;
-          setResult("201 · validated PurchaseResponse");
-          return current;
+          setResult("201 Created · PurchaseResponse is valid");
+          return requestPipeline.length;
         }
         return current + 1;
       });
@@ -591,30 +600,35 @@ function FastApiLifecycleLab({ lesson }: { lesson: AcademyLesson }) {
   }
 
   return (
-    <section className="academy-api-lab" aria-label="FastAPI request lifecycle visualizer">
+    <section className="academy-api-lab" aria-label="FastAPI request inspector">
       <header>
-        <div><Server size={17} /><span>FastAPI lifecycle lab</span></div>
-        <strong>{lesson.track === "FastAPI" ? "Lesson-linked" : "Always available"}</strong>
+        <div><span>FastAPI request inspector</span></div>
       </header>
       <div className="academy-api-grid">
         <div>
-          <label htmlFor="academy-request-body">POST /v1/shop/purchase</label>
+          <div className="academy-request-endpoint">
+            <span>Request</span>
+            <strong><code>POST</code> /v1/shop/purchase</strong>
+          </div>
+          <label htmlFor="academy-request-body">JSON body</label>
           <textarea id="academy-request-body" onChange={event => setBody(event.target.value)} spellCheck={false} value={body} />
-          <button onClick={sendRequest} type="button"><Play size={14} fill="currentColor" />Send request</button>
+          <button onClick={sendRequest} type="button">Run request</button>
         </div>
         <div>
           <div className="academy-pipeline">
-            {pipeline.map((item, index) => (
-              <div className={index < stage ? "is-done" : index === stage ? "is-active" : ""} key={item}>
-                <span>{index < stage ? <Check size={12} /> : index + 1}</span>
-                <strong>{item}</strong>
+            {requestPipeline.map((item, index) => (
+              <div
+                className={failedStage === index ? "is-error" : index < stage ? "is-done" : index === stage ? "is-active" : ""}
+                key={item.title}
+              >
+                <span>{index < stage ? <Check aria-hidden="true" size={12} /> : index + 1}</span>
+                <div><strong>{item.title}</strong><small>{item.detail}</small></div>
               </div>
             ))}
           </div>
           <output className={result.startsWith("422") ? "is-error" : result.startsWith("201") ? "is-success" : ""}>{result}</output>
         </div>
       </div>
-      <p>This is a transparent lifecycle visualizer, not Python emulation. The downloadable backend runs real FastAPI, Pydantic, SQLAlchemy, WebSocket and pytest.</p>
     </section>
   );
 }
@@ -655,7 +669,7 @@ function LessonArticle({ lesson }: { lesson: AcademyLesson }) {
       </section>
 
       <MinecraftPlayground key={lesson.id} lesson={lesson} />
-      <FastApiLifecycleLab lesson={lesson} />
+      <FastApiRequestInspector />
 
       <section className="academy-pitfalls">
         <span className="academy-kicker">Failure modes to recognize</span>

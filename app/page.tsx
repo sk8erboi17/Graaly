@@ -149,7 +149,7 @@ const navigation = [
       { id: "entities", title: "Entities & attributes" },
       { id: "react-ui", title: "React UI & FastAPI" },
       { id: "academy", title: "Graaly Academy" },
-      { id: "boards", title: "Website boards — Soon" },
+      { id: "boards", title: "Website boards (Soon)" },
       { id: "packets", title: "PacketEvents" },
     ],
   },
@@ -1740,7 +1740,7 @@ const studioLessons: readonly StudioLesson[] = [
     id: "test-production",
     number: "15",
     phase: "Ship",
-    title: "Test the seams—and keep the architecture proportional",
+    title: "Test the seams while keeping the architecture proportional",
     file: "backend/tests/test_api.py",
     language: "py",
     code: [
@@ -1953,14 +1953,14 @@ const reactFastApiPatterns: readonly ReactFastApiPattern[] = [
       "// When profile changes, every projection updates from the same value.",
     ].join("\n"),
     fastApiCode: [
-      "# routers/players.py — HTTP concerns only",
+      "# routers/players.py: HTTP concerns only",
       "router = APIRouter(prefix=\"/v1/players\", tags=[\"players\"])",
       "",
       "@router.get(\"/{player_id}/ui\", response_model=ProfileRead)",
       "async def get_player(player_id: str, name: str, session: SessionDep):",
       "    return await profiles.get_or_create(session, player_id, name)",
       "",
-      "# services/profiles.py — reusable application logic",
+      "# services/profiles.py: reusable application logic",
       "async def get_or_create(",
       "    session: AsyncSession, player_id: str, name: str",
       ") -> ProfileRead:",
@@ -2875,7 +2875,7 @@ function LanguageLearningGuide() {
         <div>
           <span>ENVIRONMENT</span>
           <strong>Game server</strong>
-          <p>Live state on Java 17 or newer—not a web page and not a Node.js process.</p>
+          <p>Live state on Java 17 or newer. This is not a web page or a Node.js process.</p>
         </div>
       </div>
 
@@ -3474,7 +3474,7 @@ export function WebsiteBoardGuide() {
   const [destination, setDestination] = useState("survival");
   const [nickname, setNickname] = useState("");
   const [alerts, setAlerts] = useState(true);
-  const [demoStatus, setDemoStatus] = useState("Ready — try every control");
+  const [demoStatus, setDemoStatus] = useState("Ready. Try every control.");
 
   return (
     <div className="board-guide">
@@ -3972,7 +3972,7 @@ function EventExplorer() {
                 <span>CHANGE</span>
                 <p>{selected.properties.some(property => property.writable)
                   ? selected.properties.filter(property => property.writable).map(property => eventPropertyName(property, language, true)).join(", ")
-                  : "Nothing — this event is read-only"}</p>
+                  : "Nothing. This event is read-only."}</p>
               </div>
             </div>
             <div className="event-properties" aria-label={`${selected.name} properties`}>
@@ -4694,7 +4694,7 @@ export default function Home() {
               />
             </div>
             <div className="note-line">
-              <Zap size={16} aria-hidden="true" /> JavaScript and TypeScript deploy compiled ESM—not <code>node_modules</code>. Python deploys source and runs on GraalPy. Java deploys a compiled JAR.
+              <Zap size={16} aria-hidden="true" /> JavaScript and TypeScript deploy compiled ESM, not <code>node_modules</code>. Python deploys source and runs on GraalPy. Java deploys a compiled JAR.
             </div>
             <QuickstartDeploymentGuide language={language} />
           </section>
@@ -4714,7 +4714,7 @@ export default function Home() {
             </SectionHeading>
             <div className="event-mental-model">
               <div><span>1</span><strong>The server detects an action</strong><p>A player moves, a block breaks, an entity takes damage, or a world loads.</p></div>
-              <div><span>2</span><strong>Your listener runs</strong><p>The callback receives one typed event object—no string resolver.</p></div>
+              <div><span>2</span><strong>Your listener runs</strong><p>The callback receives one typed event object. No string resolver is needed.</p></div>
               <div><span>3</span><strong>You decide</strong><p>Read properties, change editable values, or set <code>cancelled</code> when supported.</p></div>
             </div>
             <EventExplorer />
@@ -4745,7 +4745,7 @@ export default function Home() {
           </section>
 
           <section className="doc-section" hidden={activeSection !== "worlds"} id="worlds">
-            <SectionHeading eyebrow="08 · Worlds" title="Locations, terrain, lifecycle, and generation—explained task by task">
+            <SectionHeading eyebrow="08 · Worlds" title="Locations, terrain, lifecycle, and generation, explained task by task">
               Location is now a first-class guide beside blocks, chunks, time, weather, spawn rules, effects, world creation,
               custom generators, populators, saving, and unloading.
             </SectionHeading>
@@ -4797,7 +4797,7 @@ export default function Home() {
           <section className="doc-section" hidden={activeSection !== "packets"} id="packets">
             <SectionHeading eyebrow="13 · PacketEvents" title="Learn the workflow, then search every packet and wrapper">
               PacketEvents stays a separate 2.13.0 plugin. Start with practical receive, send, wrapper, cancellation, player-data,
-              and threading guides; then search every client packet, server packet, wrapper, and supporting type below—including
+              and threading guides; then search every client packet, server packet, wrapper, and supporting type below, including
               <code> ClientPacket.CHAT_MESSAGE</code>, <code>ServerPacket.UPDATE_HEALTH</code>, and
               <code> WrapperPlayServerUpdateHealth</code>.
             </SectionHeading>
@@ -4893,7 +4893,7 @@ export default function Home() {
               <details><summary>The server rejects my Java version</summary><p>Use Oracle GraalVM 25 Innovation 2 (Graal 25.2.4 on JDK 25.0.4). A plain 25.0.4 CPU build has a different JVMCI compiler and falls back to interpreted Polyglot execution.</p></details>
               <details><summary>My TypeScript plugin does not load</summary><p>The entry in <code>plugin.yml</code> must point to compiled ESM, normally <code>dist/main.mjs</code>. Run the bundle build before starting the server.</p></details>
               <details><summary>Can React components use document or HTML elements?</summary><p>No. This is a real React custom renderer whose host elements are <code>Message</code>, <code>Inventory</code>, <code>Item</code>, <code>Scoreboard</code>, <code>Line</code>, <code>BossBar</code>, and <code>Tab</code>. React hooks work normally; browser DOM elements belong only to a website board.</p></details>
-              <details><summary>FastAPI is offline—does the plugin freeze?</summary><p>No. Graaly uses Java&apos;s asynchronous HTTP client, enforces a timeout, and never blocks the server tick. Catch the rejected promise or Python exception and render an offline fallback.</p></details>
+              <details><summary>FastAPI is offline. Does the plugin freeze?</summary><p>No. Graaly uses Java&apos;s asynchronous HTTP client, enforces a timeout, and never blocks the server tick. Catch the rejected promise or Python exception and render an offline fallback.</p></details>
               <details><summary>Can FastAPI receive game events directly?</summary><p>No. Keep a thin Graaly adapter in the game process. It receives events, calls FastAPI with serializable data, then safely applies the result to live players and React roots.</p></details>
               <details><summary>PacketEvents is unavailable</summary><p>Install PacketEvents 2.13.0 separately and add <code>depend: [packetevents]</code> to the script bundle. Graaly does not redistribute it.</p></details>
               <details><summary>Why can&apos;t a packet listener be async?</summary><p>PacketEvents must receive cancellation and wrapper changes before its network callback returns. Graaly rejects async functions and generators at registration. A hidden Promise, coroutine, iterator, or any non-void return quarantines that listener after one diagnostic, so repeated packets cannot amplify the same stack trace. Keep the listener synchronous; use <code>tasks.run(() =&gt; ...)</code> in JS/TS, or capture packet data and call <code>tasks.create_task(coroutine)</code> in Python without returning it.</p></details>

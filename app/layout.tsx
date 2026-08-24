@@ -17,7 +17,7 @@ const graalyMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://sk8erboi17.github.io/Graaly/docs/"),
   title: {
-    default: "Graaly Docs — JavaScript, TypeScript, and Python plugins",
+    default: "Graaly Docs: JavaScript, TypeScript, and Python plugins",
     template: "%s · Graaly Docs",
   },
   description:
@@ -39,19 +39,19 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "Graaly — stable Minecraft plugins in TypeScript and Python",
+    title: "Graaly: stable Minecraft plugins in TypeScript and Python",
     description: "One version-independent Graaly API, React UI, FastAPI, PacketEvents, and website-board documentation.",
     siteName: "Graaly Docs",
     images: [{
       url: "og.png",
       width: 1672,
       height: 941,
-      alt: "Graaly — Build plugins. Design boards.",
+      alt: "Graaly: Build plugins. Design boards.",
     }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Graaly — Minecraft plugins with TypeScript, JavaScript, and Python",
+    title: "Graaly: Minecraft plugins with TypeScript, JavaScript, and Python",
     description: "Build plugins, React game UI, Python services and website boards in JavaScript, TypeScript, Python, and Java.",
     images: ["og.png"],
   },

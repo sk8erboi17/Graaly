@@ -57,6 +57,20 @@ test("renders the complete documentation in English", async () => {
   assert.match(html, /PacketEvents 2\.13\.0/);
   assert.doesNotMatch(html, /Niente stringhe da ricordare|Cerca nella documentazione|Mostra altri eventi|annullabile|proprietà|scrivibile/);
   assert.doesNotMatch(html, /Native-feeling|language you already think in|Graaly-flavoured imitation|REAL-WORLD PATTERNS|real IDE/i);
+  assert.doesNotMatch(html, /—/);
+});
+
+test("does not use em dashes in the documentation source or README", async () => {
+  const sources = await Promise.all([
+    "../README.md",
+    "../app/page.tsx",
+    "../app/layout.tsx",
+    "../app/academy-data.ts",
+    "../app/academy-playground.tsx",
+    "../app/guide-topics.ts",
+  ].map(path => readFile(new URL(path, import.meta.url), "utf8")));
+
+  for (const source of sources) assert.doesNotMatch(source, /—/);
 });
 
 test("publishes one versionless Graaly contract from 1.7.10 through 26.2", async () => {
@@ -322,7 +336,7 @@ test("ships an accessible animated IDE course for the complete React and FastAPI
     "A custom Hook turns HTTP into a small state machine",
     "The backend owns prices and commits atomically",
     "Reducer, Context, and optimism are earned complexity",
-    "Test the seams—and keep the architecture proportional",
+    "Test the seams while keeping the architecture proportional",
   ]) {
     assert.ok(html.includes(title), `${title} is missing from the course`);
   }
@@ -794,8 +808,9 @@ test("ships a complete 36-lesson Graaly Academy with a minimal interactive playg
 
   assert.match(html, /36 long-form lessons/);
   assert.match(html, /aria-label="React playground"/);
-  assert.match(html, /FastAPI lifecycle lab/);
+  assert.match(html, /FastAPI request inspector/);
   assert.doesNotMatch(html, /Hard lab|Definition of done|Minecraft React lab|browser host simulator|Run this lesson|waiting for Run/);
+  assert.doesNotMatch(html, /Always available|Lesson-linked|transparent lifecycle visualizer|not Python emulation/);
   assert.equal((data.match(/\n\s+number: \d+,/g) ?? []).length, 36);
   for (const concept of [
     "State snapshot",
@@ -830,7 +845,10 @@ test("ships a complete 36-lesson Graaly Academy with a minimal interactive playg
   assert.match(playground, /--academy-editor-height/);
   assert.match(playground, /academy-workbench-toolbar/);
   assert.doesNotMatch(playground, /browser preview executes real React|Run TSX|Minecraft surface preview|academy-lab-truth/);
-  assert.match(playground, /not Python emulation/);
+  assert.match(playground, /Validate PurchaseRequest/);
+  assert.match(playground, /Resolve dependencies/);
+  assert.match(playground, /201 Created · PurchaseResponse is valid/);
+  assert.doesNotMatch(playground, /FastAPI lifecycle lab|Always available|not Python emulation|<Play(?:\s|>)/);
   assert.match(playground, /const materialSprites/);
   assert.match(playground, /className="academy-item-sprite"/);
   assert.match(playground, /className={`shj-lang-\$\{languageFor\(currentFile\)\}`}/);
@@ -841,6 +859,9 @@ test("ships a complete 36-lesson Graaly Academy with a minimal interactive playg
   assert.match(css, /\.academy-lesson-scroll/);
   assert.match(css, /\.academy-editor-layer \.shj-syn-kwd/);
   assert.match(css, /\.academy-run-actions button\.is-primary:hover:not\(:disabled\)/);
+  assert.match(css, /\.academy-run-actions button\.is-primary,[\s\S]*?color: #fff;/);
+  assert.match(css, /\.academy-api-grid textarea\s*\{[\s\S]*?background: var\(--paper\);[\s\S]*?color: var\(--ink\);/);
+  assert.match(css, /\.academy-pipeline > div\.is-done > span\s*\{[\s\S]*?color: #fff;/);
   assert.match(css, /\.academy-item-sprite/);
   assert.match(css, /\.docs-layout\s*\{[\s\S]*?width: min\(1920px, 100%\)/);
   assert.match(css, /\.academy-section\s*\{[\s\S]*?width: calc\(100% - 32px\)/);
