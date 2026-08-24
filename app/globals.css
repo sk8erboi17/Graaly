@@ -939,18 +939,35 @@ main {
   background: var(--paper);
 }
 
-.keyword-grid article {
+.keyword-grid button {
   position: relative;
   min-width: 0;
   padding: 18px;
+  border: 0;
   border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+  transition: background 140ms ease, box-shadow 140ms ease;
 }
 
-.keyword-grid article:nth-child(odd) {
+.keyword-grid button:nth-child(odd) {
   border-right: 1px solid var(--line);
 }
 
-.keyword-grid article > span {
+.keyword-grid button:hover,
+.keyword-grid button:focus-visible {
+  background: var(--soft);
+}
+
+.keyword-grid button[aria-selected="true"] {
+  z-index: 1;
+  background: color-mix(in oklab, var(--forest) 8%, var(--paper));
+  box-shadow: inset 3px 0 0 var(--forest);
+}
+
+.keyword-grid button > span {
   position: absolute;
   top: 18px;
   right: 16px;
@@ -980,6 +997,32 @@ main {
   margin: 6px 0 0;
   color: var(--muted);
   font-size: 9px;
+  line-height: 1.55;
+}
+
+.concept-example-heading {
+  padding: 0 2px 14px;
+}
+
+.concept-example-heading > span {
+  display: block;
+  color: var(--forest);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 9px;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+}
+
+.concept-example-heading > strong {
+  display: block;
+  margin-top: 7px;
+  font-size: 14px;
+}
+
+.concept-example-heading > p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 11px;
   line-height: 1.55;
 }
 
@@ -3217,8 +3260,8 @@ footer > a {
     max-height: 500px;
   }
 
-  .keyword-grid article,
-  .keyword-grid article:nth-child(odd) {
+  .keyword-grid button,
+  .keyword-grid button:nth-child(odd) {
     border-right: 0;
   }
 
@@ -7729,6 +7772,148 @@ main {
   color: var(--ink);
 }
 
+/* Quick start is an executable install path, not a decorative overview. */
+.quickstart-install-guide {
+  margin-bottom: 54px;
+}
+
+.quickstart-guide-heading {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+  padding: 22px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.quickstart-guide-heading > span,
+.quickstart-verification > span,
+.quickstart-load-rule > span {
+  color: var(--forest);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 9px;
+  font-weight: 650;
+  letter-spacing: 0.13em;
+}
+
+.quickstart-guide-heading h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.quickstart-guide-heading p {
+  max-width: 740px;
+  margin: 7px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.quickstart-guide-heading code,
+.quickstart-path code,
+.quickstart-verification code,
+.quickstart-load-rule code {
+  color: var(--forest);
+}
+
+.quickstart-language-heading {
+  margin-bottom: 18px;
+}
+
+.quickstart-path {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0 0 18px;
+  padding: 0;
+  border-bottom: 1px solid var(--line);
+  list-style: none;
+}
+
+.quickstart-path.is-three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.quickstart-path li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  padding: 20px 18px 20px 0;
+}
+
+.quickstart-path li + li {
+  padding-left: 18px;
+  border-left: 1px solid var(--line);
+}
+
+.quickstart-path li > span {
+  color: var(--forest);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+.quickstart-path strong {
+  display: block;
+  font-size: 12px;
+}
+
+.quickstart-path p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.quickstart-install-code,
+.quickstart-command-grid {
+  margin-bottom: 14px;
+}
+
+.quickstart-verification,
+.quickstart-load-rule {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 28px;
+  margin-top: 14px;
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.quickstart-verification code {
+  display: block;
+  overflow-wrap: anywhere;
+  color: var(--ink);
+  font-size: 10px;
+}
+
+.quickstart-verification p,
+.quickstart-load-rule p {
+  margin: 7px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.quickstart-deploy-guide {
+  margin-top: 44px;
+}
+
+.quickstart-deploy-guide > .code-block {
+  margin-top: 14px;
+}
+
+.quickstart-load-rule {
+  margin-top: 18px;
+}
+
+.quickstart-deploy-guide .note-line.warning {
+  margin-top: 14px;
+}
+
 @media (max-width: 960px) {
   .academy-lessons {
     top: auto;
@@ -7737,6 +7922,28 @@ main {
 }
 
 @media (max-width: 760px) {
+  .quickstart-guide-heading,
+  .quickstart-verification,
+  .quickstart-load-rule {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .quickstart-path,
+  .quickstart-path.is-three {
+    grid-template-columns: 1fr;
+  }
+
+  .quickstart-path li,
+  .quickstart-path li + li {
+    padding: 16px 0;
+    border-left: 0;
+  }
+
+  .quickstart-path li + li {
+    border-top: 1px solid var(--line);
+  }
+
   .section-pager {
     width: calc(100% - 36px);
     grid-template-columns: 1fr;

@@ -9,7 +9,7 @@ Graaly is a standalone Minecraft plugin runtime for JavaScript, TypeScript, and 
 - Renamed types, constants, and equivalent mechanics are adapted internally.
 - A mechanic that truly does not exist on an older version raises `GraalyUnsupportedFeature`; Graaly never pretends that it worked.
 
-Documentation: **[sk8erboi17.github.io/Graaly/docs](https://sk8erboi17.github.io/Graaly/docs/)**
+Documentation: **[sk8erboi17.github.io/Graaly](https://sk8erboi17.github.io/Graaly/)**
 
 ## Prerequisites
 

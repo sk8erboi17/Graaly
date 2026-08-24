@@ -465,7 +465,27 @@ test("includes a complete Java quick start beside Graaly languages", async () =>
   assert.match(source, /from graaly import PlayerJoinEvent/);
   assert.match(source, /WelcomePlugin\.java/);
   assert.match(html, />Java</);
-  assert.match(html, /Java compiles to a JAR/);
+  assert.match(html, /Java deploys a compiled JAR/);
+});
+
+test("documents the complete install, deploy, load, and verification path", async () => {
+  const source = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
+  const response = await render();
+  const html = await response.text();
+
+  assert.match(html, /Graaly does not currently publish a release JAR/);
+  assert.match(html, /runtime\/target\/Graaly-1\.0\.0\.jar/);
+  assert.match(html, /plugins\/Graaly\/scripts\/WelcomeTS\.jsplugin/);
+  assert.match(html, /Graaly is ready: 0 script plugin\(s\)/);
+  assert.match(html, /graaly status/);
+  assert.match(html, /New bundle or/);
+  assert.match(html, /source-only change to an already loaded bundle/i);
+  assert.match(html, /\/graaly reload/);
+  assert.match(html, /\/hello/);
+  assert.match(source, /WelcomeJS\.jsplugin/);
+  assert.match(source, /WelcomePy\.pyplugin/);
+  assert.match(source, /Java plugins do not use Graaly's script loader/);
+  assert.doesNotMatch(source, /mkdir -p \/server\//);
 });
 
 test("uses the event-style browser for every core developer workflow", async () => {
@@ -579,6 +599,26 @@ test("teaches native language constructs and keeps server and browser environmen
   assert.match(page, /href="#boards"/);
   assert.match(page, /docs\.python\.org\/3\/tutorial/);
   assert.match(page, /typescriptlang\.org\/docs\/handbook/);
+  const examples = page.slice(
+    page.indexOf("const learningConceptExamples"),
+    page.indexOf("const quickstartCode"),
+  );
+  assert.equal([...examples.matchAll(/\bfile: "/g)].length, 31, "every language concept needs its own example");
+  for (const file of [
+    "modules.mjs",
+    "async-flow.mjs",
+    "domain-models.ts",
+    "type-guards.ts",
+    "modules.py",
+    "coroutines.py",
+    "context_managers.py",
+  ]) {
+    assert.match(examples, new RegExp(file.replace(".", "\\.")), `missing dedicated example ${file}`);
+  }
+  assert.match(page, /aria-controls="language-concept-example"/);
+  assert.match(page, /setConceptIndex\(index\)/);
+  assert.match(html, /EXAMPLE/);
+  assert.match(html, /modules\.py/);
 
   assert.match(jsRuntime, /const players = Object\.freeze\(\{[\s\S]*?\[Symbol\.iterator\]\(\)/);
   assert.match(jsRuntime, /const worlds = Object\.freeze\(\{[\s\S]*?\[Symbol\.iterator\]\(\)/);

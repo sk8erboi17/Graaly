@@ -400,6 +400,407 @@ const learningTracks: Record<Language, LearningTrack> = {
   },
 };
 
+const learningConceptExamples: Record<Language, readonly { file: string; code: string }[]> = {
+  js: [
+    {
+      file: "modules.mjs",
+      code: [
+        'import { players } from "graaly";',
+        "",
+        "export function onlineNames() {",
+        "  return [...players].map(player => player.name);",
+        "}",
+      ].join("\n"),
+    },
+    {
+      file: "bindings.mjs",
+      code: [
+        'import { info, players } from "graaly";',
+        "",
+        "const warningAt = 20;",
+        "let count = 0;",
+        "",
+        "for (const player of players) count += 1;",
+        "if (count >= warningAt) info(`Busy server: ${count} players`);",
+      ].join("\n"),
+    },
+    {
+      file: "arrow-functions.mjs",
+      code: [
+        'import { events, PlayerJoinEvent, players } from "graaly";',
+        "",
+        "events.on(PlayerJoinEvent, event => {",
+        "  const names = [...players]",
+        "    .filter(player => player !== event.player)",
+        "    .map(player => player.name);",
+        "  event.player.sendMessage(names.join(\", \"));",
+        "});",
+      ].join("\n"),
+    },
+    {
+      file: "destructuring.mjs",
+      code: [
+        'import { events, PlayerJoinEvent, players } from "graaly";',
+        "",
+        "events.on(PlayerJoinEvent, ({ player }) => {",
+        "  const names = [...players].map(({ name }) => name);",
+        "  player.sendMessage(`Online: ${names.join(\", \")}`);",
+        "});",
+      ].join("\n"),
+    },
+    {
+      file: "optional-values.mjs",
+      code: [
+        'import { players } from "graaly";',
+        "",
+        'const target = players.exact("Alex");',
+        'const label = target?.displayName ?? "Alex is offline";',
+        "target?.sendMessage(`Your display name is ${label}`);",
+      ].join("\n"),
+    },
+    {
+      file: "iteration.mjs",
+      code: [
+        'import { players } from "graaly";',
+        "",
+        "for (const player of players) {",
+        '  player.sendMessage("The server is restarting soon.");',
+        "}",
+      ].join("\n"),
+    },
+    {
+      file: "async-flow.mjs",
+      code: [
+        'import { events, PlayerJoinEvent, tasks } from "graaly";',
+        "",
+        "events.on(PlayerJoinEvent, async ({ player }) => {",
+        "  await tasks.sleep(1);",
+        '  player.sendMessage("You have been online for one second.");',
+        "});",
+      ].join("\n"),
+    },
+    {
+      file: "errors.mjs",
+      code: [
+        'import { config, info, warn } from "graaly";',
+        "",
+        "try {",
+        "  const value = Number(config.get(\"spawn.health\", 20));",
+        '  if (!Number.isFinite(value)) throw new TypeError("Invalid health");',
+        "  info(`Configured health: ${value}`);",
+        "} catch (error) {",
+        "  warn(error instanceof Error ? error.message : String(error));",
+        "} finally {",
+        '  info("Configuration check complete");',
+        "}",
+      ].join("\n"),
+    },
+    {
+      file: "collections.mjs",
+      code: [
+        'import { commands } from "graaly";',
+        "",
+        "const visits = new Map();",
+        "const muted = new Set();",
+        "",
+        'commands.on("visit", context => {',
+        "  const id = context.sender.name;",
+        "  visits.set(id, (visits.get(id) ?? 0) + 1);",
+        "  if (!muted.has(id)) context.reply(`Visits: ${visits.get(id)}`);",
+        "  return true;",
+        "});",
+      ].join("\n"),
+    },
+  ],
+  ts: [
+    {
+      file: "domain-models.ts",
+      code: [
+        'import { players, type Player } from "graaly";',
+        "",
+        "interface PlayerSummary {",
+        "  readonly name: string;",
+        "  readonly health: number;",
+        "}",
+        "",
+        "function summarize(player: Player): PlayerSummary {",
+        "  return { name: player.name, health: player.health };",
+        "}",
+        "",
+        "const summaries = [...players].map(summarize);",
+      ].join("\n"),
+    },
+    {
+      file: "annotations.ts",
+      code: [
+        'import { players, type Player } from "graaly";',
+        "",
+        "function heal(player: Player, amount: number): void {",
+        "  player.health = Math.min(player.maxHealth, player.health + amount);",
+        "}",
+        "",
+        'const target = players.exact("Alex");',
+        "if (target) heal(target, 4);",
+      ].join("\n"),
+    },
+    {
+      file: "literal-unions.ts",
+      code: [
+        'import { commands } from "graaly";',
+        "",
+        'type Action = "heal" | "where";',
+        'const actions: readonly Action[] = ["heal", "where"];',
+        "",
+        'commands.complete("profile", context =>',
+        "  actions.filter(action => action.startsWith(context.args[0] ?? \"\"))",
+        ");",
+      ].join("\n"),
+    },
+    {
+      file: "type-guards.ts",
+      code: [
+        'import { commands, players } from "graaly";',
+        "",
+        'commands.on("healme", context => {',
+        "  if (!players.isPlayer(context.sender)) {",
+        '    context.reply("Players only.");',
+        "    return true;",
+        "  }",
+        "  context.sender.health = context.sender.maxHealth;",
+        "  return true;",
+        "});",
+      ].join("\n"),
+    },
+    {
+      file: "strict-absence.ts",
+      code: [
+        'import { commands, worlds } from "graaly";',
+        "",
+        'commands.on("worldinfo", context => {',
+        "  const world = worlds.get(context.args[0] ?? \"\");",
+        "  if (!world) return false;",
+        "  context.reply(`Loaded world: ${world.name}`);",
+        "  return true;",
+        "});",
+      ].join("\n"),
+    },
+    {
+      file: "satisfies.ts",
+      code: [
+        'type Rank = "member" | "moderator" | "admin";',
+        "",
+        "const rankColors = {",
+        '  member: "&7",',
+        '  moderator: "&b",',
+        '  admin: "&c",',
+        "} satisfies Record<Rank, string>;",
+      ].join("\n"),
+    },
+    {
+      file: "immutable-intent.ts",
+      code: [
+        'const lobbySpawn = [0.5, 65, 0.5] as const;',
+        'const allowedWorlds: readonly string[] = ["world", "arena"];',
+        "",
+        "const [x, y, z] = lobbySpawn;",
+        "const canJoin = allowedWorlds.includes(\"arena\");",
+      ].join("\n"),
+    },
+    {
+      file: "unknown-boundary.ts",
+      code: [
+        'import { config, info } from "graaly";',
+        "",
+        'const raw: unknown = config.get("motd", "Welcome");',
+        "if (typeof raw === \"string\") {",
+        "  info(raw.toUpperCase());",
+        "}",
+      ].join("\n"),
+    },
+    {
+      file: "exhaustive-decisions.ts",
+      code: [
+        'type Result = { kind: "ok"; value: string } | { kind: "missing" };',
+        "",
+        "function message(result: Result): string {",
+        "  switch (result.kind) {",
+        '    case "ok": return result.value;',
+        '    case "missing": return "Not found";',
+        "    default: {",
+        "      const impossible: never = result;",
+        "      return impossible;",
+        "    }",
+        "  }",
+        "}",
+      ].join("\n"),
+    },
+  ],
+  py: [
+    {
+      file: "modules.py",
+      code: [
+        "from graaly import players",
+        "",
+        "def online_names() -> list[str]:",
+        "    return [player.name for player in players]",
+      ].join("\n"),
+    },
+    {
+      file: "functions.py",
+      code: [
+        "from graaly import Player",
+        "",
+        'def greet(player: Player, prefix: str = "Welcome") -> None:',
+        '    player.send_message(f"{prefix}, {player.name}!")',
+      ].join("\n"),
+    },
+    {
+      file: "decorators.py",
+      code: [
+        "from graaly import PlayerJoinEvent, command, event",
+        "",
+        "@event(PlayerJoinEvent)",
+        "def on_join(join: PlayerJoinEvent) -> None:",
+        '    join.player.send_message("Welcome!")',
+        "",
+        '@command("hello")',
+        "def hello(context) -> bool:",
+        '    context.reply("Hello!")',
+        "    return True",
+      ].join("\n"),
+    },
+    {
+      file: "type_hints.py",
+      code: [
+        "from graaly import Player",
+        "",
+        "def heal(player: Player, amount: float) -> float:",
+        "    player.health = min(player.max_health, player.health + amount)",
+        "    return player.health",
+      ].join("\n"),
+    },
+    {
+      file: "decisions.py",
+      code: [
+        "from graaly import Player",
+        "",
+        "def rank_label(player: Player) -> str:",
+        '    if player.has_permission("rank.admin"):',
+        '        return "Admin"',
+        '    elif player.has_permission("rank.member"):',
+        '        return "Member"',
+        '    else:',
+        '        return "Guest"',
+      ].join("\n"),
+    },
+    {
+      file: "iteration.py",
+      code: [
+        "from graaly import players",
+        "",
+        "for player in players:",
+        '    player.send_message("The server is restarting soon.")',
+      ].join("\n"),
+    },
+    {
+      file: "comprehensions.py",
+      code: [
+        "from graaly import players",
+        "",
+        "healthy_names = [",
+        "    player.name",
+        "    for player in players",
+        "    if player.health == player.max_health",
+        "]",
+      ].join("\n"),
+    },
+    {
+      file: "pattern_matching.py",
+      code: [
+        "from graaly import command",
+        "",
+        '@command("team")',
+        "def team(context) -> bool:",
+        "    match context.args:",
+        '        case ["join", name]:',
+        '            context.reply(f"Joining {name}")',
+        '        case ["leave"]:',
+        '            context.reply("Leaving the team")',
+        "        case _:",
+        "            return False",
+        "    return True",
+      ].join("\n"),
+    },
+    {
+      file: "coroutines.py",
+      code: [
+        "from graaly import PlayerJoinEvent, event, tasks",
+        "",
+        "@event(PlayerJoinEvent)",
+        "async def on_join(join: PlayerJoinEvent) -> None:",
+        "    await tasks.sleep_ticks(20)",
+        '    join.player.send_message("One second later")',
+      ].join("\n"),
+    },
+    {
+      file: "errors.py",
+      code: [
+        "from graaly import config, info, warn",
+        "",
+        "try:",
+        '    health = float(config.get("spawn.health", 20))',
+        "    if health < 0:",
+        '        raise ValueError("health cannot be negative")',
+        "    info(f\"Configured health: {health}\")",
+        "except (TypeError, ValueError) as error:",
+        "    warn(f\"Invalid configuration: {error}\")",
+        "finally:",
+        '    info("Configuration check complete")',
+      ].join("\n"),
+    },
+    {
+      file: "context_managers.py",
+      code: [
+        "from contextlib import contextmanager",
+        "from collections.abc import Iterator",
+        "from graaly import Player",
+        "",
+        "@contextmanager",
+        "def temporary_health(player: Player) -> Iterator[None]:",
+        "    previous = player.health",
+        "    try:",
+        "        player.health = player.max_health",
+        "        yield",
+        "    finally:",
+        "        player.health = previous",
+      ].join("\n"),
+    },
+    {
+      file: "generators.py",
+      code: [
+        "from collections.abc import Iterator",
+        "from graaly import players",
+        "",
+        "def online_names() -> Iterator[str]:",
+        "    for player in players:",
+        "        yield player.name",
+        "",
+        'names = ", ".join(online_names())',
+      ].join("\n"),
+    },
+    {
+      file: "identity_and_logic.py",
+      code: [
+        "from graaly import players",
+        "",
+        'target = players.exact("Alex")',
+        "if target is not None and not target.dead:",
+        '    target.send_message("You are online and alive.")',
+      ].join("\n"),
+    },
+  ],
+};
+
 const quickstartCode: Record<QuickstartLanguage, string> = {
   js: [
     "import { commands, events, PlayerJoinEvent, text } from \"graaly\";",
@@ -501,6 +902,120 @@ const pluginYaml: Record<QuickstartLanguage, string> = {
     "  hello:",
     "    description: Say hello",
   ].join("\n"),
+};
+
+const graalyInstallCommands = [
+  "git clone https://github.com/sk8erboi17/Graaly.git",
+  "cd Graaly/runtime",
+  "mvn clean package",
+  "",
+  "# Copy the runtime, not the legacy agent, into the server:",
+  "cp target/Graaly-1.0.0.jar /absolute/path/to/server/plugins/",
+  "",
+  "cd /absolute/path/to/server",
+  "java -jar server.jar nogui",
+].join("\n");
+
+const graalyFirstStartLayout = [
+  "server/",
+  "├── server.jar",
+  "└── plugins/",
+  "    ├── Graaly-1.0.0.jar",
+  "    └── Graaly/",
+  "        ├── config.yml",
+  "        ├── runtime/25.2.4/",
+  "        └── scripts/",
+].join("\n");
+
+const quickstartDeployment: Record<QuickstartLanguage, {
+  buildLabel: string;
+  build: string;
+  deployLabel: string;
+  deploy: string;
+  layout: string;
+  load: string;
+}> = {
+  js: {
+    buildLabel: "Build JavaScript",
+    build: [
+      "cd /absolute/path/to/Graaly/runtime/examples/JavaScriptHello.jsplugin",
+      "npm ci",
+      "npm run build",
+      "# Output: dist/main.mjs",
+    ].join("\n"),
+    deployLabel: "Copy the runtime files",
+    deploy: [
+      "mkdir -p /absolute/path/to/server/plugins/Graaly/scripts/WelcomeJS.jsplugin/dist",
+      "cp plugin.yml /absolute/path/to/server/plugins/Graaly/scripts/WelcomeJS.jsplugin/",
+      "cp dist/main.mjs /absolute/path/to/server/plugins/Graaly/scripts/WelcomeJS.jsplugin/dist/",
+    ].join("\n"),
+    layout: [
+      "plugins/Graaly/scripts/WelcomeJS.jsplugin/",
+      "├── plugin.yml",
+      "└── dist/",
+      "    └── main.mjs",
+    ].join("\n"),
+    load: "For a new bundle, restart the server. After changing code in an already loaded bundle, rebuild, copy dist/main.mjs, then run graaly reload in the server console or /graaly reload in game.",
+  },
+  ts: {
+    buildLabel: "Compile and type-check TypeScript",
+    build: [
+      "cd /absolute/path/to/Graaly/runtime/examples/TypeScriptHello.jsplugin",
+      "npm ci",
+      "npm run build",
+      "# Output: dist/main.mjs",
+    ].join("\n"),
+    deployLabel: "Copy the compiled bundle",
+    deploy: [
+      "mkdir -p /absolute/path/to/server/plugins/Graaly/scripts/WelcomeTS.jsplugin/dist",
+      "cp plugin.yml /absolute/path/to/server/plugins/Graaly/scripts/WelcomeTS.jsplugin/",
+      "cp dist/main.mjs /absolute/path/to/server/plugins/Graaly/scripts/WelcomeTS.jsplugin/dist/",
+    ].join("\n"),
+    layout: [
+      "plugins/Graaly/scripts/WelcomeTS.jsplugin/",
+      "├── plugin.yml",
+      "└── dist/",
+      "    └── main.mjs",
+    ].join("\n"),
+    load: "For a new bundle, restart the server. After changing code in an already loaded bundle, rebuild, copy dist/main.mjs, then run graaly reload in the server console or /graaly reload in game.",
+  },
+  py: {
+    buildLabel: "Prepare Python",
+    build: [
+      "cd /absolute/path/to/Graaly/runtime/examples/PythonHello.pyplugin",
+      "# GraalPy executes main.py directly; there is no build output.",
+      "# Run Pyright from your editor or project environment if desired.",
+    ].join("\n"),
+    deployLabel: "Copy the Python bundle",
+    deploy: [
+      "mkdir -p /absolute/path/to/server/plugins/Graaly/scripts/WelcomePy.pyplugin",
+      "cp plugin.yml main.py /absolute/path/to/server/plugins/Graaly/scripts/WelcomePy.pyplugin/",
+    ].join("\n"),
+    layout: [
+      "plugins/Graaly/scripts/WelcomePy.pyplugin/",
+      "├── plugin.yml",
+      "└── main.py",
+    ].join("\n"),
+    load: "For a new bundle, restart the server. After changing main.py in an already loaded bundle, copy it and run graaly reload in the server console or /graaly reload in game.",
+  },
+  java: {
+    buildLabel: "Build the Java plugin",
+    build: [
+      "# From your Maven Java plugin project",
+      "mvn clean package",
+      "# Output: target/WelcomeJava.jar",
+    ].join("\n"),
+    deployLabel: "Copy the Java JAR",
+    deploy: [
+      "cp target/WelcomeJava.jar /absolute/path/to/server/plugins/",
+    ].join("\n"),
+    layout: [
+      "plugins/",
+      "├── Graaly-1.0.0.jar",
+      "└── WelcomeJava.jar",
+    ].join("\n"),
+    load: "Java plugins do not use Graaly's script loader. Restart the server after copying the JAR; /graaly reload only reloads JavaScript, TypeScript, and Python bundles.",
+  },
 };
 
 const boardConfigCode = [
@@ -2172,6 +2687,91 @@ function QuickstartLanguageTabs({ value, onChange }: {
   );
 }
 
+function GraalyRuntimeInstallGuide() {
+  return (
+    <div className="quickstart-install-guide" aria-labelledby="install-graaly-title">
+      <div className="quickstart-guide-heading">
+        <span>1 · INSTALL THE RUNTIME</span>
+        <div>
+          <h3 id="install-graaly-title">Put Graaly on the server first</h3>
+          <p>
+            Graaly does not currently publish a release JAR. Build the current source, copy the single runtime JAR into
+            your server&apos;s <code>plugins/</code> directory, and start the server once.
+          </p>
+        </div>
+      </div>
+
+      <ol className="quickstart-path">
+        <li><span>01</span><div><strong>Build</strong><p>Java 17+ and Maven produce <code>runtime/target/Graaly-1.0.0.jar</code>.</p></div></li>
+        <li><span>02</span><div><strong>Install</strong><p>Copy only that JAR to <code>server/plugins/</code>. The legacy agent is not a plugin.</p></div></li>
+        <li><span>03</span><div><strong>Start once</strong><p>Graaly creates its directory and downloads the enabled GraalJS/GraalPy runtimes.</p></div></li>
+        <li><span>04</span><div><strong>Verify</strong><p>Check the ready log, then run <code>graaly status</code> from the console.</p></div></li>
+      </ol>
+
+      <div className="two-code-columns quickstart-install-code">
+        <CodeBlock accent="shell" code={graalyInstallCommands} label="Terminal" />
+        <CodeBlock accent="shell" code={graalyFirstStartLayout} label="Created after first start" />
+      </div>
+
+      <div className="quickstart-verification">
+        <span>READY CHECK</span>
+        <div>
+          <code>[Graaly] Graaly is ready: 0 script plugin(s), downloaded Graal …</code>
+          <p>
+            In the server console run <code>graaly status</code>. In game use <code>/graaly status</code> as an operator or
+            with <code>graaly.admin</code> permission.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function QuickstartDeploymentGuide({ language }: { language: QuickstartLanguage }) {
+  const deployment = quickstartDeployment[language];
+  const languageName = quickstartLanguages.find(item => item.id === language)?.label ?? language;
+  const isScript = language !== "java";
+
+  return (
+    <div className="quickstart-deploy-guide" aria-labelledby="deploy-plugin-title">
+      <div className="quickstart-guide-heading">
+        <span>3 · BUILD, COPY, LOAD</span>
+        <div>
+          <h3 id="deploy-plugin-title">Deploy the {languageName} plugin</h3>
+          <p>
+            {isScript
+              ? <>The whole bundle is one directory. Its suffix tells Graaly which language loader to use, and <code>plugin.yml</code> points to the entry file inside it.</>
+              : <>Java remains a normal compiled plugin. It is shown as a direct comparison and is not loaded by Graaly&apos;s script loader.</>}
+          </p>
+        </div>
+      </div>
+
+      <ol className="quickstart-path is-three">
+        <li><span>01</span><div><strong>Build or check</strong><p>Run the language toolchain locally; do not install Node.js or CPython on the game server.</p></div></li>
+        <li><span>02</span><div><strong>Copy the payload</strong><p>{isScript ? <>Place the bundle under <code>plugins/Graaly/scripts/</code>.</> : <>Place the compiled JAR under <code>plugins/</code>.</>}</p></div></li>
+        <li><span>03</span><div><strong>Load and test</strong><p>Follow the load rule below, check the log, then execute <code>/hello</code> in game.</p></div></li>
+      </ol>
+
+      <div className="two-code-columns quickstart-command-grid">
+        <CodeBlock accent="shell" code={deployment.build} label={deployment.buildLabel} />
+        <CodeBlock accent="shell" code={deployment.deploy} label={deployment.deployLabel} />
+      </div>
+      <CodeBlock accent="shell" code={deployment.layout} label="Required server layout" />
+
+      <div className="quickstart-load-rule">
+        <span>LOAD RULE</span>
+        <p>{deployment.load}</p>
+      </div>
+      {isScript && (
+        <div className="note-line warning">
+          <strong>New bundle or <code>plugin.yml</code> change:</strong> restart the server. <strong>Source-only change to an
+          already loaded bundle:</strong> copy the rebuilt file, then use <code>/graaly reload</code> as an operator.
+        </div>
+      )}
+    </div>
+  );
+}
+
 function GuideLanguageTabs({ value, onChange }: {
   value: GuideLanguage;
   onChange: (language: GuideLanguage) => void;
@@ -2246,7 +2846,16 @@ function CodeBlock({ code, label, accent = "ts" }: {
 
 function LanguageLearningGuide() {
   const [language, setLanguage] = useState<Language>("py");
+  const [conceptIndex, setConceptIndex] = useState(0);
   const track = learningTracks[language];
+  const examples = learningConceptExamples[language];
+  const selectedConcept = track.concepts[conceptIndex] ?? track.concepts[0];
+  const selectedExample = examples[conceptIndex] ?? examples[0];
+
+  function selectLanguage(next: Language) {
+    setLanguage(next);
+    setConceptIndex(0);
+  }
 
   return (
     <div className="learning-guide">
@@ -2272,20 +2881,20 @@ function LanguageLearningGuide() {
 
       <div className="dom-note">
         <div>
-          <strong>The server runtime has no DOM; GraalyBoard provides a real one.</strong>
+          <strong>The server runtime has no DOM.</strong>
           <p>
             Graaly runs server-side, so browser globals such as <code>window</code>, <code>document</code>, and
-            <code> HTMLElement</code> are intentionally absent there. An HTML GraalyBoard runs in isolated Chromium and supports
-            the normal browser DOM, while a JSON bridge connects it safely to your plugin.
+            <code> HTMLElement</code> are intentionally absent there. Website boards are still experimental and remain outside
+            the stable public contract until their browser lifecycle and input behavior are ready.
           </p>
         </div>
         <a href="#boards">
-          Build a website board <ArrowRight size={13} aria-hidden="true" />
+          Website board status <ArrowRight size={13} aria-hidden="true" />
         </a>
       </div>
 
       <div className="learning-toolbar">
-        <LanguageTabs value={language} onChange={setLanguage} />
+        <LanguageTabs value={language} onChange={selectLanguage} />
         <div>
           <span>SELECTED PATH</span>
           <strong>{track.title}</strong>
@@ -2294,18 +2903,39 @@ function LanguageLearningGuide() {
       </div>
 
       <div className="learning-layout" key={language}>
-        <div className="keyword-grid" aria-label={`${track.title} concepts`}>
+        <div className="keyword-grid" aria-label={`${track.title} concepts`} role="tablist">
           {track.concepts.map((concept, index) => (
-            <article key={concept.syntax}>
+            <button
+              aria-controls="language-concept-example"
+              aria-selected={index === conceptIndex}
+              key={concept.syntax}
+              onClick={() => setConceptIndex(index)}
+              role="tab"
+              type="button"
+            >
               <span>{String(index + 1).padStart(2, "0")}</span>
               <code>{concept.syntax}</code>
               <strong>{concept.name}</strong>
               <p>{concept.detail}</p>
-            </article>
+            </button>
           ))}
         </div>
-        <div className="learning-example">
-          <CodeBlock accent={language} code={track.code} label={track.file} />
+        <div
+          aria-label={`${selectedConcept.name} example`}
+          className="learning-example"
+          id="language-concept-example"
+          role="tabpanel"
+        >
+          <div className="concept-example-heading">
+            <span>EXAMPLE {String(conceptIndex + 1).padStart(2, "0")}</span>
+            <strong>{selectedConcept.name}</strong>
+            <p>{selectedConcept.detail}</p>
+          </div>
+          <CodeBlock accent={language} code={selectedExample.code} label={selectedExample.file} />
+          <details className="language-recipes">
+            <summary>Complete {language === "py" ? "Python" : language === "ts" ? "TypeScript" : "JavaScript"} path example<ChevronDown size={14} aria-hidden="true" /></summary>
+            <CodeBlock accent={language} code={track.code} label={track.file} />
+          </details>
           <details className="language-recipes">
             <summary>{track.recipe.title}<ChevronDown size={14} aria-hidden="true" /></summary>
             <CodeBlock accent={language} code={track.recipe.code} label={track.recipe.file} />
@@ -4043,26 +4673,30 @@ export default function Home() {
 
           <section className="doc-section" hidden={activeSection !== "quickstart"} id="quickstart">
             <SectionHeading eyebrow="03 · Quick start" title="Build Graaly plugins">
-              Create one plugin folder, add <code>plugin.yml</code>, then write the entry file in your language.
+              Install Graaly once, create one plugin bundle, copy it to the documented server directory, and verify that
+              the loader discovered it. Every path below is executable, not just illustrative.
             </SectionHeading>
-            <ol className="simple-steps">
-              <li><span>1</span><div><strong>Create the plugin</strong><p>Use a Graaly script bundle for JS, TS, or Python, or a standard Java project.</p></div></li>
-              <li><span>2</span><div><strong>Describe it</strong><p>Add the plugin name, version, entry file, and commands to <code>plugin.yml</code>.</p></div></li>
-              <li><span>3</span><div><strong>Import Graaly</strong><p>Use <code>{'import { ... } from "graaly"'}</code> in JavaScript/TypeScript, <code>from graaly import ...</code> in Python, or compare the Java equivalent.</p></div></li>
-              <li><span>4</span><div><strong>Start the server</strong><p>Graaly loads script bundles in isolated Graal contexts; Java plugins load from their compiled JAR.</p></div></li>
-            </ol>
+            <GraalyRuntimeInstallGuide />
+            <div className="quickstart-guide-heading quickstart-language-heading">
+              <span>2 · WRITE THE PLUGIN</span>
+              <div>
+                <h3>Choose the language you will deploy</h3>
+                <p>The selected tab changes the source, manifest, build command, destination directory, and load instructions together.</p>
+              </div>
+            </div>
             <QuickstartLanguageTabs value={language} onChange={setLanguage} />
             <div className="two-code-columns">
               <CodeBlock code={pluginYaml[language]} label="plugin.yml" accent="yaml" />
               <CodeBlock
                 code={quickstartCode[language]}
-                label={language === "java" ? "WelcomePlugin.java" : `main.${language === "py" ? "py" : language === "ts" ? "ts" : "mjs"}`}
+                label={language === "java" ? "WelcomePlugin.java" : language === "py" ? "main.py" : language === "ts" ? "src/main.mts" : "main.mjs"}
                 accent={language}
               />
             </div>
             <div className="note-line">
-              <Zap size={16} aria-hidden="true" /> JavaScript and TypeScript bundle to ESM. Python uses Python 3 syntax and Pyright stubs. Java compiles to a JAR.
+              <Zap size={16} aria-hidden="true" /> JavaScript and TypeScript deploy compiled ESM—not <code>node_modules</code>. Python deploys source and runs on GraalPy. Java deploys a compiled JAR.
             </div>
+            <QuickstartDeploymentGuide language={language} />
           </section>
 
           <section className="doc-section learn-section" hidden={activeSection !== "learn"} id="learn">
