@@ -149,7 +149,7 @@ const navigation = [
       { id: "entities", title: "Entities & attributes" },
       { id: "react-ui", title: "React UI & FastAPI" },
       { id: "academy", title: "Graaly Academy" },
-      { id: "boards", title: "Website boards" },
+      { id: "boards", title: "Website boards — Soon" },
       { id: "packets", title: "PacketEvents" },
     ],
   },
@@ -163,6 +163,11 @@ const navigation = [
     ],
   },
 ] as const;
+
+const documentationSections = navigation.flatMap(group => group.items);
+const documentationSectionIds: ReadonlySet<string> = new Set(
+  documentationSections.map(item => item.id),
+);
 
 const stableModuleCount = Object.keys(graalyContract.modules).length;
 const stableCapabilityEntries = Object.entries(graalyContract.capabilities);
@@ -2833,7 +2838,8 @@ function ReactFastApiGuide() {
   );
 }
 
-function WebsiteBoardGuide() {
+// Kept as an experimental preview component, but intentionally not linked from the stable docs yet.
+export function WebsiteBoardGuide() {
   const [language, setLanguage] = useState<GuideLanguage>("ts");
   const [destination, setDestination] = useState("survival");
   const [nickname, setNickname] = useState("");
@@ -3780,6 +3786,12 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [theme, setTheme] = useState<Theme>("light");
+  const [activeSection, setActiveSection] = useState("overview");
+  const activeSectionIndex = documentationSections.findIndex(item => item.id === activeSection);
+  const previousSection = activeSectionIndex > 0 ? documentationSections[activeSectionIndex - 1] : null;
+  const nextSection = activeSectionIndex >= 0 && activeSectionIndex < documentationSections.length - 1
+    ? documentationSections[activeSectionIndex + 1]
+    : null;
 
   useEffect(() => {
     let stored: string | null = null;
@@ -3792,6 +3804,35 @@ export default function Home() {
     document.documentElement.dataset.theme = initial;
     const frame = window.requestAnimationFrame(() => setTheme(initial));
     return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  useEffect(() => {
+    let scrollFrame = 0;
+
+    function selectSectionFromLocation() {
+      const hash = decodeURIComponent(window.location.hash.slice(1));
+      let section = hash || "overview";
+      if (!documentationSectionIds.has(section)) {
+        const owner = document.getElementById(section)?.closest<HTMLElement>("section[id]")?.id;
+        section = owner && documentationSectionIds.has(owner) ? owner : "overview";
+      }
+      setActiveSection(section);
+      window.cancelAnimationFrame(scrollFrame);
+      scrollFrame = window.requestAnimationFrame(() => {
+        const target = document.getElementById(hash || section) ?? document.getElementById(section);
+        if (!target) return;
+        const stickyOffset = window.matchMedia("(max-width: 760px)").matches ? 104 : 113;
+        const top = target.getBoundingClientRect().top + window.scrollY - stickyOffset;
+        window.scrollTo({ top: Math.max(0, top), left: 0, behavior: "auto" });
+      });
+    }
+
+    selectSectionFromLocation();
+    window.addEventListener("hashchange", selectSectionFromLocation);
+    return () => {
+      window.cancelAnimationFrame(scrollFrame);
+      window.removeEventListener("hashchange", selectSectionFromLocation);
+    };
   }, []);
 
   function toggleTheme() {
@@ -3832,7 +3873,6 @@ export default function Home() {
       <a className="skip-link" href="#content">Skip to content</a>
       <header className="topbar">
         <a className="brand" href="#overview" aria-label="Graaly documentation home">
-          <span className="brand-mark">G</span>
           <span><strong>Graaly</strong></span>
           <span className="docs-badge">Docs</span>
         </a>
@@ -3887,14 +3927,21 @@ export default function Home() {
             <div className="nav-group" key={group.label}>
               <span>{group.label}</span>
               {group.items.map(item => (
-                <a href={`#${item.id}`} key={item.id} onClick={() => setMenuOpen(false)}>{item.title}</a>
+                <a
+                  aria-current={activeSection === item.id ? "page" : undefined}
+                  href={`#${item.id}`}
+                  key={item.id}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {item.title}
+                </a>
               ))}
             </div>
           ))}
         </aside>
 
         <main id="content">
-          <section className="hero" id="overview">
+          <section className="hero" hidden={activeSection !== "overview"} id="overview">
             <div className="hero-copy">
               <span className="hero-kicker">Graaly documentation</span>
               <h1>Minecraft plugins in TypeScript, JavaScript, and Python.</h1>
@@ -3915,7 +3962,7 @@ export default function Home() {
             </dl>
           </section>
 
-          <section className="doc-section prerequisites-section" id="prerequisites">
+          <section className="doc-section prerequisites-section" hidden={activeSection !== "prerequisites"} id="prerequisites">
             <SectionHeading eyebrow="01 · Prerequisites" title="Install the runtime once. Write plugins in your language.">
               Start here before copying an example. Graaly itself runs on Java 17 or newer; choose a JVM version that also satisfies your server release. Node.js and Python are development tools, not separate in-server runtimes.
             </SectionHeading>
@@ -3986,7 +4033,7 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="doc-section intro-section" id="compatibility">
+          <section className="doc-section intro-section" hidden={activeSection !== "compatibility"} id="compatibility">
             <SectionHeading eyebrow="02 · Compatibility contract" title="Write once. Graaly translates every supported release.">
               Your public imports and autocomplete stay fixed from {graalyContract.supportedGameVersions.minimum} to {graalyContract.supportedGameVersions.current}.
               Version-specific names, signatures, and fallbacks live behind Graaly&apos;s adapter boundary.
@@ -3994,7 +4041,7 @@ export default function Home() {
             <CompatibilityContract />
           </section>
 
-          <section className="doc-section" id="quickstart">
+          <section className="doc-section" hidden={activeSection !== "quickstart"} id="quickstart">
             <SectionHeading eyebrow="03 · Quick start" title="Build Graaly plugins">
               Create one plugin folder, add <code>plugin.yml</code>, then write the entry file in your language.
             </SectionHeading>
@@ -4018,7 +4065,7 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="doc-section learn-section" id="learn">
+          <section className="doc-section learn-section" hidden={activeSection !== "learn"} id="learn">
             <SectionHeading eyebrow="04 · Learn the languages" title="Learn the language, not a Graaly dialect">
               Graaly gives ordinary language constructs useful game-server data. Follow one path at a time, copy the complete example,
               then recognize what belongs to the language, what belongs to Graaly, and what only exists in a browser or Node.js environment.
@@ -4026,7 +4073,7 @@ export default function Home() {
             <LanguageLearningGuide />
           </section>
 
-          <section className="doc-section" id="events">
+          <section className="doc-section" hidden={activeSection !== "events"} id="events">
             <SectionHeading eyebrow="05 · Events" title="Know exactly when your code runs">
               An event is a notification from the server. Pick the event that describes the moment you care about, register a listener,
               read its data, then optionally change or cancel the action.
@@ -4039,7 +4086,7 @@ export default function Home() {
             <EventExplorer />
           </section>
 
-          <section className="doc-section" id="commands">
+          <section className="doc-section" hidden={activeSection !== "commands"} id="commands">
             <SectionHeading eyebrow="06 · Commands & tasks" title="Find the command or scheduler job you need">
               Search by goal, choose a task, and see what it does before the code. Every guide includes native JS, TS, and Python
               plus the exact Java pattern it replaces.
@@ -4051,7 +4098,7 @@ export default function Home() {
             />
           </section>
 
-          <section className="doc-section" id="players">
+          <section className="doc-section" hidden={activeSection !== "players"} id="players">
             <SectionHeading eyebrow="07 · Players" title="Every common Player workflow in one searchable browser">
               Find players, message them, change inventory or health, teleport, control movement, permissions, scoreboards,
               metadata, time, and weather. The complete inherited Player catalog remains one click away.
@@ -4063,7 +4110,7 @@ export default function Home() {
             />
           </section>
 
-          <section className="doc-section" id="worlds">
+          <section className="doc-section" hidden={activeSection !== "worlds"} id="worlds">
             <SectionHeading eyebrow="08 · Worlds" title="Locations, terrain, lifecycle, and generation—explained task by task">
               Location is now a first-class guide beside blocks, chunks, time, weather, spawn rules, effects, world creation,
               custom generators, populators, saving, and unloading.
@@ -4075,7 +4122,7 @@ export default function Home() {
             />
           </section>
 
-          <section className="doc-section" id="entities">
+          <section className="doc-section" hidden={activeSection !== "entities"} id="entities">
             <SectionHeading eyebrow="09 · Entities" title="Spawn, customize, move, power, and clean up entities">
               Search the exact action you need. The attribute guide includes all {graalyConstants.namespaces.Attribute.constants.length} canonical attributes
               from the current contract and tells you which releases can represent each mechanic faithfully.
@@ -4087,7 +4134,7 @@ export default function Home() {
             />
           </section>
 
-          <section className="doc-section react-ui-section" id="react-ui">
+          <section className="doc-section react-ui-section" hidden={activeSection !== "react-ui"} id="react-ui">
             <SectionHeading eyebrow="10 · React UI & FastAPI" title="Use real React for game UI and Python for persistent services">
               Follow the animated IDE from the first React root to a tested FastAPI transaction. Every lesson explains the code,
               how it differs from browser React, why that boundary was chosen, which simpler alternative exists, and when the
@@ -4096,25 +4143,24 @@ export default function Home() {
             <ReactFastApiGuide />
           </section>
 
-          <section className="doc-section academy-section" id="academy">
+          <section className="doc-section academy-section" hidden={activeSection !== "academy"} id="academy">
             <SectionHeading eyebrow="11 · Graaly Academy" title="From your first component to a production realtime plugin">
               These are 36 long-form lessons, not a list of snippets. Edit and execute real TypeScript React against a
-              Minecraft surface simulator, trace the FastAPI request lifecycle, complete hard labs, and then run the same
+              Minecraft surface simulator, trace the FastAPI request lifecycle, and then run the same
               architecture in the checked-in plugin and backend tests.
             </SectionHeading>
             <GraalyAcademy />
           </section>
 
-          <section className="doc-section board-section" id="boards">
-            <SectionHeading eyebrow="12 · Website boards" title="Put a real HTML, CSS and TypeScript site inside the game">
-              GraalyBoard runs each site in isolated Chromium, captures it into board pixels, and forwards player interaction to
-              normal DOM elements. Buttons, inputs, textareas, checkboxes, ranges, selects, forms, custom controls and mouse-wheel
-              scrolling work without a Java interop layer.
+          <section className="doc-section board-section" hidden={activeSection !== "boards"} id="boards">
+            <SectionHeading eyebrow="12 · Website boards" title="Website boards are coming soon.">
+              The board renderer is still experimental and is not part of Graaly&apos;s stable public contract yet.
+              Documentation and examples will return when rendering, input, scrolling, and lifecycle behavior are ready to support.
             </SectionHeading>
-            <WebsiteBoardGuide />
+            <p className="availability-note"><strong>Status:</strong> planned, not available in the current release.</p>
           </section>
 
-          <section className="doc-section" id="packets">
+          <section className="doc-section" hidden={activeSection !== "packets"} id="packets">
             <SectionHeading eyebrow="13 · PacketEvents" title="Learn the workflow, then search every packet and wrapper">
               PacketEvents stays a separate 2.13.0 plugin. Start with practical receive, send, wrapper, cancellation, player-data,
               and threading guides; then search every client packet, server packet, wrapper, and supporting type below—including
@@ -4143,7 +4189,7 @@ export default function Home() {
             />
           </section>
 
-          <section className="doc-section api-reference-section" id="api-reference">
+          <section className="doc-section api-reference-section" hidden={activeSection !== "api-reference"} id="api-reference">
             <SectionHeading eyebrow="14 · Complete reference" title="Every cataloged type and signature, searchable in one place">
               Search the full public surface: {catalogCounts.api} Graaly API symbols, {catalogCounts.packetWrappers} packet wrappers,
               {catalogCounts.packetSupportTypes} supporting packet types, and {catalogCounts.packetConstants} packet constants.
@@ -4152,7 +4198,7 @@ export default function Home() {
             <ApiExplorer />
           </section>
 
-          <section className="doc-section" id="conformance">
+          <section className="doc-section" hidden={activeSection !== "conformance"} id="conformance">
             <SectionHeading eyebrow="15 · API conformance" title="Exhaustive structure, vertical behavior, and honest limits">
               Graaly checks every compiled public type against the generated JavaScript, TypeScript, Python, and documentation
               catalogs. Three checked-in conformance plugins define 31 behavioral cases and compile against that same contract.
@@ -4191,7 +4237,7 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="doc-section" id="safety">
+          <section className="doc-section" hidden={activeSection !== "safety"} id="safety">
             <SectionHeading eyebrow="16 · Threading & safety" title="Two rules prevent most production bugs">
               Keep live world mutations on the main thread, and only install code you trust. Script plugins have the same power as JAR plugins.
             </SectionHeading>
@@ -4205,7 +4251,7 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="doc-section" id="troubleshooting">
+          <section className="doc-section" hidden={activeSection !== "troubleshooting"} id="troubleshooting">
             <SectionHeading eyebrow="17 · Troubleshooting" title="Short answers to common failures">
               Check the runtime, bundle entry point, dependency order, and thread before debugging plugin logic.
             </SectionHeading>
@@ -4227,8 +4273,23 @@ export default function Home() {
             </div>
           </section>
 
+          <nav className="section-pager" aria-label="Documentation pagination">
+            {previousSection ? (
+              <a href={`#${previousSection.id}`} rel="prev">
+                <span><ChevronLeft size={14} aria-hidden="true" /> Previous</span>
+                <strong>{previousSection.title}</strong>
+              </a>
+            ) : <span aria-hidden="true" />}
+            {nextSection ? (
+              <a className="is-next" href={`#${nextSection.id}`} rel="next">
+                <span>Next <ChevronRight size={14} aria-hidden="true" /></span>
+                <strong>{nextSection.title}</strong>
+              </a>
+            ) : <span aria-hidden="true" />}
+          </nav>
+
           <footer>
-            <div className="brand footer-brand"><span className="brand-mark">G</span><span><strong>Graaly</strong><small>JavaScript · TypeScript · Python · Java</small></span></div>
+            <div className="brand footer-brand"><span><strong>Graaly</strong><small>JavaScript · TypeScript · Python · Java</small></span></div>
             <p>Complete Graaly and PacketEvents documentation for Java 17 and newer.</p>
             <a href="https://github.com/retrooper/packetevents" target="_blank" rel="noreferrer">PacketEvents project <ExternalLink size={13} /></a>
           </footer>

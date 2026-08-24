@@ -7,7 +7,6 @@ import {
   ChevronLeft,
   ChevronRight,
   CircleAlert,
-  FlaskConical,
   Play,
   RotateCcw,
   Search,
@@ -650,16 +649,6 @@ function LessonArticle({ lesson }: { lesson: AcademyLesson }) {
       <MinecraftPlayground key={lesson.id} lesson={lesson} />
       <FastApiLifecycleLab lesson={lesson} />
 
-      <section className="academy-challenge">
-        <div>
-          <FlaskConical size={20} aria-hidden="true" />
-          <span>Hard lab</span>
-          <h4>{lesson.lab.mission}</h4>
-        </div>
-        <ol>{lesson.lab.steps.map(step => <li key={step}>{step}</li>)}</ol>
-        <p><Check size={15} aria-hidden="true" /><strong>Definition of done</strong>{lesson.lab.done}</p>
-      </section>
-
       <section className="academy-pitfalls">
         <span className="academy-kicker">Failure modes to recognize</span>
         <div>{lesson.pitfalls.map(pitfall => <span key={pitfall}><CircleAlert size={14} />{pitfall}</span>)}</div>
@@ -695,7 +684,7 @@ export function GraalyAcademy() {
           <h3>Learn React and FastAPI by building one complete plugin system</h3>
           <p>
             Start with a component and finish with a transactional, realtime party shop. Every lesson connects the language
-            model to Minecraft, contrasts it with the web, includes editable code, and ends with a testable hard lab.
+            model to Minecraft, contrasts it with the web, and includes editable code backed by runnable tests.
           </p>
           <div className="academy-downloads">
             <a download href="./downloads/Graaly-Academy-Plugin.zip">Download the in-game Academy</a>

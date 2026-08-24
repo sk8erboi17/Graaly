@@ -15,7 +15,7 @@
   --panel-2: #fbfafc;
   --line: #e5e3e8;
   --line-strong: #cbc7d1;
-  --code: #111217;
+  --code: #f6f5f8;
   --blue: #347a91;
   --yellow: #9a6c14;
   --python: #ffd34e;
@@ -432,6 +432,12 @@ kbd {
   background: var(--soft);
   color: var(--forest);
   transform: translateX(2px);
+}
+
+.nav-group a[aria-current="page"] {
+  background: var(--soft);
+  color: var(--ink);
+  font-weight: 600;
 }
 
 main {
@@ -7403,7 +7409,7 @@ main {
   }
 
   .hero {
-    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.7fr);
+    grid-template-columns: minmax(0, 1fr);
     gap: 42px;
   }
 }
@@ -7497,5 +7503,252 @@ main {
   .prerequisite-grid article {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* Page-like documentation sections, matching the grouped sidebar model. */
+.hero[hidden],
+.doc-section[hidden] {
+  display: none;
+}
+
+.availability-note {
+  max-width: 720px;
+  margin: 0;
+  padding: 16px 0 16px 18px;
+  border-left: 3px solid var(--forest);
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.availability-note strong {
+  color: var(--ink);
+}
+
+.section-pager {
+  width: min(1060px, calc(100% - 80px));
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0 auto;
+  padding: 34px 0 74px;
+}
+
+.section-pager a {
+  min-height: 92px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  transition: border-color 150ms ease, background 150ms ease;
+}
+
+.section-pager a:hover,
+.section-pager a:focus-visible {
+  border-color: var(--forest);
+  background: var(--soft);
+}
+
+.section-pager a > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--faint);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.section-pager a > strong {
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.section-pager .is-next {
+  align-items: flex-end;
+  text-align: right;
+}
+
+/* The Academy rail shares the same sticky offset and scrollbar geometry as the docs sidebar. */
+.academy-lessons {
+  top: 113px;
+  height: calc(100vh - 113px);
+}
+
+.academy-lesson-scroll {
+  scrollbar-color: var(--line-strong) var(--paper);
+}
+
+.academy-lesson-scroll::-webkit-scrollbar {
+  width: 9px;
+}
+
+.academy-lesson-scroll::-webkit-scrollbar-track {
+  border-left: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.academy-lesson-scroll::-webkit-scrollbar-thumb {
+  border: 2px solid var(--paper);
+  border-radius: 999px;
+  background: var(--line-strong);
+  background-clip: padding-box;
+}
+
+/* Light mode includes code surfaces; dark editors are reserved for explicit dark mode. */
+:root:not([data-theme="dark"]) .code-block,
+:root:not([data-theme="dark"]) .academy-editor,
+:root:not([data-theme="dark"]) .academy-editor-layer pre,
+:root:not([data-theme="dark"]) .studio-ide,
+:root:not([data-theme="dark"]) .studio-code-scroll {
+  background: var(--code);
+  color: #292630;
+}
+
+:root:not([data-theme="dark"]) .code-toolbar,
+:root:not([data-theme="dark"]) .academy-editor-meta,
+:root:not([data-theme="dark"]) .studio-titlebar,
+:root:not([data-theme="dark"]) .studio-editor-tab,
+:root:not([data-theme="dark"]) .studio-statusbar {
+  border-color: var(--line);
+  background: var(--soft);
+  color: var(--muted);
+}
+
+:root:not([data-theme="dark"]) .studio-files {
+  border-color: var(--line);
+  background: var(--panel-2);
+  scrollbar-color: var(--line-strong) var(--panel-2);
+}
+
+:root:not([data-theme="dark"]) .studio-files button {
+  color: var(--muted);
+}
+
+:root:not([data-theme="dark"]) .studio-files button:hover,
+:root:not([data-theme="dark"]) .studio-files button:focus-visible,
+:root:not([data-theme="dark"]) .studio-files button.is-active {
+  background: var(--soft);
+  color: var(--ink);
+}
+
+:root:not([data-theme="dark"]) .studio-code-scroll {
+  background:
+    linear-gradient(90deg, transparent 0, transparent 47px, var(--line) 47px, var(--line) 48px, transparent 48px),
+    var(--code);
+  scrollbar-color: var(--line-strong) var(--code);
+}
+
+:root:not([data-theme="dark"]) .studio-code-lines > div > span {
+  color: var(--faint);
+}
+
+:root:not([data-theme="dark"]) .code-block pre,
+:root:not([data-theme="dark"]) .code-block pre code,
+:root:not([data-theme="dark"]) .code-block pre code[class*="shj-lang-"],
+:root:not([data-theme="dark"]) .academy-editor-layer pre,
+:root:not([data-theme="dark"]) .studio-code-lines code,
+:root:not([data-theme="dark"]) .studio-code-lines code[class*="shj-lang-"] {
+  color: #292630;
+}
+
+:root:not([data-theme="dark"]) .code-block .shj-syn-cmnt,
+:root:not([data-theme="dark"]) .academy-editor-layer .shj-syn-cmnt,
+:root:not([data-theme="dark"]) .studio-code-lines .shj-syn-cmnt {
+  color: #77717e;
+}
+
+:root:not([data-theme="dark"]) .code-block .shj-syn-kwd,
+:root:not([data-theme="dark"]) .code-block .shj-syn-err,
+:root:not([data-theme="dark"]) .academy-editor-layer .shj-syn-kwd,
+:root:not([data-theme="dark"]) .academy-editor-layer .shj-syn-err,
+:root:not([data-theme="dark"]) .studio-code-lines .shj-syn-kwd,
+:root:not([data-theme="dark"]) .studio-code-lines .shj-syn-err {
+  color: #9c2f61;
+}
+
+:root:not([data-theme="dark"]) .code-block .shj-syn-class,
+:root:not([data-theme="dark"]) .code-block .shj-syn-type,
+:root:not([data-theme="dark"]) .academy-editor-layer .shj-syn-class,
+:root:not([data-theme="dark"]) .academy-editor-layer .shj-syn-type,
+:root:not([data-theme="dark"]) .studio-code-lines .shj-syn-class,
+:root:not([data-theme="dark"]) .studio-code-lines .shj-syn-type {
+  color: #21668b;
+}
+
+:root:not([data-theme="dark"]) .code-block .shj-syn-str,
+:root:not([data-theme="dark"]) .code-block .shj-syn-insert,
+:root:not([data-theme="dark"]) .academy-editor-layer .shj-syn-str,
+:root:not([data-theme="dark"]) .academy-editor-layer .shj-syn-insert,
+:root:not([data-theme="dark"]) .studio-code-lines .shj-syn-str,
+:root:not([data-theme="dark"]) .studio-code-lines .shj-syn-insert {
+  color: #2f714d;
+}
+
+:root:not([data-theme="dark"]) .code-block .shj-syn-func,
+:root:not([data-theme="dark"]) .code-block .shj-syn-section,
+:root:not([data-theme="dark"]) .academy-editor-layer .shj-syn-func,
+:root:not([data-theme="dark"]) .academy-editor-layer .shj-syn-section,
+:root:not([data-theme="dark"]) .studio-code-lines .shj-syn-func,
+:root:not([data-theme="dark"]) .studio-code-lines .shj-syn-section {
+  color: #654ab0;
+}
+
+:root:not([data-theme="dark"]) .code-block .shj-syn-num,
+:root:not([data-theme="dark"]) .code-block .shj-syn-bool,
+:root:not([data-theme="dark"]) .code-block .shj-syn-var,
+:root:not([data-theme="dark"]) .academy-editor-layer .shj-syn-num,
+:root:not([data-theme="dark"]) .academy-editor-layer .shj-syn-bool,
+:root:not([data-theme="dark"]) .academy-editor-layer .shj-syn-var,
+:root:not([data-theme="dark"]) .studio-code-lines .shj-syn-num,
+:root:not([data-theme="dark"]) .studio-code-lines .shj-syn-bool,
+:root:not([data-theme="dark"]) .studio-code-lines .shj-syn-var {
+  color: #a05b1d;
+}
+
+:root:not([data-theme="dark"]) .code-block .shj-syn-oper,
+:root:not([data-theme="dark"]) .academy-editor-layer .shj-syn-oper,
+:root:not([data-theme="dark"]) .studio-code-lines .shj-syn-oper {
+  color: #476a73;
+}
+
+:root:not([data-theme="dark"]) .code-helper-note {
+  border-color: var(--line);
+  background: var(--soft);
+  color: var(--muted);
+}
+
+:root:not([data-theme="dark"]) .copy-button:hover {
+  background: var(--soft);
+  color: var(--ink);
+}
+
+@media (max-width: 960px) {
+  .academy-lessons {
+    top: auto;
+    height: auto;
+  }
+}
+
+@media (max-width: 760px) {
+  .section-pager {
+    width: calc(100% - 36px);
+    grid-template-columns: 1fr;
+    padding-bottom: 54px;
+  }
+
+  .section-pager > span[aria-hidden="true"] {
+    display: none;
+  }
+
+  .section-pager .is-next {
+    align-items: flex-start;
+    text-align: left;
   }
 }

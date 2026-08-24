@@ -51,7 +51,7 @@ test("renders the complete documentation in English", async () => {
   assert.match(html, /Use real React for game UI and Python for persistent services/);
   assert.match(html, /From your first component to a production realtime plugin/);
   assert.match(html, /React semantics stay intact/);
-  assert.match(html, /Put a real HTML, CSS and TypeScript site inside the game/);
+  assert.match(html, /Website boards are coming soon/);
   assert.match(html, /Learn the workflow, then search every packet and wrapper/);
   assert.match(html, /Every cataloged type and signature/);
   assert.match(html, /PacketEvents 2\.13\.0/);
@@ -105,8 +105,10 @@ test("ships the declared entry file for every plugin example", async () => {
 test("ships minimal navigation with valid anchors and accessible controls", async () => {
   const response = await render();
   const html = await response.text();
+  const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
   const requiredIds = [
     "overview",
+    "prerequisites",
     "compatibility",
     "content",
     "quickstart",
@@ -130,6 +132,12 @@ test("ships minimal navigation with valid anchors and accessible controls", asyn
   assert.match(html, /aria-label="Search documentation"/);
   assert.match(html, /aria-label="Open navigation"/);
   assert.match(html, /Skip to content/);
+  assert.match(html, /aria-label="Documentation pagination"/);
+  assert.match(html, /aria-current="page"/);
+  assert.match(page, /documentationSections = navigation\.flatMap/);
+  assert.match(page, /window\.scrollTo\(\{ top: Math\.max\(0, top\), left: 0/);
+  assert.match(page, /rel="prev"/);
+  assert.match(page, /rel="next"/);
 
   const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map(match => match[1]);
   assert.equal(new Set(ids).size, ids.length, "duplicate HTML ids");
@@ -157,8 +165,12 @@ test("uses a restrained light-first Graaly Docs visual language", async () => {
   assert.match(css, /restrained documentation chrome/);
   assert.match(css, /:root\[data-theme="dark"\]/);
   assert.match(css, /font-size: clamp\(34px, 9vw, 46px\)/);
+  assert.match(css, /--code: #f6f5f8/);
+  assert.match(css, /:root:not\(\[data-theme="dark"\]\) \.academy-editor/);
+  assert.match(css, /\.section-pager/);
   assert.doesNotMatch(html, /class="hero-code"/);
   assert.doesNotMatch(html, /class="hero-runtime-map"/);
+  assert.doesNotMatch(html, /class="brand-mark"/);
   assert.match(css, /\.doc-section\.academy-section/);
 });
 
@@ -556,8 +568,8 @@ test("teaches native language constructs and keeps server and browser environmen
   const pythonSdk = await readFile(runtimeFile("sdk/python/graaly/_core.pyi"), "utf8");
 
   assert.match(html, /Learn the language, not a Graaly dialect/);
-  assert.match(html, /The server runtime has no DOM; GraalyBoard provides a real one/);
-  assert.match(html, /browser globals such as <code>window<\/code>, <code>document<\/code>/);
+  assert.match(html, /what only exists in a browser or Node\.js environment/);
+  assert.match(html, /Website boards are coming soon/);
   assert.match(page, /async · await/);
   assert.match(page, /match · case/);
   assert.match(page, /try · except · finally · raise/);
@@ -585,7 +597,7 @@ test("teaches native language constructs and keeps server and browser environmen
   assert.match(css, /\.learning-layout/);
 });
 
-test("documents and types real DOM website boards end to end", async () => {
+test("keeps experimental website boards outside the stable documentation surface", async () => {
   const response = await render();
   const html = await response.text();
   const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
@@ -605,15 +617,10 @@ test("documents and types real DOM website boards end to end", async () => {
     "utf8",
   );
 
-  assert.match(html, /Buttons, inputs, textareas, checkboxes, ranges, selects, forms, custom controls and mouse-wheel/);
-  assert.match(html, /mouse wheel/);
-  assert.match(html, /scroll-pixels-per-step/);
-  assert.match(html, /data-graaly-board/);
-  assert.match(html, /unsafe-eval/);
-  assert.match(html, /LIVE DOM SAMPLE/);
-  assert.match(html, /<select/);
-  assert.match(html, /type="checkbox"/);
-  assert.match(html, /Board nickname/);
+  assert.match(html, /Website boards are coming soon/);
+  assert.match(html, /planned, not available in the current release/);
+  assert.doesNotMatch(html, /LIVE DOM SAMPLE/);
+  assert.doesNotMatch(html, /Buttons, inputs, textareas, checkboxes/);
   assert.match(page, /document\.querySelector<HTMLSelectElement>/);
   assert.match(page, /graaly\.onState<PanelData>/);
   assert.match(page, /graaly\.send\(\\"teleport\\"/);
@@ -629,7 +636,7 @@ test("documents and types real DOM website boards end to end", async () => {
   assert.match(pythonSdk, /class _Boards:/);
   assert.match(javaBridge, /publishWebState/);
   assert.match(javaBridge, /onWebMessage/);
-  assert.match(css, /\.board-live-demo/);
+  assert.match(css, /\.availability-note/);
   assert.match(css, /@media \(max-width: 620px\)/);
 });
 
@@ -748,7 +755,7 @@ test("ships a complete 36-lesson Graaly Academy with an honest interactive playg
   assert.match(html, /36 long-form lessons/);
   assert.match(html, /Minecraft React lab/);
   assert.match(html, /FastAPI lifecycle lab/);
-  assert.match(html, /Hard lab/);
+  assert.doesNotMatch(html, /Hard lab|Definition of done/);
   assert.equal((data.match(/\n\s+number: \d+,/g) ?? []).length, 36);
   for (const concept of [
     "State snapshot",
