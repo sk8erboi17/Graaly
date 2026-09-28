@@ -1,11 +1,13 @@
 import latestConstants from "./generated/latest-constants.json" with { type: "json" };
 
-export type GuideLanguage = "js" | "ts" | "py" | "java";
+export type GuideLanguage = "js" | "ts" | "py" | "c" | "java";
+export type AuthoredGuideLanguage = Exclude<GuideLanguage, "c">;
 export type GuideCatalogKind = "bukkit" | "support" | "wrappers" | "packets";
 
 export type GuideOperation = {
   native: string;
   python: string;
+  c: string;
   java: string;
 };
 
@@ -19,7 +21,7 @@ export type GuideTopic = {
   input: string;
   output: string;
   operations: readonly GuideOperation[];
-  code: Record<GuideLanguage, string>;
+  code: Record<AuthoredGuideLanguage, string>;
   javaEquivalent: string;
   flags?: readonly string[];
   note?: string;
@@ -36,7 +38,7 @@ function nativeCode(
   pythonImports: readonly string[],
   pythonLines: readonly string[],
   javaLines: readonly string[],
-): Record<GuideLanguage, string> {
+): Record<AuthoredGuideLanguage, string> {
   return {
     js: [
       `import { ${typeScriptImports.join(", ")} } from "graaly";`,
@@ -57,7 +59,70 @@ function nativeCode(
   };
 }
 
-const op = (native: string, python: string, java: string): GuideOperation => ({ native, python, java });
+function cOperation(native: string, java: string): string {
+  const value = native.trim();
+
+  const direct: Array<[RegExp, string]> = [
+    [/^commands\.on\(([^,]+),\s*handler\)$/, "graaly_commands_on($1, handler)"],
+    [/^commands\.complete\(([^,]+),\s*handler\)$/, "graaly_commands_complete_on($1, completer)"],
+    [/^commands\.dispatch\(([^,]+),\s*([^)]+)\)$/, "graaly_commands_dispatch(graaly_value_handle($1), $2, &dispatched)"],
+    [/^tasks\.run\(callback\)$/, "graaly_tasks_run(callback)"],
+    [/^tasks\.later\(delay,\s*callback\)$/, "graaly_tasks_later(delay, callback)"],
+    [/^tasks\.repeat\(delay,\s*period,\s*callback\)$/, "graaly_tasks_repeat(delay, period, callback)"],
+    [/^tasks\.runAsync\(callback\)$/, "graaly_tasks_run_async(callback)"],
+    [/^tasks\.cancel\(task\)$/, "graaly_tasks_cancel(task_id)"],
+    [/^tasks\.sleep\(seconds\)$/, "graaly_ticks(seconds)"],
+    [/^players\.online\(\)$/, "graaly_players_online(&players)"],
+    [/^players\.get\(([^)]+)\)$/, "graaly_players_get($1, &player)"],
+    [/^players\.exact\(([^)]+)\)$/, "graaly_players_exact($1, &player)"],
+    [/^players\.isPlayer\(([^)]+)\)$/, "graaly_sender_as_player($1) != 0"],
+    [/^players\.broadcast\(([^)]+)\)$/, "graaly_players_broadcast($1)"],
+    [/^worlds\.all\(\)$/, "graaly_worlds_all(&worlds)"],
+    [/^worlds\.get\(([^)]+)\)$/, "graaly_worlds_get($1, &world)"],
+    [/^packets\.send\(([^,]+),\s*([^)]+)\)$/, "graaly_packets_send($1, $2)"],
+    [/^packets\.sendToAll\(([^)]+)\)$/, "graaly_packets_send_to_all($1)"],
+    [/^packets\.receive\(([^,]+),\s*([^)]+)\)$/, "graaly_packets_receive($1, $2)"],
+    [/^packets\.user\(([^)]+)\)$/, "graaly_packets_user($1, &user)"],
+    [/^packets\.clientVersion\(([^)]+)\)$/, "graaly_packets_client_version($1, &version)"],
+    [/^packets\.ping\(([^)]+)\)$/, "graaly_packets_ping($1, &ping)"],
+  ];
+  for (const [pattern, replacement] of direct) {
+    if (pattern.test(value)) return value.replace(pattern, replacement);
+  }
+
+  if (value.startsWith("packets.onReceive(")) {
+    return "graaly_packets_on_receive(packet_type, \"NORMAL\", on_packet, &binding)";
+  }
+  if (value.startsWith("packets.onSend(")) {
+    return "graaly_packets_on_send(packet_type, \"NORMAL\", on_packet, &binding)";
+  }
+  if (value.startsWith("events.on(")) {
+    return "graaly_events_on_type(event_type, \"NORMAL\", false, on_event)";
+  }
+  if (value.includes(".sendMessage(")) {
+    return "graaly_sender_send_message(player_handle, message)";
+  }
+  if (/^[A-Za-z_$][\w$]*\.[A-Za-z_$][\w$]*$/.test(value)) {
+    const [, property] = value.split(".", 2);
+    return `graaly_get(object_handle, "${property}", &value)`;
+  }
+  if (value.includes("=") && value.includes(".")) {
+    return "graaly_set(object_handle, member_name, value)";
+  }
+  if (/^[A-Za-z_$][\w$]*\.[A-Za-z_$][\w$]*\(/.test(value)) {
+    const match = value.match(/^[^.]+\.([A-Za-z_$][\w$]*)/);
+    if (match) return `graaly_call(object_handle, "${match[1]}", args, argc, &result)`;
+  }
+
+  return `/* C: ${java.replaceAll("*/", "* /")} */`;
+}
+
+const op = (native: string, python: string, java: string, c = cOperation(native, java)): GuideOperation => ({
+  native,
+  python,
+  c,
+  java,
+});
 
 export const commandTopics: readonly GuideTopic[] = [
   {
@@ -1316,8 +1381,28 @@ export const packetTopics: readonly GuideTopic[] = [
 // Keep this exported helper available to tests without duplicating display rules.
 export function guideOperationForLanguage(operation: GuideOperation, language: GuideLanguage) {
   if (language === "py") return operation.python;
+  if (language === "c") return operation.c;
   if (language === "java") return operation.java;
   return operation.native;
+}
+
+export function cGuideCode(topic: GuideTopic): string {
+  const lines = [
+    "#include <graaly/graaly.h>",
+    "",
+    `/* ${topic.title} */`,
+    "/* Key Graaly C calls for this workflow: */",
+    ...topic.operations.map(operation => {
+      const selected = operation.c.trim();
+      if (selected.startsWith("/*")) return selected;
+      return selected.endsWith(";") ? selected : `${selected};`;
+    }),
+  ];
+
+  if (topic.note) {
+    lines.push("", `/* Important: ${topic.note.replaceAll("*/", "* /")} */`);
+  }
+  return lines.join("\n");
 }
 
 export const guideTopicCount = [

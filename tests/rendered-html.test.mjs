@@ -10,6 +10,7 @@ import {
 } from "../app/generated-api-reference.ts";
 import { bukkitEventCatalog } from "../app/generated-events.ts";
 import {
+  cGuideCode,
   commandTopics,
   entityTopics,
   guideTopicCount,
@@ -461,7 +462,7 @@ test("explains what events do before showing code", async () => {
   }
 });
 
-test("provides useful event examples for TypeScript, JavaScript, Python, and Java", async () => {
+test("provides useful event examples for TypeScript, JavaScript, Python, C, and Java", async () => {
   const source = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
   assert.match(source, /events\.on\(BlockBreakEvent/);
   assert.match(source, /@event\(BlockBreakEvent\)/);
@@ -473,6 +474,9 @@ test("provides useful event examples for TypeScript, JavaScript, Python, and Jav
   assert.match(source, /@event\(AsyncPlayerChatEvent\)/);
   assert.match(source, /public void protectDiamondOre\(BlockBreakEvent event\)/);
   assert.match(source, /event\.setExpToDrop\(0\)/);
+  assert.match(source, /graaly_events_on_type/);
+  assert.match(source, /graaly_get\(event,/);
+  assert.match(source, /graaly_set\(event,/);
   assert.match(source, /JAVA EQUIVALENT/);
   assert.match(source, /genericEventExample/);
 });
@@ -640,6 +644,10 @@ test("uses the event-style browser for every core developer workflow", async () 
   for (const topic of [...commandTopics, ...playerTopics, ...worldTopics, ...entityTopics, ...packetTopics]) {
     assert.ok(html.includes(topic.title), `${topic.title} is not discoverable in its guide browser`);
     assert.ok(topic.code.js.length > 0 && topic.code.ts.length > 0 && topic.code.py.length > 0 && topic.code.java.length > 0);
+    const cCode = cGuideCode(topic);
+    assert.match(cCode, /#include <graaly\/graaly\.h>/);
+    assert.ok(cCode.includes("graaly_") || cCode.includes("/* C:"), `${topic.title} has no C correspondence`);
+    assert.ok(topic.operations.every(operation => operation.c.length > 0), `${topic.title} has an operation without C mapping`);
     assert.ok(topic.javaEquivalent.length > 0, `${topic.title} has no Java correspondence`);
   }
   assert.match(html, /WHEN TO USE IT/);

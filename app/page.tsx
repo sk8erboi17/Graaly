@@ -22,6 +22,7 @@ import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "reac
 import { bukkitEventCatalog } from "./generated-events";
 import { catalogCounts } from "./generated-catalog-meta";
 import {
+  cGuideCode,
   commandTopics,
   entityTopics,
   guideOperationForLanguage,
@@ -126,6 +127,7 @@ const guideLanguages: Array<{ id: GuideLanguage; label: string; short: string }>
   { id: "js", label: "JavaScript", short: "JS" },
   { id: "ts", label: "TypeScript", short: "TS" },
   { id: "py", label: "Python", short: "PY" },
+  { id: "c", label: "C / WebAssembly", short: "C" },
   { id: "java", label: "Java equivalent", short: "JAVA" },
 ];
 
@@ -1202,6 +1204,31 @@ const boardBridgeCode: Record<GuideLanguage, string> = {
     "    if message.type == \"teleport\":",
     "        destination = message.data[\"destination\"]",
     "        # Validate it, then teleport message.player.",
+  ].join("\n"),
+  c: [
+    "#include <graaly/graaly.h>",
+    "",
+    "static graaly_value_t on_board_message(size_t argc, const graaly_value_t *argv) {",
+    "    (void) argc;",
+    "    (void) argv;",
+    "    /* Parse/validate the message payload, then act on the player handle. */",
+    "    return graaly_value_null();",
+    "}",
+    "",
+    "static void on_join(graaly_handle_t event) {",
+    "    graaly_value_t player = graaly_value_null();",
+    "    if (graaly_get(event, \"player\", &player) != 0 || player.kind != GRAALY_VALUE_HANDLE) return;",
+    "    graaly_boards_state(",
+    "        \"control-panel\", player.a,",
+    "        \"{\\\"online\\\":42,\\\"notice\\\":\\\"Choose an action\\\"}\"",
+    "    );",
+    "    graaly_handle_release(player.a);",
+    "}",
+    "",
+    "void graaly_on_enable(void) {",
+    "    graaly_events_on_type(\"PlayerJoinEvent\", \"NORMAL\", false, on_join);",
+    "    graaly_boards_on_message(\"control-panel\", on_board_message);",
+    "}",
   ].join("\n"),
   java: [
     "GraalyBoardApi boards = GraalyBoardApi.get();",
@@ -2560,6 +2587,33 @@ function javaEventExample(entry: BukkitEventEntry) {
 function genericEventExample(entry: BukkitEventEntry, language: GuideLanguage) {
   if (language === "java") return javaEventExample(entry);
   const property = entry.properties.find(candidate => candidate.name !== "cancelled") ?? entry.properties[0];
+  if (language === "c") {
+    return [
+      "#include <graaly/graaly.h>",
+      "",
+      `static void on_${snakeCase(entry.name.replace(/Event$/, ""))}(graaly_handle_t event) {`,
+      ...(property
+        ? [
+            "    graaly_value_t value = graaly_value_null();",
+            `    if (graaly_get(event, "${property.name}", &value) == 0) {`,
+            `        graaly_log(GRAALY_LOG_INFO, "${entry.name} fired");`,
+            "        if (value.kind == GRAALY_VALUE_HANDLE) graaly_handle_release(value.a);",
+            "    }",
+          ]
+        : [`    graaly_log(GRAALY_LOG_INFO, "${entry.name} fired");`]),
+      ...(entry.cancellable
+        ? [
+            "    /* Stop the action when needed: */",
+            "    /* graaly_set(event, \"cancelled\", graaly_value_bool(true)); */",
+          ]
+        : []),
+      "}",
+      "",
+      "void graaly_on_enable(void) {",
+      `    graaly_events_on_type("${entry.name}", "NORMAL", false, on_${snakeCase(entry.name.replace(/Event$/, ""))});`,
+      "}",
+    ].join("\n");
+  }
   const cancellation = entry.cancellable
     ? language === "py" ? ["    # event.cancelled = True  # stop the game action"] : ["  // event.cancelled = true; // stop the game action"]
     : [];
@@ -2588,6 +2642,7 @@ function genericEventExample(entry: BukkitEventEntry, language: GuideLanguage) {
 }
 
 function eventExample(entry: BukkitEventEntry, language: GuideLanguage) {
+  if (language === "c") return genericEventExample(entry, language);
   if (entry.name === "PlayerJoinEvent") {
     if (language === "java") return [
       "@EventHandler",
@@ -4130,7 +4185,7 @@ function GuideExplorer({
             </div>
             <CodeBlock
               accent={language}
-              code={selected.code[language]}
+              code={language === "c" ? cGuideCode(selected) : selected.code[language]}
               label={`${selected.id}.${language === "py" ? "py" : language === "java" ? "java" : language}`}
             />
             {selected.note && <p className="guide-note"><strong>Important:</strong> {selected.note}</p>}
@@ -4158,6 +4213,11 @@ function eventPropertyName(
   if (language === "java") return writable
     ? property.javaWrite ?? "read-only"
     : property.javaRead;
+  if (language === "c") {
+    return writable
+      ? `graaly_set(event, "${property.name}", value)`
+      : `graaly_get(event, "${property.name}", &value)`;
+  }
   return language === "py" ? property.pythonName : property.name;
 }
 
@@ -4308,7 +4368,7 @@ function EventExplorer() {
               {selected.properties.map(property => (
                 <code key={property.name}>
                   <span>{eventPropertyName(property, language)}</span>
-                  <small>{language === "java" ? property.javaType : language === "py" ? property.pythonType : property.typeScriptType}</small>
+                  <small>{language === "java" ? property.javaType : language === "py" ? property.pythonType : language === "c" ? "graaly_value_t" : property.typeScriptType}</small>
                   {property.writable && <b>editable</b>}
                 </code>
               ))}

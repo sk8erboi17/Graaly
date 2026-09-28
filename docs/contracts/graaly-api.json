@@ -13,10 +13,60 @@
     "unsupportedError": "GraalyUnsupportedFeature",
     "featureDiscovery": "compatibility.supports"
   },
+  "cAbi": {
+    "version": 1,
+    "target": "wasm32-wasi",
+    "bundleSuffix": ".cplugin",
+    "mainSuffix": ".wasm",
+    "sdk": "sdk/c",
+    "design": "educational-low-level",
+    "hostObjects": "scoped-uint64-handles",
+    "developerOwnsDomainStructs": true,
+    "teachingMemory": {
+      "redZoneBytes": 16,
+      "canary": "DEADBEEF",
+      "logicalFreePoison": "DEADBEEF",
+      "detects": [
+        "buffer-underflow",
+        "buffer-overflow",
+        "double-free",
+        "invalid-pointer"
+      ],
+      "quarantineUntilDisable": true
+    },
+    "fullGeneratedApiParity": true,
+    "catalog": {
+      "types": 1421,
+      "canonicalClasses": 1411,
+      "memberReferences": 63044,
+      "uniqueMemberNames": 9704,
+      "constants": 4629,
+      "constantNamespaces": 13,
+      "generatedHeader": "sdk/c/include/graaly/catalog.h",
+      "packetWrappers": 289,
+      "packetSupportTypes": 533,
+      "packetTypePaths": 288,
+      "packetMemberNames": 2926
+    }
+  },
   "constantCatalog": {
     "file": "latest-constants.json",
     "canonicalApiVersion": "26.2",
-    "directExports": ["Materials", "Sounds", "Particles", "DyeColors", "EntityTypes", "Attributes", "GameModes", "Difficulties", "WorldEnvironments", "WorldTypes", "Biomes", "PotionEffects", "Enchantments"]
+    "directExports": [
+      "Materials",
+      "Sounds",
+      "Particles",
+      "DyeColors",
+      "EntityTypes",
+      "Attributes",
+      "GameModes",
+      "Difficulties",
+      "WorldEnvironments",
+      "WorldTypes",
+      "Biomes",
+      "PotionEffects",
+      "Enchantments"
+    ]
   },
   "apiCatalog": {
     "canonicalApiVersion": "26.2",
@@ -27,74 +77,434 @@
   },
   "modules": {
     "events": {
-      "javascript": ["on", "listen"],
-      "typescript": ["on", "listen"],
-      "python": ["event", "on"]
+      "javascript": [
+        "on",
+        "listen"
+      ],
+      "typescript": [
+        "on",
+        "listen"
+      ],
+      "python": [
+        "event",
+        "on"
+      ],
+      "c": [
+        "graaly_events_on_type",
+        "graaly_events_listen"
+      ]
     },
     "commands": {
-      "javascript": ["on", "handle", "complete", "completer", "dispatch"],
-      "typescript": ["on", "handle", "complete", "completer", "dispatch"],
-      "python": ["command", "tab_complete"]
+      "javascript": [
+        "on",
+        "handle",
+        "complete",
+        "completer",
+        "dispatch"
+      ],
+      "typescript": [
+        "on",
+        "handle",
+        "complete",
+        "completer",
+        "dispatch"
+      ],
+      "python": [
+        "command",
+        "tab_complete"
+      ],
+      "c": [
+        "graaly_commands_on",
+        "graaly_commands_handle",
+        "graaly_commands_complete",
+        "graaly_commands_completer",
+        "graaly_commands_dispatch"
+      ]
     },
     "tasks": {
-      "javascript": ["ticks", "run", "later", "repeat", "runAsync", "laterAsync", "repeatAsync", "cancel", "delay", "sleep"],
-      "typescript": ["ticks", "run", "later", "repeat", "runAsync", "laterAsync", "repeatAsync", "cancel", "delay", "sleep"],
-      "python": ["create_task", "sleep_ticks", "to_thread", "is_main_thread"]
+      "javascript": [
+        "ticks",
+        "run",
+        "later",
+        "repeat",
+        "runAsync",
+        "laterAsync",
+        "repeatAsync",
+        "cancel",
+        "delay",
+        "sleep"
+      ],
+      "typescript": [
+        "ticks",
+        "run",
+        "later",
+        "repeat",
+        "runAsync",
+        "laterAsync",
+        "repeatAsync",
+        "cancel",
+        "delay",
+        "sleep"
+      ],
+      "python": [
+        "create_task",
+        "sleep_ticks",
+        "to_thread",
+        "is_main_thread"
+      ],
+      "c": [
+        "graaly_ticks",
+        "graaly_tasks_run",
+        "graaly_tasks_later",
+        "graaly_tasks_repeat",
+        "graaly_tasks_run_async",
+        "graaly_tasks_later_async",
+        "graaly_tasks_repeat_async",
+        "graaly_tasks_cancel",
+        "graaly_tasks_delay",
+        "graaly_tasks_sleep",
+        "graaly_tasks_is_main_thread"
+      ]
     },
     "config": {
-      "javascript": ["get", "set", "contains", "save", "reload"],
-      "typescript": ["get", "set", "contains", "save", "reload"],
-      "python": ["get", "set", "contains", "save", "reload"]
+      "javascript": [
+        "get",
+        "set",
+        "contains",
+        "save",
+        "reload"
+      ],
+      "typescript": [
+        "get",
+        "set",
+        "contains",
+        "save",
+        "reload"
+      ],
+      "python": [
+        "get",
+        "set",
+        "contains",
+        "save",
+        "reload"
+      ],
+      "c": [
+        "graaly_config_get",
+        "graaly_config_set",
+        "graaly_config_contains",
+        "graaly_config_save",
+        "graaly_config_reload"
+      ]
     },
     "players": {
-      "javascript": ["online", "get", "exact", "isPlayer", "broadcast"],
-      "typescript": ["online", "get", "exact", "isPlayer", "broadcast"],
-      "python": ["online", "get", "exact", "is_player", "broadcast"]
+      "javascript": [
+        "online",
+        "get",
+        "exact",
+        "isPlayer",
+        "broadcast"
+      ],
+      "typescript": [
+        "online",
+        "get",
+        "exact",
+        "isPlayer",
+        "broadcast"
+      ],
+      "python": [
+        "online",
+        "get",
+        "exact",
+        "is_player",
+        "broadcast"
+      ],
+      "c": [
+        "graaly_players_online",
+        "graaly_players_get",
+        "graaly_players_exact",
+        "graaly_players_is_player",
+        "graaly_players_broadcast"
+      ]
     },
     "worlds": {
-      "javascript": ["all", "get", "location", "create", "generator", "populator", "unload"],
-      "typescript": ["all", "get", "location", "create", "generator", "populator", "unload"],
-      "python": ["all", "get", "location", "create", "generator", "populator", "unload"]
+      "javascript": [
+        "all",
+        "get",
+        "location",
+        "create",
+        "generator",
+        "populator",
+        "unload"
+      ],
+      "typescript": [
+        "all",
+        "get",
+        "location",
+        "create",
+        "generator",
+        "populator",
+        "unload"
+      ],
+      "python": [
+        "all",
+        "get",
+        "location",
+        "create",
+        "generator",
+        "populator",
+        "unload"
+      ],
+      "c": [
+        "graaly_worlds_all",
+        "graaly_worlds_get",
+        "graaly_worlds_location",
+        "graaly_worlds_create",
+        "graaly_worlds_generator",
+        "graaly_worlds_populator",
+        "graaly_worlds_unload"
+      ]
     },
     "entities": {
-      "javascript": ["type", "attributeType", "spawn", "configure", "attribute", "remove"],
-      "typescript": ["type", "attributeType", "spawn", "configure", "attribute", "remove"],
-      "python": ["type", "attribute_type", "spawn", "configure", "attribute", "remove"]
+      "javascript": [
+        "type",
+        "attributeType",
+        "spawn",
+        "configure",
+        "attribute",
+        "remove"
+      ],
+      "typescript": [
+        "type",
+        "attributeType",
+        "spawn",
+        "configure",
+        "attribute",
+        "remove"
+      ],
+      "python": [
+        "type",
+        "attribute_type",
+        "spawn",
+        "configure",
+        "attribute",
+        "remove"
+      ],
+      "c": [
+        "graaly_entities_type",
+        "graaly_entities_attribute_type",
+        "graaly_entities_spawn",
+        "graaly_entities_configure",
+        "graaly_entities_attribute",
+        "graaly_entities_remove"
+      ]
     },
     "http": {
-      "javascript": ["request", "get", "post", "put", "delete"],
-      "typescript": ["request", "get", "post", "put", "delete"],
-      "python": ["request", "get", "post", "put", "delete"]
+      "javascript": [
+        "request",
+        "get",
+        "post",
+        "put",
+        "delete"
+      ],
+      "typescript": [
+        "request",
+        "get",
+        "post",
+        "put",
+        "delete"
+      ],
+      "python": [
+        "request",
+        "get",
+        "post",
+        "put",
+        "delete"
+      ],
+      "c": [
+        "graaly_http_request",
+        "graaly_http_get",
+        "graaly_http_post",
+        "graaly_http_put",
+        "graaly_http_delete"
+      ]
     },
     "websocket": {
-      "javascript": ["connect"],
-      "typescript": ["connect"],
-      "python": ["connect"]
+      "javascript": [
+        "connect"
+      ],
+      "typescript": [
+        "connect"
+      ],
+      "python": [
+        "connect"
+      ],
+      "c": [
+        "graaly_websocket_connect"
+      ]
     },
     "ui": {
-      "javascript": ["render", "clear", "dismiss"],
-      "typescript": ["render", "clear", "dismiss"],
-      "python": ["render", "clear", "dismiss"]
+      "javascript": [
+        "render",
+        "clear",
+        "dismiss"
+      ],
+      "typescript": [
+        "render",
+        "clear",
+        "dismiss"
+      ],
+      "python": [
+        "render",
+        "clear",
+        "dismiss"
+      ],
+      "c": [
+        "graaly_ui_render",
+        "graaly_ui_clear",
+        "graaly_ui_dismiss"
+      ]
     },
     "boards": {
-      "javascript": ["state", "onMessage", "listen", "refresh"],
-      "typescript": ["state", "onMessage", "listen", "refresh"],
-      "python": ["state", "on_message", "refresh"]
+      "javascript": [
+        "state",
+        "onMessage",
+        "listen",
+        "refresh"
+      ],
+      "typescript": [
+        "state",
+        "onMessage",
+        "listen",
+        "refresh"
+      ],
+      "python": [
+        "state",
+        "on_message",
+        "refresh"
+      ],
+      "c": [
+        "graaly_boards_state",
+        "graaly_boards_on_message",
+        "graaly_boards_listen",
+        "graaly_boards_refresh"
+      ]
     },
     "packets": {
-      "javascript": ["create", "wrap", "onReceive", "listenReceive", "onSend", "listenSend", "send", "sendToAll", "receive", "user", "clientVersion", "ping"],
-      "typescript": ["create", "wrap", "onReceive", "listenReceive", "onSend", "listenSend", "send", "sendToAll", "receive", "user", "clientVersion", "ping"],
-      "python": ["create", "wrap", "on_receive", "listen_receive", "on_send", "listen_send", "send", "send_to_all", "receive", "user", "client_version", "ping"]
+      "javascript": [
+        "create",
+        "wrap",
+        "onReceive",
+        "listenReceive",
+        "onSend",
+        "listenSend",
+        "send",
+        "sendToAll",
+        "receive",
+        "user",
+        "clientVersion",
+        "ping"
+      ],
+      "typescript": [
+        "create",
+        "wrap",
+        "onReceive",
+        "listenReceive",
+        "onSend",
+        "listenSend",
+        "send",
+        "sendToAll",
+        "receive",
+        "user",
+        "clientVersion",
+        "ping"
+      ],
+      "python": [
+        "create",
+        "wrap",
+        "on_receive",
+        "listen_receive",
+        "on_send",
+        "listen_send",
+        "send",
+        "send_to_all",
+        "receive",
+        "user",
+        "client_version",
+        "ping"
+      ],
+      "c": [
+        "graaly_packets_wrapper_type",
+        "graaly_packets_named_type",
+        "graaly_packets_packet_type",
+        "graaly_packets_create",
+        "graaly_packets_wrap",
+        "graaly_packets_on_receive",
+        "graaly_packets_listen_receive",
+        "graaly_packets_on_send",
+        "graaly_packets_listen_send",
+        "graaly_packets_send",
+        "graaly_packets_send_to_all",
+        "graaly_packets_receive",
+        "graaly_packets_user",
+        "graaly_packets_client_version",
+        "graaly_packets_ping"
+      ]
     },
     "compatibility": {
-      "javascript": ["contractVersion", "minimumGameVersion", "minecraftVersion", "serverVersion", "supports", "require", "typeAvailable", "material"],
-      "typescript": ["contractVersion", "minimumGameVersion", "minecraftVersion", "serverVersion", "supports", "require", "typeAvailable", "material"],
-      "python": ["contract_version", "minimum_game_version", "minecraft_version", "server_version", "supports", "require", "type_available", "material"]
+      "javascript": [
+        "contractVersion",
+        "minimumGameVersion",
+        "minecraftVersion",
+        "serverVersion",
+        "supports",
+        "require",
+        "typeAvailable",
+        "material"
+      ],
+      "typescript": [
+        "contractVersion",
+        "minimumGameVersion",
+        "minecraftVersion",
+        "serverVersion",
+        "supports",
+        "require",
+        "typeAvailable",
+        "material"
+      ],
+      "python": [
+        "contract_version",
+        "minimum_game_version",
+        "minecraft_version",
+        "server_version",
+        "supports",
+        "require",
+        "type_available",
+        "material"
+      ],
+      "c": [
+        "graaly_compat_contract_version",
+        "graaly_compat_minimum_game_version",
+        "graaly_compat_minecraft_version",
+        "graaly_compat_server_version",
+        "graaly_compat_supports",
+        "graaly_compat_require",
+        "graaly_type_available",
+        "graaly_compat_material"
+      ]
     },
     "diagnostics": {
-      "javascript": ["verify"],
-      "typescript": ["verify"],
-      "python": ["verify"]
+      "javascript": [
+        "verify"
+      ],
+      "typescript": [
+        "verify"
+      ],
+      "python": [
+        "verify"
+      ],
+      "c": [
+        "graaly_diagnostics_verify"
+      ]
     }
   },
   "capabilities": {
@@ -114,12 +524,81 @@
     "dialogs": "1.21.6"
   },
   "canonicalConstants": {
-    "Material": ["GRASS_BLOCK", "OAK_LOG", "OAK_PLANKS", "OAK_LEAVES", "OAK_SAPLING", "OAK_SIGN", "OAK_DOOR", "BRICKS", "MELON", "LILY_PAD", "CRAFTING_TABLE", "STONE_BRICKS"],
-    "EntityType": ["ZOMBIFIED_PIGLIN", "MOOSHROOM", "SNOW_GOLEM", "LEASH_KNOT"],
-    "Attribute": ["MAX_HEALTH", "FOLLOW_RANGE", "KNOCKBACK_RESISTANCE", "MOVEMENT_SPEED", "FLYING_SPEED", "ATTACK_DAMAGE", "ATTACK_KNOCKBACK", "ATTACK_SPEED", "ARMOR", "ARMOR_TOUGHNESS", "FALL_DAMAGE_MULTIPLIER", "LUCK", "MAX_ABSORPTION", "SAFE_FALL_DISTANCE", "SCALE", "STEP_HEIGHT", "GRAVITY", "JUMP_STRENGTH", "BURNING_TIME", "CAMERA_DISTANCE", "EXPLOSION_KNOCKBACK_RESISTANCE", "MOVEMENT_EFFICIENCY", "OXYGEN_BONUS", "WATER_MOVEMENT_EFFICIENCY", "TEMPT_RANGE", "BLOCK_INTERACTION_RANGE", "ENTITY_INTERACTION_RANGE", "BLOCK_BREAK_SPEED", "MINING_EFFICIENCY", "SNEAKING_SPEED", "SUBMERGED_MINING_SPEED", "SWEEPING_DAMAGE_RATIO", "SPAWN_REINFORCEMENTS", "WAYPOINT_TRANSMIT_RANGE", "WAYPOINT_RECEIVE_RANGE", "AIR_DRAG_MODIFIER", "BELOW_NAME_DISTANCE", "BOUNCINESS", "FRICTION_MODIFIER", "NAME_TAG_DISTANCE"],
-    "DyeColor": ["LIGHT_GRAY"],
-    "MapCursorType": ["PLAYER"],
-    "PotionEffectType": ["STRENGTH"],
-    "Sound": ["ENTITY_PLAYER_LEVELUP", "BLOCK_NOTE_BLOCK_PLING", "ENTITY_EXPERIENCE_ORB_PICKUP"]
+    "Material": [
+      "GRASS_BLOCK",
+      "OAK_LOG",
+      "OAK_PLANKS",
+      "OAK_LEAVES",
+      "OAK_SAPLING",
+      "OAK_SIGN",
+      "OAK_DOOR",
+      "BRICKS",
+      "MELON",
+      "LILY_PAD",
+      "CRAFTING_TABLE",
+      "STONE_BRICKS"
+    ],
+    "EntityType": [
+      "ZOMBIFIED_PIGLIN",
+      "MOOSHROOM",
+      "SNOW_GOLEM",
+      "LEASH_KNOT"
+    ],
+    "Attribute": [
+      "MAX_HEALTH",
+      "FOLLOW_RANGE",
+      "KNOCKBACK_RESISTANCE",
+      "MOVEMENT_SPEED",
+      "FLYING_SPEED",
+      "ATTACK_DAMAGE",
+      "ATTACK_KNOCKBACK",
+      "ATTACK_SPEED",
+      "ARMOR",
+      "ARMOR_TOUGHNESS",
+      "FALL_DAMAGE_MULTIPLIER",
+      "LUCK",
+      "MAX_ABSORPTION",
+      "SAFE_FALL_DISTANCE",
+      "SCALE",
+      "STEP_HEIGHT",
+      "GRAVITY",
+      "JUMP_STRENGTH",
+      "BURNING_TIME",
+      "CAMERA_DISTANCE",
+      "EXPLOSION_KNOCKBACK_RESISTANCE",
+      "MOVEMENT_EFFICIENCY",
+      "OXYGEN_BONUS",
+      "WATER_MOVEMENT_EFFICIENCY",
+      "TEMPT_RANGE",
+      "BLOCK_INTERACTION_RANGE",
+      "ENTITY_INTERACTION_RANGE",
+      "BLOCK_BREAK_SPEED",
+      "MINING_EFFICIENCY",
+      "SNEAKING_SPEED",
+      "SUBMERGED_MINING_SPEED",
+      "SWEEPING_DAMAGE_RATIO",
+      "SPAWN_REINFORCEMENTS",
+      "WAYPOINT_TRANSMIT_RANGE",
+      "WAYPOINT_RECEIVE_RANGE",
+      "AIR_DRAG_MODIFIER",
+      "BELOW_NAME_DISTANCE",
+      "BOUNCINESS",
+      "FRICTION_MODIFIER",
+      "NAME_TAG_DISTANCE"
+    ],
+    "DyeColor": [
+      "LIGHT_GRAY"
+    ],
+    "MapCursorType": [
+      "PLAYER"
+    ],
+    "PotionEffectType": [
+      "STRENGTH"
+    ],
+    "Sound": [
+      "ENTITY_PLAYER_LEVELUP",
+      "BLOCK_NOTE_BLOCK_PLING",
+      "ENTITY_EXPERIENCE_ORB_PICKUP"
+    ]
   }
 }
