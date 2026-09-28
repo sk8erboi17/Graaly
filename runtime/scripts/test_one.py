@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Boot one isolated Spigot server and exercise both Graaly languages."""
+"""Boot one isolated Spigot server and exercise selected Graaly guest languages."""
 
 from __future__ import annotations
 
@@ -54,6 +54,14 @@ REQUIRED = {
     "GRAALY_MATRIX_PY_COMMAND",
     "GRAALY_MATRIX_PY_ENTITY",
     "GRAALY_MATRIX_PY_ATTRIBUTE",
+    "GRAALY_MATRIX_C_LOAD",
+    "GRAALY_MATRIX_C_ENABLE",
+    "GRAALY_MATRIX_C_COMPAT",
+    "GRAALY_MATRIX_C_CONSTANTS",
+    "GRAALY_MATRIX_C_MEMBER",
+    "GRAALY_MATRIX_C_TASK",
+    "GRAALY_MATRIX_C_COMMAND",
+    "GRAALY_MATRIX_C_ENTITY",
 }
 FATAL_SIGNALS = (
     "Fatal error trying to convert",
@@ -78,7 +86,11 @@ def main() -> int:
     parser.add_argument("server", type=Path)
     parser.add_argument("--timeout", type=int, default=240)
     parser.add_argument("--quiet", action="store_true")
-    parser.add_argument("--languages", choices=("both", "javascript", "python"), default="both")
+    parser.add_argument(
+        "--languages",
+        choices=("both", "all", "javascript", "python", "c"),
+        default="both",
+    )
     args = parser.parse_args()
 
     for path, label in ((args.server, "server"), (RUNTIME, "Graaly runtime"),
@@ -103,17 +115,21 @@ def main() -> int:
     (work / "plugins" / "Graaly" / "scripts").mkdir(parents=True)
     shutil.copy2(args.server, work / "server.jar")
     shutil.copy2(RUNTIME, work / "plugins" / RUNTIME.name)
-    enabled_javascript = args.languages in ("both", "javascript")
-    enabled_python = args.languages in ("both", "python")
+    enabled_javascript = args.languages in ("both", "all", "javascript")
+    enabled_python = args.languages in ("both", "all", "python")
+    enabled_c = args.languages in ("all", "c")
     bundles = []
     if enabled_javascript:
         bundles.append("MatrixJavaScript.jsplugin")
     if enabled_python:
         bundles.append("MatrixPython.pyplugin")
+    if enabled_c:
+        bundles.append("MatrixC.cplugin")
     required = {
         marker for marker in REQUIRED
         if (enabled_javascript and "_JS_" in marker)
         or (enabled_python and "_PY_" in marker)
+        or (enabled_c and "_C_" in marker)
     }
     for bundle in bundles:
         shutil.copytree(ROOT / "examples" / bundle,
@@ -134,6 +150,7 @@ def main() -> int:
             "  languages:\n"
             f"    javascript: {str(enabled_javascript).lower()}\n"
             f"    python: {str(enabled_python).lower()}\n"
+            f"    c: {str(enabled_c).lower()}\n"
             "  connect-timeout-seconds: 20\n"
             "  request-timeout-seconds: 180\n"
             "  retry-attempts: 2\n",
@@ -221,6 +238,8 @@ def main() -> int:
                     process.stdin.write("graalyjsprobe\n")
                 if enabled_python:
                     process.stdin.write("graalypyprobe\n")
+                if enabled_c:
+                    process.stdin.write("graalycprobe\n")
                 process.stdin.flush()
                 probes_sent = True
             elif required.issubset(observed_markers) and probes_sent and not reload_sent:
@@ -228,7 +247,7 @@ def main() -> int:
                 process.stdin.write("graaly reload\n")
                 process.stdin.flush()
                 reload_sent = True
-            elif reload_sent and "Graaly script plugin(s)." in joined and "Reloaded " in joined:
+            elif reload_sent and "Graaly guest plugin(s)." in joined and "Reloaded " in joined:
                 if completed_at is None:
                     completed_at = time.monotonic()
                 elif time.monotonic() - completed_at > 2:
@@ -266,7 +285,7 @@ def main() -> int:
         "java": java_feature,
         "runtimeMode": "preseeded-offline" if seeded_cache else "first-start-download",
         "downloadCount": sum("Downloading " in line for line in lines),
-        "reloadCommandCompleted": "Graaly script plugin(s)." in log and "Reloaded " in log,
+        "reloadCommandCompleted": "Graaly guest plugin(s)." in log and "Reloaded " in log,
         "exitCode": exit_code,
         "found": found,
         "missing": missing,
@@ -274,13 +293,15 @@ def main() -> int:
             count for count in (
                 log.count("GRAALY_MATRIX_JS_ENABLE") if enabled_javascript else None,
                 log.count("GRAALY_MATRIX_PY_ENABLE") if enabled_python else None,
+                log.count("GRAALY_MATRIX_C_ENABLE") if enabled_c else None,
             ) if count is not None
         ),
         "fatalSignals": fatal_signals,
         "passed": exit_code == 0 and not missing
                   and (not enabled_javascript or log.count("GRAALY_MATRIX_JS_ENABLE") >= 2)
                   and (not enabled_python or log.count("GRAALY_MATRIX_PY_ENABLE") >= 2)
-                  and "Graaly script plugin(s)." in log and "Reloaded " in log
+                  and (not enabled_c or log.count("GRAALY_MATRIX_C_ENABLE") >= 2)
+                  and "Graaly guest plugin(s)." in log and "Reloaded " in log
                   and not fatal_signals,
     }
     (work / "graaly-test.log").write_text(log, encoding="utf-8")

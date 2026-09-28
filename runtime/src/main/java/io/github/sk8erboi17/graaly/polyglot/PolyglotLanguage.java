@@ -5,7 +5,8 @@ import java.util.Locale;
 
 enum PolyglotLanguage {
     JAVASCRIPT("js", ".jsplugin", new String[]{".js", ".mjs"}),
-    PYTHON("python", ".pyplugin", new String[]{".py"});
+    PYTHON("python", ".pyplugin", new String[]{".py"}),
+    C("wasm", ".cplugin", new String[]{".wasm"});
 
     private final String id;
     private final String bundleSuffix;

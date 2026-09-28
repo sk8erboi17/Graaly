@@ -63,6 +63,11 @@ public final class GraalRuntimeInstaller {
                     "47e18d6524be9e2eee5dbd947e2cc8ff74ffdc68a9f5cc2b7c461e4030bc1976")
     );
 
+    private static final List<Artifact> WASM = List.of(
+            artifact("org.graalvm.wasm", "wasm-language", 3_004_012L,
+                    "c3dbf01311f17d8d0a5e6eadcc880e3f89bf4069749d6b170e18871e29e98d2c")
+    );
+
     private GraalRuntimeInstaller() {
     }
 
@@ -71,6 +76,7 @@ public final class GraalRuntimeInstaller {
         FileConfiguration config = plugin.getConfig();
         boolean javascript = config.getBoolean("runtime.languages.javascript", true);
         boolean python = config.getBoolean("runtime.languages.python", true);
+        boolean c = config.getBoolean("runtime.languages.c", true);
         boolean autoDownload = config.getBoolean("runtime.auto-download", true);
         int connectTimeout = bounded(config.getInt("runtime.connect-timeout-seconds", 20), 1, 120);
         int requestTimeout = bounded(config.getInt("runtime.request-timeout-seconds", 180), 10, 900);
@@ -86,11 +92,17 @@ public final class GraalRuntimeInstaller {
             languages.add("python");
             artifacts.addAll(PYTHON);
         }
+        if (c) {
+            languages.add("wasm");
+            artifacts.addAll(WASM);
+        }
         if (languages.isEmpty()) {
             throw new IllegalStateException(
                     "Enable at least one language in plugins/Graaly/config.yml");
         }
-        artifacts.addAll(SHARED);
+        if (javascript || python) {
+            artifacts.addAll(SHARED);
+        }
 
         Path runtimeRoot = plugin.getDataFolder().toPath()
                 .resolve("runtime").resolve(GRAAL_VERSION).toAbsolutePath().normalize();

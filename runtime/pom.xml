@@ -8,7 +8,7 @@
     <artifactId>graaly</artifactId>
     <version>1.0.0</version>
     <name>Graaly</name>
-    <description>Standalone GraalJS and GraalPy runtime for Graaly plugins.</description>
+    <description>Standalone GraalJS, GraalPy, and C/WebAssembly runtime for Graaly plugins.</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -66,6 +66,12 @@
         <dependency>
             <groupId>org.graalvm.polyglot</groupId>
             <artifactId>python-community</artifactId>
+            <version>${graalvm.version}</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.graalvm.polyglot</groupId>
+            <artifactId>wasm</artifactId>
             <version>${graalvm.version}</version>
             <type>pom</type>
         </dependency>
@@ -215,6 +221,7 @@
                                     <exclude>org.graalvm.tools:profiler-tool</exclude>
                                     <exclude>org.graalvm.shadowed:json</exclude>
                                     <exclude>org.graalvm.shadowed:xz</exclude>
+                                    <exclude>org.graalvm.wasm:wasm-language</exclude>
                                 </excludes>
                             </artifactSet>
                             <filters>

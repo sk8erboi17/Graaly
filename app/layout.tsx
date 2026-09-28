@@ -17,11 +17,11 @@ const graalyMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://sk8erboi17.github.io/Graaly/docs/"),
   title: {
-    default: "Graaly Docs: JavaScript, TypeScript, and Python plugins",
+    default: "Graaly Docs: JavaScript, TypeScript, Python, and C plugins",
     template: "%s · Graaly Docs",
   },
   description:
-    "Build Graaly plugins with one stable JavaScript, TypeScript, and Python API from Minecraft 1.7.10 through 26.2.",
+    "Build Graaly plugins in JavaScript, TypeScript, Python, and sandboxed C/WebAssembly from Minecraft 1.7.10 through 26.2.",
   icons: {
     icon: "graaly-logo-96.png",
     apple: "graaly-logo.png",
@@ -31,6 +31,8 @@ export const metadata: Metadata = {
     "Minecraft 1.7.10 to 26.2",
     "GraalJS",
     "GraalPy",
+    "GraalWasm",
+    "C WebAssembly",
     "TypeScript",
     "PacketEvents",
     "React renderer",
@@ -44,8 +46,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "Graaly: stable Minecraft plugins in TypeScript and Python",
-    description: "One version-independent Graaly API, React UI, FastAPI, PacketEvents, and website-board documentation.",
+    title: "Graaly: Minecraft plugins in TypeScript, Python, and C/WebAssembly",
+    description: "A stable Graaly scripting API plus an educational sandboxed C ABI, React UI, FastAPI, PacketEvents, and website-board documentation.",
     siteName: "Graaly Docs",
     images: [{
       url: "og.png",
@@ -56,8 +58,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Graaly: Minecraft plugins with TypeScript, JavaScript, and Python",
-    description: "Build plugins, native HTML/CSS and React game UI, Python services, and website boards in JavaScript, TypeScript, Python, and Java.",
+    title: "Graaly: Minecraft plugins with TypeScript, JavaScript, Python, and C",
+    description: "Build plugins in JavaScript, TypeScript, Python, and sandboxed C/WebAssembly, with Java shown as the host-side comparison.",
     images: ["og.png"],
   },
 };

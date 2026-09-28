@@ -5,6 +5,7 @@ runtime:
   languages:
     javascript: true
     python: true
+    c: true
   connect-timeout-seconds: 20
   request-timeout-seconds: 180
   retry-attempts: 2

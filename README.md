@@ -1,9 +1,10 @@
 # Graaly
 
-Graaly is a standalone Minecraft plugin runtime for JavaScript, TypeScript, and Python. It downloads release-pinned GraalJS and GraalPy language artifacts on first start, presents one stable language-native API from Minecraft 1.7.10 through 26.2, and translates version differences inside the runtime.
+Graaly is a standalone Minecraft plugin runtime for JavaScript, TypeScript, Python, and sandboxed C/WebAssembly. It downloads release-pinned Graal language artifacts on first start. All four surfaces resolve the same canonical Minecraft contract from 1.7.10 through 26.2; C exposes it through a deliberately low-level ABI that teaches real data layout, pointers, callbacks, ownership, and memory while Graaly translates host/server differences behind the boundary.
 
 - TypeScript and JavaScript import from `"graaly"`.
 - Python imports from `graaly`.
+- C includes `graaly/graaly.h`, defines its own domain structs, and compiles to a `.wasm` inside a `.cplugin` bundle.
 - No Java class paths or interop helpers are required in normal plugin code.
 - The public contract is generated from the 26.2 API and stays identical on every supported server.
 - Renamed types, constants, and equivalent mechanics are adapted internally.
@@ -21,10 +22,11 @@ Install these before starting the quick start:
 | Building Graaly | Maven 3.9 or newer |
 | JavaScript / TypeScript development | Node.js 22.13 or newer and npm |
 | Python tooling and FastAPI examples | Python 3.12 or newer |
+| C plugin development | Zig 0.16+ (reference toolchain), or Clang with a WASI SDK |
 | Historical launchers on modern Java | The matching `graaly-<version>-legacy-launcher-agent.jar` release asset |
 | Packet API, when used | PacketEvents 2.13.0 installed separately |
 
-GraalJS and GraalPy are **not embedded** in the Graaly plugin JAR. On first start Graaly downloads only the enabled, release-pinned language artifacts from Maven Central into `plugins/Graaly/runtime/25.2.4/`, verifies their exact size and SHA-256, and reuses that cache on later starts. The first online start therefore needs outbound HTTPS access unless an administrator pre-populates the verified cache. Node.js and system Python are development tools; they do not execute plugins inside the server. Vanilla server JARs do not provide a plugin loader and cannot load Graaly. No server, PacketEvents, GraalJS, or GraalPy JAR is redistributed by this project.
+GraalJS, GraalPy, and GraalWasm language implementations are **not embedded** in the Graaly plugin JAR. On first start Graaly downloads only the enabled, release-pinned language artifacts from Maven Central into `plugins/Graaly/runtime/25.2.4/`, verifies their exact size and SHA-256, and reuses that cache on later starts. The first online start therefore needs outbound HTTPS access unless an administrator pre-populates the verified cache. Node.js and system Python are development tools; they do not execute plugins inside the server. Vanilla server JARs do not provide a plugin loader and cannot load Graaly. No server, PacketEvents, GraalJS, or GraalPy JAR is redistributed by this project.
 
 Java 17 is the functional minimum for Graaly, not a promise that every game-server release can run on Java 17: use the JVM required by that server release. With the pinned Graal 25.2.4 runtime, Java 25 can use Graal's optimized execution path. Java 17–24 and Java 26 remain supported and pass the same API tests, but run guest code through Graal's interpreter fallback and can be slower. Graaly reports the fallback warning at startup instead of hiding that trade-off.
 
@@ -32,11 +34,12 @@ Java 17 is the functional minimum for Graaly, not a promise that every game-serv
 
 | Path | Purpose |
 |---|---|
-| [`runtime/`](runtime/) | Standalone Java 17+ runtime, GraalJS/GraalPy bootstraps, SDKs, contracts, examples, and matrix harness |
+| [`runtime/`](runtime/) | Standalone Java 17+ runtime, GraalJS/GraalPy/GraalWasm support, SDKs, contracts, examples, and matrix harness |
 | [`app/`](app/) | Responsive Graaly documentation and searchable API reference |
 | [`runtime/sdk/typescript/`](runtime/sdk/typescript/) | TypeScript/JavaScript package imported as `graaly` |
 | [`runtime/sdk/python/graaly/`](runtime/sdk/python/graaly/) | Python stubs and native facade imported as `graaly` |
-| [`runtime/examples/`](runtime/examples/) | Working JS, TS, Python, PacketEvents, worlds, HTML/CSS GUI, React UI, FastAPI, and board examples |
+| [`runtime/sdk/c/`](runtime/sdk/c/) | C ABI v1, headers, runtime shim, build instructions, and memory-learning helpers |
+| [`runtime/examples/`](runtime/examples/) | Working JS, TS, Python, C/Wasm, PacketEvents, worlds, HTML/CSS GUI, React UI, FastAPI, and board examples |
 | [`runtime/contract/`](runtime/contract/) | Machine-readable stable API, canonical constants, members, and capability policy |
 
 No Minecraft server JAR is stored or redistributed by this repository.
@@ -140,8 +143,8 @@ plugins/
 ├── Graaly-1.0.0.jar
 └── Graaly/
     ├── config.yml
-    ├── runtime/25.2.4/      # verified GraalJS/GraalPy cache
-    └── scripts/             # your .jsplugin and .pyplugin bundles
+    ├── runtime/25.2.4/      # verified GraalJS/GraalPy/GraalWasm cache
+    └── scripts/             # your .jsplugin, .pyplugin, and .cplugin bundles
 ```
 
 The generated configuration is intentionally small:
@@ -152,6 +155,7 @@ runtime:
   languages:
     javascript: true
     python: true
+    c: true
   connect-timeout-seconds: 20
   request-timeout-seconds: 180
   retry-attempts: 2
@@ -249,9 +253,45 @@ async def on_join(join):
 
 See [`runtime/examples/PythonHello.pyplugin`](runtime/examples/PythonHello.pyplugin/) and [`runtime/examples/PythonAsync.pyplugin`](runtime/examples/PythonAsync.pyplugin/).
 
+### C / WebAssembly
+
+C plugins are compiled before deployment and use a `.cplugin` directory:
+
+```text
+EducationalC.cplugin/
+├── plugin.yml
+├── src/main.c
+└── dist/plugin.wasm
+```
+
+Graaly intentionally does not hand C code a generated `Player` struct. The developer defines the representation and copies only the fields they want:
+
+```c
+#include <graaly/graaly.h>
+
+typedef struct Player {
+    graaly_player_handle_t handle;
+    char name[32];
+    double health;
+    int level;
+} Player;
+
+static bool player_snapshot(graaly_player_handle_t handle, Player *out) {
+    if (out == NULL || handle == 0) return false;
+    memset(out, 0, sizeof *out);
+    out->handle = handle;
+    graaly_player_read_name(handle, out->name, sizeof out->name);
+    out->health = graaly_player_health(handle);
+    out->level = graaly_player_level(handle);
+    return true;
+}
+```
+
+The C ABI uses wasm32 linear memory, explicit pointer+length calls, C function pointers for callbacks, and checked 64-bit host handles. It now covers the full canonical Graaly surface: the generated `catalog.h` currently contains 1,421 exported types, 63,044 canonical member references and 4,629 constants, while named C facades cover all 14 public modules. `graaly_type`, `graaly_get`, `graaly_set`, `graaly_call`, `graaly_construct`, collection/map helpers and the module APIs all use the same version adapter as JS/Python. Invalid linear-memory accesses trap inside WebAssembly rather than becoming arbitrary JVM pointers. The optional teaching heap adds 16-byte `DEADBEEF` red zones, buffer under/overflow checks, invalid/double-free diagnostics, logical-free poisoning, and quarantine until disable. See [`runtime/sdk/c/README.md`](runtime/sdk/c/README.md) and [`runtime/examples/EducationalC.cplugin`](runtime/examples/EducationalC.cplugin/).
+
 ## PacketEvents
 
-PacketEvents remains a separate optional plugin. When present, Graaly exposes named constants, typed wrappers, send/receive listeners, cancellation, and client metadata through the same JS/TS/Python imports.
+PacketEvents remains a separate optional plugin. When present, Graaly exposes named constants, typed wrappers, send/receive listeners, cancellation, and client metadata through JS/TS/Python imports and the C packet facade.
 
 ```ts
 import { ClientPacket, WrapperPlayClientChatMessage, packets } from "graaly";
@@ -362,9 +402,10 @@ The full 11 MB source catalog is code-split: events and totals are available imm
 
 ## Security model
 
-Graaly scripts have plugin-level authority over the server. Install only code you trust.
+Graaly plugins have plugin-level authority over the server. Install only code you trust.
 
-- Language contexts are isolated per bundle, but isolation is lifecycle ownership, not a sandbox for hostile code.
+- JavaScript/Python language contexts are isolated per bundle, but that isolation is lifecycle ownership, not a hostile-code sandbox.
+- C plugins execute as WebAssembly: their pointers address only guest linear memory, while Minecraft objects cross the boundary as checked handles. A Wasm memory trap is contained to the guest context instead of dereferencing arbitrary JVM memory.
 - Live world, player, inventory, and entity state belongs on the main server thread.
 - HTTP, database, parsing, and other blocking work belongs off-thread; return through Graaly’s task or coroutine APIs.
 - Packet listeners are synchronous and run on the networking thread.

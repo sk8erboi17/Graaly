@@ -43,11 +43,12 @@ import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 
-/** Loads editable {@code .jsplugin} and {@code .pyplugin} directories. */
+/** Loads editable {@code .jsplugin}, {@code .pyplugin}, and compiled {@code .cplugin} directories. */
 public final class PolyglotPluginLoader implements PluginLoader {
     private static final Pattern[] FILE_FILTERS = {
             Pattern.compile("(?i)\\.jsplugin$"),
-            Pattern.compile("(?i)\\.pyplugin$")
+            Pattern.compile("(?i)\\.pyplugin$"),
+            Pattern.compile("(?i)\\.cplugin$")
     };
     private static final Map<Server, PolyglotPluginLoader> LOADERS = new WeakHashMap<>();
     private static final Map<Server, GraalRuntimeInstaller.InstalledRuntime> RUNTIMES = new WeakHashMap<>();
@@ -430,12 +431,15 @@ public final class PolyglotPluginLoader implements PluginLoader {
     private static void requireSupportedJava() {
         int feature = Runtime.version().feature();
         if (feature < 17) {
-            throw new IllegalStateException("GraalJS/GraalPy plugins require Java 17 or newer (found "
+            throw new IllegalStateException("Graaly JS/Python/C plugins require Java 17 or newer (found "
                     + Runtime.version() + ")");
         }
     }
 
     private String displayLanguage(String id) {
-        return "js".equals(id) ? "JS" : "Py";
+        if ("js".equals(id)) return "JS";
+        if ("python".equals(id)) return "Py";
+        if ("wasm".equals(id)) return "C/Wasm";
+        return id;
     }
 }

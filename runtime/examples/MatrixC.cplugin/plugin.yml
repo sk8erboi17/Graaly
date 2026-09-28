@@ -1,0 +1,9 @@
+name: GraalyMatrixC
+version: 1.0.0
+main: dist/plugin.wasm
+author: Graaly
+description: Real-server compatibility probe for the Graaly C/WebAssembly ABI.
+commands:
+  graalycprobe:
+    description: Emits the C matrix command marker.
+    usage: /graalycprobe

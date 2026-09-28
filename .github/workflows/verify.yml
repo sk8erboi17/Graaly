@@ -24,6 +24,11 @@ jobs:
       - name: Build and test the standalone runtime on Java ${{ matrix.java }}
         working-directory: runtime
         run: mvn --batch-mode --no-transfer-progress clean package
+      - name: Regenerate and verify the C canonical catalog
+        working-directory: runtime
+        run: |
+          python3 scripts/generate_c_sdk.py
+          git diff --exit-code -- sdk/c/include/graaly/catalog.h sdk/c/catalog-manifest.json
       - name: Verify the generated language contract
         working-directory: runtime
         run: python3 scripts/verify_contract.py --docs .. --matrix reports/compatibility/matrix.json
@@ -39,6 +44,9 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
+      - uses: mlugg/setup-zig@v2
+        with:
+          version: "0.16.0"
       - name: Install dependencies
         run: npm ci
       - name: Compile the complete TypeScript SDK
@@ -51,6 +59,14 @@ jobs:
           npm --prefix runtime/sdk/react test
           npm --prefix runtime/sdk/react-test ci
           npm --prefix runtime/sdk/react-test test
+      - name: Build and verify every C plugin example
+        run: |
+          python3 runtime/scripts/generate_c_sdk.py
+          git diff --exit-code -- runtime/sdk/c/include/graaly/catalog.h runtime/sdk/c/catalog-manifest.json
+          for example in runtime/examples/*.cplugin; do
+            "$example/build.sh"
+            test -s "$example/dist/plugin.wasm"
+          done
       - name: Build every JavaScript and TypeScript plugin example
         run: |
           for package in runtime/examples/*.jsplugin/package.json; do

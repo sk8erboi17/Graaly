@@ -45,7 +45,7 @@ test("renders the complete documentation in English", async () => {
   const html = await response.text();
   assert.match(html, /<html[^>]*lang="en"/i);
   assert.match(html, /class="brand-logo"[^>]*graaly-logo-96\.png/);
-  assert.match(html, /Minecraft plugins in TypeScript, JavaScript, and Python/);
+  assert.match(html, /Minecraft plugins in TypeScript, JavaScript, Python, and C/);
   assert.match(html, /Build Graaly plugins/);
   assert.match(html, /Know exactly when your code runs/);
   assert.match(html, /Every common Player workflow in one searchable browser/);
@@ -82,6 +82,10 @@ test("publishes one versionless Graaly contract from 1.7.10 through 26.2", async
   const runtime = JSON.parse(await readFile(runtimeFile("contract/graaly-api.json"), "utf8"));
   const typeScript = await readFile(runtimeFile("sdk/typescript/graaly.mts"), "utf8");
   const python = await readFile(runtimeFile("sdk/python/graaly/_core.pyi"), "utf8");
+  const cHeader = await readFile(runtimeFile("sdk/c/include/graaly/graaly.h"), "utf8");
+  const cCatalog = await readFile(runtimeFile("sdk/c/include/graaly/catalog.h"), "utf8");
+  const cManifest = JSON.parse(await readFile(runtimeFile("sdk/c/catalog-manifest.json"), "utf8"));
+  const cExample = await readFile(runtimeFile("examples/EducationalC.cplugin/src/main.c"), "utf8");
   const response = await render();
   const html = await response.text();
 
@@ -90,10 +94,63 @@ test("publishes one versionless Graaly contract from 1.7.10 through 26.2", async
   assert.equal(runtime.apiCatalog.canonicalApiVersion, "26.2");
   assert.equal(runtime.apiCatalog.resolution, "lazy-version-adapter");
   assert.equal(runtime.apiCatalog.missingTypeOrMember, "GraalyUnsupportedFeature");
+  assert.equal(runtime.cAbi.version, 1);
+  assert.equal(runtime.cAbi.target, "wasm32-wasi");
+  assert.equal(runtime.cAbi.developerOwnsDomainStructs, true);
+  assert.equal(runtime.cAbi.fullGeneratedApiParity, true);
+  assert.deepEqual(runtime.cAbi.catalog, {
+    types: 1421,
+    canonicalClasses: 1411,
+    memberReferences: 63044,
+    uniqueMemberNames: 9704,
+    constants: 4629,
+    constantNamespaces: 13,
+    generatedHeader: "sdk/c/include/graaly/catalog.h",
+    packetWrappers: 289,
+    packetSupportTypes: 533,
+    packetTypePaths: 288,
+    packetMemberNames: 2926,
+  });
+  assert.equal(cManifest.exportedTypes, 1421);
+  assert.equal(cManifest.memberReferences, 63044);
+  assert.equal(cManifest.constants, 4629);
+  assert.equal(cManifest.packetWrappers, 289);
+  assert.equal(cManifest.packetSupportTypes, 533);
+  assert.equal(cManifest.packetTypePaths, 288);
+  assert.equal(cManifest.packetMemberNames, 2926);
+  assert.equal(Object.keys(runtime.modules).length, 14);
+  for (const [moduleName, moduleDefinition] of Object.entries(runtime.modules)) {
+    assert.ok(Array.isArray(moduleDefinition.c) && moduleDefinition.c.length > 0,
+      `missing C surface for ${moduleName}`);
+  }
+  assert.equal(runtime.cAbi.teachingMemory.canary, "DEADBEEF");
+  assert.equal(runtime.cAbi.teachingMemory.redZoneBytes, 16);
   assert.match(typeScript, /export const GraalyUnsupportedFeature/);
   assert.match(typeScript, /export const compatibility/);
   assert.match(python, /class GraalyUnsupportedFeature\(RuntimeError\)/);
   assert.match(python, /compatibility: _Compatibility/);
+  assert.match(cHeader, /graaly_debug_malloc/);
+  assert.match(cHeader, /graaly_module_call/);
+  assert.match(cHeader, /graaly_http_get/);
+  assert.match(cHeader, /graaly_packets_on_receive/);
+  assert.match(cHeader, /graaly_worlds_generator/);
+  assert.match(cHeader, /GRAALY_POISON_HANDLE/);
+  assert.match(cCatalog, /GRAALY_TYPE_PLAYER/);
+  assert.match(cCatalog, /GRAALY_MEMBER_HEALTH/);
+  assert.match(cCatalog, /GRAALY_MATERIAL_STONE/);
+  assert.match(cCatalog, /GRAALY_PACKET_WRAPPER_WRAPPERPLAYCLIENTCHATMESSAGE/);
+  assert.match(cCatalog, /GRAALY_PACKET_PLAY_CLIENT_CHAT_MESSAGE/);
+  assert.match(cCatalog, /GRAALY_PACKET_MEMBER_MESSAGE/);
+  assert.doesNotMatch(cHeader, /^\s*typedef\s+struct\s+Player\b/m);
+  assert.match(cExample, /typedef struct Player/);
+  assert.match(cExample, /Player \*out/);
+  assert.match(cExample, /coverflow_command/);
+  assert.match(cExample, /csegfault_command/);
+  assert.match(html, /C \/ WEBASSEMBLY TRACK/);
+  assert.match(html, /You design the C data model/);
+  assert.match(html, /63,044/);
+  assert.match(html, /4,629/);
+  assert.match(html, /DEADBEEF/);
   assert.match(html, /Names never move/);
   assert.match(html, /Renames are internal/);
   assert.match(html, /No fake mechanics/);
@@ -529,7 +586,11 @@ test("includes a complete Java quick start beside Graaly languages", async () =>
   const source = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
   const response = await render();
   const html = await response.text();
-  assert.match(source, /type QuickstartLanguage = Language \| "java"/);
+  assert.match(source, /type QuickstartLanguage = Language \| "c" \| "java"/);
+  assert.match(source, /\{ id: "c", label: "C \/ WebAssembly" \}/);
+  assert.match(source, /"main: dist\/plugin\.wasm"/);
+  assert.match(source, /zig cc -target wasm32-wasi/);
+  assert.match(source, /typedef struct Player/);
   assert.match(source, /WelcomePlugin extends JavaPlugin implements Listener/);
   assert.match(source, /getServer\(\)\.getPluginManager\(\)\.registerEvents/);
   assert.match(source, /from \\"graaly\\"/);
@@ -551,7 +612,7 @@ test("documents the complete install, deploy, load, and verification path", asyn
   assert.match(html, /Graaly does not currently publish a release JAR/);
   assert.match(html, /runtime\/target\/Graaly-1\.0\.0\.jar/);
   assert.match(html, /plugins\/Graaly\/scripts\/WelcomeTS\.jsplugin/);
-  assert.match(html, /Graaly is ready: 0 script plugin\(s\)/);
+  assert.match(html, /Graaly is ready: 0 guest plugin\(s\)/);
   assert.match(html, /graaly status/);
   assert.match(html, /New bundle or/);
   assert.match(html, /source-only change to an already loaded bundle/i);
@@ -559,7 +620,9 @@ test("documents the complete install, deploy, load, and verification path", asyn
   assert.match(html, /\/hello/);
   assert.match(source, /WelcomeJS\.jsplugin/);
   assert.match(source, /WelcomePy\.pyplugin/);
-  assert.match(source, /Java plugins do not use Graaly's script loader/);
+  assert.match(source, /WelcomeC\.cplugin/);
+  assert.match(source, /plugin\.wasm/);
+  assert.match(source, /Java plugins do not use Graaly's guest loader/);
   assert.doesNotMatch(source, /mkdir -p \/server\//);
 });
 

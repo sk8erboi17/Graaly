@@ -1,0 +1,30 @@
+{
+  "canonicalApiVersion": "26.2-R0.1-SNAPSHOT",
+  "canonicalClasses": 1411,
+  "constantNamespaces": 13,
+  "constants": 4629,
+  "contractVersion": "1.0",
+  "exportedTypes": 1421,
+  "generatedHeader": "sdk/c/include/graaly/catalog.h",
+  "memberReferences": 63044,
+  "namespaceCounts": {
+    "Attribute": 40,
+    "Biome": 67,
+    "Difficulty": 4,
+    "DyeColor": 16,
+    "Enchantment": 43,
+    "EntityType": 159,
+    "GameMode": 4,
+    "Material": 2155,
+    "Particle": 125,
+    "PotionEffect": 40,
+    "Sound": 1968,
+    "WorldEnvironment": 4,
+    "WorldType": 4
+  },
+  "packetMemberNames": 2926,
+  "packetSupportTypes": 533,
+  "packetTypePaths": 288,
+  "packetWrappers": 289,
+  "uniqueMemberNames": 9704
+}

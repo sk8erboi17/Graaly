@@ -86,7 +86,7 @@ public final class GraalyPlugin extends JavaPlugin {
                     "Graaly did not finish loading; inspect the earlier runtime installation error");
         }
         getLogger().info("Graaly is ready: " + loadedScripts.size()
-                + " script plugin(s), downloaded Graal "
+                + " guest plugin(s), downloaded Graal "
                 + String.join(" + ", graalRuntime.languages()) + ' '
                 + GraalRuntimeInstaller.GRAAL_VERSION + ", Java " + Runtime.version().feature());
     }
@@ -110,7 +110,7 @@ public final class GraalyPlugin extends JavaPlugin {
         }
         if (args.length == 0 || args[0].equalsIgnoreCase("status")) {
             sender.sendMessage("Graaly: " + loadedPluginCount()
-                    + " script plugin(s), "
+                    + " guest plugin(s), "
                     + (graalRuntime == null ? "no language runtime" : String.join(" + ", graalRuntime.languages()))
                     + ", Java " + Runtime.version().feature());
             return true;
@@ -126,7 +126,7 @@ public final class GraalyPlugin extends JavaPlugin {
                     return true;
                 }
                 int count = (Integer) invokeLoader("reloadAll", new Class<?>[0]);
-                sender.sendMessage("Reloaded " + count + " Graaly script plugin(s).");
+                sender.sendMessage("Reloaded " + count + " Graaly guest plugin(s).");
             } catch (Throwable failure) {
                 sender.sendMessage("Graaly reload failed: " + failure.getMessage());
                 getLogger().log(Level.SEVERE, "Could not reload Graaly plugins", failure);
@@ -205,7 +205,8 @@ public final class GraalyPlugin extends JavaPlugin {
     private static void collectBundles(File directory, List<File> target) {
         File[] children = directory == null ? null : directory.listFiles(file -> file.isDirectory()
                 && (file.getName().toLowerCase(Locale.ENGLISH).endsWith(".jsplugin")
-                || file.getName().toLowerCase(Locale.ENGLISH).endsWith(".pyplugin")));
+                || file.getName().toLowerCase(Locale.ENGLISH).endsWith(".pyplugin")
+                || file.getName().toLowerCase(Locale.ENGLISH).endsWith(".cplugin")));
         if (children == null) {
             return;
         }

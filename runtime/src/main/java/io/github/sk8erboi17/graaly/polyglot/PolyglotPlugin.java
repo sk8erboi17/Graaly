@@ -73,6 +73,7 @@ public final class PolyglotPlugin implements InvocationHandler {
     private Context context;
     private Value entryPoint;
     private GraalyScriptApi scriptApi;
+    private GraalyCPluginRuntime cRuntime;
     private PolyglotLogOutputStream standardOutput;
     private PolyglotLogOutputStream errorOutput;
     private Set<String> pristineBindingNames = Set.of();
@@ -174,10 +175,31 @@ public final class PolyglotPlugin implements InvocationHandler {
     void initializeRuntime(Engine engine) throws IOException {
         executionLock.lock();
         try {
-            if (context != null) {
+            if (context != null || cRuntime != null) {
                 return;
             }
             installDefaultBundleConfig();
+            if (language == PolyglotLanguage.C) {
+                GraalyCPluginRuntime created = new GraalyCPluginRuntime(this, mainSource);
+                try {
+                    created.initialize(engine);
+                    cRuntime = created;
+                    return;
+                } catch (Throwable failure) {
+                    try {
+                        created.close();
+                    } catch (Throwable ignored) {
+                    }
+                    cRuntime = null;
+                    if (failure instanceof IOException) {
+                        throw (IOException) failure;
+                    }
+                    if (failure instanceof RuntimeException) {
+                        throw (RuntimeException) failure;
+                    }
+                    throw new IllegalStateException("Could not initialize C/Wasm plugin " + getName(), failure);
+                }
+            }
             if (!engine.getLanguages().containsKey(language.getId())) {
                 throw new IllegalStateException("Graal language '" + language.getId() + "' is not available");
             }
@@ -461,7 +483,7 @@ public final class PolyglotPlugin implements InvocationHandler {
     void ensureRuntime() {
         executionLock.lock();
         try {
-            if (context != null) {
+            if (context != null || cRuntime != null) {
                 return;
             }
         } finally {
@@ -470,7 +492,7 @@ public final class PolyglotPlugin implements InvocationHandler {
         try {
             initializeRuntime(polyglotLoader.acquireEngine());
         } catch (IOException exception) {
-            throw new IllegalStateException("Could not reopen script plugin " + getName(), exception);
+            throw new IllegalStateException("Could not reopen guest plugin " + getName(), exception);
         }
     }
 
@@ -513,7 +535,9 @@ public final class PolyglotPlugin implements InvocationHandler {
 
             applyReloadedDescription(refreshedDescription);
             invokeLifecycle("onLoad", "on_load");
-            scriptApi.activate();
+            if (scriptApi != null) {
+                scriptApi.activate();
+            }
             invokeLifecycle("onEnable", "on_enable");
         } catch (IOException failure) {
             throw new IllegalStateException("Could not reload " + getName(), failure);
@@ -561,7 +585,9 @@ public final class PolyglotPlugin implements InvocationHandler {
     }
 
     public void onEnable() {
-        scriptApi.activate();
+        if (scriptApi != null) {
+            scriptApi.activate();
+        }
         invokeLifecycle("onEnable", "on_enable");
     }
 
@@ -576,6 +602,9 @@ public final class PolyglotPlugin implements InvocationHandler {
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (cRuntime != null) {
+            return cRuntime.onCommand(sender, command, args);
+        }
         Value callback = scriptApi == null ? null : scriptApi.getCommand(command.getName());
         if (callback == null) {
             callback = findFunction("onCommand", "on_command");
@@ -591,6 +620,9 @@ public final class PolyglotPlugin implements InvocationHandler {
     }
 
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (cRuntime != null) {
+            return cRuntime.onTabComplete(sender, command, args);
+        }
         Value callback = scriptApi == null ? null : scriptApi.getTabCompleter(command.getName());
         if (callback == null) {
             callback = findFunction("onTabComplete", "on_tab_complete");
@@ -681,6 +713,10 @@ public final class PolyglotPlugin implements InvocationHandler {
     }
 
     private void invokeLifecycle(String... names) {
+        if (cRuntime != null) {
+            cRuntime.invokeLifecycle(names[0]);
+            return;
+        }
         Value function = findFunction(names);
         if (function != null) {
             Value result = invoke(function);
@@ -729,6 +765,13 @@ public final class PolyglotPlugin implements InvocationHandler {
     void closeRuntime() {
         executionLock.lock();
         try {
+            if (cRuntime != null) {
+                try {
+                    cRuntime.close();
+                } finally {
+                    cRuntime = null;
+                }
+            }
             if (scriptApi != null) {
                 scriptApi.clear();
             }

@@ -87,6 +87,11 @@ def stable_surface_digest(contract: dict[str, object]) -> str:
         ROOT / "sdk/python/graaly/_core.pyi",
         ROOT / "sdk/python/graaly/constants.pyi",
         ROOT / "sdk/python/graaly/api/__init__.pyi",
+        ROOT / "sdk/c/include/graaly/graaly.h",
+        ROOT / "sdk/c/include/graaly/catalog.h",
+        ROOT / "sdk/c/src/graaly.c",
+        ROOT / "sdk/c/catalog-manifest.json",
+        ROOT / "scripts/generate_c_sdk.py",
     )
     digest = hashlib.sha256()
     for path in files:
@@ -266,6 +271,153 @@ def verify_constant_catalog(contract: dict[str, object]) -> None:
             require_tokens(source, [exported], "canonical constant export")
 
 
+def verify_c_sdk(contract: dict[str, object]) -> None:
+    definition = contract.get("cAbi")
+    if not isinstance(definition, dict):
+        fail("C ABI definition is missing from the contract")
+    if definition.get("version") != 1:
+        fail("unsupported checked-in C ABI version")
+    if definition.get("target") != "wasm32-wasi":
+        fail("C ABI target must remain wasm32-wasi")
+    if definition.get("developerOwnsDomainStructs") is not True:
+        fail("C SDK must keep domain structs in plugin code")
+    teaching_memory = definition.get("teachingMemory")
+    if not isinstance(teaching_memory, dict):
+        fail("C ABI must declare the teaching-memory contract")
+    if teaching_memory.get("canary") != "DEADBEEF" or teaching_memory.get("redZoneBytes") != 16:
+        fail("C teaching heap canary/red-zone contract changed unexpectedly")
+    required_memory_faults = {
+        "buffer-underflow", "buffer-overflow", "double-free", "invalid-pointer"
+    }
+    if set(teaching_memory.get("detects", [])) != required_memory_faults:
+        fail("C teaching heap diagnostics differ from the contract")
+    if teaching_memory.get("quarantineUntilDisable") is not True:
+        fail("C teaching heap must quarantine logical frees until disable")
+    if definition.get("fullGeneratedApiParity") is not True:
+        fail("C ABI must declare full generated canonical API parity")
+
+    header = (ROOT / "sdk/c/include/graaly/graaly.h").read_text()
+    source = (ROOT / "sdk/c/src/graaly.c").read_text()
+    catalog_header = (ROOT / "sdk/c/include/graaly/catalog.h").read_text()
+    catalog_manifest = json.loads((ROOT / "sdk/c/catalog-manifest.json").read_text())
+    example = (ROOT / "examples/EducationalC.cplugin/src/main.c").read_text()
+    manifest = ROOT / "examples/EducationalC.cplugin/plugin.yml"
+    wasm = ROOT / "examples/EducationalC.cplugin/dist/plugin.wasm"
+
+    require_tokens(header, [
+        "GRAALY_C_ABI_VERSION", "graaly_handle_t", "graaly_string_view_t",
+        "graaly_events_on", "graaly_commands_on", "graaly_player_read_name",
+        "GRAALY_DEADBEEF", "graaly_debug_poison", "graaly_debug_malloc",
+        "graaly_debug_check", "graaly_debug_free", "graaly_handle_poison",
+    ], "C SDK header")
+    require_tokens(source, [
+        "import_module", "graaly_abi_version", "graaly_dispatch_event",
+        "graaly_dispatch_object_event", "graaly_dispatch_callback",
+        "graaly_dispatch_task", "graaly_dispatch_tab_complete",
+        "graaly_dispatch_command", "graaly_alloc", "graaly_free",
+        "graaly_module_call", "graaly_type", "graaly_constant",
+    ], "C SDK implementation")
+
+    api_members = json.loads((ROOT / "contract/latest-api-members.json").read_text())
+    constants = json.loads((ROOT / "contract/latest-constants.json").read_text())
+    exported_types = sum(
+        1 for raw in (ROOT / "src/main/resources/polyglot/api-types.properties").read_text().splitlines()
+        if raw.strip() and not raw.lstrip().startswith("#")
+    )
+    member_names = {
+        member
+        for class_definition in api_members["classes"].values()
+        for group in ("instance", "writable", "static")
+        for member in class_definition.get(group, [])
+    }
+    member_references = sum(
+        len(class_definition.get(group, []))
+        for class_definition in api_members["classes"].values()
+        for group in ("instance", "writable", "static")
+    )
+    constant_count = sum(len(value["constants"]) for value in constants["namespaces"].values())
+    polyglot_resources = ROOT / "src/main/resources/polyglot"
+
+    def generated_property_count(path: Path) -> int:
+        return sum(
+            1 for raw in path.read_text().splitlines()
+            if raw.strip() and not raw.lstrip().startswith("#")
+        )
+
+    packet_wrappers = generated_property_count(polyglot_resources / "packetevents-wrappers.properties")
+    packet_support_types = generated_property_count(polyglot_resources / "packetevents-types.properties")
+    packet_type_paths = sum(
+        1 for raw in (polyglot_resources / "packetevents-packet-types.txt").read_text().splitlines()
+        if raw.strip() and not raw.lstrip().startswith("#")
+    )
+    packet_generated_ts = (ROOT / "sdk/typescript/generated-packets.mts").read_text()
+    packet_member_names = {
+        match.group(1)
+        for line in packet_generated_ts.splitlines()
+        if (match := re.match(
+            r"^\s+(?:readonly\s+)?([A-Za-z_$][A-Za-z0-9_$]*)\??(?:\s*:|\s*\()",
+            line,
+        ))
+    }
+    expected_catalog = {
+        "types": exported_types,
+        "canonicalClasses": len(api_members["classes"]),
+        "memberReferences": member_references,
+        "uniqueMemberNames": len(member_names),
+        "constants": constant_count,
+        "constantNamespaces": len(constants["namespaces"]),
+        "packetWrappers": packet_wrappers,
+        "packetSupportTypes": packet_support_types,
+        "packetTypePaths": packet_type_paths,
+        "packetMemberNames": len(packet_member_names),
+        "generatedHeader": "sdk/c/include/graaly/catalog.h",
+    }
+    if definition.get("catalog") != expected_catalog:
+        fail(f"C ABI catalog summary differs from canonical sources: {definition.get('catalog')!r}")
+    manifest_catalog = {
+        "types": catalog_manifest.get("exportedTypes"),
+        "canonicalClasses": catalog_manifest.get("canonicalClasses"),
+        "memberReferences": catalog_manifest.get("memberReferences"),
+        "uniqueMemberNames": catalog_manifest.get("uniqueMemberNames"),
+        "constants": catalog_manifest.get("constants"),
+        "constantNamespaces": catalog_manifest.get("constantNamespaces"),
+        "packetWrappers": catalog_manifest.get("packetWrappers"),
+        "packetSupportTypes": catalog_manifest.get("packetSupportTypes"),
+        "packetTypePaths": catalog_manifest.get("packetTypePaths"),
+        "packetMemberNames": catalog_manifest.get("packetMemberNames"),
+        "generatedHeader": catalog_manifest.get("generatedHeader"),
+    }
+    if manifest_catalog != expected_catalog:
+        fail(f"generated C catalog manifest differs from canonical sources: {manifest_catalog!r}")
+    require_tokens(catalog_header, [
+        "GRAALY_CATALOG_EXPORTED_TYPE_COUNT", "GRAALY_TYPE_PLAYER",
+        "GRAALY_MEMBER_HEALTH", "GRAALY_MATERIAL_STONE",
+        "GRAALY_ENTITYTYPE_ZOMBIE", "GRAALY_SOUND_ENTITY_PLAYER_LEVELUP",
+        "GRAALY_PACKET_WRAPPER_WRAPPERPLAYCLIENTCHATMESSAGE",
+        "GRAALY_PACKET_PLAY_CLIENT_CHAT_MESSAGE",
+        "GRAALY_PACKET_MEMBER_MESSAGE",
+    ], "generated C canonical catalog")
+
+    combined_c = header + "\n" + source
+    for module_name, module_definition in contract["modules"].items():
+        c_members = module_definition.get("c")
+        if not isinstance(c_members, list) or not c_members:
+            fail(f"C SDK module {module_name} has no declared surface")
+        require_tokens(combined_c, list(c_members), f"C SDK module {module_name}")
+    require_tokens(example, [
+        "typedef struct Player", "Player *out", "out->handle", "sizeof out->name",
+        "player_snapshot", "typedef struct MemoryLesson", "GRAALY_DEADBEEF",
+        "graaly_debug_malloc", "graaly_debug_free", "coverflow_command",
+        "csegfault_command",
+    ], "educational C example")
+    if re.search(r"(?m)^\\s*typedef\\s+struct\\s+Player\\b", header):
+        fail("C SDK must not provide a Player struct; the learner defines it")
+    if not manifest.is_file() or not wasm.is_file() or wasm.stat().st_size < 8:
+        fail("compiled EducationalC .cplugin example is incomplete")
+    if wasm.read_bytes()[:4] != b"\x00asm":
+        fail("EducationalC main is not a WebAssembly binary")
+
+
 def verify_generated_api(contract: dict[str, object]) -> None:
     report = json.loads((ROOT / "sdk/polyglot-parity-report.json").read_text())
     api = report["api"]
@@ -438,6 +590,7 @@ def main() -> int:
     verify_sources(contract)
     verify_java_adapter(contract)
     verify_constant_catalog(contract)
+    verify_c_sdk(contract)
     verify_generated_api(contract)
     verify_conformance_manifests()
     verify_packetevents_report(contract)

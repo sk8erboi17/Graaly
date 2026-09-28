@@ -36,7 +36,7 @@ import graalyContract from "./generated/graaly-api.json" with { type: "json" };
 import graalyConstants from "./generated/latest-constants.json" with { type: "json" };
 
 type Language = "js" | "ts" | "py";
-type QuickstartLanguage = Language | "java";
+type QuickstartLanguage = Language | "c" | "java";
 type CatalogKind = "bukkit" | "support" | "wrappers" | "packets";
 type MemberFilter = "all" | "properties" | "methods" | "constructors" | "constants";
 type Theme = "dark" | "light";
@@ -118,6 +118,7 @@ const languages: Array<{ id: Language; label: string }> = [
 
 const quickstartLanguages: Array<{ id: QuickstartLanguage; label: string }> = [
   ...languages,
+  { id: "c", label: "C / WebAssembly" },
   { id: "java", label: "Java" },
 ];
 
@@ -843,6 +844,44 @@ const quickstartCode: Record<QuickstartLanguage, string> = {
     "    context.reply(f\"&dHello {context.sender.name}\")",
     "    return True",
   ].join("\n"),
+  c: [
+    "#include <graaly/graaly.h>",
+    "#include <string.h>",
+    "",
+    "typedef struct Player {",
+    "    graaly_player_handle_t handle;",
+    "    char name[32];",
+    "    double health;",
+    "} Player;",
+    "",
+    "static bool snapshot(graaly_player_handle_t handle, Player *out) {",
+    "    if (handle == 0 || out == NULL) return false;",
+    "    memset(out, 0, sizeof *out);",
+    "    out->handle = handle;",
+    "    graaly_player_read_name(handle, out->name, sizeof out->name);",
+    "    out->health = graaly_player_health(handle);",
+    "    return true;",
+    "}",
+    "",
+    "static void on_join(graaly_player_handle_t handle) {",
+    "    Player player;",
+    "    if (!snapshot(handle, &player)) return;",
+    "    graaly_sender_send_message(handle, \"&aWelcome from C!\");",
+    "}",
+    "",
+    "static bool hello(graaly_sender_handle_t sender, int argc,",
+    "                  const graaly_string_view_t *argv) {",
+    "    (void) argc;",
+    "    (void) argv;",
+    "    graaly_sender_send_message(sender, \"&aHello from C!\");",
+    "    return true;",
+    "}",
+    "",
+    "void graaly_on_enable(void) {",
+    "    graaly_events_on(GRAALY_EVENT_PLAYER_JOIN, on_join);",
+    "    graaly_commands_on(\"hello\", hello);",
+    "}",
+  ].join("\n"),
   java: [
     "package com.example.welcome;",
     "",
@@ -891,6 +930,14 @@ const pluginYaml: Record<QuickstartLanguage, string> = {
     "name: WelcomePy",
     "version: 1.0.0",
     "main: main.py",
+    "commands:",
+    "  hello:",
+    "    description: Say hello",
+  ].join("\n"),
+  c: [
+    "name: WelcomeC",
+    "version: 1.0.0",
+    "main: dist/plugin.wasm",
     "commands:",
     "  hello:",
     "    description: Say hello",
@@ -999,6 +1046,30 @@ const quickstartDeployment: Record<QuickstartLanguage, {
     ].join("\n"),
     load: "For a new bundle, restart the server. After changing main.py in an already loaded bundle, copy it and run graaly reload in the server console or /graaly reload in game.",
   },
+  c: {
+    buildLabel: "Compile C to WebAssembly",
+    build: [
+      "# From your .cplugin project; Zig is the reference toolchain",
+      "zig cc -target wasm32-wasi -mexec-model=reactor -O2 \\",
+      "  -Wall -Wextra -Wpedantic -Wshadow -Wconversion \\",
+      "  -I /absolute/path/to/Graaly/runtime/sdk/c/include \\",
+      "  /absolute/path/to/Graaly/runtime/sdk/c/src/graaly.c src/main.c \\",
+      "  -Wl,--export-memory -o dist/plugin.wasm",
+    ].join("\n"),
+    deployLabel: "Copy the compiled C bundle",
+    deploy: [
+      "mkdir -p /absolute/path/to/server/plugins/Graaly/scripts/WelcomeC.cplugin/dist",
+      "cp plugin.yml /absolute/path/to/server/plugins/Graaly/scripts/WelcomeC.cplugin/",
+      "cp dist/plugin.wasm /absolute/path/to/server/plugins/Graaly/scripts/WelcomeC.cplugin/dist/",
+    ].join("\n"),
+    layout: [
+      "plugins/Graaly/scripts/WelcomeC.cplugin/",
+      "├── plugin.yml",
+      "└── dist/",
+      "    └── plugin.wasm",
+    ].join("\n"),
+    load: "The server does not need a C compiler. After changing C code, rebuild plugin.wasm, copy it into the loaded .cplugin bundle, then use /graaly reload. A trapped guest is quarantined until the same reload replaces its WebAssembly instance.",
+  },
   java: {
     buildLabel: "Build the Java plugin",
     build: [
@@ -1015,7 +1086,7 @@ const quickstartDeployment: Record<QuickstartLanguage, {
       "├── Graaly-1.0.0.jar",
       "└── WelcomeJava.jar",
     ].join("\n"),
-    load: "Java plugins do not use Graaly's script loader. Restart the server after copying the JAR; /graaly reload only reloads JavaScript, TypeScript, and Python bundles.",
+    load: "Java plugins do not use Graaly's guest loader. Restart the server after copying the JAR; /graaly reload reloads JavaScript, TypeScript, Python, and C/WebAssembly bundles.",
   },
 };
 
@@ -2717,7 +2788,7 @@ function GraalyRuntimeInstallGuide() {
       <div className="quickstart-verification">
         <span>READY CHECK</span>
         <div>
-          <code>[Graaly] Graaly is ready: 0 script plugin(s), downloaded Graal …</code>
+          <code>[Graaly] Graaly is ready: 0 guest plugin(s), downloaded Graal …</code>
           <p>
             In the server console run <code>graaly status</code>. In game use <code>/graaly status</code> as an operator or
             with <code>graaly.admin</code> permission.
@@ -2742,13 +2813,13 @@ function QuickstartDeploymentGuide({ language }: { language: QuickstartLanguage 
           <p>
             {isScript
               ? <>The whole bundle is one directory. Its suffix tells Graaly which language loader to use, and <code>plugin.yml</code> points to the entry file inside it.</>
-              : <>Java remains a normal compiled plugin. It is shown as a direct comparison and is not loaded by Graaly&apos;s script loader.</>}
+              : <>Java remains a normal compiled plugin. It is shown as a direct comparison and is not loaded by Graaly&apos;s guest loader.</>}
           </p>
         </div>
       </div>
 
       <ol className="quickstart-path is-three">
-        <li><span>01</span><div><strong>Build or check</strong><p>Run the language toolchain locally; do not install Node.js or CPython on the game server.</p></div></li>
+        <li><span>01</span><div><strong>Build or check</strong><p>Run the language toolchain locally; Node.js, CPython, Zig, and Clang are not required on the game server.</p></div></li>
         <li><span>02</span><div><strong>Copy the payload</strong><p>{isScript ? <>Place the bundle under <code>plugins/Graaly/scripts/</code>.</> : <>Place the compiled JAR under <code>plugins/</code>.</>}</p></div></li>
         <li><span>03</span><div><strong>Load and test</strong><p>Follow the load rule below, check the log, then execute <code>/hello</code> in game.</p></div></li>
       </ol>
@@ -2814,7 +2885,7 @@ function CopyButton({ code }: { code: string }) {
 function CodeBlock({ code, label, accent = "ts" }: {
   code: string;
   label: string;
-  accent?: GuideLanguage | "yaml" | "shell";
+  accent?: GuideLanguage | "c" | "yaml" | "shell";
 }) {
   const codeRef = useRef<HTMLElement>(null);
   const syntaxLanguage: ShjLanguage = accent === "shell" ? "bash" : accent;
@@ -2952,6 +3023,159 @@ function LanguageLearningGuide() {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function CLearningGuide() {
+  const structExample = [
+    "#include <graaly/graaly.h>",
+    "#include <string.h>",
+    "",
+    "typedef struct Player {",
+    "    graaly_player_handle_t handle;",
+    "    char name[32];",
+    "    char uuid[37];",
+    "    double health;",
+    "    int level;",
+    "} Player;",
+    "",
+    "static bool snapshot(graaly_player_handle_t handle, Player *out) {",
+    "    if (handle == 0 || out == NULL) return false;",
+    "    memset(out, 0, sizeof *out);",
+    "    out->handle = handle;",
+    "    graaly_player_read_name(handle, out->name, sizeof out->name);",
+    "    graaly_player_read_uuid(handle, out->uuid, sizeof out->uuid);",
+    "    out->health = graaly_player_health(handle);",
+    "    out->level = graaly_player_level(handle);",
+    "    return true;",
+    "}",
+  ].join("\n");
+
+  const universalExample = [
+    "graaly_value_t player_type;",
+    "graaly_type(GRAALY_TYPE_PLAYER, &player_type);",
+    "",
+    "graaly_value_t stone;",
+    "graaly_constant(",
+    "    GRAALY_NAMESPACE_MATERIAL,",
+    "    GRAALY_MATERIAL_STONE,",
+    "    &stone",
+    ");",
+    "",
+    "graaly_value_t health;",
+    "graaly_get(player.handle, GRAALY_MEMBER_HEALTH, &health);",
+    "",
+    "graaly_value_t location;",
+    "graaly_get(player.handle, GRAALY_MEMBER_LOCATION, &location);",
+    "",
+    "graaly_value_t args[] = { graaly_value_string(\"example.use\") };",
+    "graaly_value_t allowed;",
+    "graaly_call(",
+    "    player.handle, GRAALY_MEMBER_HASPERMISSION,",
+    "    args, 1, &allowed",
+    ");",
+  ].join("\n");
+
+  const memoryExample = [
+    "uint32_t *value = graaly_debug_malloc(sizeof *value);",
+    "if (value == NULL) return;",
+    "",
+    "*value = UINT32_C(0x12345678);",
+    "graaly_memory_status_t before = graaly_debug_check(value);",
+    "graaly_memory_status_t freed = graaly_debug_free(value);",
+    "",
+    "/* logical free: storage is quarantined for the lesson */",
+    "uint32_t poison = *value; /* 0xDEADBEEF */",
+    "graaly_memory_status_t twice = graaly_debug_free(value);",
+    "/* twice == GRAALY_MEMORY_ALREADY_FREED */",
+  ].join("\n");
+
+  return (
+    <div className="learning-guide">
+      <div className="learning-toolbar">
+        <div>
+          <span>C / WEBASSEMBLY TRACK</span>
+          <strong>Graaly gives you primitives. You design the C data model.</strong>
+          <p>
+            The C ABI does not generate a <code>Player</code> struct. Minecraft objects arrive as checked 64-bit handles,
+            then your code chooses field sizes, struct layout, copies, pointers, and ownership.
+          </p>
+        </div>
+      </div>
+
+      <div className="runtime-boundary" aria-label="C WebAssembly runtime boundary">
+        <div>
+          <span>YOUR C</span>
+          <strong>structs · pointers · malloc · callbacks</strong>
+          <p>Ordinary C data and function pointers live in the plugin&apos;s WebAssembly linear memory.</p>
+        </div>
+        <ArrowRight size={18} aria-hidden="true" />
+        <div>
+          <span>GRAALY C ABI {graalyContract.cAbi.version}</span>
+          <strong>handles + pointer/length calls</strong>
+          <p>Host objects never become native C pointers. Graaly validates handles and every host memory range.</p>
+        </div>
+        <ArrowRight size={18} aria-hidden="true" />
+        <div>
+          <span>GAME SERVER</span>
+          <strong>Bukkit / Spigot state</strong>
+          <p>A WebAssembly memory trap quarantines the guest instance instead of exposing arbitrary JVM memory.</p>
+        </div>
+      </div>
+
+      <div className="hero-facts" aria-label="C canonical API coverage">
+        <div><dt>Exported types</dt><dd>{graalyContract.cAbi.catalog.types.toLocaleString()}</dd></div>
+        <div><dt>Member references</dt><dd>{graalyContract.cAbi.catalog.memberReferences.toLocaleString()}</dd></div>
+        <div><dt>Constants</dt><dd>{graalyContract.cAbi.catalog.constants.toLocaleString()}</dd></div>
+        <div><dt>Public modules</dt><dd>{Object.keys(graalyContract.modules).length} / {Object.keys(graalyContract.modules).length}</dd></div>
+      </div>
+
+      <div className="prerequisite-grid">
+        <article>
+          <span>01</span>
+          <h3>Design the struct</h3>
+          <p>Choose arrays and scalar fields yourself. A snapshot is copied C data, not a live Java object.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Use pointers deliberately</h3>
+          <p>Pass <code>&amp;player</code>, receive <code>Player *</code>, write through <code>-&gt;</code>, and size buffers with <code>sizeof</code>.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Register function pointers</h3>
+          <p>Event and command callbacks stay inside the Wasm module. Java receives only callback IDs.</p>
+        </article>
+        <article>
+          <span>04</span>
+          <h3>Inspect memory bugs</h3>
+          <p>The optional teaching heap detects red-zone overflow, invalid free, double free, and poisons logical frees with <code>DEADBEEF</code>.</p>
+        </article>
+      </div>
+
+      <div className="two-code-columns">
+        <CodeBlock accent="c" code={structExample} label="structs-and-pointers.c" />
+        <CodeBlock accent="c" code={universalExample} label="canonical-api.c" />
+      </div>
+      <div className="two-code-columns">
+        <CodeBlock accent="c" code={memoryExample} label="heap-lab.c" />
+        <CodeBlock
+          accent="c"
+          code={[
+            "graaly_players_online(&players);",
+            "graaly_http_get(url, \"{}\", 15000, on_http, &request);",
+            "graaly_ui_render(player, snapshot_json, on_ui_action);",
+            "graaly_packets_on_receive(packet_type, \"NORMAL\", on_packet, &binding);",
+          ].join("\n")}
+          label="module-facades.c"
+        />
+      </div>
+
+      <div className="note-line warning">
+        The checked-in <code>EducationalC.cplugin</code> exposes <code>/cheap</code>, <code>/coverflow</code>, and the operator-only <code>/csegfault</code> labs.
+        The last command intentionally traps the guest; inspect the log, fix or review the code, then run <code>/graaly reload</code>.
       </div>
     </div>
   );
@@ -4682,10 +4906,10 @@ export default function Home() {
           <section className="hero" hidden={activeSection !== "overview"} id="overview">
             <div className="hero-copy">
               <span className="hero-kicker">Graaly documentation</span>
-              <h1>Minecraft plugins in TypeScript, JavaScript, and Python.</h1>
+              <h1>Minecraft plugins in TypeScript, JavaScript, Python, and C.</h1>
               <p>
-                Use one language-native API from Minecraft {graalyContract.supportedGameVersions.minimum} through {graalyContract.supportedGameVersions.current}.
-                Graaly handles release differences and downloads verified language runtimes only when they are needed.
+                JavaScript, TypeScript, and Python use one language-native API from Minecraft {graalyContract.supportedGameVersions.minimum} through {graalyContract.supportedGameVersions.current}.
+                C uses a sandboxed low-level ABI designed to teach structs, pointers, ownership, callbacks, and memory while Graaly keeps host objects behind checked handles.
               </p>
               <div className="hero-actions">
                 <a className="primary-button" href="#prerequisites">Check prerequisites <ArrowRight size={16} /></a>
@@ -4695,14 +4919,14 @@ export default function Home() {
             <dl className="hero-facts" aria-label="Graaly compatibility summary">
               <div><dt>Server versions</dt><dd>{graalyContract.supportedGameVersions.minimum} → {graalyContract.supportedGameVersions.current}</dd></div>
               <div><dt>Java</dt><dd>17 or newer</dd></div>
-              <div><dt>Plugin languages</dt><dd>TypeScript · JavaScript · Python</dd></div>
+              <div><dt>Plugin languages</dt><dd>TypeScript · JavaScript · Python · C/Wasm</dd></div>
               <div><dt>Runtime</dt><dd>Downloaded on demand and SHA-256 verified</dd></div>
             </dl>
           </section>
 
           <section className="doc-section prerequisites-section" hidden={activeSection !== "prerequisites"} id="prerequisites">
             <SectionHeading eyebrow="01 · Prerequisites" title="Install the runtime once. Write plugins in your language.">
-              Start here before copying an example. Graaly itself runs on Java 17 or newer; choose a JVM version that also satisfies your server release. Node.js and Python are development tools, not separate in-server runtimes.
+              Start here before copying an example. Graaly itself runs on Java 17 or newer; choose a JVM version that also satisfies your server release. Node.js, Python, Zig, and Clang are development tools, not separate in-server runtimes.
             </SectionHeading>
             <div className="prerequisite-grid">
               <article>
@@ -4733,6 +4957,15 @@ export default function Home() {
                 </ul>
               </article>
               <article>
+                <span>C / WebAssembly</span>
+                <h3>Learn real C inside a guest memory sandbox</h3>
+                <ul>
+                  <li><strong>Zig 0.16+</strong> is the reference compiler; Clang with a WASI SDK works too.</li>
+                  <li>You define domain structs yourself. Graaly exposes checked handles and primitive field readers instead of a generated <code>Player</code> struct.</li>
+                  <li>The teaching heap adds <code>DEADBEEF</code> red zones, overflow and double-free diagnostics, and a contained memory-trap lab.</li>
+                </ul>
+              </article>
+              <article>
                 <span>Optional integrations</span>
                 <h3>Add only what you use</h3>
                 <ul>
@@ -4752,7 +4985,7 @@ export default function Home() {
                 <span className="section-kicker">First-start configuration</span>
                 <h3>Small, pinned, and offline-ready</h3>
                 <p>
-                  GraalJS and GraalPy are not inside the plugin JAR. Graaly downloads only the enabled languages from Maven Central,
+                  GraalJS, GraalPy, and GraalWasm are not inside the plugin JAR. Graaly downloads only the enabled languages from Maven Central,
                   checks exact size and SHA-256, and reuses the verified cache on every restart.
                 </p>
                 <ul>
@@ -4761,10 +4994,10 @@ export default function Home() {
                   <li>An invalid cached file is quarantined and never executed.</li>
                 </ul>
               </div>
-              <CodeBlock code={`runtime:\n  auto-download: true\n  languages:\n    javascript: true\n    python: true\n  connect-timeout-seconds: 20\n  request-timeout-seconds: 180\n  retry-attempts: 2`} label="plugins/Graaly/config.yml" accent="yaml" />
+              <CodeBlock code={`runtime:\n  auto-download: true\n  languages:\n    javascript: true\n    python: true\n    c: true\n  connect-timeout-seconds: 20\n  request-timeout-seconds: 180\n  retry-attempts: 2`} label="plugins/Graaly/config.yml" accent="yaml" />
             </div>
             <div className="note-line warning">
-              The first online start needs outbound HTTPS unless the verified cache was copied beforehand. No server, PacketEvents, GraalJS, or GraalPy JAR is redistributed with this project.
+              The first online start needs outbound HTTPS unless the verified cache was copied beforehand. No server, PacketEvents, GraalJS, GraalPy, or GraalWasm language JAR is redistributed with this project.
             </div>
             <div className="note-line warning">
               Java 17 is Graaly&apos;s functional minimum; each server release may require a newer JVM. With Graal 25.2.4, Java 25 uses the optimized execution path. Java 17–24 and Java 26 pass the same API contract but use the interpreter fallback and can run guest code more slowly.
@@ -4797,12 +5030,12 @@ export default function Home() {
               <CodeBlock code={pluginYaml[language]} label="plugin.yml" accent="yaml" />
               <CodeBlock
                 code={quickstartCode[language]}
-                label={language === "java" ? "WelcomePlugin.java" : language === "py" ? "main.py" : language === "ts" ? "src/main.mts" : "main.mjs"}
+                label={language === "java" ? "WelcomePlugin.java" : language === "c" ? "src/main.c" : language === "py" ? "main.py" : language === "ts" ? "src/main.mts" : "main.mjs"}
                 accent={language}
               />
             </div>
             <div className="note-line">
-              <Zap size={16} aria-hidden="true" /> JavaScript and TypeScript deploy compiled ESM, not <code>node_modules</code>. Python deploys source and runs on GraalPy. Java deploys a compiled JAR.
+              <Zap size={16} aria-hidden="true" /> JavaScript and TypeScript deploy compiled ESM. Python deploys source on GraalPy. C deploys one sandboxed <code>plugin.wasm</code>. Java deploys a compiled JAR.
             </div>
             <QuickstartDeploymentGuide language={language} />
           </section>
@@ -4813,6 +5046,7 @@ export default function Home() {
               then recognize what belongs to the language, what belongs to Graaly, and what only exists in a browser or Node.js environment.
             </SectionHeading>
             <LanguageLearningGuide />
+            <CLearningGuide />
           </section>
 
           <section className="doc-section" hidden={activeSection !== "events"} id="events">
