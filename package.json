@@ -16,6 +16,7 @@
     "typecheck:sdk": "tsc --noEmit --allowImportingTsExtensions --target ES2022 --module NodeNext --moduleResolution NodeNext runtime/sdk/typescript/graaly.mts",
     "typecheck:python": "pyright --project runtime/examples/PortingSurfacePython.pyplugin/pyrightconfig.json",
     "test": "npm run typecheck:sdk && npm run typecheck:python && npm run build && node --test tests/rendered-html.test.mjs",
+    "test:e2e": "npm run pages && playwright test",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern docs --ignore-pattern .next --ignore-pattern runtime --ignore-pattern 'app/generated*.ts' --ignore-pattern app/generated"
   },
   "dependencies": {
@@ -29,6 +30,7 @@
     "@cloudflare/vite-plugin": "1.53.1",
     "@eslint/js": "9.39.4",
     "@next/eslint-plugin-next": "16.3.2",
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "22.19.19",
     "@types/react": "19.2.18",

@@ -48,6 +48,8 @@ yarn-error.log*
 /runtime/reports/runtime/
 /runtime/reports/compatibility/*-result.json
 /runtime/**/node_modules/
+/playwright-report/
+/test-results/
 /runtime/**/dist/
 # Keep the compiled educational C fixture available to clean clones and CI.
 !/runtime/examples/EducationalC.cplugin/dist/
