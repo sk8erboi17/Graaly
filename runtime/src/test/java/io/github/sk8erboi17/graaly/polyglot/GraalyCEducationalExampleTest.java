@@ -50,7 +50,7 @@ class GraalyCEducationalExampleTest {
             lastMessage.set(new String(bytes, StandardCharsets.UTF_8));
             return 0;
         });
-        host.put("sender_as_player", (ProxyExecutable) args -> 0L);
+        host.put("sender_as_player", (ProxyExecutable) args -> 7001L);
         host.put("player_name", (ProxyExecutable) args -> 0);
         host.put("player_uuid", (ProxyExecutable) args -> 0);
         host.put("player_health", (ProxyExecutable) args -> 20.0);
@@ -60,18 +60,34 @@ class GraalyCEducationalExampleTest {
             Value memory = memoryRef.get();
             assertNotNull(memory);
             int operation = args[0].asInt();
-            if (operation == 1) {
-                String type = readUtf8(memory, args[1].asInt(), args[2].asInt());
-                bridgeCalls.add("type:" + type);
-                writeHandleValue(memory, args[3].asInt(), 9001L);
-                return 0;
+            if (operation == 4) {
+                String member = readUtf8(memory, args[2].asInt(), args[3].asInt());
+                bridgeCalls.add("get:" + member);
+                if ("name".equals(member)) {
+                    writeHandleValue(memory, args[4].asInt(), 9003L);
+                    return 0;
+                }
+                if ("health".equals(member)) {
+                    writeDoubleValue(memory, args[4].asInt(), 20.0);
+                    return 0;
+                }
+                return -1;
             }
-            if (operation == 2) {
-                String namespace = readUtf8(memory, args[1].asInt(), args[2].asInt());
-                String constant = readUtf8(memory, args[3].asInt(), args[4].asInt());
-                bridgeCalls.add("constant:" + namespace + "." + constant);
-                writeHandleValue(memory, args[5].asInt(), 9002L);
-                return 0;
+            if (operation == 27) {
+                long handle = args[1].asLong();
+                String text = handle == 9003L ? "Tester" : "";
+                byte[] encoded = text.getBytes(StandardCharsets.UTF_8);
+                int destination = args[2].asInt();
+                int capacity = args[3].asInt();
+                if (capacity > 0) {
+                    int copy = Math.min(encoded.length, capacity - 1);
+                    long start = Integer.toUnsignedLong(destination);
+                    for (int index = 0; index < copy; index++) {
+                        memory.writeBufferByte(start + index, encoded[index]);
+                    }
+                    memory.writeBufferByte(start + copy, (byte) 0);
+                }
+                return encoded.length;
             }
             if (operation == 23) {
                 bridgeCalls.add("release:" + args[1].asLong());
@@ -117,12 +133,12 @@ class GraalyCEducationalExampleTest {
 
             assertEquals(1, dispatchCommand(exports, memory, "ccatalog"));
             assertNotNull(lastMessage.get());
-            assertTrue(lastMessage.get().contains("Player=ok"), lastMessage::get);
-            assertTrue(lastMessage.get().contains("Material.STONE=ok"), lastMessage::get);
-            assertTrue(bridgeCalls.contains("type:Player"), bridgeCalls::toString);
-            assertTrue(bridgeCalls.contains("constant:Material.STONE"), bridgeCalls::toString);
-            assertTrue(bridgeCalls.contains("release:9001"), bridgeCalls::toString);
-            assertTrue(bridgeCalls.contains("release:9002"), bridgeCalls::toString);
+            assertTrue(lastMessage.get().contains("player=Tester"), lastMessage::get);
+            assertTrue(lastMessage.get().contains("health=20.0"), lastMessage::get);
+            assertTrue(lastMessage.get().contains("status=ok"), lastMessage::get);
+            assertTrue(bridgeCalls.contains("get:name"), bridgeCalls::toString);
+            assertTrue(bridgeCalls.contains("get:health"), bridgeCalls::toString);
+            assertTrue(bridgeCalls.contains("release:9003"), bridgeCalls::toString);
 
             lastMessage.set(null);
             assertEquals(1, dispatchCommand(exports, memory, "cmemory"));
@@ -160,6 +176,17 @@ class GraalyCEducationalExampleTest {
         memory.writeBufferInt(ByteOrder.LITTLE_ENDIAN, address, 5);
         memory.writeBufferInt(ByteOrder.LITTLE_ENDIAN, address + 4L, 0);
         memory.writeBufferLong(ByteOrder.LITTLE_ENDIAN, address + 8L, handle);
+        memory.writeBufferLong(ByteOrder.LITTLE_ENDIAN, address + 16L, 0L);
+    }
+
+    private static void writeDoubleValue(Value memory, int pointer, double value) {
+        long address = Integer.toUnsignedLong(pointer);
+        memory.writeBufferInt(ByteOrder.LITTLE_ENDIAN, address, 3);
+        memory.writeBufferInt(ByteOrder.LITTLE_ENDIAN, address + 4L, 0);
+        memory.writeBufferLong(
+                ByteOrder.LITTLE_ENDIAN,
+                address + 8L,
+                Double.doubleToRawLongBits(value));
         memory.writeBufferLong(ByteOrder.LITTLE_ENDIAN, address + 16L, 0L);
     }
 

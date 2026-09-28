@@ -85,7 +85,11 @@ test("publishes one versionless Graaly contract from 1.7.10 through 26.2", async
   const python = await readFile(runtimeFile("sdk/python/graaly/_core.pyi"), "utf8");
   const cHeader = await readFile(runtimeFile("sdk/c/include/graaly/graaly.h"), "utf8");
   const cCatalog = await readFile(runtimeFile("sdk/c/include/graaly/catalog.h"), "utf8");
+  const cTyped = await readFile(runtimeFile("sdk/c/include/graaly/typed.h"), "utf8");
+  const cPacketTyped = await readFile(runtimeFile("sdk/c/include/graaly/packet-typed.h"), "utf8");
   const cManifest = JSON.parse(await readFile(runtimeFile("sdk/c/catalog-manifest.json"), "utf8"));
+  const cTypedManifest = JSON.parse(await readFile(runtimeFile("sdk/c/typed-manifest.json"), "utf8"));
+  const cPacketTypedManifest = JSON.parse(await readFile(runtimeFile("sdk/c/packet-typed-manifest.json"), "utf8"));
   const cExample = await readFile(runtimeFile("examples/EducationalC.cplugin/src/main.c"), "utf8");
   const response = await render();
   const html = await response.text();
@@ -99,6 +103,18 @@ test("publishes one versionless Graaly contract from 1.7.10 through 26.2", async
   assert.equal(runtime.cAbi.target, "wasm32-wasi");
   assert.equal(runtime.cAbi.developerOwnsDomainStructs, true);
   assert.equal(runtime.cAbi.fullGeneratedApiParity, true);
+  assert.equal(runtime.cAbi.design, "educational-typed-c");
+  assert.equal(runtime.cAbi.hostObjects, "opaque-typed-handles");
+  assert.equal(runtime.cAbi.rawAbiOptIn, "GRAALY_ENABLE_RAW_ABI");
+  assert.equal(runtime.cAbi.typedFacade.reflectionIsPublicByDefault, false);
+  assert.equal(runtime.cAbi.typedFacade.generatedProperties, 26069);
+  assert.equal(runtime.cAbi.typedFacade.generatedWriters, 11096);
+  assert.equal(runtime.cAbi.typedFacade.generatedMethods, 17875);
+  assert.equal(runtime.cAbi.packetTypedFacade.exportedPacketTypes, 822);
+  assert.equal(runtime.cAbi.packetTypedFacade.generatedProperties, 5019);
+  assert.equal(runtime.cAbi.packetTypedFacade.generatedWriters, 2911);
+  assert.equal(runtime.cAbi.packetTypedFacade.generatedMethods, 45578);
+  assert.equal(runtime.cAbi.packetTypedFacade.generatedConstructors, 412);
   assert.deepEqual(runtime.cAbi.catalog, {
     types: 1421,
     canonicalClasses: 1411,
@@ -119,6 +135,12 @@ test("publishes one versionless Graaly contract from 1.7.10 through 26.2", async
   assert.equal(cManifest.packetSupportTypes, 533);
   assert.equal(cManifest.packetTypePaths, 288);
   assert.equal(cManifest.packetMemberNames, 2926);
+  assert.equal(cTypedManifest.generatedProperties, 26069);
+  assert.equal(cTypedManifest.generatedWriters, 11096);
+  assert.equal(cTypedManifest.generatedMethods, 17875);
+  assert.equal(cPacketTypedManifest.exportedPacketTypes, 822);
+  assert.equal(cPacketTypedManifest.generatedProperties, 5019);
+  assert.equal(cPacketTypedManifest.generatedMethods, 45578);
   assert.equal(Object.keys(runtime.modules).length, 14);
   for (const [moduleName, moduleDefinition] of Object.entries(runtime.modules)) {
     assert.ok(Array.isArray(moduleDefinition.c) && moduleDefinition.c.length > 0,
@@ -131,11 +153,18 @@ test("publishes one versionless Graaly contract from 1.7.10 through 26.2", async
   assert.match(python, /class GraalyUnsupportedFeature\(RuntimeError\)/);
   assert.match(python, /compatibility: _Compatibility/);
   assert.match(cHeader, /graaly_debug_malloc/);
-  assert.match(cHeader, /graaly_module_call/);
+  assert.match(cHeader, /GRAALY_ENABLE_RAW_ABI/);
+  assert.match(cHeader, /graaly_player_list/);
+  assert.match(cHeader, /graaly_world_create/);
   assert.match(cHeader, /graaly_http_get/);
-  assert.match(cHeader, /graaly_packets_on_receive/);
-  assert.match(cHeader, /graaly_worlds_generator/);
+  assert.match(cHeader, /graaly_packet_on_receive/);
+  assert.match(cHeader, /graaly_text_callback_t/);
   assert.match(cHeader, /GRAALY_POISON_HANDLE/);
+  assert.match(cTyped, /graaly_player_health\(/);
+  assert.match(cTyped, /graaly_player_health_write\(/);
+  assert.match(cTyped, /#define graaly_player_has_permission /);
+  assert.match(cPacketTyped, /graaly_pe_wrapper_play_client_chat_message__from_event/);
+  assert.match(cPacketTyped, /graaly_pe_wrapper_play_client_chat_message__message_write/);
   assert.match(cCatalog, /GRAALY_TYPE_PLAYER/);
   assert.match(cCatalog, /GRAALY_MEMBER_HEALTH/);
   assert.match(cCatalog, /GRAALY_MATERIAL_STONE/);
@@ -144,11 +173,14 @@ test("publishes one versionless Graaly contract from 1.7.10 through 26.2", async
   assert.match(cCatalog, /GRAALY_PACKET_MEMBER_MESSAGE/);
   assert.doesNotMatch(cHeader, /^\s*typedef\s+struct\s+Player\b/m);
   assert.match(cExample, /typedef struct Player/);
-  assert.match(cExample, /Player \*out/);
+  assert.match(cExample, /graaly_player_t host/);
+  assert.match(cExample, /graaly_player_name/);
+  assert.match(cExample, /graaly_player_health/);
+  assert.doesNotMatch(cExample, /graaly_(?:get|set|call)\(/);
   assert.match(cExample, /coverflow_command/);
   assert.match(cExample, /csegfault_command/);
   assert.match(html, /C \/ WEBASSEMBLY TRACK/);
-  assert.match(html, /You design the C data model/);
+  assert.match(html, /Typed C API outside, low-level ABI underneath/);
   assert.match(html, /63,044/);
   assert.match(html, /4,629/);
   assert.match(html, /DEADBEEF/);
@@ -475,8 +507,11 @@ test("provides useful event examples for TypeScript, JavaScript, Python, C, and 
   assert.match(source, /public void protectDiamondOre\(BlockBreakEvent event\)/);
   assert.match(source, /event\.setExpToDrop\(0\)/);
   assert.match(source, /graaly_events_on_type/);
-  assert.match(source, /graaly_get\(event,/);
-  assert.match(source, /graaly_set\(event,/);
+  assert.match(source, /graaly_cast\(graaly_/);
+  assert.match(source, /_cancelled_write\(event, true\)/);
+  assert.doesNotMatch(source, /graaly_get\(/);
+  assert.doesNotMatch(source, /graaly_set\(/);
+  assert.doesNotMatch(source, /graaly_call\(/);
   assert.match(source, /JAVA EQUIVALENT/);
   assert.match(source, /genericEventExample/);
 });
@@ -646,7 +681,7 @@ test("uses the event-style browser for every core developer workflow", async () 
     assert.ok(topic.code.js.length > 0 && topic.code.ts.length > 0 && topic.code.py.length > 0 && topic.code.java.length > 0);
     const cCode = cGuideCode(topic);
     assert.match(cCode, /#include <graaly\/graaly\.h>/);
-    assert.ok(cCode.includes("graaly_") || cCode.includes("/* C:"), `${topic.title} has no C correspondence`);
+    assert.ok(cCode.includes("graaly_") || cCode.includes("/* C equivalent"), `${topic.title} has no C correspondence`);
     assert.ok(topic.operations.every(operation => operation.c.length > 0), `${topic.title} has an operation without C mapping`);
     assert.ok(topic.javaEquivalent.length > 0, `${topic.title} has no Java correspondence`);
   }

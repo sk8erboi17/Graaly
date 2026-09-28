@@ -33,6 +33,8 @@ test.describe("responsive documentation grids", () => {
 
       const code = browser.locator(".code-block code").first();
       await expect(code).toContainText(/graaly_|#include <graaly\//);
+      const cSource = await code.textContent();
+      expect(cSource ?? "").not.toMatch(/graaly_(?:get|set|call)\s*\(/);
 
       const layout = await browser.evaluate(element => {
         const grid = element.querySelector(".guide-browser-grid");
@@ -80,14 +82,26 @@ test.describe("responsive documentation grids", () => {
     const cTab = browser.getByRole("tab", { name: "C / WebAssembly" });
     await cTab.click();
     await expect(cTab).toHaveAttribute("aria-selected", "true");
-    await expect(browser.locator(".code-block code").first()).toContainText("graaly_events_on_type");
+    const code = browser.locator(".code-block code").first();
+    await expect(code).toContainText("graaly_events_on_type");
+    const cSource = await code.textContent();
+    expect(cSource ?? "").toContain("graaly_cast");
+    expect(cSource ?? "").not.toMatch(/graaly_(?:get|set|call)\s*\(/);
     await expectNoHorizontalOverflow(page);
   });
 
-  test("global language selector includes C", async ({ page }) => {
-    await page.goto("/#commands");
+  test("global language selector includes typed C", async ({ page }) => {
+    await page.goto("/#quickstart");
     const globalTabs = page.getByRole("group", { name: "Default quick-start language" });
-    await expect(globalTabs.getByRole("button", { name: "C", exact: true })).toBeVisible();
+    const cButton = globalTabs.getByRole("button", { name: "C", exact: true });
+    await expect(cButton).toBeVisible();
+    await cButton.click();
+
+    const quickStart = page.locator("#quickstart");
+    const code = quickStart.locator('code[data-lang="c"]').first();
+    await expect(code).toContainText(/graaly_player_t|#include <graaly\/graaly\.h>/);
+    const cSource = await code.textContent();
+    expect(cSource ?? "").not.toMatch(/graaly_(?:get|set|call)\s*\(/);
     await expectNoHorizontalOverflow(page);
   });
 });

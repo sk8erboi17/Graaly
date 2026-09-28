@@ -1,0 +1,12 @@
+{
+  "exportedPacketTypes": 822,
+  "generatedProperties": 5019,
+  "generatedWriters": 2911,
+  "generatedMethods": 45578,
+  "generatedConstructors": 412,
+  "skippedComplexMembers": 11029,
+  "files": {
+    "types": "sdk/c/include/graaly/packet-types.h",
+    "typed": "sdk/c/include/graaly/packet-typed.h"
+  }
+}

@@ -1,3 +1,4 @@
+#define GRAALY_ENABLE_RAW_ABI 1
 #include "graaly/graaly.h"
 
 #include <limits.h>
@@ -16,6 +17,10 @@
 #define GRAALY_MAX_OBJECT_EVENT_CALLBACKS 512
 #define GRAALY_MAX_TASK_CALLBACKS 512
 #define GRAALY_MAX_GENERIC_CALLBACKS 1024
+#define GRAALY_MAX_TEXT_CALLBACKS 1024
+#define GRAALY_MAX_PACKET_CALLBACKS 1024
+#define GRAALY_TEXT_CALLBACK_FLAG INT32_C(0x40000000)
+#define GRAALY_PACKET_CALLBACK_FLAG INT32_C(0x20000000)
 #define GRAALY_MAX_COMMANDS 64
 #define GRAALY_MAX_COMMAND_NAME 64
 #define GRAALY_DEBUG_MAX_ALLOCATIONS 256
@@ -116,6 +121,14 @@ typedef struct graaly_generic_callback_entry {
     graaly_callback_t callback;
 } graaly_generic_callback_entry_t;
 
+typedef struct graaly_text_callback_entry {
+    graaly_text_callback_t callback;
+} graaly_text_callback_entry_t;
+
+typedef struct graaly_packet_callback_entry {
+    graaly_packet_callback_t callback;
+} graaly_packet_callback_entry_t;
+
 typedef struct graaly_command_entry {
     char name[GRAALY_MAX_COMMAND_NAME];
     graaly_command_callback_t callback;
@@ -144,6 +157,8 @@ static graaly_event_entry_t event_callbacks[GRAALY_MAX_EVENT_CALLBACKS];
 static graaly_object_event_entry_t object_event_callbacks[GRAALY_MAX_OBJECT_EVENT_CALLBACKS];
 static graaly_task_entry_t task_callbacks[GRAALY_MAX_TASK_CALLBACKS];
 static graaly_generic_callback_entry_t generic_callbacks[GRAALY_MAX_GENERIC_CALLBACKS];
+static graaly_text_callback_entry_t text_callbacks[GRAALY_MAX_TEXT_CALLBACKS];
+static graaly_packet_callback_entry_t packet_callbacks[GRAALY_MAX_PACKET_CALLBACKS];
 static graaly_command_entry_t command_callbacks[GRAALY_MAX_COMMANDS];
 static graaly_debug_record_t debug_allocations[GRAALY_DEBUG_MAX_ALLOCATIONS];
 static int command_count;
@@ -224,6 +239,219 @@ graaly_value_t graaly_value_handle(graaly_handle_t selected) {
     value.kind = GRAALY_VALUE_HANDLE;
     value.a = selected;
     return value;
+}
+
+static graaly_status_t typed_status(int status) {
+    return status == 0 ? GRAALY_OK : GRAALY_EHOST;
+}
+
+static graaly_status_t value_to_bool(graaly_value_t value, bool *out) {
+    if (out == NULL) return GRAALY_EINVAL;
+    if (value.kind != GRAALY_VALUE_BOOL) return GRAALY_ETYPE;
+    *out = value.a != 0u;
+    return GRAALY_OK;
+}
+
+static graaly_status_t value_to_number(graaly_value_t value, double *out) {
+    if (out == NULL) return GRAALY_EINVAL;
+    if (value.kind == GRAALY_VALUE_I64) {
+        *out = (double) (int64_t) value.a;
+        return GRAALY_OK;
+    }
+    if (value.kind == GRAALY_VALUE_F64) {
+        uint64_t bits = value.a;
+        memcpy(out, &bits, sizeof bits);
+        return GRAALY_OK;
+    }
+    return GRAALY_ETYPE;
+}
+
+static graaly_status_t value_to_handle(graaly_value_t value, uint64_t *out) {
+    if (out == NULL) return GRAALY_EINVAL;
+    if (value.kind == GRAALY_VALUE_NULL) {
+        *out = 0u;
+        return GRAALY_OK;
+    }
+    if (value.kind != GRAALY_VALUE_HANDLE) return GRAALY_ETYPE;
+    *out = value.a;
+    return GRAALY_OK;
+}
+
+static graaly_status_t value_to_string(
+        graaly_value_t value,
+        char *buffer,
+        size_t capacity,
+        size_t *required) {
+    if (value.kind == GRAALY_VALUE_NULL) {
+        if (required != NULL) *required = 0u;
+        if (buffer != NULL && capacity > 0u) buffer[0] = '\0';
+        return GRAALY_OK;
+    }
+    if (value.kind != GRAALY_VALUE_HANDLE) return GRAALY_ETYPE;
+
+    size_t needed = graaly_handle_string(value.a, buffer, capacity);
+    if (required != NULL) *required = needed;
+    graaly_handle_release(value.a);
+    return GRAALY_OK;
+}
+
+graaly_status_t graaly__read_bool(uint64_t target, const char *member, bool *out) {
+    graaly_value_t value = graaly_value_null();
+    int status = graaly_get(target, member, &value);
+    if (status != 0) return typed_status(status);
+    return value_to_bool(value, out);
+}
+
+graaly_status_t graaly__read_number(uint64_t target, const char *member, double *out) {
+    graaly_value_t value = graaly_value_null();
+    int status = graaly_get(target, member, &value);
+    if (status != 0) return typed_status(status);
+    return value_to_number(value, out);
+}
+
+graaly_status_t graaly__read_string(
+        uint64_t target,
+        const char *member,
+        char *buffer,
+        size_t capacity,
+        size_t *required) {
+    graaly_value_t value = graaly_value_null();
+    int status = graaly_get(target, member, &value);
+    if (status != 0) return typed_status(status);
+    return value_to_string(value, buffer, capacity, required);
+}
+
+graaly_status_t graaly__read_handle(uint64_t target, const char *member, uint64_t *out) {
+    graaly_value_t value = graaly_value_null();
+    int status = graaly_get(target, member, &value);
+    if (status != 0) return typed_status(status);
+    return value_to_handle(value, out);
+}
+
+graaly_status_t graaly__write_bool(uint64_t target, const char *member, bool value) {
+    return typed_status(graaly_set(target, member, graaly_value_bool(value)));
+}
+
+graaly_status_t graaly__write_number(uint64_t target, const char *member, double value) {
+    return typed_status(graaly_set(target, member, graaly_value_f64(value)));
+}
+
+graaly_status_t graaly__write_string(uint64_t target, const char *member, const char *value) {
+    return typed_status(graaly_set(
+            target,
+            member,
+            value == NULL ? graaly_value_null() : graaly_value_string(value)));
+}
+
+graaly_status_t graaly__write_handle(uint64_t target, const char *member, uint64_t value) {
+    return typed_status(graaly_set(
+            target,
+            member,
+            value == 0u ? graaly_value_null() : graaly_value_handle(value)));
+}
+
+graaly_status_t graaly__invoke_void(
+        uint64_t target,
+        const char *member,
+        const graaly_value_t *arguments,
+        size_t argument_count) {
+    graaly_value_t ignored = graaly_value_null();
+    return typed_status(graaly_call(target, member, arguments, argument_count, &ignored));
+}
+
+graaly_status_t graaly__invoke_bool(
+        uint64_t target,
+        const char *member,
+        const graaly_value_t *arguments,
+        size_t argument_count,
+        bool *out) {
+    graaly_value_t value = graaly_value_null();
+    int status = graaly_call(target, member, arguments, argument_count, &value);
+    if (status != 0) return typed_status(status);
+    return value_to_bool(value, out);
+}
+
+graaly_status_t graaly__invoke_number(
+        uint64_t target,
+        const char *member,
+        const graaly_value_t *arguments,
+        size_t argument_count,
+        double *out) {
+    graaly_value_t value = graaly_value_null();
+    int status = graaly_call(target, member, arguments, argument_count, &value);
+    if (status != 0) return typed_status(status);
+    return value_to_number(value, out);
+}
+
+graaly_status_t graaly__invoke_string(
+        uint64_t target,
+        const char *member,
+        const graaly_value_t *arguments,
+        size_t argument_count,
+        char *buffer,
+        size_t capacity,
+        size_t *required) {
+    graaly_value_t value = graaly_value_null();
+    int status = graaly_call(target, member, arguments, argument_count, &value);
+    if (status != 0) return typed_status(status);
+    return value_to_string(value, buffer, capacity, required);
+}
+
+graaly_status_t graaly__invoke_handle(
+        uint64_t target,
+        const char *member,
+        const graaly_value_t *arguments,
+        size_t argument_count,
+        uint64_t *out) {
+    graaly_value_t value = graaly_value_null();
+    int status = graaly_call(target, member, arguments, argument_count, &value);
+    if (status != 0) return typed_status(status);
+    return value_to_handle(value, out);
+}
+
+graaly_status_t graaly__packet_wrap_named(
+        const char *wrapper_name,
+        uint64_t event_handle,
+        uint64_t *out) {
+    if (wrapper_name == NULL || event_handle == 0u || out == NULL) {
+        return GRAALY_EINVAL;
+    }
+
+    graaly_value_t wrapper_type = graaly_value_null();
+    if (graaly_packets_wrapper_type(wrapper_name, &wrapper_type) != 0
+            || wrapper_type.kind != GRAALY_VALUE_HANDLE) {
+        return GRAALY_EHOST;
+    }
+
+    graaly_value_t wrapped = graaly_value_null();
+    int status = graaly_packets_wrap(wrapper_type.a, event_handle, &wrapped);
+    graaly_handle_release(wrapper_type.a);
+    if (status != 0) return GRAALY_EHOST;
+    return value_to_handle(wrapped, out);
+}
+
+graaly_status_t graaly__packet_construct_named(
+        const char *wrapper_name,
+        const graaly_value_t *arguments,
+        size_t argument_count,
+        uint64_t *out) {
+    if (wrapper_name == NULL || out == NULL) return GRAALY_EINVAL;
+
+    graaly_value_t wrapper_type = graaly_value_null();
+    if (graaly_packets_wrapper_type(wrapper_name, &wrapper_type) != 0
+            || wrapper_type.kind != GRAALY_VALUE_HANDLE) {
+        return GRAALY_EHOST;
+    }
+
+    graaly_value_t packet = graaly_value_null();
+    int status = graaly_packets_create(
+            wrapper_type.a,
+            arguments,
+            argument_count,
+            &packet);
+    graaly_handle_release(wrapper_type.a);
+    if (status != 0) return GRAALY_EHOST;
+    return value_to_handle(packet, out);
 }
 
 static int bridge_string_result(
@@ -609,6 +837,23 @@ void graaly_handle_release(graaly_handle_t handle) {
     (void) graaly_host_bridge(GRAALY_BRIDGE_HANDLE_RELEASE, handle, 0u, 0u, 0u, 0u);
 }
 
+graaly_status_t graaly_object_text(
+        graaly_object_t object,
+        char *buffer,
+        size_t capacity,
+        size_t *required) {
+    if (object._handle == 0u) return GRAALY_EINVAL;
+    size_t needed = graaly_handle_string(object._handle, buffer, capacity);
+    if (required != NULL) *required = needed;
+    return GRAALY_OK;
+}
+
+void graaly_object_release(graaly_object_t *object) {
+    if (object == NULL || object->_handle == 0u) return;
+    graaly_handle_release(object->_handle);
+    object->_handle = 0u;
+}
+
 size_t graaly_last_error(char *destination, size_t capacity) {
     int result = graaly_host_bridge(
             GRAALY_BRIDGE_LAST_ERROR,
@@ -659,6 +904,32 @@ void graaly_sender_send_message(
     graaly_sender_send_message_n(sender, message, strlen(message));
 }
 
+graaly_status_t graaly_sender_player(graaly_sender_t sender, graaly_player_t *out) {
+    if (out == NULL) return GRAALY_EINVAL;
+    uint64_t raw = graaly_host_sender_as_player(sender._handle);
+    out->_handle = raw;
+    return raw == 0u ? GRAALY_ETYPE : GRAALY_OK;
+}
+
+graaly_status_t graaly_sender_has_permission(
+        graaly_sender_t sender,
+        const char *permission,
+        bool *allowed) {
+    if (permission == NULL || allowed == NULL || sender._handle == 0u) {
+        return GRAALY_EINVAL;
+    }
+    graaly_value_t args[1] = { graaly_value_string(permission) };
+    return graaly__invoke_bool(sender._handle, "hasPermission", args, 1u, allowed);
+}
+
+void graaly_sender_message(graaly_sender_t sender, const char *message) {
+    graaly_sender_send_message(sender._handle, message);
+}
+
+void graaly_player_message(graaly_player_t player, const char *message) {
+    graaly_sender_send_message(player._handle, message);
+}
+
 graaly_player_handle_t graaly_sender_as_player(graaly_sender_handle_t sender) {
     return graaly_host_sender_as_player(sender);
 }
@@ -691,11 +962,11 @@ size_t graaly_player_read_uuid(
     return required < 0 ? 0u : (size_t) (uint32_t) required;
 }
 
-double graaly_player_health(graaly_player_handle_t player) {
+double graaly__player_health_raw(graaly_player_handle_t player) {
     return graaly_host_player_health(player);
 }
 
-int graaly_player_level(graaly_player_handle_t player) {
+int graaly__player_level_raw(graaly_player_handle_t player) {
     return (int) graaly_host_player_level(player);
 }
 
@@ -705,6 +976,28 @@ int graaly_callback_register(graaly_callback_t callback) {
         if (generic_callbacks[index].callback == NULL) {
             generic_callbacks[index].callback = callback;
             return index + 1;
+        }
+    }
+    return -1;
+}
+
+int graaly_text_callback_register(graaly_text_callback_t callback) {
+    if (callback == NULL) return -1;
+    for (int index = 0; index < GRAALY_MAX_TEXT_CALLBACKS; index++) {
+        if (text_callbacks[index].callback == NULL) {
+            text_callbacks[index].callback = callback;
+            return (int) GRAALY_TEXT_CALLBACK_FLAG | (index + 1);
+        }
+    }
+    return -1;
+}
+
+int graaly_packet_callback_register(graaly_packet_callback_t callback) {
+    if (callback == NULL) return -1;
+    for (int index = 0; index < GRAALY_MAX_PACKET_CALLBACKS; index++) {
+        if (packet_callbacks[index].callback == NULL) {
+            packet_callbacks[index].callback = callback;
+            return (int) GRAALY_PACKET_CALLBACK_FLAG | (index + 1);
         }
     }
     return -1;
@@ -893,12 +1186,12 @@ int graaly_config_contains(const char *path, bool *contains) {
     return status;
 }
 
-int graaly_config_save(void) {
+int __raw_graaly_config_save(void) {
     graaly_value_t result;
     return module_call_simple("config", "save", &result);
 }
 
-int graaly_config_reload(void) {
+int __raw_graaly_config_reload(void) {
     graaly_value_t result;
     return module_call_simple("config", "reload", &result);
 }
@@ -925,7 +1218,7 @@ int graaly_players_is_player(graaly_value_t value, bool *is_player) {
     return status;
 }
 
-int graaly_players_broadcast(const char *message) {
+int __raw_graaly_players_broadcast(const char *message) {
     graaly_value_t arg = graaly_value_string(message);
     graaly_value_t result;
     return graaly_module_call("players", "broadcast", &arg, 1u, &result);
@@ -1079,7 +1372,7 @@ static int register_required_callback(graaly_callback_t callback) {
     return graaly_callback_register(callback);
 }
 
-int graaly_http_request(
+int __raw_graaly_http_request(
         const char *method,
         const char *url,
         const char *headers_json,
@@ -1100,7 +1393,7 @@ int graaly_http_request(
     return graaly_module_call("http", "request", args, 6u, request_id);
 }
 
-int graaly_http_get(
+int __raw_graaly_http_get(
         const char *url,
         const char *headers_json,
         uint64_t timeout_ms,
@@ -1137,7 +1430,7 @@ static int http_body_call(
     return graaly_module_call("http", operation, args, 5u, request_id);
 }
 
-int graaly_http_post(
+int __raw_graaly_http_post(
         const char *url,
         const char *body,
         const char *headers_json,
@@ -1147,7 +1440,7 @@ int graaly_http_post(
     return http_body_call("post", url, body, headers_json, timeout_ms, callback, request_id);
 }
 
-int graaly_http_put(
+int __raw_graaly_http_put(
         const char *url,
         const char *body,
         const char *headers_json,
@@ -1157,7 +1450,7 @@ int graaly_http_put(
     return http_body_call("put", url, body, headers_json, timeout_ms, callback, request_id);
 }
 
-int graaly_http_delete(
+int __raw_graaly_http_delete(
         const char *url,
         const char *headers_json,
         uint64_t timeout_ms,
@@ -1174,7 +1467,7 @@ int graaly_http_delete(
     return graaly_module_call("http", "delete", args, 4u, request_id);
 }
 
-int graaly_http_cancel(const char *request_id, bool *cancelled) {
+int __raw_graaly_http_cancel(const char *request_id, bool *cancelled) {
     if (cancelled == NULL) return -1;
     graaly_value_t arg = graaly_value_string(request_id);
     graaly_value_t result;
@@ -1183,7 +1476,7 @@ int graaly_http_cancel(const char *request_id, bool *cancelled) {
     return status;
 }
 
-int graaly_websocket_connect(
+int __raw_graaly_websocket_connect(
         const char *url,
         const char *headers_json,
         uint64_t timeout_ms,
@@ -1200,7 +1493,7 @@ int graaly_websocket_connect(
     return graaly_module_call("websocket", "connect", args, 4u, connection_id);
 }
 
-int graaly_websocket_send(
+int __raw_graaly_websocket_send(
         const char *connection_id,
         const char *text,
         graaly_callback_t completion_callback) {
@@ -1215,7 +1508,7 @@ int graaly_websocket_send(
     return graaly_module_call("websocket", "send", args, 3u, &result);
 }
 
-int graaly_websocket_close(
+int __raw_graaly_websocket_close(
         const char *connection_id,
         int code,
         const char *reason,
@@ -1232,12 +1525,12 @@ int graaly_websocket_close(
     return graaly_module_call("websocket", "close", args, 4u, &result);
 }
 
-int graaly_websocket_state(const char *connection_id, graaly_value_t *state) {
+int __raw_graaly_websocket_state(const char *connection_id, graaly_value_t *state) {
     graaly_value_t arg = graaly_value_string(connection_id);
     return graaly_module_call("websocket", "state", &arg, 1u, state);
 }
 
-int graaly_ui_render(
+int __raw_graaly_ui_render(
         graaly_handle_t player,
         const char *snapshot_json,
         graaly_callback_t action_callback) {
@@ -1252,7 +1545,7 @@ int graaly_ui_render(
     return graaly_module_call("ui", "render", args, 3u, &result);
 }
 
-int graaly_ui_render_html(
+int __raw_graaly_ui_render_html(
         graaly_handle_t player,
         const char *markup,
         const char *css,
@@ -1269,13 +1562,13 @@ int graaly_ui_render_html(
     return graaly_module_call("ui", "renderHtml", args, 4u, &result);
 }
 
-int graaly_ui_clear(graaly_handle_t player) {
+int __raw_graaly_ui_clear(graaly_handle_t player) {
     graaly_value_t arg = graaly_value_handle(player);
     graaly_value_t result;
     return graaly_module_call("ui", "clear", &arg, 1u, &result);
 }
 
-int graaly_ui_dismiss(graaly_handle_t player, const char *surface) {
+int __raw_graaly_ui_dismiss(graaly_handle_t player, const char *surface) {
     graaly_value_t args[2] = {
             graaly_value_handle(player),
             graaly_value_string(surface)
@@ -1284,7 +1577,7 @@ int graaly_ui_dismiss(graaly_handle_t player, const char *surface) {
     return graaly_module_call("ui", "dismiss", args, 2u, &result);
 }
 
-int graaly_boards_state(
+int __raw_graaly_boards_state(
         const char *board,
         graaly_handle_t player,
         const char *state_json) {
@@ -1297,7 +1590,7 @@ int graaly_boards_state(
     return graaly_module_call("boards", "state", args, 3u, &result);
 }
 
-int graaly_boards_on_message(const char *board, graaly_callback_t callback) {
+int __raw_graaly_boards_on_message(const char *board, graaly_callback_t callback) {
     int callback_id = register_required_callback(callback);
     if (callback_id < 0) return -1;
     graaly_value_t args[2] = {
@@ -1308,11 +1601,11 @@ int graaly_boards_on_message(const char *board, graaly_callback_t callback) {
     return graaly_module_call("boards", "onMessage", args, 2u, &result);
 }
 
-int graaly_boards_listen(const char *board, graaly_callback_t callback) {
-    return graaly_boards_on_message(board, callback);
+int __raw_graaly_boards_listen(const char *board, graaly_callback_t callback) {
+    return __raw_graaly_boards_on_message(board, callback);
 }
 
-int graaly_boards_refresh(const char *board, graaly_handle_t player) {
+int __raw_graaly_boards_refresh(const char *board, graaly_handle_t player) {
     graaly_value_t args[2] = {
             graaly_value_string(board),
             graaly_value_handle(player)
@@ -1455,6 +1748,835 @@ int graaly_commands_dispatch(
 
 int graaly_diagnostics_verify(graaly_value_t *result) {
     return module_call_simple("diagnostics", "verify", result);
+}
+
+static graaly_status_t typed_handle_from_value(graaly_value_t value, uint64_t *out) {
+    return value_to_handle(value, out);
+}
+
+graaly_status_t graaly_player_list(
+        graaly_player_t *buffer,
+        size_t capacity,
+        size_t *count) {
+    if (count == NULL) return GRAALY_EINVAL;
+
+    graaly_value_t collection = graaly_value_null();
+    int status = graaly_players_online(&collection);
+    if (status != 0 || collection.kind != GRAALY_VALUE_HANDLE) {
+        return status == 0 ? GRAALY_ETYPE : GRAALY_EHOST;
+    }
+
+    size_t total = 0u;
+    status = graaly_collection_size(collection.a, &total);
+    if (status != 0) {
+        graaly_handle_release(collection.a);
+        return GRAALY_EHOST;
+    }
+
+    *count = total;
+    size_t copy = capacity < total ? capacity : total;
+    for (size_t index = 0; index < copy; index++) {
+        graaly_value_t value = graaly_value_null();
+        if (graaly_collection_get(collection.a, index, &value) != 0
+                || value.kind != GRAALY_VALUE_HANDLE) {
+            graaly_handle_release(collection.a);
+            return GRAALY_EHOST;
+        }
+        if (buffer != NULL) buffer[index]._handle = value.a;
+        else graaly_handle_release(value.a);
+    }
+    graaly_handle_release(collection.a);
+    return capacity < total ? GRAALY_ERANGE : GRAALY_OK;
+}
+
+static graaly_status_t player_lookup(const char *name, bool exact, graaly_player_t *out) {
+    if (name == NULL || out == NULL) return GRAALY_EINVAL;
+    graaly_value_t value = graaly_value_null();
+    int status = exact ? graaly_players_exact(name, &value) : graaly_players_get(name, &value);
+    if (status != 0) return GRAALY_EHOST;
+    uint64_t raw = 0u;
+    graaly_status_t typed = typed_handle_from_value(value, &raw);
+    if (typed != GRAALY_OK) return typed;
+    out->_handle = raw;
+    return raw == 0u ? GRAALY_ETYPE : GRAALY_OK;
+}
+
+graaly_status_t graaly_player_find(const char *name, graaly_player_t *out) {
+    return player_lookup(name, false, out);
+}
+
+graaly_status_t graaly_player_find_exact(const char *name, graaly_player_t *out) {
+    return player_lookup(name, true, out);
+}
+
+graaly_status_t graaly_world_list(
+        graaly_world_t *buffer,
+        size_t capacity,
+        size_t *count) {
+    if (count == NULL) return GRAALY_EINVAL;
+
+    graaly_value_t collection = graaly_value_null();
+    int status = graaly_worlds_all(&collection);
+    if (status != 0 || collection.kind != GRAALY_VALUE_HANDLE) {
+        return status == 0 ? GRAALY_ETYPE : GRAALY_EHOST;
+    }
+
+    size_t total = 0u;
+    status = graaly_collection_size(collection.a, &total);
+    if (status != 0) {
+        graaly_handle_release(collection.a);
+        return GRAALY_EHOST;
+    }
+
+    *count = total;
+    size_t copy = capacity < total ? capacity : total;
+    for (size_t index = 0; index < copy; index++) {
+        graaly_value_t value = graaly_value_null();
+        if (graaly_collection_get(collection.a, index, &value) != 0
+                || value.kind != GRAALY_VALUE_HANDLE) {
+            graaly_handle_release(collection.a);
+            return GRAALY_EHOST;
+        }
+        if (buffer != NULL) buffer[index]._handle = value.a;
+        else graaly_handle_release(value.a);
+    }
+    graaly_handle_release(collection.a);
+    return capacity < total ? GRAALY_ERANGE : GRAALY_OK;
+}
+
+graaly_status_t graaly_world_find(const char *name, graaly_world_t *out) {
+    if (name == NULL || out == NULL) return GRAALY_EINVAL;
+    graaly_value_t value = graaly_value_null();
+    if (graaly_worlds_get(name, &value) != 0) return GRAALY_EHOST;
+    uint64_t raw = 0u;
+    graaly_status_t status = typed_handle_from_value(value, &raw);
+    if (status != GRAALY_OK) return status;
+    out->_handle = raw;
+    return raw == 0u ? GRAALY_ETYPE : GRAALY_OK;
+}
+
+graaly_status_t graaly_location_make(
+        graaly_world_t world,
+        double x,
+        double y,
+        double z,
+        double yaw,
+        double pitch,
+        graaly_location_t *out) {
+    if (out == NULL || world._handle == 0u) return GRAALY_EINVAL;
+    graaly_value_t value = graaly_value_null();
+    if (graaly_worlds_location(world._handle, x, y, z, yaw, pitch, &value) != 0) {
+        return GRAALY_EHOST;
+    }
+    uint64_t raw = 0u;
+    graaly_status_t status = typed_handle_from_value(value, &raw);
+    if (status != GRAALY_OK) return status;
+    out->_handle = raw;
+    return GRAALY_OK;
+}
+
+graaly_status_t graaly_entity_type_find(const char *name, graaly_entity_type_t *out) {
+    if (name == NULL || out == NULL) return GRAALY_EINVAL;
+    graaly_value_t value = graaly_value_null();
+    if (graaly_entities_type(name, &value) != 0) return GRAALY_EHOST;
+    uint64_t raw = 0u;
+    graaly_status_t status = typed_handle_from_value(value, &raw);
+    if (status != GRAALY_OK) return status;
+    out->_handle = raw;
+    return GRAALY_OK;
+}
+
+graaly_status_t graaly_entity_spawn_at(
+        graaly_location_t location,
+        graaly_entity_type_t type,
+        graaly_entity_t *out) {
+    if (out == NULL || location._handle == 0u || type._handle == 0u) return GRAALY_EINVAL;
+    graaly_value_t value = graaly_value_null();
+    if (graaly_entities_spawn(location._handle, type._handle, &value) != 0) {
+        return GRAALY_EHOST;
+    }
+    uint64_t raw = 0u;
+    graaly_status_t status = typed_handle_from_value(value, &raw);
+    if (status != GRAALY_OK) return status;
+    out->_handle = raw;
+    return GRAALY_OK;
+}
+
+graaly_status_t graaly_material_find(const char *name, graaly_material_t *out) {
+    if (name == NULL || out == NULL) return GRAALY_EINVAL;
+    graaly_value_t value = graaly_value_null();
+    if (graaly_compat_material(name, &value) != 0) return GRAALY_EHOST;
+    uint64_t raw = 0u;
+    graaly_status_t status = typed_handle_from_value(value, &raw);
+    if (status != GRAALY_OK) return status;
+    out->_handle = raw;
+    return GRAALY_OK;
+}
+
+graaly_status_t graaly_contract_version(
+        char *buffer,
+        size_t capacity,
+        size_t *required) {
+    graaly_value_t value = graaly_value_null();
+    if (graaly_compat_contract_version(&value) != 0) return GRAALY_EHOST;
+    return value_to_string(value, buffer, capacity, required);
+}
+
+graaly_status_t graaly_minimum_game_version(
+        char *buffer,
+        size_t capacity,
+        size_t *required) {
+    graaly_value_t value = graaly_value_null();
+    if (graaly_compat_minimum_game_version(&value) != 0) return GRAALY_EHOST;
+    return value_to_string(value, buffer, capacity, required);
+}
+
+graaly_status_t graaly_minecraft_version(
+        char *buffer,
+        size_t capacity,
+        size_t *required) {
+    graaly_value_t value = graaly_value_null();
+    if (graaly_compat_minecraft_version(&value) != 0) return GRAALY_EHOST;
+    return value_to_string(value, buffer, capacity, required);
+}
+
+graaly_status_t graaly_runtime_server_version(
+        char *buffer,
+        size_t capacity,
+        size_t *required) {
+    graaly_value_t value = graaly_value_null();
+    if (graaly_compat_server_version(&value) != 0) return GRAALY_EHOST;
+    return value_to_string(value, buffer, capacity, required);
+}
+
+graaly_status_t graaly_config_bool(const char *path, bool fallback, bool *out) {
+    if (path == NULL || out == NULL) return GRAALY_EINVAL;
+    graaly_value_t value = graaly_value_null();
+    if (graaly_config_get(path, graaly_value_bool(fallback), &value) != 0) return GRAALY_EHOST;
+    return value_to_bool(value, out);
+}
+
+graaly_status_t graaly_config_number(const char *path, double fallback, double *out) {
+    if (path == NULL || out == NULL) return GRAALY_EINVAL;
+    graaly_value_t value = graaly_value_null();
+    if (graaly_config_get(path, graaly_value_f64(fallback), &value) != 0) return GRAALY_EHOST;
+    return value_to_number(value, out);
+}
+
+graaly_status_t graaly_config_string(
+        const char *path,
+        const char *fallback,
+        char *buffer,
+        size_t capacity,
+        size_t *required) {
+    if (path == NULL) return GRAALY_EINVAL;
+    graaly_value_t value = graaly_value_null();
+    if (graaly_config_get(
+                path,
+                fallback == NULL ? graaly_value_null() : graaly_value_string(fallback),
+                &value) != 0) {
+        return GRAALY_EHOST;
+    }
+    return value_to_string(value, buffer, capacity, required);
+}
+
+graaly_status_t graaly_config_bool_write(const char *path, bool value) {
+    return path == NULL
+            ? GRAALY_EINVAL
+            : typed_status(graaly_config_set(path, graaly_value_bool(value)));
+}
+
+graaly_status_t graaly_config_number_write(const char *path, double value) {
+    return path == NULL
+            ? GRAALY_EINVAL
+            : typed_status(graaly_config_set(path, graaly_value_f64(value)));
+}
+
+graaly_status_t graaly_config_string_write(const char *path, const char *value) {
+    if (path == NULL) return GRAALY_EINVAL;
+    return typed_status(graaly_config_set(
+            path,
+            value == NULL ? graaly_value_null() : graaly_value_string(value)));
+}
+
+graaly_status_t graaly_config_save(void) {
+    return typed_status(__raw_graaly_config_save());
+}
+
+graaly_status_t graaly_config_reload(void) {
+    return typed_status(__raw_graaly_config_reload());
+}
+
+graaly_status_t graaly_broadcast(const char *message) {
+    if (message == NULL) return GRAALY_EINVAL;
+    return typed_status(__raw_graaly_players_broadcast(message));
+}
+
+graaly_status_t graaly_world_create(
+        const char *name,
+        const graaly_world_options_t *options,
+        graaly_world_t *out) {
+    if (name == NULL || out == NULL) return GRAALY_EINVAL;
+
+    graaly_value_t pairs[12];
+    size_t pair_count = 0u;
+#define GRAALY_WORLD_OPTION(key_text, value_expr) do {     pairs[pair_count * 2u] = graaly_value_string(key_text);     pairs[pair_count * 2u + 1u] = (value_expr);     pair_count++; } while (0)
+
+    if (options != NULL) {
+        if (options->has_seed) {
+            GRAALY_WORLD_OPTION("seed", graaly_value_i64(options->seed));
+        }
+        if (options->has_environment && options->environment._handle != 0u) {
+            GRAALY_WORLD_OPTION(
+                    "environment",
+                    graaly_value_handle(options->environment._handle));
+        }
+        if (options->has_type && options->type._handle != 0u) {
+            GRAALY_WORLD_OPTION("type", graaly_value_handle(options->type._handle));
+        }
+        if (options->has_generate_structures) {
+            GRAALY_WORLD_OPTION(
+                    "generateStructures",
+                    graaly_value_bool(options->generate_structures));
+        }
+        if (options->generator_settings != NULL) {
+            GRAALY_WORLD_OPTION(
+                    "generatorSettings",
+                    graaly_value_string(options->generator_settings));
+        }
+        if (options->generator._handle != 0u) {
+            GRAALY_WORLD_OPTION(
+                    "generator",
+                    graaly_value_handle(options->generator._handle));
+        }
+    }
+
+#undef GRAALY_WORLD_OPTION
+
+    graaly_value_t result = graaly_value_null();
+    int status = graaly_worlds_create(name, pairs, pair_count, &result);
+    if (status != 0) return GRAALY_EHOST;
+
+    uint64_t raw = 0u;
+    graaly_status_t typed = value_to_handle(result, &raw);
+    if (typed != GRAALY_OK) return typed;
+    out->_handle = raw;
+    return raw == 0u ? GRAALY_ETYPE : GRAALY_OK;
+}
+
+graaly_status_t graaly_world_unload(
+        graaly_world_t *world,
+        bool save,
+        bool *unloaded) {
+    if (world == NULL || world->_handle == 0u || unloaded == NULL) {
+        return GRAALY_EINVAL;
+    }
+    int status = graaly_worlds_unload(
+            graaly_value_handle(world->_handle),
+            save,
+            unloaded);
+    if (status != 0) return GRAALY_EHOST;
+    if (*unloaded) {
+        graaly_handle_release(world->_handle);
+        world->_handle = 0u;
+    }
+    return GRAALY_OK;
+}
+
+graaly_status_t graaly_diagnostics_read(graaly_diagnostics_t *out) {
+    if (out == NULL) return GRAALY_EINVAL;
+
+    graaly_value_t report = graaly_value_null();
+    if (graaly_diagnostics_verify(&report) != 0
+            || report.kind != GRAALY_VALUE_HANDLE) {
+        return GRAALY_EHOST;
+    }
+
+    const char *keys[4] = {"apiSymbols", "wrappers", "packetTypes", "constants"};
+    size_t *destinations[4] = {
+            &out->api_symbols,
+            &out->packet_wrappers,
+            &out->packet_types,
+            &out->constants
+    };
+
+    for (size_t index = 0; index < 4u; index++) {
+        graaly_value_t value = graaly_value_null();
+        if (graaly_map_get(
+                    report.a,
+                    graaly_value_string(keys[index]),
+                    &value) != 0) {
+            graaly_handle_release(report.a);
+            return GRAALY_EHOST;
+        }
+        double number = 0.0;
+        graaly_status_t typed = value_to_number(value, &number);
+        if (typed != GRAALY_OK || number < 0.0) {
+            graaly_handle_release(report.a);
+            return typed == GRAALY_OK ? GRAALY_ETYPE : typed;
+        }
+        *destinations[index] = (size_t) number;
+    }
+
+    graaly_handle_release(report.a);
+    return GRAALY_OK;
+}
+
+static const char *priority_name(graaly_priority_t priority) {
+    switch (priority) {
+        case GRAALY_PRIORITY_LOWEST: return "LOWEST";
+        case GRAALY_PRIORITY_LOW: return "LOW";
+        case GRAALY_PRIORITY_NORMAL: return "NORMAL";
+        case GRAALY_PRIORITY_HIGH: return "HIGH";
+        case GRAALY_PRIORITY_HIGHEST: return "HIGHEST";
+        case GRAALY_PRIORITY_MONITOR: return "MONITOR";
+        default: return NULL;
+    }
+}
+
+graaly_status_t graaly_command_dispatch(
+        graaly_sender_t sender,
+        const char *command_line,
+        bool *dispatched) {
+    if (sender._handle == 0u || command_line == NULL || dispatched == NULL) {
+        return GRAALY_EINVAL;
+    }
+    return typed_status(graaly_commands_dispatch(
+            graaly_value_handle(sender._handle),
+            command_line,
+            dispatched));
+}
+
+static graaly_status_t typed_text_result(
+        graaly_value_t value,
+        char *buffer,
+        size_t capacity,
+        size_t *required) {
+    return value_to_string(value, buffer, capacity, required);
+}
+
+static int text_callback_id(graaly_text_callback_t callback) {
+    return callback == NULL ? -1 : graaly_text_callback_register(callback);
+}
+
+static graaly_status_t http_request_typed(
+        const char *operation,
+        const char *method,
+        const char *url,
+        const char *body,
+        const char *headers_json,
+        uint64_t timeout_ms,
+        graaly_text_callback_t callback,
+        graaly_http_request_t *out) {
+    if (url == NULL || callback == NULL || out == NULL) return GRAALY_EINVAL;
+    int callback_id = text_callback_id(callback);
+    if (callback_id < 0) return GRAALY_EHOST;
+
+    graaly_value_t result = graaly_value_null();
+    int status;
+    if (strcmp(operation, "request") == 0) {
+        if (method == NULL) return GRAALY_EINVAL;
+        graaly_value_t args[6] = {
+                graaly_value_string(method),
+                graaly_value_string(url),
+                graaly_value_string(headers_json == NULL ? "{}" : headers_json),
+                body == NULL ? graaly_value_null() : graaly_value_string(body),
+                graaly_value_i64((int64_t) timeout_ms),
+                graaly_value_i64(callback_id)
+        };
+        status = graaly_module_call("http", "request", args, 6u, &result);
+    } else if (strcmp(operation, "post") == 0 || strcmp(operation, "put") == 0) {
+        graaly_value_t args[5] = {
+                graaly_value_string(url),
+                graaly_value_string(body == NULL ? "" : body),
+                graaly_value_string(headers_json == NULL ? "{}" : headers_json),
+                graaly_value_i64((int64_t) timeout_ms),
+                graaly_value_i64(callback_id)
+        };
+        status = graaly_module_call("http", operation, args, 5u, &result);
+    } else {
+        graaly_value_t args[4] = {
+                graaly_value_string(url),
+                graaly_value_string(headers_json == NULL ? "{}" : headers_json),
+                graaly_value_i64((int64_t) timeout_ms),
+                graaly_value_i64(callback_id)
+        };
+        status = graaly_module_call("http", operation, args, 4u, &result);
+    }
+    if (status != 0) return GRAALY_EHOST;
+
+    size_t required = 0u;
+    graaly_status_t typed = typed_text_result(
+            result,
+            out->id,
+            sizeof out->id,
+            &required);
+    if (typed != GRAALY_OK) return typed;
+    return required >= sizeof out->id ? GRAALY_ERANGE : GRAALY_OK;
+}
+
+graaly_status_t graaly_http_request(
+        const char *method,
+        const char *url,
+        const char *headers_json,
+        const char *body,
+        uint64_t timeout_ms,
+        graaly_text_callback_t callback,
+        graaly_http_request_t *out) {
+    return http_request_typed(
+            "request", method, url, body, headers_json, timeout_ms, callback, out);
+}
+
+graaly_status_t graaly_http_get(
+        const char *url,
+        const char *headers_json,
+        uint64_t timeout_ms,
+        graaly_text_callback_t callback,
+        graaly_http_request_t *out) {
+    return http_request_typed(
+            "get", NULL, url, NULL, headers_json, timeout_ms, callback, out);
+}
+
+graaly_status_t graaly_http_post(
+        const char *url,
+        const char *body,
+        const char *headers_json,
+        uint64_t timeout_ms,
+        graaly_text_callback_t callback,
+        graaly_http_request_t *out) {
+    return http_request_typed(
+            "post", NULL, url, body, headers_json, timeout_ms, callback, out);
+}
+
+graaly_status_t graaly_http_put(
+        const char *url,
+        const char *body,
+        const char *headers_json,
+        uint64_t timeout_ms,
+        graaly_text_callback_t callback,
+        graaly_http_request_t *out) {
+    return http_request_typed(
+            "put", NULL, url, body, headers_json, timeout_ms, callback, out);
+}
+
+graaly_status_t graaly_http_delete(
+        const char *url,
+        const char *headers_json,
+        uint64_t timeout_ms,
+        graaly_text_callback_t callback,
+        graaly_http_request_t *out) {
+    return http_request_typed(
+            "delete", NULL, url, NULL, headers_json, timeout_ms, callback, out);
+}
+
+graaly_status_t graaly_http_cancel(graaly_http_request_t *request, bool *cancelled) {
+    if (request == NULL || request->id[0] == '\0' || cancelled == NULL) {
+        return GRAALY_EINVAL;
+    }
+    int status = __raw_graaly_http_cancel(request->id, cancelled);
+    if (status == 0 && *cancelled) request->id[0] = '\0';
+    return typed_status(status);
+}
+
+graaly_status_t graaly_websocket_connect(
+        const char *url,
+        const char *headers_json,
+        uint64_t timeout_ms,
+        graaly_text_callback_t event_callback,
+        graaly_websocket_t *out) {
+    if (url == NULL || event_callback == NULL || out == NULL) return GRAALY_EINVAL;
+    int callback_id = text_callback_id(event_callback);
+    if (callback_id < 0) return GRAALY_EHOST;
+
+    graaly_value_t args[4] = {
+            graaly_value_string(url),
+            graaly_value_string(headers_json == NULL ? "{}" : headers_json),
+            graaly_value_i64((int64_t) timeout_ms),
+            graaly_value_i64(callback_id)
+    };
+    graaly_value_t result = graaly_value_null();
+    if (graaly_module_call("websocket", "connect", args, 4u, &result) != 0) {
+        return GRAALY_EHOST;
+    }
+    size_t required = 0u;
+    graaly_status_t typed = typed_text_result(
+            result, out->id, sizeof out->id, &required);
+    if (typed != GRAALY_OK) return typed;
+    return required >= sizeof out->id ? GRAALY_ERANGE : GRAALY_OK;
+}
+
+graaly_status_t graaly_websocket_send(
+        graaly_websocket_t socket,
+        const char *text,
+        graaly_text_callback_t completion_callback) {
+    if (socket.id[0] == '\0' || completion_callback == NULL) return GRAALY_EINVAL;
+    int callback_id = text_callback_id(completion_callback);
+    if (callback_id < 0) return GRAALY_EHOST;
+    graaly_value_t args[3] = {
+            graaly_value_string(socket.id),
+            graaly_value_string(text == NULL ? "" : text),
+            graaly_value_i64(callback_id)
+    };
+    graaly_value_t result = graaly_value_null();
+    return typed_status(graaly_module_call(
+            "websocket", "send", args, 3u, &result));
+}
+
+graaly_status_t graaly_websocket_close(
+        graaly_websocket_t *socket,
+        int code,
+        const char *reason,
+        graaly_text_callback_t completion_callback) {
+    if (socket == NULL || socket->id[0] == '\0' || completion_callback == NULL) {
+        return GRAALY_EINVAL;
+    }
+    int callback_id = text_callback_id(completion_callback);
+    if (callback_id < 0) return GRAALY_EHOST;
+    graaly_value_t args[4] = {
+            graaly_value_string(socket->id),
+            graaly_value_i64(code),
+            graaly_value_string(reason == NULL ? "" : reason),
+            graaly_value_i64(callback_id)
+    };
+    graaly_value_t result = graaly_value_null();
+    int status = graaly_module_call("websocket", "close", args, 4u, &result);
+    if (status == 0) socket->id[0] = '\0';
+    return typed_status(status);
+}
+
+graaly_status_t graaly_websocket_state(
+        graaly_websocket_t socket,
+        char *buffer,
+        size_t capacity,
+        size_t *required) {
+    if (socket.id[0] == '\0') return GRAALY_EINVAL;
+    graaly_value_t arg = graaly_value_string(socket.id);
+    graaly_value_t result = graaly_value_null();
+    if (graaly_module_call("websocket", "state", &arg, 1u, &result) != 0) {
+        return GRAALY_EHOST;
+    }
+    return typed_text_result(result, buffer, capacity, required);
+}
+
+graaly_status_t graaly_ui_render(
+        graaly_player_t player,
+        const char *snapshot_json,
+        graaly_text_callback_t action_callback) {
+    if (player._handle == 0u || snapshot_json == NULL || action_callback == NULL) {
+        return GRAALY_EINVAL;
+    }
+    int callback_id = text_callback_id(action_callback);
+    if (callback_id < 0) return GRAALY_EHOST;
+    graaly_value_t args[3] = {
+            graaly_value_handle(player._handle),
+            graaly_value_string(snapshot_json),
+            graaly_value_i64(callback_id)
+    };
+    graaly_value_t result = graaly_value_null();
+    return typed_status(graaly_module_call("ui", "render", args, 3u, &result));
+}
+
+graaly_status_t graaly_ui_render_html(
+        graaly_player_t player,
+        const char *markup,
+        const char *css,
+        graaly_text_callback_t action_callback) {
+    if (player._handle == 0u || markup == NULL || action_callback == NULL) {
+        return GRAALY_EINVAL;
+    }
+    int callback_id = text_callback_id(action_callback);
+    if (callback_id < 0) return GRAALY_EHOST;
+    graaly_value_t args[4] = {
+            graaly_value_handle(player._handle),
+            graaly_value_string(markup),
+            graaly_value_string(css == NULL ? "" : css),
+            graaly_value_i64(callback_id)
+    };
+    graaly_value_t result = graaly_value_null();
+    return typed_status(graaly_module_call("ui", "renderHtml", args, 4u, &result));
+}
+
+graaly_status_t graaly_ui_clear(graaly_player_t player) {
+    if (player._handle == 0u) return GRAALY_EINVAL;
+    graaly_value_t arg = graaly_value_handle(player._handle);
+    graaly_value_t result = graaly_value_null();
+    return typed_status(graaly_module_call("ui", "clear", &arg, 1u, &result));
+}
+
+graaly_status_t graaly_ui_dismiss(graaly_player_t player, const char *surface) {
+    if (player._handle == 0u || surface == NULL) return GRAALY_EINVAL;
+    graaly_value_t args[2] = {
+            graaly_value_handle(player._handle),
+            graaly_value_string(surface)
+    };
+    graaly_value_t result = graaly_value_null();
+    return typed_status(graaly_module_call("ui", "dismiss", args, 2u, &result));
+}
+
+graaly_status_t graaly_board_on_message(
+        const char *board,
+        graaly_text_callback_t callback) {
+    if (board == NULL || callback == NULL) return GRAALY_EINVAL;
+    int callback_id = text_callback_id(callback);
+    if (callback_id < 0) return GRAALY_EHOST;
+    graaly_value_t args[2] = {
+            graaly_value_string(board),
+            graaly_value_i64(callback_id)
+    };
+    graaly_value_t result = graaly_value_null();
+    return typed_status(graaly_module_call(
+            "boards", "onMessage", args, 2u, &result));
+}
+
+graaly_status_t graaly_packet_type_find(const char *path, graaly_packet_type_t *out) {
+    if (path == NULL || out == NULL) return GRAALY_EINVAL;
+    graaly_value_t value = graaly_value_null();
+    if (graaly_packets_packet_type(path, &value) != 0) return GRAALY_EHOST;
+    uint64_t raw = 0u;
+    graaly_status_t status = value_to_handle(value, &raw);
+    if (status != GRAALY_OK) return status;
+    out->_handle = raw;
+    return raw == 0u ? GRAALY_ETYPE : GRAALY_OK;
+}
+
+static graaly_status_t packet_listener_typed(
+        bool receive,
+        graaly_packet_type_t type,
+        graaly_priority_t priority,
+        graaly_packet_callback_t callback,
+        graaly_packet_binding_t *binding) {
+    if (type._handle == 0u || callback == NULL || binding == NULL) return GRAALY_EINVAL;
+    const char *selected = priority_name(priority);
+    if (selected == NULL) return GRAALY_EINVAL;
+
+    int callback_id = graaly_packet_callback_register(callback);
+    if (callback_id < 0) return GRAALY_EHOST;
+
+    graaly_value_t args[3] = {
+            graaly_value_handle(type._handle),
+            graaly_value_string(selected),
+            graaly_value_i64(callback_id)
+    };
+    graaly_value_t raw_binding = graaly_value_null();
+    int status = graaly_module_call(
+            "packets",
+            receive ? "onReceive" : "onSend",
+            args,
+            3u,
+            &raw_binding);
+    if (status != 0) return GRAALY_EHOST;
+
+    uint64_t raw = 0u;
+    graaly_status_t typed = value_to_handle(raw_binding, &raw);
+    if (typed != GRAALY_OK) return typed;
+    binding->_handle = raw;
+    return GRAALY_OK;
+}
+
+graaly_status_t graaly_packet_on_receive(
+        graaly_packet_type_t type,
+        graaly_priority_t priority,
+        graaly_packet_callback_t callback,
+        graaly_packet_binding_t *binding) {
+    return packet_listener_typed(true, type, priority, callback, binding);
+}
+
+graaly_status_t graaly_packet_on_send(
+        graaly_packet_type_t type,
+        graaly_priority_t priority,
+        graaly_packet_callback_t callback,
+        graaly_packet_binding_t *binding) {
+    return packet_listener_typed(false, type, priority, callback, binding);
+}
+
+graaly_status_t graaly_packet_event_cancelled(
+        graaly_packet_event_t event,
+        bool *out) {
+    if (event._handle == 0u || out == NULL) return GRAALY_EINVAL;
+    return graaly__invoke_bool(event._handle, "isCancelled", NULL, 0u, out);
+}
+
+graaly_status_t graaly_packet_event_cancelled_write(
+        graaly_packet_event_t event,
+        bool cancelled) {
+    if (event._handle == 0u) return GRAALY_EINVAL;
+    graaly_value_t args[1] = { graaly_value_bool(cancelled) };
+    return graaly__invoke_void(event._handle, "setCancelled", args, 1u);
+}
+
+graaly_status_t graaly_packet_event_reencode(graaly_packet_event_t event) {
+    if (event._handle == 0u) return GRAALY_EINVAL;
+    graaly_value_t args[1] = { graaly_value_bool(true) };
+    return graaly__invoke_void(event._handle, "markForReEncode", args, 1u);
+}
+
+graaly_status_t graaly_packet_event_player(
+        graaly_packet_event_t event,
+        graaly_player_t *out) {
+    if (event._handle == 0u || out == NULL) return GRAALY_EINVAL;
+    uint64_t raw = 0u;
+    graaly_status_t status =
+            graaly__invoke_handle(event._handle, "getPlayer", NULL, 0u, &raw);
+    if (status != GRAALY_OK) return status;
+    out->_handle = raw;
+    return raw == 0u ? GRAALY_ETYPE : GRAALY_OK;
+}
+
+graaly_status_t graaly_packet_send(graaly_player_t player, graaly_packet_t packet) {
+    if (player._handle == 0u || packet._handle == 0u) return GRAALY_EINVAL;
+    return typed_status(graaly_packets_send(player._handle, packet._handle));
+}
+
+graaly_status_t graaly_packet_send_all(graaly_packet_t packet) {
+    if (packet._handle == 0u) return GRAALY_EINVAL;
+    return typed_status(graaly_packets_send_to_all(packet._handle));
+}
+
+graaly_status_t graaly_packet_receive(graaly_player_t player, graaly_packet_t packet) {
+    if (player._handle == 0u || packet._handle == 0u) return GRAALY_EINVAL;
+    return typed_status(graaly_packets_receive(player._handle, packet._handle));
+}
+
+graaly_status_t graaly_packet_user(graaly_player_t player, graaly_packet_user_t *out) {
+    if (player._handle == 0u || out == NULL) return GRAALY_EINVAL;
+    graaly_value_t value = graaly_value_null();
+    if (graaly_packets_user(player._handle, &value) != 0) return GRAALY_EHOST;
+    uint64_t raw = 0u;
+    graaly_status_t status = value_to_handle(value, &raw);
+    if (status != GRAALY_OK) return status;
+    out->_handle = raw;
+    return GRAALY_OK;
+}
+
+graaly_status_t graaly_packet_client_version(
+        graaly_player_t player,
+        graaly_client_version_t *out) {
+    if (player._handle == 0u || out == NULL) return GRAALY_EINVAL;
+    graaly_value_t value = graaly_value_null();
+    if (graaly_packets_client_version(player._handle, &value) != 0) return GRAALY_EHOST;
+    uint64_t raw = 0u;
+    graaly_status_t status = value_to_handle(value, &raw);
+    if (status != GRAALY_OK) return status;
+    out->_handle = raw;
+    return GRAALY_OK;
+}
+
+graaly_status_t graaly_packet_ping(graaly_player_t player, int *ping) {
+    if (player._handle == 0u || ping == NULL) return GRAALY_EINVAL;
+    return typed_status(graaly_packets_ping(player._handle, ping));
+}
+
+graaly_status_t graaly_board_state(
+        const char *board,
+        graaly_player_t player,
+        const char *state_json) {
+    if (board == NULL || player._handle == 0u || state_json == NULL) return GRAALY_EINVAL;
+    return typed_status(__raw_graaly_boards_state(board, player._handle, state_json));
+}
+
+graaly_status_t graaly_board_refresh(const char *board, graaly_player_t player) {
+    if (board == NULL || player._handle == 0u) return GRAALY_EINVAL;
+    return typed_status(__raw_graaly_boards_refresh(board, player._handle));
 }
 
 static graaly_command_entry_t *find_command_entry(const char *name) {
@@ -1736,7 +2858,8 @@ void graaly_dispatch_event(
     }
     graaly_event_callback_t callback = event_callbacks[callback_id - 1].callback;
     if (callback != NULL) {
-        callback(player);
+        graaly_player_t typed = { ._handle = player };
+        callback(typed);
     }
 }
 
@@ -1764,6 +2887,35 @@ void graaly_dispatch_callback(
     }
 }
 
+GRAALY_EXPORT("graaly_dispatch_text_callback")
+void graaly_dispatch_text_callback(
+        int32_t callback_id,
+        uint32_t text_pointer,
+        uint32_t text_length) {
+    if (callback_id <= 0 || callback_id > GRAALY_MAX_TEXT_CALLBACKS) {
+        return;
+    }
+    graaly_text_callback_t callback = text_callbacks[callback_id - 1].callback;
+    if (callback == NULL) {
+        return;
+    }
+    callback(
+            (const char *) (uintptr_t) text_pointer,
+            (size_t) text_length);
+}
+
+GRAALY_EXPORT("graaly_dispatch_packet_callback")
+void graaly_dispatch_packet_callback(int32_t callback_id, uint64_t event_handle) {
+    if (callback_id <= 0 || callback_id > GRAALY_MAX_PACKET_CALLBACKS) {
+        return;
+    }
+    graaly_packet_callback_t callback = packet_callbacks[callback_id - 1].callback;
+    if (callback != NULL) {
+        graaly_packet_event_t event = { ._handle = event_handle };
+        callback(event);
+    }
+}
+
 GRAALY_EXPORT("graaly_dispatch_object_event")
 void graaly_dispatch_object_event(int32_t callback_id, uint64_t event_handle) {
     if (callback_id <= 0 || callback_id > GRAALY_MAX_OBJECT_EVENT_CALLBACKS) {
@@ -1772,7 +2924,8 @@ void graaly_dispatch_object_event(int32_t callback_id, uint64_t event_handle) {
     graaly_object_event_callback_t callback =
             object_event_callbacks[callback_id - 1].callback;
     if (callback != NULL) {
-        callback(event_handle);
+        graaly_event_t typed = { ._handle = event_handle };
+        callback(typed);
     }
 }
 
@@ -1813,7 +2966,8 @@ int32_t graaly_dispatch_command(
     for (int index = 0; index < command_count; index++) {
         graaly_command_entry_t *entry = &command_callbacks[index];
         if (entry->callback != NULL && string_view_equals(name, entry->name)) {
-            return entry->callback(sender, (int) argc, argv) ? 1 : 0;
+            graaly_sender_t typed = { ._handle = sender };
+            return entry->callback(typed, (int) argc, argv) ? 1 : 0;
         }
     }
     return 0;
@@ -1843,8 +2997,9 @@ uint32_t graaly_dispatch_tab_complete(
     for (int index = 0; index < command_count; index++) {
         graaly_command_entry_t *entry = &command_callbacks[index];
         if (entry->completer != NULL && string_view_equals(name, entry->name)) {
+            graaly_sender_t typed = { ._handle = sender };
             size_t required = entry->completer(
-                    sender,
+                    typed,
                     (int) argc,
                     argv,
                     output,

@@ -270,24 +270,30 @@ Graaly intentionally does not hand C code a generated `Player` struct. The devel
 #include <graaly/graaly.h>
 
 typedef struct Player {
-    graaly_player_handle_t handle;
+    graaly_player_t host;
     char name[32];
     double health;
     int level;
 } Player;
 
-static bool player_snapshot(graaly_player_handle_t handle, Player *out) {
-    if (out == NULL || handle == 0) return false;
+static bool player_snapshot(graaly_player_t player, Player *out) {
+    if (out == NULL || !graaly_is_valid(player)) return false;
     memset(out, 0, sizeof *out);
-    out->handle = handle;
-    graaly_player_read_name(handle, out->name, sizeof out->name);
-    out->health = graaly_player_health(handle);
-    out->level = graaly_player_level(handle);
+    out->host = player;
+
+    size_t required = 0;
+    double level = 0.0;
+    if (graaly_player_name(player, out->name, sizeof out->name, &required) != GRAALY_OK
+            || graaly_player_health(player, &out->health) != GRAALY_OK
+            || graaly_player_level(player, &level) != GRAALY_OK) {
+        return false;
+    }
+    out->level = (int) level;
     return true;
 }
 ```
 
-The C ABI uses wasm32 linear memory, explicit pointer+length calls, C function pointers for callbacks, and checked 64-bit host handles. It now covers the full canonical Graaly surface: the generated `catalog.h` currently contains 1,421 exported types, 63,044 canonical member references and 4,629 constants, while named C facades cover all 14 public modules. `graaly_type`, `graaly_get`, `graaly_set`, `graaly_call`, `graaly_construct`, collection/map helpers and the module APIs all use the same version adapter as JS/Python. Invalid linear-memory accesses trap inside WebAssembly rather than becoming arbitrary JVM pointers. The optional teaching heap adds 16-byte `DEADBEEF` red zones, buffer under/overflow checks, invalid/double-free diagnostics, logical-free poisoning, and quarantine until disable. See [`runtime/sdk/c/README.md`](runtime/sdk/c/README.md) and [`runtime/examples/EducationalC.cplugin`](runtime/examples/EducationalC.cplugin/).
+The C ABI uses wasm32 linear memory, explicit pointer+length calls, C function pointers for callbacks, and checked opaque host handles such as `graaly_player_t`, `graaly_world_t`, and `graaly_entity_t`. The generated public facade currently provides 26,069 typed property readers, 11,096 typed writes, and 17,875 typed method wrappers across the canonical API. Ordinary C plugins call functions such as `graaly_player_health`, `graaly_player_location`, `graaly_player_has_permission`, `graaly_world_find`, and `graaly_entity_spawn_at`; the reflection bridge is opt-in only through `GRAALY_ENABLE_RAW_ABI`. Invalid linear-memory accesses trap inside WebAssembly rather than becoming arbitrary JVM pointers. The optional teaching heap adds 16-byte `DEADBEEF` red zones, buffer under/overflow checks, invalid/double-free diagnostics, logical-free poisoning, and quarantine until disable. See [`runtime/sdk/c/README.md`](runtime/sdk/c/README.md) and [`runtime/examples/EducationalC.cplugin`](runtime/examples/EducationalC.cplugin/).
 
 ## PacketEvents
 

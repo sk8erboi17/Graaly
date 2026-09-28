@@ -851,31 +851,31 @@ const quickstartCode: Record<QuickstartLanguage, string> = {
     "#include <string.h>",
     "",
     "typedef struct Player {",
-    "    graaly_player_handle_t handle;",
+    "    graaly_player_t host;",
     "    char name[32];",
     "    double health;",
     "} Player;",
     "",
-    "static bool snapshot(graaly_player_handle_t handle, Player *out) {",
-    "    if (handle == 0 || out == NULL) return false;",
+    "static bool snapshot(graaly_player_t player, Player *out) {",
+    "    if (out == NULL || !graaly_is_valid(player)) return false;",
     "    memset(out, 0, sizeof *out);",
-    "    out->handle = handle;",
-    "    graaly_player_read_name(handle, out->name, sizeof out->name);",
-    "    out->health = graaly_player_health(handle);",
-    "    return true;",
+    "    out->host = player;",
+    "    size_t required = 0;",
+    "    return graaly_player_name(player, out->name, sizeof out->name, &required) == GRAALY_OK",
+    "        && graaly_player_health(player, &out->health) == GRAALY_OK;",
     "}",
     "",
-    "static void on_join(graaly_player_handle_t handle) {",
-    "    Player player;",
-    "    if (!snapshot(handle, &player)) return;",
-    "    graaly_sender_send_message(handle, \"&aWelcome from C!\");",
+    "static void on_join(graaly_player_t player) {",
+    "    Player snapshot_value;",
+    "    if (!snapshot(player, &snapshot_value)) return;",
+    "    graaly_player_message(player, \"&aWelcome from C!\");",
     "}",
     "",
-    "static bool hello(graaly_sender_handle_t sender, int argc,",
+    "static bool hello(graaly_sender_t sender, int argc,",
     "                  const graaly_string_view_t *argv) {",
     "    (void) argc;",
     "    (void) argv;",
-    "    graaly_sender_send_message(sender, \"&aHello from C!\");",
+    "    graaly_sender_message(sender, \"&aHello from C!\");",
     "    return true;",
     "}",
     "",
@@ -1208,26 +1208,27 @@ const boardBridgeCode: Record<GuideLanguage, string> = {
   c: [
     "#include <graaly/graaly.h>",
     "",
-    "static graaly_value_t on_board_message(size_t argc, const graaly_value_t *argv) {",
-    "    (void) argc;",
-    "    (void) argv;",
-    "    /* Parse/validate the message payload, then act on the player handle. */",
-    "    return graaly_value_null();",
+    "static void on_board_message(const char *json, size_t length) {",
+    "    /* Parse/validate json[0..length), then act on game state. */",
+    "    (void) json;",
+    "    (void) length;",
     "}",
     "",
-    "static void on_join(graaly_handle_t event) {",
-    "    graaly_value_t player = graaly_value_null();",
-    "    if (graaly_get(event, \"player\", &player) != 0 || player.kind != GRAALY_VALUE_HANDLE) return;",
-    "    graaly_boards_state(",
-    "        \"control-panel\", player.a,",
+    "static void on_join(graaly_event_t raw) {",
+    "    graaly_player_join_event_t event =",
+    "        graaly_cast(graaly_player_join_event_t, raw);",
+    "    graaly_player_t player = {0};",
+    "    if (graaly_player_join_event_player(event, &player) != GRAALY_OK) return;",
+    "    graaly_board_state(",
+    "        \"control-panel\", player,",
     "        \"{\\\"online\\\":42,\\\"notice\\\":\\\"Choose an action\\\"}\"",
     "    );",
-    "    graaly_handle_release(player.a);",
+    "    graaly_release(&player);",
     "}",
     "",
     "void graaly_on_enable(void) {",
     "    graaly_events_on_type(\"PlayerJoinEvent\", \"NORMAL\", false, on_join);",
-    "    graaly_boards_on_message(\"control-panel\", on_board_message);",
+    "    graaly_board_on_message(\"control-panel\", on_board_message);",
     "}",
   ].join("\n"),
   java: [
@@ -2588,29 +2589,68 @@ function genericEventExample(entry: BukkitEventEntry, language: GuideLanguage) {
   if (language === "java") return javaEventExample(entry);
   const property = entry.properties.find(candidate => candidate.name !== "cancelled") ?? entry.properties[0];
   if (language === "c") {
+    const eventType = `graaly_${snakeCase(entry.name)}_t`;
+    const eventPrefix = `graaly_${snakeCase(entry.name)}`;
+    const handler = `on_${snakeCase(entry.name.replace(/Event$/, ""))}`;
+    const readLines: string[] = [];
+
+    if (property) {
+      const propertyFunction = `${eventPrefix}_${snakeCase(property.name)}`;
+      if (property.typeScriptType === "boolean") {
+        readLines.push(
+          "    bool value = false;",
+          `    if (${propertyFunction}(event, &value) == GRAALY_OK) {`,
+          `        graaly_log(GRAALY_LOG_INFO, "${entry.name} fired");`,
+          "    }",
+        );
+      } else if (property.typeScriptType === "number") {
+        readLines.push(
+          "    double value = 0.0;",
+          `    if (${propertyFunction}(event, &value) == GRAALY_OK) {`,
+          `        graaly_log(GRAALY_LOG_INFO, "${entry.name} fired");`,
+          "    }",
+        );
+      } else if (property.typeScriptType === "string") {
+        readLines.push(
+          "    char value[128] = {0};",
+          "    size_t required = 0;",
+          `    if (${propertyFunction}(event, value, sizeof value, &required) == GRAALY_OK) {`,
+          `        graaly_log(GRAALY_LOG_INFO, "${entry.name} fired");`,
+          "    }",
+        );
+      } else {
+        const simpleType = property.typeScriptType.match(/^([A-Za-z_$][A-Za-z0-9_$]*)$/)?.[1];
+        const cType = simpleType && !simpleType.startsWith("Native")
+          ? `graaly_${snakeCase(simpleType)}_t`
+          : "graaly_object_t";
+        readLines.push(
+          `    ${cType} value = {0};`,
+          `    if (${propertyFunction}(event, &value) == GRAALY_OK) {`,
+          `        graaly_log(GRAALY_LOG_INFO, "${entry.name} fired");`,
+          "        graaly_release(&value);",
+          "    }",
+        );
+      }
+    } else {
+      readLines.push(`    graaly_log(GRAALY_LOG_INFO, "${entry.name} fired");`);
+    }
+
     return [
       "#include <graaly/graaly.h>",
       "",
-      `static void on_${snakeCase(entry.name.replace(/Event$/, ""))}(graaly_handle_t event) {`,
-      ...(property
-        ? [
-            "    graaly_value_t value = graaly_value_null();",
-            `    if (graaly_get(event, "${property.name}", &value) == 0) {`,
-            `        graaly_log(GRAALY_LOG_INFO, "${entry.name} fired");`,
-            "        if (value.kind == GRAALY_VALUE_HANDLE) graaly_handle_release(value.a);",
-            "    }",
-          ]
-        : [`    graaly_log(GRAALY_LOG_INFO, "${entry.name} fired");`]),
+      `static void ${handler}(graaly_event_t raw) {`,
+      `    ${eventType} event = graaly_cast(${eventType}, raw);`,
+      ...readLines,
       ...(entry.cancellable
         ? [
             "    /* Stop the action when needed: */",
-            "    /* graaly_set(event, \"cancelled\", graaly_value_bool(true)); */",
+            `    /* ${eventPrefix}_cancelled_write(event, true); */`,
           ]
         : []),
       "}",
       "",
       "void graaly_on_enable(void) {",
-      `    graaly_events_on_type("${entry.name}", "NORMAL", false, on_${snakeCase(entry.name.replace(/Event$/, ""))});`,
+      `    graaly_events_on_type("${entry.name}", "NORMAL", false, ${handler});`,
       "}",
     ].join("\n");
   }
@@ -3089,48 +3129,45 @@ function CLearningGuide() {
     "#include <string.h>",
     "",
     "typedef struct Player {",
-    "    graaly_player_handle_t handle;",
+    "    graaly_player_t host;",
     "    char name[32];",
-    "    char uuid[37];",
     "    double health;",
     "    int level;",
     "} Player;",
     "",
-    "static bool snapshot(graaly_player_handle_t handle, Player *out) {",
-    "    if (handle == 0 || out == NULL) return false;",
+    "static bool snapshot(graaly_player_t player, Player *out) {",
+    "    if (out == NULL || !graaly_is_valid(player)) return false;",
     "    memset(out, 0, sizeof *out);",
-    "    out->handle = handle;",
-    "    graaly_player_read_name(handle, out->name, sizeof out->name);",
-    "    graaly_player_read_uuid(handle, out->uuid, sizeof out->uuid);",
-    "    out->health = graaly_player_health(handle);",
-    "    out->level = graaly_player_level(handle);",
+    "    out->host = player;",
+    "",
+    "    size_t required = 0;",
+    "    double level = 0.0;",
+    "    if (graaly_player_name(player, out->name, sizeof out->name, &required) != GRAALY_OK",
+    "            || graaly_player_health(player, &out->health) != GRAALY_OK",
+    "            || graaly_player_level(player, &level) != GRAALY_OK) return false;",
+    "    out->level = (int) level;",
     "    return true;",
     "}",
   ].join("\n");
 
   const universalExample = [
-    "graaly_value_t player_type;",
-    "graaly_type(GRAALY_TYPE_PLAYER, &player_type);",
+    "graaly_player_t player = {0};",
+    "if (graaly_player_find_exact(\"Steve\", &player) != GRAALY_OK) return;",
     "",
-    "graaly_value_t stone;",
-    "graaly_constant(",
-    "    GRAALY_NAMESPACE_MATERIAL,",
-    "    GRAALY_MATERIAL_STONE,",
-    "    &stone",
-    ");",
+    "double health = 0.0;",
+    "bool allowed = false;",
+    "graaly_player_health(player, &health);",
+    "graaly_player_has_permission(player, \"example.use\", &allowed);",
     "",
-    "graaly_value_t health;",
-    "graaly_get(player.handle, GRAALY_MEMBER_HEALTH, &health);",
+    "if (health < 10.0) {",
+    "    graaly_player_health_write(player, 20.0);",
+    "}",
     "",
-    "graaly_value_t location;",
-    "graaly_get(player.handle, GRAALY_MEMBER_LOCATION, &location);",
+    "graaly_location_t location = {0};",
+    "graaly_player_location(player, &location);",
     "",
-    "graaly_value_t args[] = { graaly_value_string(\"example.use\") };",
-    "graaly_value_t allowed;",
-    "graaly_call(",
-    "    player.handle, GRAALY_MEMBER_HASPERMISSION,",
-    "    args, 1, &allowed",
-    ");",
+    "graaly_release(&location);",
+    "graaly_release(&player);",
   ].join("\n");
 
   const memoryExample = [
@@ -3152,10 +3189,10 @@ function CLearningGuide() {
       <div className="learning-toolbar">
         <div>
           <span>C / WEBASSEMBLY TRACK</span>
-          <strong>Graaly gives you primitives. You design the C data model.</strong>
+          <strong>Typed C API outside, low-level ABI underneath.</strong>
           <p>
-            The C ABI does not generate a <code>Player</code> struct. Minecraft objects arrive as checked 64-bit handles,
-            then your code chooses field sizes, struct layout, copies, pointers, and ownership.
+            Minecraft objects arrive as opaque typed handles such as <code>graaly_player_t</code>. Graaly generates named C
+            functions for their properties and methods, while you still choose your own struct layout, copies, pointers, ownership, and lifetimes.
           </p>
         </div>
       </div>
@@ -3219,10 +3256,19 @@ function CLearningGuide() {
         <CodeBlock
           accent="c"
           code={[
-            "graaly_players_online(&players);",
+            "graaly_player_t players[64];",
+            "size_t count = 0;",
+            "graaly_player_list(players, 64, &count);",
+            "",
+            "graaly_http_request_t request = {0};",
             "graaly_http_get(url, \"{}\", 15000, on_http, &request);",
+            "",
             "graaly_ui_render(player, snapshot_json, on_ui_action);",
-            "graaly_packets_on_receive(packet_type, \"NORMAL\", on_packet, &binding);",
+            "",
+            "graaly_packet_binding_t binding = {0};",
+            "graaly_packet_on_receive(",
+            "    packet_type, GRAALY_PRIORITY_NORMAL, on_packet, &binding",
+            ");",
           ].join("\n")}
           label="module-facades.c"
         />
@@ -4205,7 +4251,19 @@ function GuideExplorer({
   );
 }
 
+function cEventPropertyType(property: BukkitEventEntry["properties"][number]) {
+  if (property.typeScriptType === "boolean") return "bool";
+  if (property.typeScriptType === "number") return "double";
+  if (property.typeScriptType === "string") return "char[]";
+  if (property.typeScriptType.endsWith("[]")) return "graaly_collection_t";
+  const simple = property.typeScriptType.match(/^([A-Za-z_$][A-Za-z0-9_$]*)$/)?.[1];
+  return simple && !simple.startsWith("Native")
+    ? `graaly_${snakeCase(simple)}_t`
+    : "graaly_object_t";
+}
+
 function eventPropertyName(
+  eventName: string,
   property: BukkitEventEntry["properties"][number],
   language: GuideLanguage,
   writable = false,
@@ -4214,9 +4272,8 @@ function eventPropertyName(
     ? property.javaWrite ?? "read-only"
     : property.javaRead;
   if (language === "c") {
-    return writable
-      ? `graaly_set(event, "${property.name}", value)`
-      : `graaly_get(event, "${property.name}", &value)`;
+    const base = `graaly_${snakeCase(eventName)}_${snakeCase(property.name)}`;
+    return writable ? `${base}_write(...)` : `${base}(...)`;
   }
   return language === "py" ? property.pythonName : property.name;
 }
@@ -4354,21 +4411,21 @@ function EventExplorer() {
               <div>
                 <span>READ</span>
                 <p>{selected.properties.length
-                  ? selected.properties.map(property => eventPropertyName(property, language)).join(", ")
+                  ? selected.properties.map(property => eventPropertyName(selected.name, property, language)).join(", ")
                   : "Base Event properties only"}</p>
               </div>
               <div>
                 <span>CHANGE</span>
                 <p>{selected.properties.some(property => property.writable)
-                  ? selected.properties.filter(property => property.writable).map(property => eventPropertyName(property, language, true)).join(", ")
+                  ? selected.properties.filter(property => property.writable).map(property => eventPropertyName(selected.name, property, language, true)).join(", ")
                   : "Nothing. This event is read-only."}</p>
               </div>
             </div>
             <div className="event-properties" aria-label={`${selected.name} properties`}>
               {selected.properties.map(property => (
                 <code key={property.name}>
-                  <span>{eventPropertyName(property, language)}</span>
-                  <small>{language === "java" ? property.javaType : language === "py" ? property.pythonType : language === "c" ? "graaly_value_t" : property.typeScriptType}</small>
+                  <span>{eventPropertyName(selected.name, property, language)}</span>
+                  <small>{language === "java" ? property.javaType : language === "py" ? property.pythonType : language === "c" ? cEventPropertyType(property) : property.typeScriptType}</small>
                   {property.writable && <b>editable</b>}
                 </code>
               ))}

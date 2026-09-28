@@ -10,24 +10,36 @@ Graaly does **not** provide a `Player` struct. Write it yourself:
 
 ```c
 typedef struct Player {
-    graaly_player_handle_t handle;
+    graaly_player_t host;
     char name[32];
     char uuid[37];
     double health;
     int level;
 } Player;
 
-static bool player_snapshot(graaly_player_handle_t handle, Player *out) {
-    if (out == NULL || handle == 0) {
+static bool player_snapshot(graaly_player_t player, Player *out) {
+    if (out == NULL || !graaly_is_valid(player)) {
         return false;
     }
 
     memset(out, 0, sizeof *out);
-    out->handle = handle;
-    graaly_player_read_name(handle, out->name, sizeof out->name);
-    graaly_player_read_uuid(handle, out->uuid, sizeof out->uuid);
-    out->health = graaly_player_health(handle);
-    out->level = graaly_player_level(handle);
+    out->host = player;
+
+    size_t required = 0;
+    double level = 0.0;
+    graaly_object_t uuid = {0};
+
+    if (graaly_player_name(player, out->name, sizeof out->name, &required) != GRAALY_OK
+            || graaly_player_unique_id(player, &uuid) != GRAALY_OK
+            || graaly_object_text(uuid, out->uuid, sizeof out->uuid, &required) != GRAALY_OK
+            || graaly_player_health(player, &out->health) != GRAALY_OK
+            || graaly_player_level(player, &level) != GRAALY_OK) {
+        graaly_release(&uuid);
+        return false;
+    }
+
+    graaly_release(&uuid);
+    out->level = (int) level;
     return true;
 }
 ```
@@ -104,63 +116,64 @@ C ABI v1 now covers the full Graaly contract while keeping C low-level and educa
 - PacketEvents symbols generated alongside the main catalog: **289 wrappers**, **533 supporting types**, **288 packet type paths**, and **2,926 wrapper/support member names**;
 - every public Graaly module: events, commands, tasks, config, players, worlds, entities, HTTP, WebSocket, UI, boards, PacketEvents, compatibility, and diagnostics.
 
-The catalog uses stable names rather than Java class paths:
+The public SDK is generated as ordinary C functions over opaque typed handles. Normal plugin code does not use reflection-style member names:
 
 ```c
-graaly_value_t player_type;
-graaly_type(GRAALY_TYPE_PLAYER, &player_type);
+graaly_player_t player = {0};
+if (graaly_player_find_exact("Steve", &player) != GRAALY_OK) {
+    return;
+}
 
-graaly_value_t stone;
-graaly_constant(
-    GRAALY_NAMESPACE_MATERIAL,
-    GRAALY_MATERIAL_STONE,
-    &stone
-);
+char name[32];
+size_t required = 0;
+double health = 0.0;
+bool allowed = false;
+
+graaly_player_name(player, name, sizeof name, &required);
+graaly_player_health(player, &health);
+graaly_player_has_permission(player, "example.use", &allowed);
+
+if (health < 10.0) {
+    graaly_player_health_write(player, 20.0);
+}
+
+graaly_location_t location = {0};
+graaly_player_location(player, &location);
+
+/* Explicit ownership: returned host handles are released by the caller. */
+graaly_release(&location);
+graaly_release(&player);
 ```
 
-Every canonical object can be inspected and operated through the universal bridge:
+The generated typed facade currently contains **26,069 typed property readers**, **11,096 typed property writes**, and **17,875 typed method wrappers**. C overloads are disambiguated by arity or argument type only when necessary. Natural overloads get the short name, for example `graaly_player_has_permission(...)`.
 
-```c
-graaly_value_t health;
-graaly_get(player.handle, GRAALY_MEMBER_HEALTH, &health);
-
-graaly_set(
-    player.handle,
-    GRAALY_MEMBER_ALLOWFLIGHT,
-    graaly_value_bool(true)
-);
-
-graaly_value_t location;
-graaly_get(player.handle, GRAALY_MEMBER_LOCATION, &location);
-
-graaly_value_t permission_args[] = {
-    graaly_value_string("example.use")
-};
-graaly_value_t allowed;
-graaly_call(
-    player.handle,
-    GRAALY_MEMBER_HASPERMISSION,
-    permission_args,
-    1,
-    &allowed
-);
-```
-
-`graaly_construct`, `graaly_static_member`, collection helpers, map helpers, optional helpers, and explicit handle release complete the canonical object surface. Older Minecraft versions go through Graaly's existing compatibility adapter; a real canonical member that the running version cannot implement remains an explicit unsupported feature rather than silently succeeding.
+The reflection bridge (`graaly_get`, `graaly_set`, `graaly_call`) is no longer part of the normal public surface. It is available only to low-level tooling that explicitly defines `GRAALY_ENABLE_RAW_ABI` before including the SDK. Older Minecraft versions still go through Graaly's existing compatibility adapter; unsupported mechanics fail explicitly rather than pretending to work.
 
 ### Native C module facades
 
 High-level Graaly modules also have normal C entrypoints, for example:
 
 ```c
-graaly_players_online(&players);
-graaly_worlds_location(world, 0.5, 65.0, 0.5, 0.0, 0.0, &spawn);
+graaly_player_t players[64];
+size_t player_count = 0;
+graaly_player_list(players, 64, &player_count);
+
+graaly_world_t world = {0};
+graaly_world_find("world", &world);
+
+graaly_location_t spawn = {0};
+graaly_location_make(world, 0.5, 65.0, 0.5, 0.0, 0.0, &spawn);
+
+graaly_entity_type_t zombie = {0};
+graaly_entity_t mob = {0};
+graaly_entity_type_find("ZOMBIE", &zombie);
+graaly_entity_spawn_at(spawn, zombie, &mob);
+
 graaly_http_get(url, "{}", 15000, on_http, &request);
-graaly_ui_render(player, snapshot_json, on_ui_action);
-graaly_packets_on_receive(packet_type, "NORMAL", on_packet, &binding);
+graaly_ui_render(player_handle, snapshot_json, on_ui_action);
 ```
 
-Callbacks are real C function pointers stored inside the WebAssembly module. Java receives only callback IDs. The universal callback registry carries callback arguments as `graaly_value_t[]`, so asynchronous HTTP, WebSocket, UI, board, PacketEvents, world-generator, and scheduler callbacks do not expose Graal `Value` or Java class paths to plugin code.
+Callbacks are real C function pointers stored inside the WebAssembly module. Java receives only callback IDs. Text/JSON transports such as HTTP, WebSocket, UI actions, and boards use `graaly_text_callback_t(const char *text, size_t length)` so normal C code receives ordinary pointer+length data. Events, commands, tasks, and PacketEvents have dedicated typed callback signatures. A private carrier-array callback path remains only inside the implementation for advanced cases that cannot yet be expressed losslessly by the typed facade.
 
 ### Deliberately still C
 
@@ -177,4 +190,4 @@ The ABI additionally includes:
 - optional DEADBEEF teaching heap with red zones, logical free, poisoning, and double-free/invalid-pointer diagnostics;
 - hot reload by replacing the WebAssembly instance after cleanup or a contained guest trap.
 
-The generator is `runtime/scripts/generate_c_sdk.py`. Changes to the canonical catalogs must regenerate `catalog.h` and `catalog-manifest.json`; the contract verifier rejects stale counts or a missing C module surface.
+The catalog generator is `runtime/scripts/generate_c_sdk.py`; the typed facade generator is `runtime/scripts/generate_c_typed_api.mjs`. Changes to the canonical API must regenerate `catalog.h`, `types.h`, `typed.h`, and their manifests. CI rejects stale generated C files or a return to reflection-style examples.

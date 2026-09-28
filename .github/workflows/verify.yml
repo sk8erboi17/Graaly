@@ -64,7 +64,18 @@ jobs:
       - name: Build and verify every C plugin example
         run: |
           python3 runtime/scripts/generate_c_sdk.py
-          git diff --exit-code -- runtime/sdk/c/include/graaly/catalog.h runtime/sdk/c/catalog-manifest.json
+          node runtime/scripts/generate_c_typed_api.mjs
+          node runtime/scripts/generate_c_packet_typed_api.mjs
+          git diff --exit-code -- \
+            runtime/sdk/c/include/graaly/catalog.h \
+            runtime/sdk/c/catalog-manifest.json \
+            runtime/sdk/c/include/graaly/types.h \
+            runtime/sdk/c/include/graaly/typed.h \
+            runtime/sdk/c/typed-manifest.json \
+            runtime/sdk/c/include/graaly/packet-types.h \
+            runtime/sdk/c/include/graaly/packet-typed.h \
+            runtime/sdk/c/packet-typed-manifest.json
+          runtime/sdk/c/test-compile.sh
           for example in runtime/examples/*.cplugin; do
             "$example/build.sh"
             test -s "$example/dist/plugin.wasm"

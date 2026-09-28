@@ -56,6 +56,8 @@ final class GraalyCPluginRuntime implements AutoCloseable {
     private static final int MAX_BRIDGE_STRING = 4 * 1024 * 1024;
     private static final int MAX_BRIDGE_ARGUMENTS = 256;
     private static final int C_VALUE_SIZE = 24;
+    private static final int TEXT_CALLBACK_FLAG = 0x40000000;
+    private static final int PACKET_CALLBACK_FLAG = 0x20000000;
     private static final int MAX_COMMAND_PAYLOAD = 1024 * 1024;
     private static final int MAX_TAB_COMPLETE_BYTES = 64 * 1024;
 
@@ -702,12 +704,70 @@ final class GraalyCPluginRuntime implements AutoCloseable {
         if (callbackId <= 0) {
             throw new IllegalArgumentException("C callback id must be positive");
         }
+        if ((callbackId & PACKET_CALLBACK_FLAG) != 0) {
+            return packetCallbackValue(callbackId & ~PACKET_CALLBACK_FLAG);
+        }
+        if ((callbackId & TEXT_CALLBACK_FLAG) != 0) {
+            return textCallbackValue(callbackId & ~TEXT_CALLBACK_FLAG);
+        }
         return context.asValue((ProxyExecutable) rawArguments -> {
             Object[] arguments = new Object[rawArguments.length];
             for (int index = 0; index < rawArguments.length; index++) {
                 arguments[index] = HostInterop.unwrap(rawArguments[index]);
             }
             return invokeCCallback(callbackId, arguments);
+        });
+    }
+
+    private Value packetCallbackValue(int callbackId) {
+        if (callbackId <= 0) {
+            throw new IllegalArgumentException("C packet callback id must be positive");
+        }
+        return context.asValue((ProxyExecutable) rawArguments -> {
+            if (rawArguments.length == 0) {
+                throw new IllegalArgumentException("Packet callback did not receive an event");
+            }
+            Object event = HostInterop.unwrap(rawArguments[0]);
+            long handle = openHandle(event);
+            try {
+                execute(
+                        requireExecutable("graaly_dispatch_packet_callback"),
+                        callbackId,
+                        handle);
+                return null;
+            } finally {
+                closeHandle(handle);
+            }
+        });
+    }
+
+    private Value textCallbackValue(int callbackId) {
+        if (callbackId <= 0) {
+            throw new IllegalArgumentException("C text callback id must be positive");
+        }
+        return context.asValue((ProxyExecutable) rawArguments -> {
+            Object raw = rawArguments.length == 0 ? "" : HostInterop.unwrap(rawArguments[0]);
+            byte[] encoded = String.valueOf(raw == null ? "" : raw)
+                    .getBytes(StandardCharsets.UTF_8);
+            if (encoded.length > MAX_BRIDGE_STRING) {
+                throw new IllegalArgumentException(
+                        "C text callback payload exceeds " + MAX_BRIDGE_STRING + " bytes");
+            }
+
+            int block = guestAlloc(Math.max(1, encoded.length));
+            try {
+                if (encoded.length > 0) {
+                    writeBytes(block, encoded);
+                }
+                execute(
+                        requireExecutable("graaly_dispatch_text_callback"),
+                        callbackId,
+                        block,
+                        encoded.length);
+                return null;
+            } finally {
+                guestFree(block);
+            }
         });
     }
 

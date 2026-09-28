@@ -10,7 +10,7 @@
  * use, and whether this is a live view or (as here) a copied snapshot.
  */
 typedef struct Player {
-    graaly_player_handle_t handle;
+    graaly_player_t host;
     char name[32];
     char uuid[37];
     double health;
@@ -22,21 +22,36 @@ typedef struct MemoryLesson {
     uint32_t canary;
 } MemoryLesson;
 
-static bool player_snapshot(graaly_player_handle_t handle, Player *out) {
-    if (out == NULL || handle == 0) {
+static bool player_snapshot(graaly_player_t player, Player *out) {
+    if (out == NULL || player._handle == 0u) {
         return false;
     }
 
     memset(out, 0, sizeof *out);
-    out->handle = handle;
-    graaly_player_read_name(handle, out->name, sizeof out->name);
-    graaly_player_read_uuid(handle, out->uuid, sizeof out->uuid);
-    out->health = graaly_player_health(handle);
-    out->level = graaly_player_level(handle);
+    out->host = player;
+
+    size_t required = 0u;
+    if (graaly_player_name(player, out->name, sizeof out->name, &required) != GRAALY_OK) {
+        return false;
+    }
+
+    graaly_object_t uuid = {0};
+    if (graaly_player_unique_id(player, &uuid) != GRAALY_OK) {
+        return false;
+    }
+    graaly_object_text(uuid, out->uuid, sizeof out->uuid, &required);
+    graaly_object_release(&uuid);
+
+    double level = 0.0;
+    if (graaly_player_health(player, &out->health) != GRAALY_OK
+            || graaly_player_level(player, &level) != GRAALY_OK) {
+        return false;
+    }
+    out->level = (int) level;
     return true;
 }
 
-static void on_join(graaly_player_handle_t handle) {
+static void on_join(graaly_player_t handle) {
     Player player;
     if (!player_snapshot(handle, &player)) {
         return;
@@ -52,23 +67,23 @@ static void on_join(graaly_player_handle_t handle) {
             player.level);
 
     if (written > 0) {
-        graaly_sender_send_message(handle, message);
+        graaly_player_message(handle, message);
     }
 }
 
 static bool cplayer_command(
-        graaly_sender_handle_t sender,
+        graaly_sender_t sender,
         int argc,
         const graaly_string_view_t *argv) {
-    graaly_player_handle_t handle = graaly_sender_as_player(sender);
-    if (handle == 0) {
-        graaly_sender_send_message(sender, "&cThis command needs a player.");
+    graaly_player_t player_handle = {0};
+    if (graaly_sender_player(sender, &player_handle) != GRAALY_OK) {
+        graaly_sender_message(sender, "&cThis command needs a player.");
         return true;
     }
 
     Player player;
-    if (!player_snapshot(handle, &player)) {
-        graaly_sender_send_message(sender, "&cCould not build Player snapshot.");
+    if (!player_snapshot(player_handle, &player)) {
+        graaly_sender_message(sender, "&cCould not build Player snapshot.");
         return true;
     }
 
@@ -96,46 +111,45 @@ static bool cplayer_command(
             player.level,
             player.uuid,
             note);
-    graaly_sender_send_message(sender, message);
+    graaly_sender_message(sender, message);
     return true;
 }
 
 static bool ccatalog_command(
-        graaly_sender_handle_t sender,
+        graaly_sender_t sender,
         int argc,
         const graaly_string_view_t *argv) {
     (void) argc;
     (void) argv;
 
-    graaly_value_t player_type = graaly_value_null();
-    graaly_value_t stone = graaly_value_null();
+    graaly_player_t player = {0};
+    if (graaly_sender_player(sender, &player) != GRAALY_OK) {
+        graaly_sender_message(sender, "&cThis command needs a player.");
+        return true;
+    }
 
-    int type_status = graaly_type(GRAALY_TYPE_PLAYER, &player_type);
-    int constant_status = graaly_constant(
-            GRAALY_NAMESPACE_MATERIAL,
-            GRAALY_MATERIAL_STONE,
-            &stone);
+    char name[32] = {0};
+    size_t required = 0u;
+    double health = 0.0;
+    graaly_status_t name_status =
+            graaly_player_name(player, name, sizeof name, &required);
+    graaly_status_t health_status =
+            graaly_player_health(player, &health);
 
     char message[220];
     snprintf(
             message,
             sizeof message,
-            "&aCatalog bridge: Player=%s Material.STONE=%s",
-            type_status == 0 && player_type.kind == GRAALY_VALUE_HANDLE ? "ok" : "FAIL",
-            constant_status == 0 && stone.kind == GRAALY_VALUE_HANDLE ? "ok" : "FAIL");
-    graaly_sender_send_message(sender, message);
-
-    if (player_type.kind == GRAALY_VALUE_HANDLE) {
-        graaly_handle_release(player_type.a);
-    }
-    if (stone.kind == GRAALY_VALUE_HANDLE) {
-        graaly_handle_release(stone.a);
-    }
+            "&aTyped C API: player=%s health=%.1f status=%s",
+            name_status == GRAALY_OK ? name : "<error>",
+            health,
+            health_status == GRAALY_OK ? "ok" : "FAIL");
+    graaly_sender_message(sender, message);
     return true;
 }
 
 static bool cmemory_command(
-        graaly_sender_handle_t sender,
+        graaly_sender_t sender,
         int argc,
         const graaly_string_view_t *argv) {
     (void) argc;
@@ -163,12 +177,12 @@ static bool cmemory_command(
             (unsigned int) lesson.canary,
             graaly_debug_canary_is_deadbeef(lesson.canary) ? "yes" : "NO");
 
-    graaly_sender_send_message(sender, message);
+    graaly_sender_message(sender, message);
     return true;
 }
 
 static bool cheap_command(
-        graaly_sender_handle_t sender,
+        graaly_sender_t sender,
         int argc,
         const graaly_string_view_t *argv) {
     (void) argc;
@@ -180,7 +194,7 @@ static bool cheap_command(
      */
     uint32_t *value = (uint32_t *) graaly_debug_malloc(sizeof *value);
     if (value == NULL) {
-        graaly_sender_send_message(sender, "&cTeaching heap allocation failed.");
+        graaly_sender_message(sender, "&cTeaching heap allocation failed.");
         return true;
     }
 
@@ -210,12 +224,12 @@ static bool cheap_command(
             graaly_memory_status_name(after),
             graaly_memory_status_name(second_free),
             (unsigned int) poisoned);
-    graaly_sender_send_message(sender, message);
+    graaly_sender_message(sender, message);
     return true;
 }
 
 static bool coverflow_command(
-        graaly_sender_handle_t sender,
+        graaly_sender_t sender,
         int argc,
         const graaly_string_view_t *argv) {
     (void) argc;
@@ -223,7 +237,7 @@ static bool coverflow_command(
 
     unsigned char *buffer = (unsigned char *) graaly_debug_malloc(8u);
     if (buffer == NULL) {
-        graaly_sender_send_message(sender, "&cTeaching heap allocation failed.");
+        graaly_sender_message(sender, "&cTeaching heap allocation failed.");
         return true;
     }
 
@@ -249,18 +263,18 @@ static bool coverflow_command(
             "&cOverflow lab: check=%s | free observed=%s",
             graaly_memory_status_name(detected),
             graaly_memory_status_name(freed));
-    graaly_sender_send_message(sender, message);
+    graaly_sender_message(sender, message);
     return true;
 }
 
 static bool csegfault_command(
-        graaly_sender_handle_t sender,
+        graaly_sender_t sender,
         int argc,
         const graaly_string_view_t *argv) {
     (void) argc;
     (void) argv;
 
-    graaly_sender_send_message(
+    graaly_sender_message(
             sender,
             "&cIntentional C memory fault: this guest will trap. Use /graaly reload afterwards.");
 

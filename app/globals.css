@@ -8019,6 +8019,48 @@ main {
 }
 
 @media (max-width: 760px) {
+  .language-tabs.has-java {
+    width: 100%;
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .language-tabs.has-java button,
+  .language-tabs.has-java button:last-child {
+    min-width: 0;
+    padding-inline: 4px;
+    font-size: 9px;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+
+  .code-block pre code,
+  .code-block pre code[class*="shj-lang-"] {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .code-block pre code[class*="shj-lang-"] > div {
+    width: max-content;
+    min-width: 100%;
+  }
+
+  .quickstart-deploy-guide .note-line.warning {
+    display: block;
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .quickstart-deploy-guide .note-line.warning code {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
   .quickstart-guide-heading,
   .quickstart-verification,
   .quickstart-load-rule {

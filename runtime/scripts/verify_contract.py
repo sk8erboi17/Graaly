@@ -89,9 +89,18 @@ def stable_surface_digest(contract: dict[str, object]) -> str:
         ROOT / "sdk/python/graaly/api/__init__.pyi",
         ROOT / "sdk/c/include/graaly/graaly.h",
         ROOT / "sdk/c/include/graaly/catalog.h",
+        ROOT / "sdk/c/include/graaly/types.h",
+        ROOT / "sdk/c/include/graaly/typed.h",
+        ROOT / "sdk/c/include/graaly/packets.h",
+        ROOT / "sdk/c/include/graaly/packet-types.h",
+        ROOT / "sdk/c/include/graaly/packet-typed.h",
         ROOT / "sdk/c/src/graaly.c",
         ROOT / "sdk/c/catalog-manifest.json",
+        ROOT / "sdk/c/typed-manifest.json",
+        ROOT / "sdk/c/packet-typed-manifest.json",
         ROOT / "scripts/generate_c_sdk.py",
+        ROOT / "scripts/generate_c_typed_api.mjs",
+        ROOT / "scripts/generate_c_packet_typed_api.mjs",
     )
     digest = hashlib.sha256()
     for path in files:
@@ -295,24 +304,61 @@ def verify_c_sdk(contract: dict[str, object]) -> None:
         fail("C teaching heap must quarantine logical frees until disable")
     if definition.get("fullGeneratedApiParity") is not True:
         fail("C ABI must declare full generated canonical API parity")
+    if definition.get("design") != "educational-typed-c":
+        fail("C SDK must remain an educational typed C surface")
+    if definition.get("hostObjects") != "opaque-typed-handles":
+        fail("C SDK must expose opaque typed handles")
+    if definition.get("rawAbiOptIn") != "GRAALY_ENABLE_RAW_ABI":
+        fail("raw C reflection ABI must remain explicit opt-in")
 
     header = (ROOT / "sdk/c/include/graaly/graaly.h").read_text()
     source = (ROOT / "sdk/c/src/graaly.c").read_text()
     catalog_header = (ROOT / "sdk/c/include/graaly/catalog.h").read_text()
+    typed_header = (ROOT / "sdk/c/include/graaly/typed.h").read_text()
+    types_header = (ROOT / "sdk/c/include/graaly/types.h").read_text()
+    packets_header = (ROOT / "sdk/c/include/graaly/packets.h").read_text()
+    packet_types_header = (ROOT / "sdk/c/include/graaly/packet-types.h").read_text()
+    packet_typed_header = (ROOT / "sdk/c/include/graaly/packet-typed.h").read_text()
     catalog_manifest = json.loads((ROOT / "sdk/c/catalog-manifest.json").read_text())
+    typed_manifest = json.loads((ROOT / "sdk/c/typed-manifest.json").read_text())
+    packet_typed_manifest = json.loads((ROOT / "sdk/c/packet-typed-manifest.json").read_text())
     example = (ROOT / "examples/EducationalC.cplugin/src/main.c").read_text()
     manifest = ROOT / "examples/EducationalC.cplugin/plugin.yml"
     wasm = ROOT / "examples/EducationalC.cplugin/dist/plugin.wasm"
 
     require_tokens(header, [
-        "GRAALY_C_ABI_VERSION", "graaly_handle_t", "graaly_string_view_t",
-        "graaly_events_on", "graaly_commands_on", "graaly_player_read_name",
+        "GRAALY_C_ABI_VERSION", "graaly_status_t", "graaly_string_view_t",
+        "GRAALY_ENABLE_RAW_ABI", "graaly_is_valid", "graaly_cast", "graaly_release",
+        "graaly_events_on", "graaly_commands_on", "graaly_sender_player",
+        "graaly_player_list", "graaly_world_list", "graaly_entity_spawn_at",
         "GRAALY_DEADBEEF", "graaly_debug_poison", "graaly_debug_malloc",
         "graaly_debug_check", "graaly_debug_free", "graaly_handle_poison",
     ], "C SDK header")
+    require_tokens(types_header, [
+        "graaly_player_t", "graaly_world_t", "graaly_entity_t",
+        "graaly_location_t", "graaly_material_t", "graaly_sender_t",
+        "graaly_http_request_t", "graaly_websocket_t", "graaly_packet_event_t",
+    ], "C typed handle catalog")
+    require_tokens(typed_header, [
+        "graaly_player_health", "graaly_player_health_write",
+        "graaly_player_location", "graaly_player_has_permission",
+        "graaly_world_name", "graaly_entity_remove",
+        "graaly_block_break_event_cancelled_write",
+    ], "generated typed C facade")
+    require_tokens(packet_types_header, [
+        "graaly_pe_wrapper_play_client_chat_message_t",
+        "graaly_pe_wrapper_play_server_update_health_t",
+    ], "PacketEvents typed handle catalog")
+    require_tokens(packet_typed_header, [
+        "graaly_pe_wrapper_play_client_chat_message__from_event",
+        "graaly_pe_wrapper_play_client_chat_message__message",
+        "graaly_pe_wrapper_play_client_chat_message__message_write",
+        "graaly_pe_wrapper_play_server_update_health__new",
+    ], "PacketEvents typed facade")
     require_tokens(source, [
         "import_module", "graaly_abi_version", "graaly_dispatch_event",
         "graaly_dispatch_object_event", "graaly_dispatch_callback",
+        "graaly_dispatch_text_callback", "graaly_dispatch_packet_callback",
         "graaly_dispatch_task", "graaly_dispatch_tab_complete",
         "graaly_dispatch_command", "graaly_alloc", "graaly_free",
         "graaly_module_call", "graaly_type", "graaly_constant",
@@ -398,18 +444,87 @@ def verify_c_sdk(contract: dict[str, object]) -> None:
         "GRAALY_PACKET_MEMBER_MESSAGE",
     ], "generated C canonical catalog")
 
-    combined_c = header + "\n" + source
+    typed_definition = definition.get("typedFacade")
+    expected_typed = {
+        "generatedProperties": typed_manifest.get("generatedProperties"),
+        "generatedWriters": typed_manifest.get("generatedWriters"),
+        "generatedMethods": typed_manifest.get("generatedMethods"),
+        "skippedComplexMethods": typed_manifest.get("skippedMethods"),
+        "typesHeader": "sdk/c/include/graaly/types.h",
+        "typedHeader": "sdk/c/include/graaly/typed.h",
+        "manifest": "sdk/c/typed-manifest.json",
+        "reflectionIsPublicByDefault": False,
+    }
+    if typed_definition != expected_typed:
+        fail(f"C typed facade summary differs from generated reality: {typed_definition!r}")
+    if typed_manifest.get("exportedTypes") != exported_types:
+        fail("typed C handle catalog does not cover every exported type")
+    if typed_manifest.get("generatedProperties", 0) < 25_000:
+        fail("typed C facade exposes too few canonical properties")
+    if typed_manifest.get("generatedMethods", 0) < 17_000:
+        fail("typed C facade exposes too few canonical methods")
+
+    packet_typed_definition = definition.get("packetTypedFacade")
+    expected_packet_typed = {
+        "exportedPacketTypes": packet_typed_manifest.get("exportedPacketTypes"),
+        "generatedProperties": packet_typed_manifest.get("generatedProperties"),
+        "generatedWriters": packet_typed_manifest.get("generatedWriters"),
+        "generatedMethods": packet_typed_manifest.get("generatedMethods"),
+        "generatedConstructors": packet_typed_manifest.get("generatedConstructors"),
+        "skippedComplexMembers": packet_typed_manifest.get("skippedComplexMembers"),
+        "include": "graaly/packets.h",
+        "typesHeader": "sdk/c/include/graaly/packet-types.h",
+        "typedHeader": "sdk/c/include/graaly/packet-typed.h",
+        "manifest": "sdk/c/packet-typed-manifest.json",
+    }
+    if packet_typed_definition != expected_packet_typed:
+        fail(
+            "C PacketEvents typed facade summary differs from generated reality: "
+            f"{packet_typed_definition!r}"
+        )
+    if packet_typed_manifest.get("exportedPacketTypes", 0) < 800:
+        fail("typed C PacketEvents facade exposes too few exported types")
+    if packet_typed_manifest.get("generatedMethods", 0) < 45_000:
+        fail("typed C PacketEvents facade exposes too few methods")
+    if packet_typed_manifest.get("generatedProperties", 0) < 5_000:
+        fail("typed C PacketEvents facade exposes too few properties")
+
+    raw_start = header.find("#ifdef GRAALY_ENABLE_RAW_ABI")
+    raw_get = header.find("int graaly_get(")
+    raw_end = header.find("#endif", raw_start)
+    if not (0 <= raw_start < raw_get < raw_end):
+        fail("graaly_get/set/call must remain behind GRAALY_ENABLE_RAW_ABI")
+
+    combined_c = "\n".join([
+        header,
+        source,
+        typed_header,
+        packets_header,
+        packet_types_header,
+        packet_typed_header,
+    ])
     for module_name, module_definition in contract["modules"].items():
         c_members = module_definition.get("c")
         if not isinstance(c_members, list) or not c_members:
             fail(f"C SDK module {module_name} has no declared surface")
         require_tokens(combined_c, list(c_members), f"C SDK module {module_name}")
     require_tokens(example, [
-        "typedef struct Player", "Player *out", "out->handle", "sizeof out->name",
-        "player_snapshot", "typedef struct MemoryLesson", "GRAALY_DEADBEEF",
-        "graaly_debug_malloc", "graaly_debug_free", "coverflow_command",
-        "csegfault_command",
+        "typedef struct Player", "graaly_player_t host", "Player *out", "out->host",
+        "graaly_player_name", "graaly_player_health", "graaly_player_level",
+        "graaly_sender_player", "player_snapshot", "typedef struct MemoryLesson",
+        "GRAALY_DEADBEEF", "graaly_debug_malloc", "graaly_debug_free",
+        "coverflow_command", "csegfault_command",
     ], "educational C example")
+    public_docs = "\n".join([
+        example,
+        (ROOT / "sdk/c/README.md").read_text(),
+        (ROOT.parent / "README.md").read_text(),
+        (ROOT.parent / "app/page.tsx").read_text(),
+        (ROOT.parent / "app/guide-topics.ts").read_text(),
+    ])
+    for forbidden in ("graaly_get(", "graaly_set(", "graaly_call("):
+        if forbidden in public_docs:
+            fail(f"public C documentation leaked raw reflection API: {forbidden}")
     if re.search(r"(?m)^\\s*typedef\\s+struct\\s+Player\\b", header):
         fail("C SDK must not provide a Player struct; the learner defines it")
     if not manifest.is_file() or not wasm.is_file() or wasm.stat().st_size < 8:

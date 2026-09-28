@@ -1,0 +1,11 @@
+{
+  "exportedTypes": 1421,
+  "generatedProperties": 26069,
+  "generatedWriters": 11096,
+  "generatedMethods": 17875,
+  "skippedMethods": 1257,
+  "files": {
+    "types": "sdk/c/include/graaly/types.h",
+    "typed": "sdk/c/include/graaly/typed.h"
+  }
+}

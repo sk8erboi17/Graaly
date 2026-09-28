@@ -19,8 +19,9 @@
     "bundleSuffix": ".cplugin",
     "mainSuffix": ".wasm",
     "sdk": "sdk/c",
-    "design": "educational-low-level",
-    "hostObjects": "scoped-uint64-handles",
+    "design": "educational-typed-c",
+    "hostObjects": "opaque-typed-handles",
+    "rawAbiOptIn": "GRAALY_ENABLE_RAW_ABI",
     "developerOwnsDomainStructs": true,
     "teachingMemory": {
       "redZoneBytes": 16,
@@ -35,6 +36,16 @@
       "quarantineUntilDisable": true
     },
     "fullGeneratedApiParity": true,
+    "typedFacade": {
+      "generatedProperties": 26069,
+      "generatedWriters": 11096,
+      "generatedMethods": 17875,
+      "skippedComplexMethods": 1257,
+      "typesHeader": "sdk/c/include/graaly/types.h",
+      "typedHeader": "sdk/c/include/graaly/typed.h",
+      "manifest": "sdk/c/typed-manifest.json",
+      "reflectionIsPublicByDefault": false
+    },
     "catalog": {
       "types": 1421,
       "canonicalClasses": 1411,
@@ -47,6 +58,18 @@
       "packetSupportTypes": 533,
       "packetTypePaths": 288,
       "packetMemberNames": 2926
+    },
+    "packetTypedFacade": {
+      "exportedPacketTypes": 822,
+      "generatedProperties": 5019,
+      "generatedWriters": 2911,
+      "generatedMethods": 45578,
+      "generatedConstructors": 412,
+      "skippedComplexMembers": 11029,
+      "include": "graaly/packets.h",
+      "typesHeader": "sdk/c/include/graaly/packet-types.h",
+      "typedHeader": "sdk/c/include/graaly/packet-typed.h",
+      "manifest": "sdk/c/packet-typed-manifest.json"
     }
   },
   "constantCatalog": {
@@ -90,8 +113,9 @@
         "on"
       ],
       "c": [
+        "graaly_events_on",
         "graaly_events_on_type",
-        "graaly_events_listen"
+        "graaly_cast"
       ]
     },
     "commands": {
@@ -115,10 +139,8 @@
       ],
       "c": [
         "graaly_commands_on",
-        "graaly_commands_handle",
-        "graaly_commands_complete",
-        "graaly_commands_completer",
-        "graaly_commands_dispatch"
+        "graaly_commands_complete_on",
+        "graaly_command_dispatch"
       ]
     },
     "tasks": {
@@ -161,8 +183,6 @@
         "graaly_tasks_later_async",
         "graaly_tasks_repeat_async",
         "graaly_tasks_cancel",
-        "graaly_tasks_delay",
-        "graaly_tasks_sleep",
         "graaly_tasks_is_main_thread"
       ]
     },
@@ -189,9 +209,12 @@
         "reload"
       ],
       "c": [
-        "graaly_config_get",
-        "graaly_config_set",
-        "graaly_config_contains",
+        "graaly_config_bool",
+        "graaly_config_number",
+        "graaly_config_string",
+        "graaly_config_bool_write",
+        "graaly_config_number_write",
+        "graaly_config_string_write",
         "graaly_config_save",
         "graaly_config_reload"
       ]
@@ -219,11 +242,12 @@
         "broadcast"
       ],
       "c": [
-        "graaly_players_online",
-        "graaly_players_get",
-        "graaly_players_exact",
-        "graaly_players_is_player",
-        "graaly_players_broadcast"
+        "graaly_player_list",
+        "graaly_player_find",
+        "graaly_player_find_exact",
+        "graaly_sender_player",
+        "graaly_player_message",
+        "graaly_broadcast"
       ]
     },
     "worlds": {
@@ -255,13 +279,11 @@
         "unload"
       ],
       "c": [
-        "graaly_worlds_all",
-        "graaly_worlds_get",
-        "graaly_worlds_location",
-        "graaly_worlds_create",
-        "graaly_worlds_generator",
-        "graaly_worlds_populator",
-        "graaly_worlds_unload"
+        "graaly_world_list",
+        "graaly_world_find",
+        "graaly_location_make",
+        "graaly_world_create",
+        "graaly_world_unload"
       ]
     },
     "entities": {
@@ -290,12 +312,9 @@
         "remove"
       ],
       "c": [
-        "graaly_entities_type",
-        "graaly_entities_attribute_type",
-        "graaly_entities_spawn",
-        "graaly_entities_configure",
-        "graaly_entities_attribute",
-        "graaly_entities_remove"
+        "graaly_entity_type_find",
+        "graaly_entity_spawn_at",
+        "graaly_entity_remove"
       ]
     },
     "http": {
@@ -325,7 +344,9 @@
         "graaly_http_get",
         "graaly_http_post",
         "graaly_http_put",
-        "graaly_http_delete"
+        "graaly_http_delete",
+        "graaly_http_cancel",
+        "graaly_text_callback_t"
       ]
     },
     "websocket": {
@@ -339,7 +360,11 @@
         "connect"
       ],
       "c": [
-        "graaly_websocket_connect"
+        "graaly_websocket_connect",
+        "graaly_websocket_send",
+        "graaly_websocket_close",
+        "graaly_websocket_state",
+        "graaly_text_callback_t"
       ]
     },
     "ui": {
@@ -360,8 +385,10 @@
       ],
       "c": [
         "graaly_ui_render",
+        "graaly_ui_render_html",
         "graaly_ui_clear",
-        "graaly_ui_dismiss"
+        "graaly_ui_dismiss",
+        "graaly_text_callback_t"
       ]
     },
     "boards": {
@@ -383,10 +410,10 @@
         "refresh"
       ],
       "c": [
-        "graaly_boards_state",
-        "graaly_boards_on_message",
-        "graaly_boards_listen",
-        "graaly_boards_refresh"
+        "graaly_board_state",
+        "graaly_board_on_message",
+        "graaly_board_refresh",
+        "graaly_text_callback_t"
       ]
     },
     "packets": {
@@ -433,21 +460,19 @@
         "ping"
       ],
       "c": [
-        "graaly_packets_wrapper_type",
-        "graaly_packets_named_type",
-        "graaly_packets_packet_type",
-        "graaly_packets_create",
-        "graaly_packets_wrap",
-        "graaly_packets_on_receive",
-        "graaly_packets_listen_receive",
-        "graaly_packets_on_send",
-        "graaly_packets_listen_send",
-        "graaly_packets_send",
-        "graaly_packets_send_to_all",
-        "graaly_packets_receive",
-        "graaly_packets_user",
-        "graaly_packets_client_version",
-        "graaly_packets_ping"
+        "graaly_packet_type_find",
+        "graaly_packet_on_receive",
+        "graaly_packet_on_send",
+        "graaly_packet_event_cancelled",
+        "graaly_packet_event_cancelled_write",
+        "graaly_packet_event_reencode",
+        "graaly_packet_event_player",
+        "graaly_packet_send",
+        "graaly_packet_send_all",
+        "graaly_packet_receive",
+        "graaly_packet_user",
+        "graaly_packet_client_version",
+        "graaly_packet_ping"
       ]
     },
     "compatibility": {
@@ -482,14 +507,14 @@
         "material"
       ],
       "c": [
-        "graaly_compat_contract_version",
-        "graaly_compat_minimum_game_version",
-        "graaly_compat_minecraft_version",
-        "graaly_compat_server_version",
+        "graaly_contract_version",
+        "graaly_minimum_game_version",
+        "graaly_minecraft_version",
+        "graaly_runtime_server_version",
         "graaly_compat_supports",
         "graaly_compat_require",
         "graaly_type_available",
-        "graaly_compat_material"
+        "graaly_material_find"
       ]
     },
     "diagnostics": {
@@ -503,7 +528,7 @@
         "verify"
       ],
       "c": [
-        "graaly_diagnostics_verify"
+        "graaly_diagnostics_read"
       ]
     }
   },

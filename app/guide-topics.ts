@@ -59,62 +59,96 @@ function nativeCode(
   };
 }
 
+function cSnake(name: string): string {
+  return name
+    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1_$2")
+    .replace(/([a-z0-9])([A-Z])/g, "$1_$2")
+    .replace(/[^A-Za-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .toLowerCase();
+}
+
+function cReceiverType(receiver: string): string | null {
+  const value = receiver.trim();
+  if (/^(player|target|online|senderPlayer)$/.test(value)) return "player";
+  if (value === "world") return "world";
+  if (/^(entity|mob)$/.test(value)) return "entity";
+  if (value === "block") return "block";
+  if (/^(location|spawn)$/.test(value)) return "location";
+  if (value === "inventory") return "inventory";
+  return null;
+}
+
 function cOperation(native: string, java: string): string {
   const value = native.trim();
 
   const direct: Array<[RegExp, string]> = [
     [/^commands\.on\(([^,]+),\s*handler\)$/, "graaly_commands_on($1, handler)"],
     [/^commands\.complete\(([^,]+),\s*handler\)$/, "graaly_commands_complete_on($1, completer)"],
-    [/^commands\.dispatch\(([^,]+),\s*([^)]+)\)$/, "graaly_commands_dispatch(graaly_value_handle($1), $2, &dispatched)"],
+    [/^commands\.dispatch\(([^,]+),\s*([^)]+)\)$/, "graaly_command_dispatch(sender, $2, &dispatched)"],
     [/^tasks\.run\(callback\)$/, "graaly_tasks_run(callback)"],
     [/^tasks\.later\(delay,\s*callback\)$/, "graaly_tasks_later(delay, callback)"],
     [/^tasks\.repeat\(delay,\s*period,\s*callback\)$/, "graaly_tasks_repeat(delay, period, callback)"],
     [/^tasks\.runAsync\(callback\)$/, "graaly_tasks_run_async(callback)"],
     [/^tasks\.cancel\(task\)$/, "graaly_tasks_cancel(task_id)"],
     [/^tasks\.sleep\(seconds\)$/, "graaly_ticks(seconds)"],
-    [/^players\.online\(\)$/, "graaly_players_online(&players)"],
-    [/^players\.get\(([^)]+)\)$/, "graaly_players_get($1, &player)"],
-    [/^players\.exact\(([^)]+)\)$/, "graaly_players_exact($1, &player)"],
-    [/^players\.isPlayer\(([^)]+)\)$/, "graaly_sender_as_player($1) != 0"],
-    [/^players\.broadcast\(([^)]+)\)$/, "graaly_players_broadcast($1)"],
-    [/^worlds\.all\(\)$/, "graaly_worlds_all(&worlds)"],
-    [/^worlds\.get\(([^)]+)\)$/, "graaly_worlds_get($1, &world)"],
-    [/^packets\.send\(([^,]+),\s*([^)]+)\)$/, "graaly_packets_send($1, $2)"],
-    [/^packets\.sendToAll\(([^)]+)\)$/, "graaly_packets_send_to_all($1)"],
-    [/^packets\.receive\(([^,]+),\s*([^)]+)\)$/, "graaly_packets_receive($1, $2)"],
-    [/^packets\.user\(([^)]+)\)$/, "graaly_packets_user($1, &user)"],
-    [/^packets\.clientVersion\(([^)]+)\)$/, "graaly_packets_client_version($1, &version)"],
-    [/^packets\.ping\(([^)]+)\)$/, "graaly_packets_ping($1, &ping)"],
+    [/^players(?:\.online\(\))?$/, "graaly_player_list(players, capacity, &count)"],
+    [/^players\.get\(([^)]+)\)$/, "graaly_player_find($1, &player)"],
+    [/^players\.exact\(([^)]+)\)$/, "graaly_player_find_exact($1, &player)"],
+    [/^players\.isPlayer\(([^)]+)\)$/, "graaly_sender_player(sender, &player) == GRAALY_OK"],
+    [/^players\.broadcast\(([^)]+)\)$/, "graaly_broadcast($1)"],
+    [/^worlds\.all\(\)$/, "graaly_world_list(worlds, capacity, &count)"],
+    [/^worlds\.get\(([^)]+)\)$/, "graaly_world_find($1, &world)"],
+    [/^packets\.send\(([^,]+),\s*([^)]+)\)$/, "graaly_packet_send(player, packet)"],
+    [/^packets\.sendToAll\(([^)]+)\)$/, "graaly_packet_send_all(packet)"],
+    [/^packets\.receive\(([^,]+),\s*([^)]+)\)$/, "graaly_packet_receive(player, packet)"],
+    [/^packets\.user\(([^)]+)\)$/, "graaly_packet_user(player, &user)"],
+    [/^packets\.clientVersion\(([^)]+)\)$/, "graaly_packet_client_version(player, &version)"],
+    [/^packets\.ping\(([^)]+)\)$/, "graaly_packet_ping(player, &ping)"],
   ];
   for (const [pattern, replacement] of direct) {
     if (pattern.test(value)) return value.replace(pattern, replacement);
   }
 
   if (value.startsWith("packets.onReceive(")) {
-    return "graaly_packets_on_receive(packet_type, \"NORMAL\", on_packet, &binding)";
+    return "graaly_packet_on_receive(packet_type, GRAALY_PRIORITY_NORMAL, on_packet, &binding)";
   }
   if (value.startsWith("packets.onSend(")) {
-    return "graaly_packets_on_send(packet_type, \"NORMAL\", on_packet, &binding)";
+    return "graaly_packet_on_send(packet_type, GRAALY_PRIORITY_NORMAL, on_packet, &binding)";
   }
   if (value.startsWith("events.on(")) {
     return "graaly_events_on_type(event_type, \"NORMAL\", false, on_event)";
   }
   if (value.includes(".sendMessage(")) {
-    return "graaly_sender_send_message(player_handle, message)";
+    return "graaly_player_message(player, message)";
   }
-  if (/^[A-Za-z_$][\w$]*\.[A-Za-z_$][\w$]*$/.test(value)) {
-    const [, property] = value.split(".", 2);
-    return `graaly_get(object_handle, "${property}", &value)`;
-  }
-  if (value.includes("=") && value.includes(".")) {
-    return "graaly_set(object_handle, member_name, value)";
-  }
-  if (/^[A-Za-z_$][\w$]*\.[A-Za-z_$][\w$]*\(/.test(value)) {
-    const match = value.match(/^[^.]+\.([A-Za-z_$][\w$]*)/);
-    if (match) return `graaly_call(object_handle, "${match[1]}", args, argc, &result)`;
+  if (value === "context.sender") return "graaly_sender_t sender";
+  if (value === "context.args") return "argc + argv";
+  if (value === "context.reply(message)") return "graaly_sender_message(sender, message)";
+  if (value === "context.hasPermission(node)") return "graaly_sender_has_permission(sender, node, &allowed)";
+
+  const assignment = value.match(/^([A-Za-z_$][\w$]*)\.([A-Za-z_$][\w$]*)\s*=\s*(.+)$/);
+  if (assignment) {
+    const [, receiver, property] = assignment;
+    const type = cReceiverType(receiver);
+    if (type) return `graaly_${type}_${cSnake(property)}_write(${receiver}, value)`;
   }
 
-  return `/* C: ${java.replaceAll("*/", "* /")} */`;
+  const propertyRead = value.match(/^([A-Za-z_$][\w$]*)\.([A-Za-z_$][\w$]*)$/);
+  if (propertyRead) {
+    const [, receiver, property] = propertyRead;
+    const type = cReceiverType(receiver);
+    if (type) return `graaly_${type}_${cSnake(property)}(${receiver}, &value)`;
+  }
+
+  const method = value.match(/^([A-Za-z_$][\w$]*)\.([A-Za-z_$][\w$]*)\((.*)\)$/);
+  if (method) {
+    const [, receiver, methodName] = method;
+    const type = cReceiverType(receiver);
+    if (type) return `graaly_${type}_${cSnake(methodName)}(${receiver}, ...)`;
+  }
+
+  return `/* C equivalent uses the generated typed facade for: ${java.replaceAll("*/", "* /")} */`;
 }
 
 const op = (native: string, python: string, java: string, c = cOperation(native, java)): GuideOperation => ({
