@@ -76,6 +76,60 @@ zig cc \
 
 Clang + a WASI SDK works too. The server itself does not need Zig, Clang, or a C compiler; it only loads the compiled `.wasm`.
 
+## Bits, unions, alignment, and byte formats
+
+`<graaly/bits.h>` supplies small C helpers over **caller-owned memory**. It does not allocate storage, retain host handles, or add a plugin framework. A bounded bitset can track selected slots, visited chunks, or local flags:
+
+```c
+#include <graaly/bits.h>
+
+uint64_t storage[2];
+graaly_bitset_t visited = {0};
+if (!graaly_bitset_init(&visited, storage, 2u, 128u)) return;
+graaly_bitset_put(&visited, 63u, true);
+graaly_bitset_put(&visited, 64u, true);
+graaly_bitset_put(&visited, 127u, true);
+graaly_bitset_put(&visited, 64u, false);
+bool selected = false;
+graaly_bitset_get(&visited, 127u, &selected);
+size_t count = graaly_bitset_count(&visited); /* 2 */
+```
+
+The storage must outlive the bitset. Initialization checks the required word capacity, and get/put reject indexes at or beyond `bit_count`. Counting masks unused tail bits. A `uint64_t` word uses `UINT64_C(1) << (index % 64)`, with `index / 64` selecting the word. C bit-fields have implementation-dependent layout and are unsuitable as portable wire records.
+
+Use unsigned operands for masks and shifts. `graaly_u32_shift_left` and `graaly_u32_shift_right` reject counts of 32 or more before evaluating the shift and leave the output unchanged on failure. For example, shifting `UINT32_C(1)` by 31 produces `0x80000000`; shifting it by 32 is invalid C. Wasm containment does not change C's rules about signed overflow, aliasing, or invalid shifts.
+
+For alternative payloads, define a **tagged union** yourself:
+
+```c
+typedef enum UpdateKind { UPDATE_HEALTH, UPDATE_FLAGS } UpdateKind;
+typedef struct Update {
+    UpdateKind kind;
+    union { double health; uint32_t flags; } value;
+} Update;
+
+Update update = { .kind = UPDATE_HEALTH, .value.health = 20.0 };
+if (update.kind == UPDATE_HEALTH) {
+    graaly_player_health_write(player, update.value.health);
+}
+```
+
+Check the tag before reading the selected member. A union shares storage; its size also depends on alignment. To inspect floating-point representation, copy it with `memcpy` into a same-sized integer. Do not read it through an incompatible cast pointer.
+
+Measure layout with `sizeof`, `_Alignof`, and `offsetof`. The compiler can insert padding between fields and at the end of a struct so arrays remain aligned. Reordering fields can reduce padding, but layout is a target property, not a serialization contract. The labs compare `{ uint8_t flags; uint32_t score; uint16_t level; }` with the reordered form, report every offset, and check alignment with `_Static_assert`.
+
+`graaly_u32_store_le` and `graaly_u32_load_le` encode integers byte by byte without aligned pointer casts. The example combines them into a **7-byte** flags/score/level record with capacity checks and explicit little-endian order. This is a plugin-owned format: PacketEvents continues to encode Minecraft's protocol. Do not serialize struct padding, compare structs with `memcmp`, or assume `packed` attributes define a portable format.
+
+The compiled [EducationalC labs](../../examples/EducationalC.cplugin/src/c-labs.h) also demonstrate a flexible array member: validate `sizeof(header) + count * sizeof(element)` before allocating, let one pointer own the header and payload, and free it once. Run `/cbits`, `/cunion`, and `/clayout` to inspect the actual wasm32 results. `test-compile.sh` compiles the labs for WASI and runs their boundary and byte-format tests with AddressSanitizer and UndefinedBehaviorSanitizer on the host. The rules follow the [WG14 C11 draft](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1570.pdf), especially sections 6.5.7, 6.7.2.1, 6.2.6, and 6.2.8.
+
+## PacketEvents in C
+
+Include `<graaly/packets.h>`. `graaly_packet_available(&available)` detects the optional integration; when available, `graaly_packet_version(buffer, capacity, &required)` reads its version. Register synchronous receive/send listeners with a `graaly_packet_type_t`, use a matching `graaly_pe_wrapper_*__from_event`, and release the returned owned wrapper. Properties have typed reads and `_write` functions; call `graaly_packet_event_reencode` after rewriting a wrapper, or `graaly_packet_event_cancelled_write(event, true)` to block it.
+
+The runnable [PacketEventsC example](../../examples/PacketEventsC.cplugin/) normalizes chat, cancels `stop`, observes outgoing health, creates an UpdateHealth packet, and reports protocol version and ping. Its bounded task queue copies names/text before returning from the network callback, then re-resolves the player on the server thread. It does not retain borrowed callback handles. Graaly serializes invocation of each Wasm instance and unregisters its listeners on disable/reload. Build with `./build.sh`; install PacketEvents separately; run `/cpackethealth` and `/cpacketinfo`. The health packet changes the client's display without changing server health.
+
+The website's API and PacketEvents catalogs have a C tab with exact declarations from the shipped headers, including inherited instance methods, property writes, constructors where supported, and overload suffixes. C reference data loads only when selected. Some complex Java callback/generic overloads do not yet have a typed C adapter; the catalog lists the available functions explicitly rather than inventing bindings.
+
 ## Memory lessons stay real, but contained
 
 Inside WebAssembly linear memory you still use normal C pointers, arrays, `malloc`, `free`, `memcpy`, pointer arithmetic, and function pointers. A bad access that escapes WebAssembly linear memory becomes a guest trap instead of corrupting the JVM.

@@ -2,7 +2,7 @@ name: EducationalC
 version: 1.0.0
 main: dist/plugin.wasm
 author: Graaly
-description: Educational C plugin using user-defined structs, pointers, arrays, and callbacks.
+description: Educational C plugin using structs, bitsets, shifts, tagged unions, alignment, padding, and explicit byte formats.
 commands:
   cplayer:
     description: Build and print a user-defined Player struct snapshot.
@@ -13,6 +13,15 @@ commands:
   cmemory:
     description: Inspect a DEADBEEF canary and poisoned C buffer.
     usage: /cmemory
+  cbits:
+    description: Inspect unsigned masks, bounded shifts, and a 128-bit selection bitset.
+    usage: /cbits
+  cunion:
+    description: Inspect a tagged union and reject an inactive member read.
+    usage: /cunion
+  clayout:
+    description: Measure struct padding and alignment and round-trip a 7-byte record.
+    usage: /clayout
   cheap:
     description: Inspect Graaly's teaching heap, logical free, and DEADBEEF poison.
     usage: /cheap

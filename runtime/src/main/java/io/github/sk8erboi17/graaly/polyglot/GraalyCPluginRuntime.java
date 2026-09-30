@@ -1197,6 +1197,10 @@ final class GraalyCPluginRuntime implements AutoCloseable {
     private Object packetModule(String operation, Object[] arguments) {
         PacketEventsScriptApi packets = requireBridgeApi().getPackets();
         switch (operation) {
+            case "available":
+                return packets.isAvailable();
+            case "version":
+                return packets.getVersion();
             case "wrapperType":
             case "wrapper_type":
                 return packets.wrapperType(requireString(arguments, 0, "wrapper type"));

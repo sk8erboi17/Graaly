@@ -2428,6 +2428,22 @@ graaly_status_t graaly_board_on_message(
             "boards", "onMessage", args, 2u, &result));
 }
 
+graaly_status_t graaly_packet_available(bool *out) {
+    if (out == NULL) return GRAALY_EINVAL;
+    graaly_value_t value = graaly_value_null();
+    int status = module_call_simple("packets", "available", &value);
+    if (status != 0) return typed_status(status);
+    return value_to_bool(value, out);
+}
+
+graaly_status_t graaly_packet_version(char *buffer, size_t capacity, size_t *required) {
+    if (buffer == NULL && capacity != 0u) return GRAALY_EINVAL;
+    graaly_value_t value = graaly_value_null();
+    int status = module_call_simple("packets", "version", &value);
+    if (status != 0) return typed_status(status);
+    return value_to_string(value, buffer, capacity, required);
+}
+
 graaly_status_t graaly_packet_type_find(const char *path, graaly_packet_type_t *out) {
     if (path == NULL || out == NULL) return GRAALY_EINVAL;
     graaly_value_t value = graaly_value_null();

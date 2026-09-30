@@ -460,6 +460,8 @@
         "ping"
       ],
       "c": [
+        "graaly_packet_available",
+        "graaly_packet_version",
         "graaly_packet_type_find",
         "graaly_packet_on_receive",
         "graaly_packet_on_send",

@@ -147,6 +147,25 @@ class GraalyCEducationalExampleTest {
                     lastMessage::get);
 
             lastMessage.set(null);
+            assertEquals(1, dispatchCommand(exports, memory, "cbits"));
+            assertTrue(lastMessage.get().contains("selected=2/128"), lastMessage::get);
+            assertTrue(lastMessage.get().contains("rgb=0x123456"), lastMessage::get);
+            assertTrue(lastMessage.get().contains("bit31=0x80000000"), lastMessage::get);
+            assertTrue(lastMessage.get().contains("shift32 rejected=yes"), lastMessage::get);
+
+            lastMessage.set(null);
+            assertEquals(1, dispatchCommand(exports, memory, "cunion"));
+            assertTrue(lastMessage.get().contains("health=20.0 read=yes"), lastMessage::get);
+            assertTrue(lastMessage.get().contains("inactive health rejected=yes"), lastMessage::get);
+
+            lastMessage.set(null);
+            assertEquals(1, dispatchCommand(exports, memory, "clayout"));
+            assertTrue(lastMessage.get().contains("padded=12 compact=8 align=4"), lastMessage::get);
+            assertTrue(lastMessage.get().contains("score@0 level@4 flags@6 tail=1"), lastMessage::get);
+            assertTrue(lastMessage.get().contains("wire=7 bytes roundtrip=ok"), lastMessage::get);
+            assertTrue(lastMessage.get().contains("batch=3"), lastMessage::get);
+
+            lastMessage.set(null);
             assertEquals(1, dispatchCommand(exports, memory, "cheap"));
             assertNotNull(lastMessage.get());
             assertTrue(lastMessage.get().contains("after=already-freed"), lastMessage::get);
@@ -165,13 +184,13 @@ class GraalyCEducationalExampleTest {
         }
     }
 
-    private static String readUtf8(Value memory, int pointer, int length) {
+    static String readUtf8(Value memory, int pointer, int length) {
         byte[] bytes = new byte[length];
         memory.readBuffer(Integer.toUnsignedLong(pointer), bytes, 0, length);
         return new String(bytes, StandardCharsets.UTF_8);
     }
 
-    private static void writeHandleValue(Value memory, int pointer, long handle) {
+    static void writeHandleValue(Value memory, int pointer, long handle) {
         long address = Integer.toUnsignedLong(pointer);
         memory.writeBufferInt(ByteOrder.LITTLE_ENDIAN, address, 5);
         memory.writeBufferInt(ByteOrder.LITTLE_ENDIAN, address + 4L, 0);

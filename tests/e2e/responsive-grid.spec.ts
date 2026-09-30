@@ -104,4 +104,75 @@ test.describe("responsive documentation grids", () => {
     expect(cSource ?? "").not.toMatch(/graaly_(?:get|set|call)\s*\(/);
     await expectNoHorizontalOverflow(page);
   });
+
+  test("C reference covers API types, wrappers, support types, and packet constants", async ({ page }) => {
+    await page.goto("/#api-reference");
+    const api = page.locator('[data-api-browser="api"]');
+    await expect(api.getByRole("tab", { name: "C / WebAssembly" })).toBeVisible();
+    await api.getByRole("tab", { name: "C / WebAssembly" }).click();
+    let detail = api.locator(".c-type-reference");
+    await expect(detail).toBeVisible();
+    await detail.getByRole("searchbox", { name: "Search C members of Player" }).fill("graaly_player_health");
+    await expect(detail.locator(".member-list")).toContainText("graaly_player_health(graaly_player_t self, double *out)");
+    await expect(detail.locator(".member-list")).toContainText("graaly_player_health_write(graaly_player_t self, double value)");
+
+    await api.getByRole("searchbox", { name: "Search API", exact: true }).fill("graaly_material_find");
+    await expect(detail).toContainText("graaly_material_t");
+    await detail.getByRole("searchbox", { name: "Search C members of Material" }).fill("find");
+    await expect(detail.locator(".member-list")).toContainText("graaly_material_find(const char *name");
+    await detail.getByRole("group", { name: "C member type" }).getByRole("button", { name: "Constants", exact: true }).click();
+    await detail.getByRole("searchbox").fill("MATERIAL_STONE");
+    await expect(detail.locator(".member-list")).toContainText('GRAALY_MATERIAL_STONE "STONE"');
+
+    const catalogs = api.getByRole("tablist", { name: "API catalog" });
+    await catalogs.getByRole("tab", { name: /^Wrappers/ }).click();
+    await expect(api.getByRole("tab", { name: "C / WebAssembly" })).toHaveAttribute("aria-selected", "true");
+    detail = api.locator(".c-type-reference");
+    await expect(detail).toContainText("graaly_pe_wrapper_play_server_update_health_t");
+    await detail.getByRole("searchbox").fill("__new");
+    await expect(detail.locator(".member-list")).toContainText("graaly_pe_wrapper_play_server_update_health__new(double arg0, double arg1, double arg2");
+    await catalogs.getByRole("tab", { name: /^Support/ }).click();
+    await expect(detail).toContainText("graaly_pe_component_t");
+    await expect(detail.locator(".member-list")).toContainText("graaly_pe_component__");
+
+    await catalogs.getByRole("tab", { name: /^Constants/ }).click();
+    await expect(api.locator(".constant-usage code").last()).toContainText("graaly_packet_on_receive");
+    await api.getByRole("searchbox", { name: "Search API", exact: true }).fill("UPDATE_HEALTH");
+    await expect(api.locator(".constant-usage code").last()).toContainText("graaly_packet_on_send");
+    await expect(api.locator(".constant-usage code").last()).toContainText("Play.Server.UPDATE_HEALTH");
+    await expectNoHorizontalOverflow(page);
+  });
+
+  test("C learning path exposes interactive bitset, union, padding, and ownership labs", async ({ page }) => {
+    await page.goto("/#learn");
+    const learning = page.locator("#learn .learning-guide").first();
+    await learning.getByRole("tab", { name: "C / WebAssembly" }).click();
+    await learning.getByRole("tab", { name: /Bitsets/ }).click();
+    await expect(learning.locator(".learning-example code").first()).toContainText("graaly_bitset_put");
+    const labs = page.locator(".c-advanced-labs");
+    for (const [label, code] of [["Tagged unions", "union"], ["Alignment and padding", "offsetof"],
+      ["Explicit serialization", "graaly_u32_store_le"], ["Flexible array ownership", "SIZE_MAX"]]) {
+      await labs.getByRole("tab", { name: new RegExp(label) }).click();
+      await expect(labs.locator(".code-block code")).toContainText(code);
+    }
+    await expectNoHorizontalOverflow(page);
+  });
+
+  test("every PacketEvents workflow has a real C example", async ({ page }) => {
+    await page.goto("/#packets");
+    const guide = page.locator("#packets .guide-browser");
+    await guide.getByRole("tab", { name: "C / WebAssembly" }).click();
+    const options = guide.getByRole("option");
+    await expect(options).toHaveCount(8);
+    for (let index = 0; index < 8; index++) {
+      await options.nth(index).click();
+      await expect(guide.locator(".code-block code")).toContainText("#include <graaly/packets.h>");
+      await expect(guide.locator(".code-block code")).not.toContainText("C equivalent uses");
+    }
+    const api = page.locator('[data-api-browser="packetevents catalog"]');
+    await api.scrollIntoViewIfNeeded();
+    await api.getByRole("tab", { name: "C / WebAssembly" }).click();
+    await expect(api.locator(".constant-usage code").last()).toContainText("graaly_packet_on_receive");
+    await expectNoHorizontalOverflow(page);
+  });
 });

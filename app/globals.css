@@ -926,6 +926,7 @@ main {
 
 .learning-toolbar > div:last-child {
   max-width: 720px;
+  min-width: 0;
 }
 
 .learning-layout {
@@ -1093,6 +1094,33 @@ main {
   display: flex;
   flex-wrap: wrap;
   gap: 8px 16px;
+}
+
+.official-reading a {
+  min-width: 0;
+  max-width: 100%;
+  flex-shrink: 1;
+  overflow-wrap: anywhere;
+}
+
+.official-reading a svg {
+  flex-shrink: 0;
+}
+
+.c-advanced-labs {
+  margin-top: 36px;
+}
+
+.c-advanced-labs .learning-example > p {
+  margin: 12px 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.c-learning-guide > .note-line.warning {
+  display: block;
+  overflow-wrap: anywhere;
 }
 
 .event-mental-model {
@@ -7912,6 +7940,20 @@ main {
 }
 
 @media (max-width: 760px) {
+  .learning-toolbar .language-tabs {
+    width: 100%;
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    box-sizing: border-box;
+  }
+
+  .learning-toolbar .language-tabs button {
+    min-width: 0;
+    padding-inline: 4px;
+    overflow-wrap: anywhere;
+  }
+
   .language-tabs.has-java {
     width: 100%;
     max-width: 100%;

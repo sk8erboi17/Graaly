@@ -498,6 +498,8 @@ graaly_status_t graaly_board_on_message(
         const char *board,
         graaly_text_callback_t callback);
 
+graaly_status_t graaly_packet_available(bool *out);
+graaly_status_t graaly_packet_version(char *buffer, size_t capacity, size_t *required);
 graaly_status_t graaly_packet_type_find(const char *path, graaly_packet_type_t *out);
 graaly_status_t graaly_packet_on_receive(
         graaly_packet_type_t type,

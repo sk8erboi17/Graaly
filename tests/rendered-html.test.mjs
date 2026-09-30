@@ -625,7 +625,8 @@ test("includes a complete Java quick start beside Graaly languages", async () =>
   const source = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
   const response = await render();
   const html = await response.text();
-  assert.match(source, /type QuickstartLanguage = Language \| "c" \| "java"/);
+  assert.match(source, /type Language = "js" \| "ts" \| "py" \| "c"/);
+  assert.match(source, /type QuickstartLanguage = Language \| "java"/);
   assert.match(source, /\{ id: "c", label: "C \/ WebAssembly" \}/);
   assert.match(source, /"main: dist\/plugin\.wasm"/);
   assert.match(source, /zig cc -target wasm32-wasi/);
@@ -680,7 +681,7 @@ test("uses the event-style browser for every core developer workflow", async () 
     assert.ok(html.includes(topic.title), `${topic.title} is not discoverable in its guide browser`);
     assert.ok(topic.code.js.length > 0 && topic.code.ts.length > 0 && topic.code.py.length > 0 && topic.code.java.length > 0);
     const cCode = cGuideCode(topic);
-    assert.match(cCode, /#include <graaly\/graaly\.h>/);
+    assert.match(cCode, /#include <graaly\/(?:graaly|packets)\.h>/);
     assert.ok(cCode.includes("graaly_") || cCode.includes("/* C equivalent"), `${topic.title} has no C correspondence`);
     assert.ok(topic.operations.every(operation => operation.c.length > 0), `${topic.title} has an operation without C mapping`);
     assert.ok(topic.javaEquivalent.length > 0, `${topic.title} has no Java correspondence`);

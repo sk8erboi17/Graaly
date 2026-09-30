@@ -13,6 +13,7 @@ compile() {
 
 compile "$HERE/tests/core.c" "$TMP/core.o"
 compile "$HERE/tests/packets.c" "$TMP/packets.o"
+compile "$HERE/tests/bits.c" "$TMP/bits.o"
 compile "$HERE/tests/raw-opt-in.c" "$TMP/raw-opt-in.o"
 
 if compile "$HERE/tests/raw-hidden.c" "$TMP/raw-hidden.o" >"$TMP/raw-hidden.log" 2>&1; then
@@ -21,4 +22,7 @@ if compile "$HERE/tests/raw-hidden.c" "$TMP/raw-hidden.o" >"$TMP/raw-hidden.log"
 fi
 
 grep -q "graaly_get" "$TMP/raw-hidden.log"
+"${CC:-cc}" -std=c11 -O1 -Wall -Wextra -Wpedantic -Wconversion -Werror \
+  -fsanitize=address,undefined -I"$HERE/include" "$HERE/tests/bits.c" -o "$TMP/bits-test"
+"$TMP/bits-test"
 echo "Graaly C headers compile cleanly; raw reflection is hidden by default."

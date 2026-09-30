@@ -1,0 +1,13 @@
+name: PacketEventsC
+version: 1.0.0
+main: dist/plugin.wasm
+author: Graaly
+description: Typed C packet listeners, wrapper mutation, cancellation, explicit ownership, and server-thread handoff.
+depend: [packetevents]
+commands:
+  cpackethealth:
+    description: Send a client health display packet without changing server health.
+    usage: /cpackethealth
+  cpacketinfo:
+    description: Show the connected client's protocol version and ping.
+    usage: /cpacketinfo

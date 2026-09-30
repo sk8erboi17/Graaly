@@ -1,4 +1,5 @@
 import latestConstants from "./generated/latest-constants.json" with { type: "json" };
+import { cPacketExamples } from "./generated-c-learning.ts";
 
 export type GuideLanguage = "js" | "ts" | "py" | "c" | "java";
 export type AuthoredGuideLanguage = Exclude<GuideLanguage, "c">;
@@ -83,6 +84,10 @@ function cOperation(native: string, java: string): string {
   const value = native.trim();
 
   const direct: Array<[RegExp, string]> = [
+    [/^packets\.available$/, "graaly_packet_available(&available)"],
+    [/^packets\.version$/, "graaly_packet_version(version, sizeof version, &required)"],
+    [/^context\.cancel\(\)$/, "graaly_packet_event_cancelled_write(event, true)"],
+    [/^context\.reencode\(\)$/, "graaly_packet_event_reencode(event)"],
     [/^commands\.on\(([^,]+),\s*handler\)$/, "graaly_commands_on($1, handler)"],
     [/^commands\.complete\(([^,]+),\s*handler\)$/, "graaly_commands_complete_on($1, completer)"],
     [/^commands\.dispatch\(([^,]+),\s*([^)]+)\)$/, "graaly_command_dispatch(sender, $2, &dispatched)"],
@@ -1421,6 +1426,7 @@ export function guideOperationForLanguage(operation: GuideOperation, language: G
 }
 
 export function cGuideCode(topic: GuideTopic): string {
+  if (cPacketExamples[topic.id]) return cPacketExamples[topic.id];
   const lines = [
     "#include <graaly/graaly.h>",
     "",

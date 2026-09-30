@@ -33,11 +33,13 @@ import {
   type GuideTopic,
 } from "./guide-topics";
 import { GraalyAcademy } from "./academy-playground";
+import { cPacketExample, cTypeExample, loadCReference, type CTypeReference } from "./c-api";
+import { cLearningExamples, cLearningTrack } from "./c-learning";
 import graalyContract from "./generated/graaly-api.json" with { type: "json" };
 import graalyConstants from "./generated/latest-constants.json" with { type: "json" };
 
-type Language = "js" | "ts" | "py";
-type QuickstartLanguage = Language | "c" | "java";
+type Language = "js" | "ts" | "py" | "c";
+type QuickstartLanguage = Language | "java";
 type CatalogKind = "bukkit" | "support" | "wrappers" | "packets";
 type MemberFilter = "all" | "properties" | "methods" | "constructors" | "constants";
 type Theme = "dark" | "light";
@@ -115,11 +117,11 @@ const languages: Array<{ id: Language; label: string }> = [
   { id: "js", label: "JavaScript" },
   { id: "ts", label: "TypeScript" },
   { id: "py", label: "Python" },
+  { id: "c", label: "C / WebAssembly" },
 ];
 
 const quickstartLanguages: Array<{ id: QuickstartLanguage; label: string }> = [
   ...languages,
-  { id: "c", label: "C / WebAssembly" },
   { id: "java", label: "Java" },
 ];
 
@@ -168,7 +170,7 @@ const navigation = [
   },
 ] as const;
 
-const documentationSections = navigation.flatMap(group => group.items);
+const documentationSections = navigation.flatMap<{ id: string; title: string }>(group => group.items);
 const documentationSectionIds: ReadonlySet<string> = new Set(
   documentationSections.map(item => item.id),
 );
@@ -182,6 +184,7 @@ const stableConstantCount = stableConstantEntries.reduce(
 );
 
 const learningTracks: Record<Language, LearningTrack> = {
+  c: cLearningTrack,
   js: {
     title: "Modern JavaScript through real server code",
     intro: "Graaly supplies the game domain; the syntax remains standard ECMAScript. This example combines modules, destructuring, iterables, array methods, optional values, templates, and async flow.",
@@ -405,6 +408,7 @@ const learningTracks: Record<Language, LearningTrack> = {
 };
 
 const learningConceptExamples: Record<Language, readonly { file: string; code: string }[]> = {
+  c: cLearningExamples,
   js: [
     {
       file: "modules.mjs",
@@ -2481,7 +2485,8 @@ function javaCallableSignature(entry: CatalogEntry, member: ResolvedCatalogMembe
   return `${instanceName(entry, "js")}.${member.java}`;
 }
 
-function importStatement(entry: CatalogEntry, language: Language) {
+function importStatement(entry: CatalogEntry, language: Language, packets = false) {
+  if (language === "c") return `#include <graaly/${packets ? "packets" : "graaly"}.h>`;
   const symbol = entry.usage.split(".")[0];
   if (language === "py") return `from graaly import ${symbol}`;
   return `import { ${symbol} } from "graaly";`;
@@ -2818,6 +2823,7 @@ function LanguageTabs({ value, onChange, compact = false }: {
     <div className={compact ? "language-tabs is-compact" : "language-tabs"} role="tablist" aria-label="Code language">
       {languages.map(language => (
         <button
+          aria-label={language.label}
           aria-selected={value === language.id}
           className={value === language.id ? "is-active" : ""}
           key={language.id}
@@ -2825,7 +2831,7 @@ function LanguageTabs({ value, onChange, compact = false }: {
           role="tab"
           type="button"
         >
-          {compact ? language.id.toUpperCase() : language.label}
+          {compact || language.id === "c" ? language.id.toUpperCase() : language.label}
         </button>
       ))}
     </div>
@@ -3029,8 +3035,8 @@ function LanguageLearningGuide() {
       <div className="runtime-boundary" aria-label="JavaScript runtime boundary">
         <div>
           <span>LANGUAGE</span>
-          <strong>JavaScript / TypeScript / Python</strong>
-          <p>Keywords, modules, collections, control flow, types, exceptions, and async syntax.</p>
+          <strong>JavaScript / TypeScript / Python / C</strong>
+          <p>Control flow, types, collections, async syntax, or C pointers, bits, layout, and ownership.</p>
         </div>
         <ArrowRight size={18} aria-hidden="true" />
         <div>
@@ -3100,7 +3106,7 @@ function LanguageLearningGuide() {
           </div>
           <CodeBlock accent={language} code={selectedExample.code} label={selectedExample.file} />
           <details className="language-recipes">
-            <summary>Complete {language === "py" ? "Python" : language === "ts" ? "TypeScript" : "JavaScript"} path example<ChevronDown size={14} aria-hidden="true" /></summary>
+            <summary>Complete {language === "c" ? "C" : language === "py" ? "Python" : language === "ts" ? "TypeScript" : "JavaScript"} path example<ChevronDown size={14} aria-hidden="true" /></summary>
             <CodeBlock accent={language} code={track.code} label={track.file} />
           </details>
           <details className="language-recipes">
@@ -3185,7 +3191,7 @@ function CLearningGuide() {
   ].join("\n");
 
   return (
-    <div className="learning-guide">
+    <div className="learning-guide c-learning-guide">
       <div className="learning-toolbar">
         <div>
           <span>C / WEBASSEMBLY TRACK</span>
@@ -3274,9 +3280,45 @@ function CLearningGuide() {
         />
       </div>
 
+      <CAdvancedLabs />
+
       <div className="note-line warning">
         The checked-in <code>EducationalC.cplugin</code> exposes <code>/cheap</code>, <code>/coverflow</code>, and the operator-only <code>/csegfault</code> labs.
         The last command intentionally traps the guest; inspect the log, fix or review the code, then run <code>/graaly reload</code>.
+      </div>
+    </div>
+  );
+}
+
+function CAdvancedLabs() {
+  const [selected, setSelected] = useState(0);
+  const concept = cLearningTrack.concepts[selected];
+  const example = cLearningExamples[selected];
+  return (
+    <div className="c-advanced-labs">
+      <div className="catalog-intro">
+        <span>C DATA AND MEMORY LABS</span>
+        <h3>Bits, unions, padding, and explicit byte formats</h3>
+        <p>Run <code>/cbits</code>, <code>/cunion</code>, and <code>/clayout</code> in EducationalC. Each displayed function is compiled for wasm32-wasi and tested with memory and undefined-behavior sanitizers on the host.</p>
+      </div>
+      <div className="learning-layout">
+        <div className="keyword-grid" role="tablist" aria-label="C data and memory concepts">
+          {cLearningTrack.concepts.map((item, index) => (
+            <button aria-controls="c-lab-example" aria-selected={selected === index} key={item.name}
+              onClick={() => setSelected(index)} role="tab" type="button">
+              <code>{item.syntax}</code><strong>{item.name}</strong><p>{item.detail}</p>
+            </button>
+          ))}
+        </div>
+        <div className="learning-example" id="c-lab-example" role="tabpanel" aria-label={`${concept.name} C lab`}>
+          <div className="concept-example-heading"><strong>{concept.name}</strong><p>{concept.detail}</p></div>
+          <CodeBlock accent="c" code={example.code} label={example.file} />
+          <p>The bitset and byte helpers are in <code>&lt;graaly/bits.h&gt;</code>. Your structs and union tags remain ordinary plugin-owned C data.</p>
+          <p>C bit-field order, signed shifts, and struct padding depend on the language and target rules. WebAssembly containment does not make undefined C behavior valid.</p>
+          <div className="official-reading"><div>{cLearningTrack.sources.map(source => (
+            <a href={source.href} key={source.href} target="_blank" rel="noreferrer">{source.label} <ExternalLink size={12} aria-hidden="true" /></a>
+          ))}</div></div>
+        </div>
       </div>
     </div>
   );
@@ -4012,6 +4054,21 @@ function HtmlCssGuiGuide() {
         <CodeBlock accent="ts" code={typescript} label="TypeScript · src/main.mts" />
         <CodeBlock accent="py" code={python} label="Python · main.py" />
       </div>
+      <CodeBlock accent="c" label="C · native-html-gui.c" code={[
+        "#include <graaly/graaly.h>", "",
+        "static void on_action(const char *json, size_t length) {",
+        "    /* JSON is pointer + length. Decode it with a JSON parser when needed. */",
+        "    graaly_log_n(GRAALY_LOG_INFO, json, length);", "}", "",
+        "static bool open_gui(graaly_sender_t sender, int argc, const graaly_string_view_t *argv) {",
+        "    (void) argc; (void) argv;", "    graaly_player_t player = {0};",
+        "    if (graaly_sender_player(sender, &player) != GRAALY_OK) return false;",
+        '    graaly_status_t status = graaly_ui_render_html(player,',
+        '        "<div data-rows=3><input id=name placeholder=Name>"',
+        '        "<button id=confirm>Confirm</button></div>",',
+        '        "input { background: white; } button { background: lime; }", on_action);',
+        "    graaly_release(&player);", "    return status == GRAALY_OK;", "}", "",
+        'void graaly_on_enable(void) { graaly_commands_on("chtmlgui", open_gui); }',
+      ].join("\n")} />
 
       <div className="compatibility-rules">
         <div><strong>Grid</strong><p><code>grid-template-rows</code>, <code>grid-row</code>, and <code>grid-column</code> map to 9 columns and 1–6 inventory rows.</p></div>
@@ -4468,18 +4525,71 @@ function EventExplorer() {
   );
 }
 
+function CTypeDetail({ name, packets }: { name: string; packets: boolean }) {
+  const [reference, setReference] = useState<CTypeReference | null>(null);
+  const [error, setError] = useState("");
+  const [attempt, setAttempt] = useState(0);
+  const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState<MemberFilter>("all");
+  const [limit, setLimit] = useState(64);
+  useEffect(() => {
+    let active = true;
+    loadCReference(name, packets).then(value => {
+      if (active) { setReference(value); setError(""); }
+    }).catch(cause => { if (active) setError(String(cause.message ?? cause)); });
+    return () => { active = false; };
+  }, [name, packets, attempt]);
+
+  if (error) return <div className="empty-state" role="alert">{error} <button onClick={() => { setError(""); setAttempt(value => value + 1); }} type="button">Retry</button></div>;
+  if (!reference) return <p className="empty-state" role="status">Loading typed C functions…</p>;
+  const normalized = query.trim().toLowerCase();
+  const filtered = reference.functions.filter(fn =>
+    (filter === "all" || memberGroup(fn.kind) === filter)
+    && (!normalized || `${fn.name} ${fn.signature}`.toLowerCase().includes(normalized)),
+  );
+  return (
+    <div className="c-type-reference">
+      <p className="availability-note"><strong>C handle:</strong> <code>{reference.handle}</code>. Property reads use output pointers; writes have <code>_write</code> suffixes. Release newly returned owned handles, and keep callback handles borrowed.</p>
+      <CodeBlock accent="c" code={cTypeExample(reference)} label={`${name}.c`} />
+      <p className="availability-note">These declarations come from the shipped C headers, including inherited instance methods and explicit overload names. Complex Java overloads without a typed C adapter are omitted. Follow each declared parameter type; plugin-owned bitsets use <code>uint64_t</code> independently of the host numeric bridge.</p>
+      <div className="member-tools">
+        <label className="inline-search">
+          <Search size={15} aria-hidden="true" /><span className="sr-only">Search C members of {name}</span>
+          <input onChange={event => { setQuery(event.target.value); setLimit(64); }} placeholder={`Search C ${name}: health, write, find…`} type="search" value={query} />
+        </label>
+        <div className="member-filter" role="group" aria-label="C member type">
+          {memberFilters.map(candidate => <button aria-pressed={filter === candidate.id} className={filter === candidate.id ? "is-active" : ""}
+            key={candidate.id} onClick={() => { setFilter(candidate.id); setLimit(64); }} type="button">{candidate.label}</button>)}
+        </div>
+      </div>
+      <p className="member-count">{filtered.length} C declarations · showing {Math.min(limit, filtered.length)}</p>
+      <div className="member-list">
+        {filtered.slice(0, limit).map(fn => <div key={`${fn.name}-${fn.signature}`}>
+          <span className="member-meta"><strong>{fn.kind}</strong><small>C SDK</small></span>
+          <span className="member-signatures"><code className="is-primary"><b>C</b>{fn.signature}</code></span>
+        </div>)}
+        {!filtered.length && <p className="empty-state">No typed C declaration matches this filter.</p>}
+      </div>
+      {limit < filtered.length && <button className="show-more" onClick={() => setLimit(value => value + 64)} type="button">Show 64 more C declarations</button>}
+    </div>
+  );
+}
+
 function ApiTypeDetail({
   catalogEntries,
   entry,
   kind,
+  primaryLanguage,
+  setPrimaryLanguage,
 }: {
   catalogEntries: CatalogEntries;
   entry: CatalogEntry;
   kind: CatalogKind;
+  primaryLanguage: Language;
+  setPrimaryLanguage: (language: Language) => void;
 }) {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<MemberFilter>("all");
-  const [primaryLanguage, setPrimaryLanguage] = useState<Language>("ts");
   const members = useMemo(
     () => resolveCatalogMembers(catalogEntries, kind, entry),
     [catalogEntries, entry, kind],
@@ -4506,7 +4616,7 @@ function ApiTypeDetail({
       </header>
       <div className="api-import">
         <span>USE IT</span>
-        <code>{importStatement(entry, primaryLanguage)}</code>
+        <code>{importStatement(entry, primaryLanguage, kind !== "bukkit")}</code>
       </div>
       {!!entry.parents.length && <p className="inherits"><strong>Extends</strong> {entry.parents.join(" · ")}</p>}
       {!members.length && kind === "packets" ? (
@@ -4530,11 +4640,13 @@ function ApiTypeDetail({
           <CodeBlock
             accent={primaryLanguage}
             label={`packet-${serverPacket ? "send" : "receive"}-filter.${primaryLanguage === "py" ? "py" : primaryLanguage}`}
-            code={primaryLanguage === "py"
+            code={primaryLanguage === "c" ? cPacketExample(entry.javaName) : primaryLanguage === "py"
               ? `${importStatement(entry, "py")}\n\n@packets.${pythonListener}(${entry.usage})\ndef handle(context):\n    info(context.packet_name)  # writes to this plugin's logger`
               : `${importStatement(entry, primaryLanguage)}\n\npackets.${listenerMethod}(${entry.usage}, context => {\n  info(context.packetName); // writes to this plugin's logger\n});`}
           />
         </div>
+      ) : primaryLanguage === "c" ? (
+        <CTypeDetail name={entry.name} packets={kind !== "bukkit"} />
       ) : !members.length ? (
         <div className="empty-type">
           <p>This type has no cataloged public members. Use its Java mapping above when a method accepts this marker or base type.</p>
@@ -4623,21 +4735,24 @@ function ApiExplorer({
   const [catalogEntries, setCatalogEntries] = useState<CatalogEntries | null>(null);
   const [shouldLoad, setShouldLoad] = useState(false);
   const [kind, setKind] = useState<CatalogKind>(initialKind);
+  const [primaryLanguage, setPrimaryLanguage] = useState<Language>("ts");
   const [query, setQuery] = useState("");
   const [limit, setLimit] = useState(32);
   const [selectedKey, setSelectedKey] = useState("");
   const normalized = query.trim().toLowerCase();
   const matches = useMemo(() => {
     const pool = catalogEntries?.[kind] ?? [];
-    return pool.filter(entry =>
-      !normalized || [
+    return pool.filter(entry => {
+      const cStem = `${kind === "bukkit" ? "graaly" : "graaly_pe"}_${snakeCase(entry.name)}`;
+      return !normalized || normalized.startsWith(`${cStem}${kind === "bukkit" ? "_" : "__"}`) || [
         entry.name,
         entry.javaName,
         entry.usage,
+        `${cStem}_t`,
         ...entry.parents,
         ...entry.members.flatMap(member => [member.name, member.java, member.typeScript, member.python]),
-      ].some(value => value.toLowerCase().includes(normalized)),
-    );
+      ].some(value => value.toLowerCase().includes(normalized));
+    });
   }, [catalogEntries, kind, normalized]);
   const selected = matches.find(entry => entry.javaName === selectedKey) ?? matches[0];
   const visible = selected && !matches.slice(0, limit).includes(selected)
@@ -4737,6 +4852,7 @@ function ApiExplorer({
           <input
             onChange={event => {
               setQuery(event.target.value);
+              if (event.target.value.startsWith("graaly_")) setPrimaryLanguage("c");
               setLimit(32);
             }}
             placeholder={searchPlaceholder}
@@ -4768,7 +4884,8 @@ function ApiExplorer({
           )}
           {!visible.length && <p className="empty-state">No API symbol matches your search.</p>}
         </div>
-        {selected && <ApiTypeDetail catalogEntries={catalogEntries} entry={selected} kind={kind} key={`${kind}-${selected.javaName}`} />}
+        {selected && <ApiTypeDetail catalogEntries={catalogEntries} entry={selected} kind={kind}
+          primaryLanguage={primaryLanguage} setPrimaryLanguage={setPrimaryLanguage} key={`${kind}-${selected.javaName}`} />}
       </div>
       </>}
     </div>
@@ -5249,6 +5366,7 @@ export default function Home() {
               <code> ClientPacket.CHAT_MESSAGE</code>, <code>ServerPacket.UPDATE_HEALTH</code>, and
               <code> WrapperPlayServerUpdateHealth</code>.
             </SectionHeading>
+            <p className="availability-note">The runnable <a href="https://github.com/sk8erboi17/Graaly/tree/main/runtime/examples/PacketEventsC.cplugin" target="_blank" rel="noreferrer">PacketEventsC example</a> includes receive/send listeners, typed wrappers, cancellation, re-encoding, ownership, and a bounded server-thread handoff. Build it with <code>./build.sh</code>, then use <code>/cpackethealth</code> and <code>/cpacketinfo</code>.</p>
             <GuideExplorer
               catalogTarget="packet-catalog"
               label="PacketEvents workflows"
@@ -5260,7 +5378,7 @@ export default function Home() {
               <h3>Every packet name tells you its direction and how to listen for it</h3>
               <p>
                 Constants explain what travels over the protocol and generate the correct receive or send listener.
-                Wrappers show every JS, TypeScript, Python, and Java signature.
+                Wrappers include typed C functions and constructors alongside JS, TypeScript, Python, and Java signatures.
               </p>
             </div>
             <ApiExplorer
@@ -5276,6 +5394,7 @@ export default function Home() {
               Search the full public surface: {catalogCounts.api} Graaly API symbols, {catalogCounts.packetWrappers} packet wrappers,
               {catalogCounts.packetSupportTypes} supporting packet types, and {catalogCounts.packetConstants} packet constants.
               TypeScript, Python, and Java signatures are shown side by side, including inherited members and overloads.
+              Select C for the SDK&apos;s typed handles, real function declarations, property writes, and C examples.
             </SectionHeading>
             <p className="availability-note">
               <strong>Native property rule:</strong> JavaScript and TypeScript use properties such as <code>player.flying</code> and

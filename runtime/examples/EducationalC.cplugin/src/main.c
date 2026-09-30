@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "c-labs.h"
 
 /*
  * Graaly intentionally does not provide this struct.
@@ -289,6 +290,58 @@ static bool csegfault_command(
     return true;
 }
 
+static bool cbits_command(graaly_sender_t sender, int argc, const graaly_string_view_t *argv) {
+    (void) argc;
+    (void) argv;
+    uint32_t shifted = 0u;
+    bool rejected = !graaly_u32_shift_left(1u, 32u, &shifted);
+    graaly_u32_shift_left(1u, 31u, &shifted);
+    char message[240];
+    snprintf(message, sizeof message,
+             "&aC bits: mask=0x%02X | selected=%zu/128 | rgb=0x%06X | bit31=0x%08X | shift32 rejected=%s",
+             (unsigned int) lab_flags(), lab_bitset(), (unsigned int) lab_rgb(0x12u, 0x34u, 0x56u),
+             (unsigned int) shifted, rejected ? "yes" : "NO");
+    graaly_sender_message(sender, message);
+    return true;
+}
+
+static bool cunion_command(graaly_sender_t sender, int argc, const graaly_string_view_t *argv) {
+    (void) argc;
+    (void) argv;
+    LabPlayerUpdate update = { .kind = LAB_HEALTH, .value.health = 20.0 };
+    double health = 0.0;
+    bool read_health = lab_update_health(&update, &health);
+    update = (LabPlayerUpdate) { .kind = LAB_FLAGS, .value.flags = lab_flags() };
+    bool inactive_rejected = !lab_update_health(&update, &health);
+    char message[200];
+    snprintf(message, sizeof message,
+             "&bC tagged union: health=%.1f read=%s | flags=0x%02X | inactive health rejected=%s | size=%zu",
+             health, read_health ? "yes" : "NO", (unsigned int) update.value.flags,
+             inactive_rejected ? "yes" : "NO", sizeof update);
+    graaly_sender_message(sender, message);
+    return true;
+}
+
+static bool clayout_command(graaly_sender_t sender, int argc, const graaly_string_view_t *argv) {
+    (void) argc;
+    (void) argv;
+    LabCompact record = { .score = UINT32_C(0x12345678), .level = 42u, .flags = 5u };
+    uint8_t wire[LAB_WIRE_SIZE];
+    LabCompact decoded = {0};
+    bool roundtrip = lab_encode(wire, sizeof wire, &record) && lab_decode(wire, sizeof wire, &decoded)
+        && decoded.score == record.score && decoded.level == record.level && decoded.flags == record.flags;
+    LabBatch *batch = lab_batch_new(3u);
+    char message[300];
+    snprintf(message, sizeof message,
+             "&eC layout: padded=%zu compact=%zu align=%zu score@%zu level@%zu flags@%zu tail=%zu | wire=%zu bytes roundtrip=%s | batch=%zu",
+             sizeof(LabPadded), sizeof(LabCompact), _Alignof(LabCompact), offsetof(LabCompact, score),
+             offsetof(LabCompact, level), offsetof(LabCompact, flags), lab_tail_padding(), sizeof wire,
+             roundtrip ? "ok" : "FAIL", batch != NULL ? batch->count : 0u);
+    free(batch);
+    graaly_sender_message(sender, message);
+    return true;
+}
+
 void graaly_on_load(void) {
     graaly_log(GRAALY_LOG_INFO, "EducationalC loaded: structs are owned by C plugin code.");
 }
@@ -298,6 +351,9 @@ void graaly_on_enable(void) {
     graaly_commands_on("cplayer", cplayer_command);
     graaly_commands_on("ccatalog", ccatalog_command);
     graaly_commands_on("cmemory", cmemory_command);
+    graaly_commands_on("cbits", cbits_command);
+    graaly_commands_on("cunion", cunion_command);
+    graaly_commands_on("clayout", clayout_command);
     graaly_commands_on("cheap", cheap_command);
     graaly_commands_on("coverflow", coverflow_command);
     graaly_commands_on("csegfault", csegfault_command);

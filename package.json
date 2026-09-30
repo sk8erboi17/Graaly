@@ -7,7 +7,8 @@
   },
   "scripts": {
     "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext dev",
-    "build": "npm run sync:contract && npm run package:downloads && WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext build",
+    "build": "npm run sync:contract && npm run generate:c-docs && npm run package:downloads && WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext build",
+    "generate:c-docs": "node scripts/generate-c-docs.mjs",
     "sync:contract": "node scripts/sync-runtime-contract.mjs",
     "package:downloads": "node scripts/package-downloads.mjs",
     "generate:c": "python3 runtime/scripts/generate_c_sdk.py && node runtime/scripts/generate_c_typed_api.mjs && node runtime/scripts/generate_c_packet_typed_api.mjs",
@@ -16,7 +17,7 @@
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
     "typecheck:sdk": "tsc --noEmit --allowImportingTsExtensions --target ES2022 --module NodeNext --moduleResolution NodeNext runtime/sdk/typescript/graaly.mts",
     "typecheck:python": "pyright --project runtime/examples/PortingSurfacePython.pyplugin/pyrightconfig.json",
-    "test": "npm run typecheck:sdk && npm run typecheck:python && npm run build && node --test tests/rendered-html.test.mjs",
+    "test": "npm run typecheck:sdk && npm run typecheck:python && npm run build && node --test tests/*.test.mjs",
     "test:e2e": "npm run pages && playwright test",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern docs --ignore-pattern .next --ignore-pattern runtime --ignore-pattern 'app/generated*.ts' --ignore-pattern app/generated"
   },

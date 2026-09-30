@@ -16,6 +16,11 @@ static void on_chat(graaly_packet_event_t event) {
 }
 
 void packet_api(graaly_packet_type_t type) {
+    bool available = false;
+    char version[64] = {0};
+    size_t required = 0u;
+    graaly_packet_available(&available);
+    if (available) graaly_packet_version(version, sizeof version, &required);
     graaly_packet_binding_t binding = {0};
     graaly_packet_on_receive(type, GRAALY_PRIORITY_NORMAL, on_chat, &binding);
     graaly_release(&binding);
