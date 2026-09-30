@@ -6405,73 +6405,14 @@ body {
   color: var(--ink);
 }
 
-.docs-meta-bar {
-  position: sticky;
-  z-index: 70;
-  top: 64px;
-  border-bottom: 1px solid var(--line);
-  background: color-mix(in oklab, var(--paper) 94%, transparent);
-  backdrop-filter: blur(12px);
-}
-
-.docs-meta-bar > div {
-  min-height: 41px;
-  display: flex;
-  width: min(1920px, 100%);
-  align-items: center;
-  gap: 12px 18px;
-  margin: 0 auto;
-  padding: 7px clamp(16px, 3vw, 36px);
-}
-
-.docs-meta-bar > div > span:first-child {
-  color: var(--faint);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.global-language-tabs {
-  display: flex;
-  gap: 1px;
-  border: 1px solid var(--line);
-  border-radius: 2px;
-  background: var(--line);
-}
-
-.global-language-tabs button {
-  min-width: 42px;
-  min-height: 25px;
-  padding: 0 10px;
-  border: 0;
-  background: var(--paper);
-  color: var(--muted);
-  cursor: pointer;
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 10px;
-}
-
-.global-language-tabs button.is-active {
-  background: var(--forest);
-  color: var(--canvas);
-}
-
-.catalog-count {
-  margin-left: auto;
-  color: var(--faint);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 10px;
-}
-
 .docs-layout {
   width: min(1920px, 100%);
   grid-template-columns: 240px minmax(0, 1fr);
 }
 
 .sidebar {
-  top: 105px;
-  height: calc(100vh - 105px);
+  top: 64px;
+  height: calc(100vh - 64px);
   padding: 28px 20px 44px;
   border-right-color: var(--line);
   background: var(--paper);
@@ -6999,28 +6940,8 @@ footer {
     height: 62px;
   }
 
-  .docs-badge,
-  .catalog-count,
-  .docs-meta-bar > div > span:first-child {
+  .docs-badge {
     display: none;
-  }
-
-  .docs-meta-bar {
-    top: 62px;
-  }
-
-  .docs-meta-bar > div {
-    min-height: 39px;
-    justify-content: center;
-    padding: 6px 12px;
-  }
-
-  .global-language-tabs {
-    width: 100%;
-  }
-
-  .global-language-tabs button {
-    flex: 1;
   }
 
   .hero {
@@ -7101,9 +7022,7 @@ body {
 .docs-badge,
 .search-button,
 .theme-button,
-.menu-button,
-.global-language-tabs,
-.global-language-tabs button {
+.menu-button {
   border-radius: 5px;
 }
 
@@ -7117,35 +7036,13 @@ body {
   background: var(--paper);
 }
 
-.docs-meta-bar {
-  top: 72px;
-  background: var(--paper);
-  backdrop-filter: none;
-}
-
-.global-language-tabs {
-  gap: 3px;
-  padding: 3px;
-  border-color: var(--line);
-  background: var(--soft);
-}
-
-.global-language-tabs button {
-  background: transparent;
-}
-
-.global-language-tabs button.is-active {
-  background: var(--forest);
-  box-shadow: none;
-}
-
 .docs-layout {
   grid-template-columns: 258px minmax(0, 1fr);
 }
 
 .sidebar {
-  top: 113px;
-  height: calc(100vh - 113px);
+  top: 72px;
+  height: calc(100vh - 72px);
   padding: 32px 22px 48px;
   background: var(--paper);
   backdrop-filter: none;
@@ -7592,10 +7489,6 @@ main {
     height: 64px;
   }
 
-  .docs-meta-bar {
-    top: 64px;
-  }
-
   .hero {
     padding: 54px 20px 62px;
   }
@@ -7717,8 +7610,8 @@ main {
 
 /* The Academy rail shares the same sticky offset and scrollbar geometry as the docs sidebar. */
 .academy-lessons {
-  top: 113px;
-  height: calc(100vh - 113px);
+  top: 72px;
+  height: calc(100vh - 72px);
 }
 
 .academy-lesson-scroll {

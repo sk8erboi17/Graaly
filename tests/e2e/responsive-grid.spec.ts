@@ -90,12 +90,12 @@ test.describe("responsive documentation grids", () => {
     await expectNoHorizontalOverflow(page);
   });
 
-  test("global language selector includes typed C", async ({ page }) => {
+  test("quick-start language selector includes typed C", async ({ page }) => {
     await page.goto("/#quickstart");
-    const globalTabs = page.getByRole("group", { name: "Default quick-start language" });
-    const cButton = globalTabs.getByRole("button", { name: "C", exact: true });
-    await expect(cButton).toBeVisible();
-    await cButton.click();
+    const quickstartTabs = page.getByRole("tablist", { name: "Quick start language" });
+    const cTab = quickstartTabs.getByRole("tab", { name: "C / WebAssembly", exact: true });
+    await expect(cTab).toBeVisible();
+    await cTab.click();
 
     const quickStart = page.locator("#quickstart");
     const code = quickStart.locator('code[data-lang="c"]').first();

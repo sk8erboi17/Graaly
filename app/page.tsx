@@ -4897,7 +4897,7 @@ export default function Home() {
       scrollFrame = window.requestAnimationFrame(() => {
         const target = document.getElementById(hash || section) ?? document.getElementById(section);
         if (!target) return;
-        const stickyOffset = window.matchMedia("(max-width: 760px)").matches ? 104 : 113;
+        const stickyOffset = document.querySelector<HTMLElement>(".topbar")?.offsetHeight ?? 72;
         const top = target.getBoundingClientRect().top + window.scrollY - stickyOffset;
         window.scrollTo({ top: Math.max(0, top), left: 0, behavior: "auto" });
       });
@@ -4975,26 +4975,6 @@ export default function Home() {
           <Menu size={20} />
         </button>
       </header>
-
-      <div className="docs-meta-bar">
-        <div>
-          <span>Code language</span>
-          <div className="global-language-tabs" role="group" aria-label="Default quick-start language">
-            {quickstartLanguages.map(item => (
-              <button
-                aria-pressed={language === item.id}
-                className={language === item.id ? "is-active" : ""}
-                key={item.id}
-                onClick={() => setLanguage(item.id)}
-                type="button"
-              >
-                {item.id.toUpperCase()}
-              </button>
-            ))}
-          </div>
-          <span className="catalog-count">{catalogCounts.events} events · {catalogCounts.api} API symbols · {catalogCounts.packetWrappers} wrappers</span>
-        </div>
-      </div>
 
       <div className="docs-layout">
         <aside className={menuOpen ? "sidebar is-open" : "sidebar"} aria-label="Documentation sections">

@@ -283,12 +283,12 @@ test("uses a restrained light-first Graaly Docs visual language", async () => {
   const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
   const layout = await readFile(new URL("../app/layout.tsx", import.meta.url), "utf8");
 
-  assert.match(html, /class="docs-meta-bar"/);
-  assert.match(html, /class="global-language-tabs"/);
+  assert.doesNotMatch(html, /class="docs-meta-bar"/);
+  assert.doesNotMatch(html, /class="global-language-tabs"/);
   assert.match(html, /<html[^>]*data-theme="light"/);
   assert.match(html, /aria-label="Switch to dark theme"/);
   assert.match(html, /class="hero-facts"/);
-  assert.match(html, /Code language/);
+  assert.match(html, /aria-label="Quick start language"/);
   assert.match(layout, /Chivo/);
   assert.match(layout, /IBM_Plex_Mono/);
   assert.match(css, /--canvas: #f7f7f8/);
@@ -559,9 +559,9 @@ test("publishes the full Java API and PacketEvents catalogs", async () => {
   const response = await render();
   const html = await response.text();
   const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
-  assert.match(html, new RegExp(`${bukkitCatalog.length}(?:<!-- -->)? API symbols`));
+  assert.match(html, new RegExp(`${bukkitCatalog.length}(?:<!-- -->)? Graaly API symbols`));
   assert.match(html, new RegExp(`${bukkitEventCatalog.length}(?:<!-- -->)? events`));
-  assert.match(html, new RegExp(`${packetWrapperCatalog.length}(?:<!-- -->)? wrappers`));
+  assert.match(html, new RegExp(`${packetWrapperCatalog.length}(?:<!-- -->)? packet wrappers`));
   assert.match(html, /ClientPacket\.CHAT_MESSAGE/);
   assert.match(html, /WrapperPlayServerUpdateHealth/);
   assert.match(html, /TypeScript, Python, and Java signatures are shown side by side/);
