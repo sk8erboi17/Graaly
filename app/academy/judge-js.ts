@@ -5,6 +5,8 @@ import { transform } from "sucrase";
 import { parseDocument } from "yaml";
 import { createAcademyHost } from "./host.ts";
 import { jsonEqual, type Challenge, type ChallengeCase, type Json } from "./types.ts";
+import * as portableHelpers from "./portable-helpers.ts";
+export const initJsSql=portableHelpers.initPortableSql;
 
 type Callable = (...args: unknown[]) => unknown;
 type Exports = Record<string, Callable>;
@@ -15,6 +17,7 @@ function evaluate(source: string, host: ReturnType<typeof createAcademyHost>, ro
     if (name === "react") return React;
     if (name === "@graaly/react") return {...GraalyReact,createRoot:(...args:Parameters<typeof GraalyReact.createRoot>)=>{const root=GraalyReact.createRoot(...args);roots.push(root);return root;}};
     if (name === "graaly") return host.exports;
+    if (name === "@graaly/academy") return portableHelpers;
     throw new Error(`Module '${name}' is not available in this exercise. Use react, @graaly/react or graaly.`);
   };
   new Function("module", "exports", "require", compiled)(output, output.exports, require);
@@ -43,6 +46,13 @@ export async function judgeJsCase(problem: Challenge, source: string, test: Chal
   const exports = evaluate(source, host,ownedRoots);
   if (problem.mode === "plugin") {
     if (typeof exports.setup !== "function") throw new Error("Export function setup(input).");
+    if(problem.jsonFunction==="plugin"){
+      const input=structuredClone(test.input);await exports.setup(input);
+      if(!jsonEqual(input,test.input))throw Error("setup(input) must preserve the caller's input.");
+      const trace=host.trace as Json[][];
+      if(trace.length!==1||trace[0][0]!=="log"||trace[0][1]!=="info"||typeof trace[0][2]!=="string")throw Error("Send exactly one info(JSON.stringify(result)) through the SDK.");
+      return JSON.parse(trace[0][2]) as Json;
+    }
     const dispose = await exports.setup(host.input);
     await host.drive(dispose);
     if ((test.input as { dispose?: boolean }).dispose && typeof dispose === "function") await dispose();
@@ -51,8 +61,15 @@ export async function judgeJsCase(problem: Challenge, source: string, test: Chal
   if (problem.mode === "react") {
     if (typeof exports.default !== "function") throw new Error("Export default function App(input).");
     const fixture = test.input as { props?: Record<string, unknown>; actions?: { kind: string; slot?: number; value?: string; props?: Record<string, unknown>; shift?: boolean; right?: boolean }[]; paths?: string[] };
-    const view = await render(React.createElement(exports.default as React.ComponentType, fixture.props ?? {}));
+    const input=structuredClone(test.input);
+    const view = await render(React.createElement(exports.default as React.ComponentType, problem.jsonFunction === "react" ? {input} : fixture.props ?? {}));
     try {
+      if(problem.jsonFunction === "react"){
+        if(!jsonEqual(input,test.input))throw new Error("App({input}) must preserve the caller's input.");
+        const messages=view.snapshot.messages as {text:string}[]|undefined;
+        if(messages?.length!==1)throw new Error("Render exactly one Message containing the JSON result.");
+        return JSON.parse(messages[0].text) as Json;
+      }
       for (const action of fixture.actions ?? []) {
         if (action.kind === "click") await view.clickSlot(action.slot ?? 0, { shift: !!action.shift, right: !!action.right });
         else if (action.kind === "submit") await view.submitInput(action.value ?? "");

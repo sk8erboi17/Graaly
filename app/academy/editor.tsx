@@ -20,7 +20,7 @@ export function AcademyEditor({ value, language, onChange, onRun, onSubmit }: { 
   useEffect(() => {
     const view = new EditorView({ parent: element.current!, state: EditorState.create({ doc: value, extensions: [
       lineNumbers(), history(), drawSelection(), highlightActiveLine(), highlightActiveLineGutter(), indentOnInput(), bracketMatching(), closeBrackets(), autocompletion(), syntaxHighlighting(defaultHighlightStyle),
-      language === "ts" || language === "js" ? javascript({ typescript: language === "ts", jsx: true }) : language === "py" ? python() : language === "c" ? cpp() : language === "html" ? html() : language === "sql" ? sql({ dialect:SQLite }) : yaml(),
+      ["ts","js","react-ts","react-js","plugin-ts","plugin-js"].includes(language) ? javascript({ typescript: language.endsWith("ts"), jsx: true }) : ["py","fastapi","pydantic","asgi"].includes(language) ? python() : language === "c" ? cpp() : language === "html" ? html() : language === "sql" ? sql({ dialect:SQLite }) : yaml(),
       keymap.of([{key:"Mod-Enter",run:()=>{callbacks.current.onRun();return true;}},{key:"Mod-Shift-Enter",run:()=>{callbacks.current.onSubmit();return true;}},indentWithTab,...closeBracketsKeymap,...defaultKeymap,...historyKeymap]),
       EditorView.lineWrapping,
       EditorView.contentAttributes.of({ "aria-label": "Solution code", "data-testid": "academy-editor", spellcheck: "false" }),

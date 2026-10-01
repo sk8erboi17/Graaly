@@ -20,8 +20,8 @@ test("academy reducer navigates, validates checkpoints, and preserves immutable 
   assert.deepEqual(next.completed, { 1: true });
 });
 
-test("all 36 companion checkpoints are reachable and validate their canonical answer", () => {
-  assert.equal(lessons.length,36);
+test("all 84 companion checkpoints are reachable and validate their canonical answer", () => {
+  assert.equal(lessons.length,84);
   for(const lesson of lessons){
     assert.equal(lessonByNumber(lesson.number).number,lesson.number);
     const selected=academyReducer(initialAcademyState,{type:"selected",number:lesson.number});

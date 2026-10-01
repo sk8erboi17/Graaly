@@ -1,13 +1,15 @@
+import { foundationCheckpoints } from "./generated-lessons.ts";
+
 export type GameLesson = {
   number: number;
-  track: "React" | "TypeScript" | "FastAPI" | "Architecture";
+  track: "JavaScript" | "TypeScript" | "Python" | "C" | "React" | "HTML / CSS" | "FastAPI" | "Pydantic" | "ASGI" | "SQL" | "Configuration" | "Java" | "Architecture";
   title: string;
   concept: string;
   question: string;
   accepted: readonly string[];
 };
 
-export const lessons: readonly GameLesson[] = [
+const advancedCheckpoints: readonly GameLesson[] = [
   { number: 1, track: "React", title: "Components and JSX", concept: "A component is a pure recipe for a UI tree.", question: "What is the basic reusable React unit?", accepted: ["component", "a component"] },
   { number: 2, track: "React", title: "Lists and keys", concept: "Stable domain keys preserve the correct identity.", question: "Should a mutable list use index or a stable id as key?", accepted: ["stable id", "id", "a stable id"] },
   { number: 3, track: "React", title: "State snapshots", concept: "One render sees one immutable state snapshot.", question: "Which setter form composes dependent updates?", accepted: ["functional updater", "updater", "functional update"] },
@@ -45,6 +47,8 @@ export const lessons: readonly GameLesson[] = [
   { number: 35, track: "Architecture", title: "Multi-server deployment", concept: "Fencing tokens reject stale owners even after a lease expires.", question: "What rejects a stale distributed lock owner?", accepted: ["fencing token", "fencing tokens", "fencing"] },
   { number: 36, track: "Architecture", title: "Production shop", concept: "An idempotent command atomically updates the purchase and its outbox record.", question: "Which pattern publishes committed events reliably?", accepted: ["outbox", "transactional outbox", "outbox pattern"] },
 ];
+
+export const lessons: readonly GameLesson[] = [...advancedCheckpoints, ...foundationCheckpoints];
 
 export function lessonByNumber(number: number): GameLesson {
   return lessons[Math.max(0, Math.min(lessons.length - 1, number - 1))] as GameLesson;

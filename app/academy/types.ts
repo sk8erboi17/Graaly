@@ -1,4 +1,4 @@
-export type ChallengeLanguage = "ts" | "js" | "py" | "c" | "html" | "sql" | "yaml";
+export type ChallengeLanguage = "ts" | "js" | "py" | "c" | "react-ts" | "react-js" | "fastapi" | "pydantic" | "asgi" | "plugin-ts" | "plugin-js" | "html" | "sql" | "yaml";
 export type ChallengeDifficulty = "Medium" | "Hard";
 export type ChallengeMode = "function" | "plugin" | "react" | "python" | "asgi" | "fastapi" | "pydantic" | "html-css" | "sql" | "manifest" | "c";
 export type Json = null | boolean | number | string | Json[] | { [key: string]: Json };
@@ -37,7 +37,14 @@ export type Challenge = {
   cPrint?: string;
   htmlChecks?: { selector: string; property: string; expected: Json }[];
   sqlSchema?: string;
+  /** Equivalent execution contracts; each option has real source and tests. */
+  variants?: Partial<Record<ChallengeLanguage, ChallengeExecution>>;
+  jsonFunction?: "c" | "react" | "fastapi" | "asgi" | "plugin" | "html";
+  portable?: boolean;
+  note?: string;
 };
+
+export type ChallengeExecution = Pick<Challenge, "mode" | "inputType"> & Partial<Pick<Challenge, "cases" | "cDeclarations" | "cPrint" | "sqlSchema" | "jsonFunction" | "portable">> & { note?: string };
 
 export type CaseResult = {
   name: string;
@@ -62,6 +69,7 @@ export type ProblemProgress = {
   revealed: boolean;
   hints: number;
   lastVerdict?: JudgeResult["verdict"];
+  acceptedLanguages?: ChallengeLanguage[];
 };
 
 export const challengeLanguages: { id: ChallengeLanguage; label: string; extension: string }[] = [
@@ -69,6 +77,13 @@ export const challengeLanguages: { id: ChallengeLanguage; label: string; extensi
   { id: "js", label: "JavaScript", extension: "mjs" },
   { id: "py", label: "Python", extension: "py" },
   { id: "c", label: "C / WebAssembly", extension: "c" },
+  { id: "react-ts", label: "React / TypeScript", extension: "tsx" },
+  { id: "react-js", label: "React / JavaScript", extension: "jsx" },
+  { id: "fastapi", label: "FastAPI / Python", extension: "py" },
+  { id: "pydantic", label: "Pydantic / Python", extension: "py" },
+  { id: "asgi", label: "ASGI / Python", extension: "py" },
+  { id: "plugin-ts", label: "Graaly plugin / TypeScript", extension: "ts" },
+  { id: "plugin-js", label: "Graaly plugin / JavaScript", extension: "mjs" },
   { id: "html", label: "HTML / CSS", extension: "html" },
   { id: "sql", label: "SQL", extension: "sql" },
   { id: "yaml", label: "YAML", extension: "yml" },

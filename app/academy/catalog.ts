@@ -15,7 +15,9 @@ import { algorithmProblems } from "./problems-algorithms.ts";
 import { advancedReactProblems } from "./problems-react-advanced.ts";
 import { diagnosticsProblems } from "./problems-diagnostics.ts";
 import type { Challenge } from "./types.ts";
+import { addExecutionVariants } from "./variants.ts";
+import { foundationLessons } from "../academy-foundations.ts";
 
-export const academyProblems:Challenge[] = [...coreProblems,...schedulingProblems,...worldProblems,...networkProblems,...reactProblems,...advancedReactProblems,...fastapiProblems,...pydanticProblems,...pythonProblems,...htmlProblems,...sqlProblems,...manifestProblems,...cProblems,...architectureProblems,...algorithmProblems,...diagnosticsProblems].map((problem,index)=>({...problem,number:index+1}));
+export const academyProblems:Challenge[] = [...coreProblems,...schedulingProblems,...worldProblems,...networkProblems,...reactProblems,...advancedReactProblems,...fastapiProblems,...pydanticProblems,...pythonProblems,...htmlProblems,...sqlProblems,...manifestProblems,...cProblems,...architectureProblems,...algorithmProblems,...diagnosticsProblems].map((problem,index)=>addExecutionVariants({...problem,number:index+1,lessons:[...new Set([...problem.lessons,...foundationLessons.filter(lesson=>lesson.practice?.some(practice=>practice.id===problem.id)).map(lesson=>lesson.number)])]}));
 export const problemTracks = [...new Set(academyProblems.map(problem=>problem.track))];
 export const coveredModules = [...new Set(academyProblems.flatMap(problem=>problem.modules))];

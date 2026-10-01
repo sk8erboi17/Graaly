@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
+import {academyLessons,academyTracks} from "../app/academy-data.ts";
 import {
   bukkitCatalog,
   packetSupportTypeCatalog,
@@ -978,23 +979,25 @@ test("contains no starter or removed promotional card", async () => {
   assert.doesNotMatch(html, /Niente stringhe da ricordare|No strings to remember/);
 });
 
-test("ships a complete 36-lesson Graaly Academy with a minimal interactive playground", async () => {
+test("ships a complete multilingual Graaly Academy with a minimal interactive playground", async () => {
   const response = await render();
   const html = await response.text();
   const data = await readFile(new URL("../app/academy-data.ts", import.meta.url), "utf8");
   const playground = await readFile(new URL("../app/academy-playground.tsx", import.meta.url), "utf8");
   const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
 
-  assert.match(html, /36 long-form lessons/);
+  assert.match(html.replace(/<!--.*?-->/g,""),new RegExp(academyLessons.length+" long-form lessons"));
   assert.match(html, /208.*?Medium and Hard problems/);
   assert.match(html, /data-testid="graaly-arena"/);
   for (const integration of ["FastAPI / ASGI", "Pydantic", "HTML / CSS", "SQL / persistence", "C / WebAssembly"]) assert.ok(html.includes(integration),integration);
   assert.match(html, /Submit all tests/);
-  assert.match(html, /aria-label="React playground"/);
-  assert.match(html, /FastAPI request inspector/);
+  assert.match(html, /aria-label="Lesson source examples"/);
+  assert.match(html, /aria-label="Academy course"/);
+  for(const track of academyTracks)assert.ok(html.includes(track),track);
+  assert.match(html, /Practice this lesson/);
   assert.doesNotMatch(html, /Hard lab|Definition of done|Minecraft React lab|browser host simulator|Run this lesson|waiting for Run/);
   assert.doesNotMatch(html, /Always available|Lesson-linked|transparent lifecycle visualizer|not Python emulation/);
-  assert.equal((data.match(/\n\s+number: \d+,/g) ?? []).length, 36);
+  assert.equal(academyLessons.length,84);
   for (const concept of [
     "State snapshot",
     "Render phase",

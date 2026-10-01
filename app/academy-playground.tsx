@@ -22,13 +22,16 @@ import React, {
 } from "react";
 import {
   academyConceptCount,
+  academyTracks,
   academyLessons,
   academySyllabus,
   type AcademyFile,
   type AcademyLesson,
   type AcademyTrack,
 } from "./academy-data";
-import { GraalyArena } from "./academy/arena";
+import { GraalyArena, type PracticeRequest } from "./academy/arena";
+import { academyProblems } from "./academy/catalog.ts";
+import { challengeLanguages, type ChallengeLanguage } from "./academy/types.ts";
 
 type SimulatorAction = {
   player: { id: string; name: string };
@@ -290,6 +293,12 @@ function languageFor(file: AcademyFile): ShjLanguage {
   if (file.language === "python") return "py";
   if (file.language === "shell") return "bash";
   if (file.language === "json") return "json";
+  if (file.language === "c") return "c";
+  if (file.language === "java") return "java";
+  if (file.language === "html") return "html";
+  if (file.language === "css") return "css";
+  if (file.language === "sql") return "sql";
+  if (file.language === "yaml") return "yaml";
   return "ts";
 }
 
@@ -326,7 +335,9 @@ function LessonNavigation({
   completed,
   onSearch,
   onSelect,
+  course, onCourse,
 }: {
+  course: AcademyTrack | "All courses"; onCourse(value: AcademyTrack | "All courses"): void;
   selected: number;
   search: string;
   completed: ReadonlySet<number>;
@@ -335,23 +346,29 @@ function LessonNavigation({
 }) {
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
-    if (!query) return academyLessons;
     return academyLessons.filter(lesson =>
+      (course === "All courses" || lesson.track === course) && (!query ||
       lesson.title.toLowerCase().includes(query)
       || lesson.track.toLowerCase().includes(query)
-      || lesson.concepts.some(concept => concept.toLowerCase().includes(query))
-    );
-  }, [search]);
-  const tracks: AcademyTrack[] = ["React", "TypeScript", "FastAPI", "Architecture"];
+      || lesson.concepts.some(concept => concept.toLowerCase().includes(query)))
+    ).sort((a,b)=>Number(a.number<37)-Number(b.number<37)||a.number-b.number);
+  }, [search,course]);
+  const tracks = academyTracks;
 
   return (
     <aside className="academy-lessons" aria-label="Academy lessons">
+      <label className="academy-course-picker">Course
+        <select aria-label="Academy course" value={course} onChange={event=>onCourse(event.target.value as AcademyTrack | "All courses")}>
+          <option>All courses</option>
+          {academyTracks.map(track=><option key={track} value={track}>{track} · {academyLessons.filter(lesson=>lesson.track===track).length} lessons</option>)}
+        </select>
+      </label>
       <div className="academy-search">
         <Search size={15} aria-hidden="true" />
         <input
           aria-label="Search Academy lessons"
           onChange={event => onSearch(event.target.value)}
-          placeholder="Search state, WebSocket, Depends..."
+          placeholder="Search bitset, validation, state…"
           value={search}
         />
       </div>
@@ -362,7 +379,7 @@ function LessonNavigation({
           onChange={event => onSelect(Number(event.target.value))}
           value={selected}
         >
-          {academyLessons.map(lesson => (
+          {[...filtered,...academyLessons.filter(lesson=>lesson.number===selected&&!filtered.includes(lesson))].map(lesson => (
             <option key={lesson.id} value={lesson.number}>
               {String(lesson.number).padStart(2, "0")} · {lesson.title}
             </option>
@@ -469,7 +486,7 @@ function MinecraftPlayground({ lesson }: { lesson: AcademyLesson }) {
   return (
     <section
       className="academy-workbench"
-      aria-label="React playground"
+      aria-label={lesson.track === "React" ? "React playground" : "Lesson source examples"}
       style={{ "--academy-editor-height": `${editorHeight}px` } as React.CSSProperties}
     >
       <div className="academy-workbench-toolbar">
@@ -520,7 +537,7 @@ function MinecraftPlayground({ lesson }: { lesson: AcademyLesson }) {
           </div>
           {!currentFile.runnable && (
             <p className="academy-editor-note">
-              Python and architecture files are read-only here. They run in the checked-in FastAPI project and its tests, not in a browser imitation.
+              Source example. Open the practice below to edit and run this course’s language or environment against real tests. Verify Java host examples on a local server.
             </p>
           )}
         </div>
@@ -603,7 +620,7 @@ function FastApiRequestInspector() {
   return (
     <section className="academy-api-lab" aria-label="FastAPI request inspector">
       <header>
-        <div><span>FastAPI request inspector</span></div>
+        <div><span>FastAPI request inspector</span><p>Request pipeline illustration. The linked practice executes the actual FastAPI application.</p></div>
       </header>
       <div className="academy-api-grid">
         <div>
@@ -634,7 +651,9 @@ function FastApiRequestInspector() {
   );
 }
 
-function LessonArticle({ lesson }: { lesson: AcademyLesson }) {
+function LessonArticle({ lesson, onPractice }: { lesson: AcademyLesson; onPractice(id:string,language:ChallengeLanguage):void }) {
+  const nativeLanguage:ChallengeLanguage=lesson.track==="React"?"react-ts":lesson.track==="FastAPI"?"fastapi":"ts";
+  const practice=lesson.practice??academyProblems.filter(problem=>problem.lessons.includes(lesson.number)).slice(0,3).map(problem=>({id:problem.id,language:nativeLanguage}));
   return (
     <article className="academy-article" key={lesson.id}>
       <header className="academy-lesson-header">
@@ -670,7 +689,12 @@ function LessonArticle({ lesson }: { lesson: AcademyLesson }) {
       </section>
 
       <MinecraftPlayground key={lesson.id} lesson={lesson} />
-      <FastApiRequestInspector />
+      <section className="academy-practice-links" aria-label="Practice this lesson">
+        <span className="academy-kicker">Practice this lesson</span>
+        <p>Open an exercise in this course’s profile. You can choose another language or environment at any time.</p>
+        {practice.map(item=><button key={item.id+item.language} onClick={()=>onPractice(item.id,item.language)} type="button">{academyProblems.find(problem=>problem.id===item.id)?.title} · {challengeLanguages.find(language=>language.id===item.language)?.label}<ChevronRight size={14}/></button>)}
+      </section>
+      {lesson.track==="FastAPI"&&<FastApiRequestInspector />}
 
       <section className="academy-pitfalls">
         <span className="academy-kicker">Failure modes to recognize</span>
@@ -680,10 +704,12 @@ function LessonArticle({ lesson }: { lesson: AcademyLesson }) {
   );
 }
 
-function GraalyAcademyLessons({selected,setSelected}:{selected:number;setSelected:(number:number)=>void}) {
+function GraalyAcademyLessons({selected,setSelected,onPractice,course,setCourse}:{selected:number;setSelected:(number:number)=>void;onPractice:(id:string,language:ChallengeLanguage)=>void;course:AcademyTrack | "All courses";setCourse:(value:AcademyTrack | "All courses")=>void}) {
   const [search, setSearch] = useState("");
   const [completed, setCompleted] = useState<Set<number>>(() => new Set());
-  const lesson = academyLessons[selected - 1] ?? academyLessons[0];
+  const lesson = academyLessons.find(lesson=>lesson.number===selected) ?? academyLessons[0];
+  const courseLessons=academyLessons.filter(item=>item.track===lesson.track).sort((a,b)=>Number(a.number<37)-Number(b.number<37)||a.number-b.number);
+  const position=courseLessons.findIndex(item=>item.number===lesson.number);
   const progress = completed.size / academyLessons.length;
 
   function markComplete() {
@@ -695,7 +721,8 @@ function GraalyAcademyLessons({selected,setSelected}:{selected:number;setSelecte
   }
 
   function select(number: number) {
-    setSelected(Math.max(1, Math.min(academyLessons.length, number)));
+    const next=academyLessons.find(item=>item.number===number);if(!next)return;
+    setSelected(number);if(course!=="All courses"&&course!==next.track)setCourse(next.track);
   }
 
   return (
@@ -703,11 +730,11 @@ function GraalyAcademyLessons({selected,setSelected}:{selected:number;setSelecte
       <section className="academy-intro">
         <div>
           <span>{academyLessons.length} long-form lessons · {academyConceptCount} mapped concepts</span>
-          <h3>Learn React and FastAPI by building one complete plugin system</h3>
+          <h3>Learn every Graaly language and integration</h3>
           <p>
-            Start with a component and finish with a transactional, realtime party shop. Every lesson connects the language
-            model to Minecraft, contrasts it with the web, and includes source examples. The Problems tab provides
-            related coding exercises with executable tests, progressive hints and explained solutions.
+            Choose a course in JavaScript, TypeScript, Python, C, React, HTML/CSS, FastAPI, Pydantic, ASGI, SQL or configuration.
+            Study the language model, inspect complete source examples and open related practice in your chosen profile.
+            Java host lessons cover local server integration; advanced lessons connect the courses into a transactional, realtime plugin.
           </p>
           <div className="academy-downloads">
             <a download href="./downloads/Graaly-Academy-Plugin.zip">Download the in-game Academy</a>
@@ -734,21 +761,23 @@ function GraalyAcademyLessons({selected,setSelected}:{selected:number;setSelecte
       <div className="academy-shell">
         <LessonNavigation
           completed={completed}
+          course={course}
+          onCourse={value=>{setCourse(value);setSearch("");if(value!=="All courses"){const first=academyLessons.filter(item=>item.track===value).sort((a,b)=>Number(a.number<37)-Number(b.number<37)||a.number-b.number)[0];if(first)setSelected(first.number);}}}
           onSearch={setSearch}
           onSelect={select}
           search={search}
           selected={lesson.number}
         />
         <main className="academy-content">
-          <LessonArticle lesson={lesson} />
+          <LessonArticle lesson={lesson} onPractice={onPractice}/>
           <footer className="academy-lesson-footer">
-            <button disabled={lesson.number === 1} onClick={() => select(lesson.number - 1)} type="button">
+            <button disabled={position===0} onClick={() => select(courseLessons[position-1].number)} type="button">
               <ChevronLeft size={16} />Previous
             </button>
             <button className="is-complete" onClick={markComplete} type="button">
               <Check size={16} />{completed.has(lesson.number) ? "Completed" : "Mark complete"}
             </button>
-            <button disabled={lesson.number === academyLessons.length} onClick={() => select(lesson.number + 1)} type="button">
+            <button disabled={position===courseLessons.length-1} onClick={() => select(courseLessons[position+1].number)} type="button">
               Next<ChevronRight size={16} />
             </button>
           </footer>
@@ -760,6 +789,8 @@ function GraalyAcademyLessons({selected,setSelected}:{selected:number;setSelecte
 
 export function GraalyAcademy() {
   const [view,setView] = useState("Problems");
-  const [lesson,setLesson] = useState(1);
-  return <div className="academy-root"><div className="academy-view-tabs" role="tablist" aria-label="Academy view">{["Problems","Lessons"].map(item=><button aria-selected={view===item} key={item} onClick={()=>setView(item)} role="tab" type="button">{item}</button>)}</div><div hidden={view!=="Problems"}><GraalyArena onLesson={number=>{setLesson(number);setView("Lessons");}}/></div><div hidden={view!=="Lessons"}><GraalyAcademyLessons selected={lesson} setSelected={setLesson}/></div></div>;
+  const [lesson,setLesson] = useState(37);
+  const [course,setCourse] = useState<AcademyTrack | "All courses">("All courses");
+  const [requestedPractice,setRequestedPractice] = useState<PracticeRequest>();
+  return <div className="academy-root"><div className="academy-view-tabs" role="tablist" aria-label="Academy view">{["Problems","Lessons"].map(item=><button aria-selected={view===item} key={item} onClick={()=>setView(item)} role="tab" type="button">{item}</button>)}</div><div hidden={view!=="Problems"}><GraalyArena requestedPractice={requestedPractice} onLesson={number=>{setLesson(number);setCourse(academyLessons.find(lesson=>lesson.number===number)?.track??"All courses");setView("Lessons");}}/></div><div hidden={view!=="Lessons"}><GraalyAcademyLessons course={course} setCourse={setCourse} selected={lesson} setSelected={setLesson} onPractice={(id,language)=>{setRequestedPractice({id,language,revision:Date.now()});setView("Problems");}}/></div></div>;
 }

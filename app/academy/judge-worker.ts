@@ -2,6 +2,7 @@ import { judgeJsCase } from "./judge-js.ts";
 import { initC, compileC, runC } from "./judge-c.ts";
 import { initPython, judgePythonCase } from "./judge-python.ts";
 import { jsonEqual, type Challenge, type CaseResult, type JudgeResult } from "./types.ts";
+import { initPortableSql } from "./portable-helpers.ts";
 
 const send = (data: unknown) => postMessage(data);
 const message = (text: string) => send({ kind: "progress", text });
@@ -16,6 +17,7 @@ onmessage = async (event: MessageEvent<{ problem: Challenge; source: string; all
     let cModule: WebAssembly.Module | undefined;
     if (problem.mode === "c") { await initC(base, message); message("Compiling C17 to WebAssembly…"); cModule = await compileC(problem, source, selected); }
     if (["python", "asgi", "pydantic", "fastapi", "sql"].includes(problem.mode)) await initPython(base, problem.mode === "fastapi", message);
+    if(problem.portable && source.includes("sql_rows(") && ["function","react","plugin"].includes(problem.mode))await initPortableSql(base);
     send({ kind: "ready" });
     for (let index = 0; index < selected.length; index++) {
       const test = selected[index], at = performance.now();

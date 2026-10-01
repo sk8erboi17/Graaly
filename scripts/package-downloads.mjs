@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 import { ZipArchive } from "archiver";
 import { academyProblems, coveredModules, problemTracks } from "../app/academy/catalog.ts";
 import { challengeLanguages } from "../app/academy/types.ts";
+import { academyLessons } from "../app/academy-data.ts";
+import { resolveVariant } from "../app/academy/variants.ts";
 
 const site = fileURLToPath(new URL("..", import.meta.url));
 const runtime = fileURLToPath(new URL("../runtime", import.meta.url));
@@ -86,7 +88,19 @@ const workbookDone = new Promise((resolve, reject) => {
 });
 workbook.pipe(workbookStream);
 const appendWorkbook = (name, content) => workbook.append(content, {name, date:archiveDate, mode:0o644});
-appendWorkbook("README.md", `# Graaly Academy coding workbook\n\n${academyProblems.length} Medium and Hard problems across ${problemTracks.length} tracks.\n\nOpen https://sk8erboi17.github.io/Graaly/#academy to edit code, run examples and submit edge tests. Drafts and progress are saved on your device. After submitting your first attempt, reveal progressive hints and the explained solution if needed.\n\nEach folder contains the statement, public examples and a starter for each available language. An untouched starter is deliberately incomplete. The native in-game companion provides 36 theory checkpoints; the browser playground executes the coding exercises.\n\nCoverage: ${coveredModules.join(", ")}. FastAPI, Pydantic, raw ASGI, HTML/CSS, SQLite, YAML, actual native React tests and C17/WebAssembly are included. C covers bitsets, shifts, tagged unions, padding, serialization and ownership. See the playground execution notes for runtime boundaries.\n`);
+appendWorkbook("README.md", `# Graaly Academy coding workbook\n\n${academyProblems.length} Medium and Hard problems across ${problemTracks.length} tracks, with ${academyLessons.length} lessons.\n\nOpen https://sk8erboi17.github.io/Graaly/#academy to edit code, run examples and submit edge tests. Drafts and progress are saved on your device. After an attempt, reveal progressive hints and the explained solution.\n\nEvery problem offers JS, TS, Python, C, React (JS/TS), FastAPI, Pydantic, ASGI, Graaly plugin (JS/TS), and HTML/CSS profiles. SQL and YAML have dedicated editors for their query/configuration problems. Each profile folder contains its own execution contract and starter; an untouched starter is deliberately incomplete. Framework profiles execute the actual framework. Pure profiles model the same observable domain behavior.\n\nCoverage: ${coveredModules.join(", ")}. C includes bitsets, shifts, tagged unions, padding, serialization and ownership. Source examples for all lessons and the helper library sources are included. Java host examples require a local Bukkit server; they are not guest/browser exercises. See runtime-notes.md for build instructions and boundaries.\n`);
+appendWorkbook("runtime-notes.md", await readFile(runtime + "/academy/README.md"));
+appendWorkbook("helpers/graaly_academy.py",await readFile(runtime+"/academy/portable/helpers.py"));
+appendWorkbook("helpers/include/graaly/academy_json.h",await readFile(runtime+"/academy/portable/academy_json.h"));
+await appendTree(workbook, runtime + "/academy/json", "helpers/cjson", "");
+await appendTree(workbook, runtime + "/academy/sqlite", "helpers/sqlite", "");
+appendWorkbook("helpers/portable-helpers.ts", await readFile(site + "/app/academy/portable-helpers.ts"));
+appendWorkbook("helpers/include/graaly/bits.h", await readFile(runtime + "/sdk/c/include/graaly/bits.h"));
+for (const lesson of academyLessons) {
+  const prefix = "lessons/" + String(lesson.number).padStart(3,"0") + "-" + lesson.id;
+  appendWorkbook(prefix+"/lesson.json",JSON.stringify(lesson,null,2)+"\n");
+  for (const file of lesson.files) appendWorkbook(prefix+"/"+file.name,file.code);
+}
 const curriculum = [];
 for (const problem of academyProblems) {
   const {id,number,title,track,difficulty,mode,tags,modules,lessons,description,requirements,inputType,cDeclarations,sqlSchema} = problem;
@@ -94,8 +108,10 @@ for (const problem of academyProblems) {
   const prefix = String(number).padStart(3,"0") + "-" + id;
   appendWorkbook(prefix + "/problem.json", JSON.stringify(statement,null,2) + "\n");
   for (const language of challengeLanguages) if (problem.starters[language.id] !== undefined) {
-    const extension = mode === "react" && ["ts","js"].includes(language.id) ? language.id + "x" : language.extension;
-    appendWorkbook(prefix + "/solution." + extension, problem.starters[language.id]);
+    const execution=resolveVariant(problem,language.id);
+    const profile=prefix+"/"+language.id;
+    appendWorkbook(profile + "/solution." + language.extension, problem.starters[language.id]);
+    appendWorkbook(profile + "/contract.json",JSON.stringify({language:language.id,mode:execution.mode,inputType:execution.inputType,note:execution.note,cDeclarations:execution.cDeclarations,cPrint:execution.cPrint,jsonFunction:execution.jsonFunction,sqlSchema:execution.sqlSchema},null,2)+"\n");
   }
   curriculum.push({id,number,title,track,difficulty,mode,modules,lessons,languages:Object.keys(problem.starters)});
 }

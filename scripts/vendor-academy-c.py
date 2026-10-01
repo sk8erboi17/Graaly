@@ -66,3 +66,5 @@ bits = (root / "runtime/sdk/c/include/graaly/bits.h").read_bytes()
 files.append({"file": "bits.h", "sha256": hashlib.sha256(bits).hexdigest(), "bytes": len(bits), "source": "runtime/sdk/c/include/graaly/bits.h"})
 (target / "manifest.json").write_text(json.dumps({"clang": "22.1.8", "standard": "C17", "target": "wasm32-wasip1", "files": files}, indent=2) + "\n")
 print("Vendored C17 compiler, linker, and C-only sysroot: " + str(sum(f["bytes"] for f in files)) + " bytes.")
+
+subprocess.run(["node", str(root / "scripts/stage-academy-libraries.mjs")], cwd=root, check=True)

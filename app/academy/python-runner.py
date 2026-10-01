@@ -2,6 +2,9 @@
 import json
 import inspect
 import sqlite3
+import sys
+import types
+import copy
 from urllib.parse import urlsplit
 from contextlib import asynccontextmanager
 
@@ -84,6 +87,11 @@ async def academy_websocket(app, request):
 
 async def academy_run():
     fixture = json.loads(__fixture_json)
+    helpers = globals().get("__portable_helpers", "")
+    if helpers:
+        module = types.ModuleType("graaly_academy")
+        exec(compile(helpers, "graaly_academy.py", "exec"), module.__dict__)
+        sys.modules["graaly_academy"] = module
     if __mode == "sql":
         database = sqlite3.connect(":memory:")
         database.row_factory = sqlite3.Row
@@ -112,6 +120,15 @@ async def academy_run():
             database.close()
     namespace = {"__name__": "academy_solution"}
     exec(compile(__source, "solution.py", "exec"), namespace)
+    if globals().get("__json_function") in ("fastapi", "asgi"):
+        app = namespace.get("app")
+        if app is None:
+            raise RuntimeError("Define the FastAPI application app and POST /solve.")
+        async with (app.router.lifespan_context(app) if __mode == "fastapi" else academy_empty_lifespan(app)):
+            response = await academy_http(app, {"method": "POST", "url": "/solve", "json": fixture})
+        if response["status"] != 200:
+            raise RuntimeError("POST /solve must return HTTP 200: " + json.dumps(response))
+        return json.dumps(response["json"], allow_nan=False)
     if __mode in ("fastapi", "asgi"):
         app = namespace.get("app")
         if app is None:
@@ -122,7 +139,7 @@ async def academy_run():
             else:
                 result = [await academy_http(app, request) for request in fixture.get("requests", [])]
         return json.dumps(result)
-    if "__modelProbe" in fixture:
+    if isinstance(fixture, dict) and "__modelProbe" in fixture and "Request" in namespace:
         from pydantic import ValidationError
         probe = fixture["__modelProbe"]
         model = namespace["Request"].model_validate(probe["data"])
@@ -136,9 +153,12 @@ async def academy_run():
         return json.dumps({"frozen": frozen, "independent_defaults": second.scopes == []})
     if not callable(namespace.get("solve")):
         raise RuntimeError("Define solve(input).")
+    original = copy.deepcopy(fixture)
     result = namespace["solve"](fixture)
     if inspect.isawaitable(result):
         result = await result
+    if fixture != original:
+        raise RuntimeError("solve(input) must preserve the caller's input. Copy mutable arrays and objects before changing them.")
     return json.dumps(result, allow_nan=False)
 
 await academy_run()

@@ -1,4 +1,5 @@
 import harness from "./python-runner.py";
+import portableHelpers from "../../runtime/academy/portable/helpers.py";
 import type { Challenge, ChallengeCase, Json } from "./types.ts";
 
 type PythonRuntime = {
@@ -31,5 +32,7 @@ export async function judgePythonCase(problem: Challenge, source: string, test: 
   runtime.globals.set("__mode", problem.mode);
   runtime.globals.set("__fixture_json", JSON.stringify(test.input));
   runtime.globals.set("__schema", problem.sqlSchema ?? "");
+  runtime.globals.set("__portable_helpers", portableHelpers);
+  runtime.globals.set("__json_function", problem.jsonFunction ?? "");
   return JSON.parse(await runtime.runPythonAsync(harness));
 }

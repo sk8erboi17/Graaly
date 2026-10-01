@@ -32,6 +32,7 @@ import {
   type GuideLanguage,
   type GuideTopic,
 } from "./guide-topics";
+import { academyLessons } from "./academy-data";
 import { GraalyAcademy } from "./academy-playground";
 import { cPacketExample, cTypeExample, loadCReference, type CTypeReference } from "./c-api";
 import { cLearningExamples, cLearningTrack } from "./c-learning";
@@ -5346,7 +5347,7 @@ export default function Home() {
             <SectionHeading eyebrow="12 · Graaly Academy" title="Write code. Pass the tests. Build complete plugins.">
               Practice TypeScript, JavaScript, Python, C, React, FastAPI, Pydantic, HTML/CSS, SQL and plugin manifests.
               Solve Medium and Hard coding problems with executable tests, progressive hints and explained solutions,
-              supported by 36 long-form lessons and the complete SDK reference.
+              supported by {academyLessons.length} long-form lessons and the complete SDK reference.
             </SectionHeading>
             <GraalyAcademy />
           </section>

@@ -2,6 +2,9 @@ import { expect, test, type Page } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 import { build } from "esbuild";
 import { academyProblems } from "../../app/academy/catalog.ts";
+import { challengeLanguages, type ChallengeLanguage } from "../../app/academy/types.ts";
+import { universalVariants } from "../../app/academy/variants.ts";
+import { academyLessons, academyTracks } from "../../app/academy-data.ts";
 
 async function openProblem(page:Page,id=academyProblems[0].id,language="ts"){
   await page.goto(`/?exercise=${id}&language=${language}#academy`);
@@ -124,7 +127,8 @@ for(const mode of ["plugin","react","python","asgi","fastapi","pydantic","html-c
     test.skip(info.project.name!=="desktop","full execution matrix is covered on desktop");
     test.setTimeout(180_000);
     const problem=academyProblems.find(problem=>problem.mode===mode)!;
-    const language=Object.keys(problem.solutions)[0] as keyof typeof problem.solutions;
+    const nativeProfiles:Record<string,ChallengeLanguage>={plugin:"plugin-ts",react:"react-ts",python:"py",asgi:"asgi",fastapi:"fastapi",pydantic:"pydantic","html-css":"html",sql:"sql",manifest:"yaml",c:"c"};
+    const language=nativeProfiles[mode];
     const arena=await openProblem(page,problem.id,language);
     await edit(page,problem.solutions[language]!);
     await submit(page);
@@ -133,6 +137,84 @@ for(const mode of ["plugin","react","python","asgi","fastapi","pydantic","html-c
     await expectFits(page);
   });
 }
+
+test("exercise 25 offers every environment and executes the same contract in each",async({page},info)=>{
+  test.skip(info.project.name!=="desktop","the full environment matrix is covered once");
+  test.setTimeout(240_000);
+  const problem=academyProblems.find(problem=>problem.id==="world-orientation")!;
+  const errors:string[]=[];page.on("pageerror",error=>errors.push(error.message));
+  const arena=await openProblem(page,problem.id);
+  expect(await arena.getByLabel("Solution language").locator("option").evaluateAll(options=>options.map(option=>(option as HTMLOptionElement).value))).toEqual(universalVariants);
+  for(const language of universalVariants){
+    await test.step(challengeLanguages.find(item=>item.id===language)!.label,async()=>{
+      await arena.getByLabel("Solution language").selectOption(language);
+      await edit(page,problem.solutions[language]!);await submit(page);
+      await expect(arena.locator(".arena-verdict strong")).toHaveText("Accepted",{timeout:150_000});
+      await expect(arena.locator(".arena-results .is-fail")).toHaveCount(0);
+    });
+  }
+  await expect(arena.locator(".arena-native")).toContainText("Exercise result");
+  await expect.poll(()=>page.evaluate(()=>JSON.parse(localStorage.getItem("graaly.academy.arena.v1")??"{}").progress?.["world-orientation"]?.acceptedLanguages?.length)).toBe(universalVariants.length);
+  expect(errors).toEqual([]);
+});
+
+test("language courses open real practice in the requested profile and fit small screens",async({page})=>{
+  await openProblem(page);
+  const views=page.getByRole("tablist",{name:"Academy view"});
+  await views.getByRole("tab",{name:"Lessons",exact:true}).click();
+  for(const track of academyTracks){
+    await page.getByLabel("Academy course").selectOption(track);
+    await expect(page.locator(".academy-lesson-header")).toContainText(track);
+    await expect(page.locator(".academy-lesson-scroll .academy-track")).toHaveCount(1);
+    await expectFits(page);
+  }
+  await page.getByLabel("Academy course").selectOption("C");
+  const lesson=academyLessons.find(item=>item.id==="c-integers-shifts")!;
+  await page.getByRole("region",{name:"Practice this lesson"}).getByRole("button").first().click();
+  await expect(views.getByRole("tab",{name:"Problems",exact:true})).toHaveAttribute("aria-selected","true");
+  await expect(page.getByTestId("graaly-arena").getByLabel("Solution language")).toHaveValue(lesson.practice![0].language);
+  await expect(page).toHaveURL(new RegExp("exercise="+lesson.practice![0].id+"&language=c"));
+  await expectFits(page);
+});
+
+test("old framework drafts restore to their explicit profile after the curriculum upgrade",async({page},info)=>{
+  test.skip(info.project.name!=="desktop","migration is covered once");
+  await page.addInitScript(()=>{if(!localStorage.getItem("migration-seeded")){localStorage.setItem("graaly.academy.arena.v1",JSON.stringify({drafts:{"react-click-counter:ts":"export default function App(){ return null; } // original draft"},progress:{},selected:"react-click-counter",language:"ts"}));localStorage.setItem("migration-seeded","yes");}});
+  await page.goto("/#academy");
+  const arena=page.getByTestId("graaly-arena");
+  await expect(arena.getByLabel("Solution language")).toHaveValue("react-ts");
+  await expect(arena.getByTestId("academy-editor")).toContainText("original draft");
+  await arena.getByLabel("Solution language").selectOption("ts");
+  await expect(arena.getByTestId("academy-editor")).not.toContainText("original draft");
+  await arena.getByLabel("Solution language").selectOption("react-ts");
+  await expect(arena.getByTestId("academy-editor")).toContainText("original draft");
+});
+
+test("SQL-backed algorithms use actual SQLite across JS, React, plugin, HTML and C profiles",async({page},info)=>{
+  test.skip(info.project.name!=="desktop","SQLite adapters are covered once");
+  test.setTimeout(240_000);
+  const problem=academyProblems.find(problem=>problem.id==="sql-latest-order")!;
+  const arena=await openProblem(page,problem.id);
+  for(const language of ["js","react-ts","plugin-js","html","c"] as const){
+    await test.step(language,async()=>{
+      await arena.getByLabel("Solution language").selectOption(language);await edit(page,problem.solutions[language]!);await submit(page);
+      await expect(arena.locator(".arena-verdict strong")).toHaveText("Accepted",{timeout:150_000});
+    });
+  }
+});
+
+test("native HTML result labels preserve whitespace, Unicode and markup characters in JSON",async({page},info)=>{
+  test.skip(info.project.name!=="desktop","result encoding is covered once");
+  const compiler=await build({entryPoints:["app/academy/html-profile.ts"],bundle:true,platform:"browser",format:"esm",write:false});
+  await page.route("**/academy-result-under-test.js",route=>route.fulfill({contentType:"text/javascript",body:compiler.outputFiles[0].text}));
+  await openProblem(page);
+  const values=["  two  spaces  ","<script> &a 🧪\n\t",{key:"Alex  Smith",value:"< & >"},null,true,12.5];
+  const results=await page.evaluate(async values=>{
+    const {renderHtmlResult}=await import(/* @vite-ignore */new URL("./academy-result-under-test.js",document.baseURI).href);
+    return values.map(value=>renderHtmlResult('<main data-rows="1"><button data-action="academy.result">{{result}}</button></main>',value).actual);
+  },values);
+  expect(results).toEqual(values);
+});
 
 test("the browser HTML compiler matches complete snapshots from the native Java compiler",async({page},info)=>{
   test.skip(info.project.name!=="desktop","parser conformance is covered once");

@@ -1,5 +1,8 @@
-export type AcademyTrack = "React" | "TypeScript" | "FastAPI" | "Architecture";
-export type AcademyLanguage = "tsx" | "ts" | "javascript" | "python" | "shell" | "json";
+import { foundationLessons } from "./academy-foundations.ts";
+import type { ChallengeLanguage } from "./academy/types.ts";
+
+export type AcademyTrack = "JavaScript" | "TypeScript" | "Python" | "C" | "React" | "HTML / CSS" | "FastAPI" | "Pydantic" | "ASGI" | "SQL" | "Configuration" | "Java" | "Architecture";
+export type AcademyLanguage = "tsx" | "ts" | "javascript" | "python" | "c" | "html" | "css" | "sql" | "yaml" | "java" | "shell" | "json";
 
 export type AcademyFile = {
   name: string;
@@ -29,11 +32,22 @@ export type AcademyLesson = {
     done: string;
   };
   pitfalls: readonly string[];
+  practice?: readonly { id: string; language: ChallengeLanguage }[];
+  checkpoint?: { question: string; accepted: readonly string[] };
 };
 
 const code = (...lines: string[]) => lines.join("\n");
 
 export const academySyllabus = [
+  {area:"JavaScript foundations",topics:"values, references, ownership, scanners, closures, ESM, subscription disposal, promises, stale completions, Map/Set and bounded event windows"},
+  {area:"TypeScript contracts",topics:"unknown, runtime narrowing, discriminated unions, never, branded identifiers, generics, readonly borrowing, generated SDK callbacks, satisfies and semantic build checks"},
+  {area:"Python foundations",topics:"strict bool/int boundaries, borrowed collections, Counter, generators, Decimal rounding, aware datetime, UTC, TaskGroup, async context managers, Protocol and dataclass defaults"},
+  {area:"C and WebAssembly",topics:"fixed-width integers, promotions, safe shifts, caller-owned SDK bitsets, union/intersection/difference, tail masks, tagged unions, memcpy, alignment, offsetof, padding, fieldwise equality, byte order, bounded VarInts, memmove, checked allocation, host handles and JSON algorithms"},
+  {area:"Native HTML and CSS",topics:"inventory metadata, stable action IDs, accessible labels, nine-column grid, spans, nested panels, cascade, specificity, source order, inherited styles, custom properties, native input, cancellation and algorithm presentation"},
+  {area:"Pydantic foundations",topics:"strict fields, forbidden extras, before/after validators, cross-field invariants, aliases, nested models, discriminators, computed fields, Decimal, SecretStr, frozen models, default factories, RootModel and JsonValue"},
+  {area:"ASGI protocol",topics:"scope/receive/send, protocol routing, byte headers, bounded request chunks, disconnects, response start/body ordering, final frames and real JSON endpoint adapters"},
+  {area:"SQL and persistence",topics:"deterministic ORDER BY, LEFT JOIN, NULL, aggregates, HAVING, ranking, window frames, conditional reservations, transactions, rollback, ledger reconciliation and ordered outbox delivery"},
+  {area:"Configuration and host boundaries",topics:"YAML scalar types, duplicate keys, runtime entrypoints, required/optional dependencies, load phases, capabilities, Java Bukkit lifecycle, thread ownership and independent host contract fixtures"},
   {
     area: "React foundations",
     topics: "components, JSX, props, children, composition, conditional rendering, lists, keys, events, useState, snapshots, immutability and batching",
@@ -100,7 +114,7 @@ export const academySyllabus = [
   },
 ] as const;
 
-export const academyLessons: readonly AcademyLesson[] = [
+const advancedAcademyLessons: readonly AcademyLesson[] = [
   {
     number: 1,
     id: "components-jsx",
@@ -1745,6 +1759,9 @@ export const academyLessons: readonly AcademyLesson[] = [
     pitfalls: ["Calling architecture complete because it compiles.", "Testing only happy paths.", "Letting React decide authorization.", "Granting before commit.", "Keeping infrastructure whose requirement disappeared."],
   },
 ];
+
+export const academyLessons: readonly AcademyLesson[] = [...advancedAcademyLessons, ...foundationLessons];
+export const academyTracks: readonly AcademyTrack[] = ["JavaScript", "TypeScript", "Python", "C", "React", "HTML / CSS", "FastAPI", "Pydantic", "ASGI", "SQL", "Configuration", "Java", "Architecture"];
 
 export const academyConceptCount = academyLessons.reduce(
   (total, lesson) => total + lesson.concepts.length,

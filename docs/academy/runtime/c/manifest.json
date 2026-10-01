@@ -37,6 +37,51 @@
       "sha256": "06e91c64f3de2b24db55859810a4f93c6db5ba92b6b785682a8ecd885d3f5101",
       "bytes": 3058,
       "source": "runtime/sdk/c/include/graaly/bits.h"
+    },
+    {
+      "file": "cJSON.c",
+      "bytes": 80399,
+      "sha256": "298581a04a36c0165da4b0aade235c23088cb2faa58651d720ea2f3706ed0b0d"
+    },
+    {
+      "file": "cJSON.h",
+      "bytes": 16394,
+      "sha256": "25b0145150d500498e4d209cec69c18c42cf818bffcc54690be3b895a2a16dee"
+    },
+    {
+      "file": "json-LICENSE",
+      "bytes": 1084,
+      "sha256": "a36dda207c36db5818729c54e7ad4e8b0c6fba847491ba64f372c1a2037b6d5c"
+    },
+    {
+      "file": "json-provenance.json",
+      "bytes": 810,
+      "sha256": "04ee24abf1e521e4c83f0fa0b8f6796007d77d1ac05046ca5d73f6c94e73955b"
+    },
+    {
+      "file": "sqlite3.c",
+      "bytes": 9515341,
+      "sha256": "b1dd5d74ec7f29055a6684fa06fb3c2f6821c87dd38f9a458dfd2e8a1db28189"
+    },
+    {
+      "file": "sqlite3.h",
+      "bytes": 690838,
+      "sha256": "919e7f2e8ed1d8f56ac17b412b8971c76aa5d1a879752cc6058f75e7d5910e1d"
+    },
+    {
+      "file": "academy-vfs.c",
+      "bytes": 1925,
+      "sha256": "66938f1c31d07510511b6f82808bb67b2247d026f009d1bae02210866740ff1c"
+    },
+    {
+      "file": "sqlite-provenance.json",
+      "bytes": 400,
+      "sha256": "af495c022834041b275ea7dcc57e4f497a59f828c646e11ef3aae314a7c8de99"
+    },
+    {
+      "file": "academy_json.h",
+      "bytes": 25348,
+      "sha256": "c117b2d7b66118e7df2f3ed8cb0c4784671369492fca05cf3cfe4abffe670d54"
     }
   ]
 }
