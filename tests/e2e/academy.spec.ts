@@ -29,20 +29,20 @@ async function expectFits(page:Page){
   expect(dimensions.body).toBeLessThanOrEqual(dimensions.viewport);
 }
 
-test("a real attempt unlocks the editorial, assisted acceptance and persisted progress",async({page})=>{
+test("solutions are available before the first attempt and assisted acceptance persists",async({page})=>{
   const errors:string[]=[];page.on("pageerror",error=>errors.push(error.message));
   const problem=academyProblems[0],arena=await openProblem(page);
   await expect(arena.getByRole("button",{name:"Submit all tests",exact:true})).toBeDisabled();
+  await expect(arena.locator(".arena-run-bar").getByRole("button",{name:"Show solution",exact:true})).toBeEnabled();
   await arena.getByRole("tab",{name:"Editorial",exact:true}).click();
-  await expect(arena.getByRole("button",{name:"Submit an attempt to unlock the solution"})).toBeDisabled();
+  await expect(arena.locator(".arena-editorial").getByRole("button",{name:"Show solution",exact:true})).toBeEnabled();
   await arena.getByRole("button",{name:"Reveal next hint"}).click();
   await expect(arena).toContainText("Hint 1");
-  await edit(page,"export function solve(input) { return null; }");
-  await submit(page);
-  await expect(arena.locator(".arena-verdict strong")).toHaveText("Wrong Answer",{timeout:30_000});
-  await arena.getByRole("tab",{name:"Editorial",exact:true}).click();
-  await arena.getByRole("button",{name:"Reveal explained solution"}).click();
+  await arena.locator(".arena-editorial").getByRole("button",{name:"Show solution",exact:true}).click();
   await expect(arena).toContainText("Solution explained");
+  await expect(arena.getByLabel("Reference solution code")).toHaveText(problem.solutions.ts!);
+  await expect(arena.locator(".arena-bottom")).toContainText("0 submissions");
+  await expect(arena.getByRole("button",{name:"Submit all tests",exact:true})).toBeDisabled();
   await arena.getByRole("button",{name:"Load solution into editor"}).click();
   await submit(page);
   await expect(arena.locator(".arena-verdict strong")).toHaveText("Accepted",{timeout:30_000});
@@ -52,6 +52,47 @@ test("a real attempt unlocks the editorial, assisted acceptance and persisted pr
   await expect(arena.locator(".arena-problem-heading")).toContainText("Accepted · assisted");
   await expect(arena.getByTestId("academy-editor")).toContainText("export function solve");
   await expectFits(page);
+  expect(errors).toEqual([]);
+});
+
+test("Show solution follows every selected profile, preserves drafts and works on fresh problems",async({page})=>{
+  const errors:string[]=[];page.on("pageerror",error=>errors.push(error.message));
+  const problem=academyProblems.find(problem=>problem.id==="balanced-party")!;
+  const arena=await openProblem(page,problem.id,"c");
+  const draft="// My C draft\n"+problem.starters.c!;
+  await edit(page,draft);
+  await arena.locator(".arena-run-bar").getByRole("button",{name:"Show solution",exact:true}).click();
+  await expect(arena.getByRole("tab",{name:"Editorial",exact:true})).toHaveAttribute("aria-selected","true");
+  await expect(arena.getByRole("heading",{name:"Solution explained",exact:true})).toBeFocused();
+  for(const language of universalVariants){
+    await arena.getByLabel("Solution language").selectOption(language);
+    await expect(arena.getByLabel("Reference solution code")).toHaveText(problem.solutions[language]!);
+    await expect(arena.locator(".arena-solution>p").first()).toContainText(challengeLanguages.find(item=>item.id===language)!.label);
+    await expect(arena.getByTestId("academy-editor")).toContainText(language==="c"?"My C draft":problem.starters[language]!.split("\n")[0]);
+  }
+  await arena.getByLabel("Solution language").selectOption("c");
+  await expect(arena.getByTestId("academy-editor")).toContainText("My C draft");
+  await expect(arena.locator(".arena-bottom")).toContainText("0 submissions");
+  await expect(arena.locator(".arena-problem-heading .is-accepted")).toHaveCount(0);
+  await expect.poll(()=>page.evaluate(id=>JSON.parse(localStorage.getItem("graaly.academy.arena.v1")??"{}").drafts?.[id+":c"],problem.id)).toBe(draft);
+  await page.reload();
+  await arena.locator(".arena-run-bar").getByRole("button",{name:"Show solution",exact:true}).click();
+  await expect(arena.getByLabel("Reference solution code")).toHaveText(problem.solutions.c!);
+  await expect(arena.getByTestId("academy-editor")).toContainText("My C draft");
+  const controls=await arena.locator(".arena-coding").evaluate(element=>({bottom:element.getBoundingClientRect().bottom,buttons:[...element.querySelectorAll(".arena-run-bar button")].map(button=>button.getBoundingClientRect().bottom)}));
+  for(const bottom of controls.buttons)expect(bottom).toBeLessThanOrEqual(controls.bottom);
+  await expectFits(page);
+  for(const mode of ["sql","manifest"]){
+    const next=academyProblems.find(problem=>problem.mode===mode)!;
+    await arena.locator(".arena-problems").getByRole("button").filter({hasText:next.title}).click();
+    const language=mode==="sql"?"sql":"yaml";
+    await arena.getByLabel("Solution language").selectOption(language);
+    await expect(arena.getByRole("button",{name:"Submit all tests",exact:true})).toBeDisabled();
+    await arena.locator(".arena-run-bar").getByRole("button",{name:"Show solution",exact:true}).click();
+    await expect(arena.getByLabel("Reference solution code")).toHaveText(next.solutions[language]!);
+    await expect(arena.locator(".arena-bottom")).toContainText("0 submissions");
+    await expectFits(page);
+  }
   expect(errors).toEqual([]);
 });
 

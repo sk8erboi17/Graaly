@@ -10,15 +10,15 @@
     "file": "_next/static/chunks/rolldown-runtime-hePW80VL.js",
     "name": "rolldown-runtime"
   },
-  "_vinext-D7jkSgsz.js": {
-    "file": "_next/static/chunks/vinext-D7jkSgsz.js",
+  "_vinext-DLfst-u6.js": {
+    "file": "_next/static/chunks/vinext-DLfst-u6.js",
     "name": "vinext",
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js"
     ],
     "dynamicImports": [
-      "_vinext-D7jkSgsz.js"
+      "_vinext-DLfst-u6.js"
     ]
   },
   "app/generated-api-reference.ts": {
@@ -28,14 +28,14 @@
     "isDynamicEntry": true
   },
   "app/page.tsx": {
-    "file": "_next/static/chunks/page-C_rgA9cm.js",
+    "file": "_next/static/chunks/page-DMYZ0wg7.js",
     "name": "page",
     "src": "app/page.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
-      "_vinext-D7jkSgsz.js"
+      "_vinext-DLfst-u6.js"
     ],
     "dynamicImports": [
       "node_modules/sucrase/dist/esm/index.js",
@@ -52,28 +52,28 @@
     ]
   },
   "node_modules/vinext/dist/shims/layout-segment-context.js": {
-    "file": "_next/static/chunks/layout-segment-context-BmOnwrKL.js",
+    "file": "_next/static/chunks/layout-segment-context-DamkgGkG.js",
     "name": "layout-segment-context",
     "src": "node_modules/vinext/dist/shims/layout-segment-context.js",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
-      "_vinext-D7jkSgsz.js"
+      "_vinext-DLfst-u6.js"
     ]
   },
   "virtual:vinext-app-browser-entry": {
-    "file": "_next/static/chunks/index-hcF5fZAz.js",
+    "file": "_next/static/chunks/index-BwzWrem9.js",
     "name": "index",
     "src": "virtual:vinext-app-browser-entry",
     "isEntry": true,
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
-      "_vinext-D7jkSgsz.js"
+      "_vinext-DLfst-u6.js"
     ],
     "dynamicImports": [
-      "_vinext-D7jkSgsz.js",
+      "_vinext-DLfst-u6.js",
       "node_modules/vinext/dist/shims/layout-segment-context.js",
       "app/page.tsx"
     ]
