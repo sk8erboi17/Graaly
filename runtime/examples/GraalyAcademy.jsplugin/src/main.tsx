@@ -9,6 +9,7 @@ import {
   type Player,
 } from "graaly";
 import { AcademyApp } from "./academy-app";
+import { lessons } from "./lessons";
 export { academyReducer, initialAcademyState } from "./academy-state";
 
 const roots = new Map<string, GraalyRoot>();
@@ -40,7 +41,7 @@ commands.on("academy", context => {
 commands.complete("academy", context => {
   if (!players.isPlayer(context.sender)) return [];
   const query = context.args[0] ?? "";
-  return Array.from({ length: 26 }, (_, index) => String(index + 1))
+  return Array.from({ length: lessons.length }, (_, index) => String(index + 1))
     .filter(value => value.startsWith(query));
 });
 
@@ -50,7 +51,7 @@ events.on(PlayerQuitEvent, event => {
 });
 
 export function onEnable(): void {
-  info("Graaly Academy ready: /academy [1-26]");
+  info("Graaly Academy ready: /academy [1-" + lessons.length + "] · Coding: https://sk8erboi17.github.io/Graaly/#academy");
 }
 
 export function onDisable(): void {

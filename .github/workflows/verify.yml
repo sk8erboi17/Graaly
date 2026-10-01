@@ -50,7 +50,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Install Playwright browser
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
       - name: Compile the complete TypeScript SDK
         run: npm run typecheck:sdk
       - name: Type-check the native Python surface

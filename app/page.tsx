@@ -5343,10 +5343,10 @@ export default function Home() {
           </section>
 
           <section className="doc-section academy-section" hidden={activeSection !== "academy"} id="academy">
-            <SectionHeading eyebrow="12 · Graaly Academy" title="From your first component to a production realtime plugin">
-              These are 36 long-form lessons, not a list of snippets. Edit and execute real TypeScript React against a
-              Minecraft surface simulator, trace the FastAPI request lifecycle, and then run the same
-              architecture in the checked-in plugin and backend tests.
+            <SectionHeading eyebrow="12 · Graaly Academy" title="Write code. Pass the tests. Build complete plugins.">
+              Practice TypeScript, JavaScript, Python, C, React, FastAPI, Pydantic, HTML/CSS, SQL and plugin manifests.
+              Solve Medium and Hard coding problems with executable tests, progressive hints and explained solutions,
+              supported by 36 long-form lessons and the complete SDK reference.
             </SectionHeading>
             <GraalyAcademy />
           </section>
@@ -5495,7 +5495,7 @@ export default function Home() {
           </nav>
 
           <footer>
-            <div className="brand footer-brand"><span><strong>Graaly</strong><small>JavaScript · TypeScript · Python · Java</small></span></div>
+            <div className="brand footer-brand"><span><strong>Graaly</strong><small>JavaScript · TypeScript · Python · C · Java</small></span></div>
             <p>Complete Graaly and PacketEvents documentation for Java 17 and newer.</p>
             <a href="https://github.com/retrooper/packetevents" target="_blank" rel="noreferrer">PacketEvents project <ExternalLink size={13} /></a>
           </footer>

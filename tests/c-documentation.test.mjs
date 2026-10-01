@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import test from "node:test";
 import { cPacketExample, cTypeExample, loadCReference } from "../app/c-api.ts";
 import { cLabExamples, cPacketExamples } from "../app/generated-c-learning.ts";
@@ -12,7 +12,9 @@ const sdkInclude = resolve("runtime/sdk/c/include");
 function compile(source, object) {
   execFileSync("zig", ["cc", "-target", "wasm32-wasi", "-std=c11", "-O0", "-Wall", "-Wextra",
     "-Wpedantic", "-Werror", "-Wno-unused-function", "-Wno-unused-variable", "-I", sdkInclude,
-    "-c", source, "-o", object], { stdio: "pipe" });
+    "-c", source, "-o", object], { stdio: "pipe", env: { ...process.env,
+      ZIG_GLOBAL_CACHE_DIR: join(dirname(source), "zig-cache"),
+      ZIG_LOCAL_CACHE_DIR: join(dirname(source), "zig-local") } });
 }
 
 test("compiles every C memory lab and every authored PacketEvents C guide", async () => {

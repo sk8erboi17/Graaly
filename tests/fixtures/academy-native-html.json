@@ -1,0 +1,2139 @@
+{
+  "nativeSha256": "57a56dbc76510de1205b6bd9fedb88d9362d84870107a218622d42a8c051de63",
+  "fixtures": [
+    {
+      "id": "html-inventory-metadata",
+      "source": "<main id=\"shop\" data-rows=\"2\" aria-label=\"Shop\" data-close-action=\"shop.close\"><button id=\"buy\" data-material=\"EMERALD\">Buy</button></main>\n",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "shop",
+          "title": "Shop",
+          "rows": 2,
+          "closeActionId": "shop.close",
+          "items": [
+            {
+              "slot": 0,
+              "material": "EMERALD",
+              "amount": 1,
+              "durability": 0,
+              "name": "Buy",
+              "lore": [],
+              "actionId": "buy"
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {
+              "id": "shop",
+              "data-rows": "2",
+              "aria-label": "Shop",
+              "data-close-action": "shop.close"
+            },
+            "children": [
+              {
+                "tag": "button",
+                "attributes": {
+                  "id": "buy",
+                  "data-material": "EMERALD"
+                },
+                "children": [
+                  {
+                    "text": "Buy"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "text": "\n"
+          }
+        ]
+      }
+    },
+    {
+      "id": "html-grid-position",
+      "source": "<style>.buy{grid-row:2;grid-column:5}</style><main id=\"shop\" data-rows=\"3\" aria-label=\"Shop\"><button class=\"buy\" data-action=\"buy\" data-material=\"DIAMOND\">Confirm</button></main>\n",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "shop",
+          "title": "Shop",
+          "rows": 3,
+          "items": [
+            {
+              "slot": 13,
+              "material": "DIAMOND",
+              "amount": 1,
+              "durability": 0,
+              "name": "Confirm",
+              "lore": [],
+              "actionId": "buy"
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {
+              "id": "shop",
+              "data-rows": "3",
+              "aria-label": "Shop"
+            },
+            "children": [
+              {
+                "tag": "button",
+                "attributes": {
+                  "class": "buy",
+                  "data-action": "buy",
+                  "data-material": "DIAMOND"
+                },
+                "children": [
+                  {
+                    "text": "Confirm"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "text": "\n"
+          }
+        ]
+      }
+    },
+    {
+      "id": "html-display-none",
+      "source": "<style>.hidden{display:none}</style><main id=\"menu\" data-rows=\"1\" aria-label=\"Menu\"><button class=\"hidden\">Hidden</button><button id=\"first\">First</button><button id=\"second\">Second</button></main>\n",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "menu",
+          "title": "Menu",
+          "rows": 1,
+          "items": [
+            {
+              "slot": 0,
+              "material": "STONE_BUTTON",
+              "amount": 1,
+              "durability": 0,
+              "name": "First",
+              "lore": [],
+              "actionId": "first"
+            },
+            {
+              "slot": 1,
+              "material": "STONE_BUTTON",
+              "amount": 1,
+              "durability": 0,
+              "name": "Second",
+              "lore": [],
+              "actionId": "second"
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {
+              "id": "menu",
+              "data-rows": "1",
+              "aria-label": "Menu"
+            },
+            "children": [
+              {
+                "tag": "button",
+                "attributes": {
+                  "class": "hidden"
+                },
+                "children": [
+                  {
+                    "text": "Hidden"
+                  }
+                ]
+              },
+              {
+                "tag": "button",
+                "attributes": {
+                  "id": "first"
+                },
+                "children": [
+                  {
+                    "text": "First"
+                  }
+                ]
+              },
+              {
+                "tag": "button",
+                "attributes": {
+                  "id": "second"
+                },
+                "children": [
+                  {
+                    "text": "Second"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "text": "\n"
+          }
+        ]
+      }
+    },
+    {
+      "id": "html-grid-span",
+      "source": "<style>.claim{grid-column:3 / span 3;grid-row:2}</style><main data-rows=\"3\" aria-label=\"Claim\"><button class=\"claim\" data-action=\"claim\" data-material=\"EMERALD\">Claim</button></main>\n",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "html:b8c6fd86",
+          "title": "Claim",
+          "rows": 3,
+          "items": [
+            {
+              "slot": 11,
+              "material": "EMERALD",
+              "amount": 1,
+              "durability": 0,
+              "name": " ",
+              "lore": [],
+              "actionId": "claim"
+            },
+            {
+              "slot": 12,
+              "material": "EMERALD",
+              "amount": 1,
+              "durability": 0,
+              "name": "Claim",
+              "lore": [],
+              "actionId": "claim"
+            },
+            {
+              "slot": 13,
+              "material": "EMERALD",
+              "amount": 1,
+              "durability": 0,
+              "name": " ",
+              "lore": [],
+              "actionId": "claim"
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {
+              "data-rows": "3",
+              "aria-label": "Claim"
+            },
+            "children": [
+              {
+                "tag": "button",
+                "attributes": {
+                  "class": "claim",
+                  "data-action": "claim",
+                  "data-material": "EMERALD"
+                },
+                "children": [
+                  {
+                    "text": "Claim"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "text": "\n"
+          }
+        ]
+      }
+    },
+    {
+      "id": "html-panel-border",
+      "source": "<style>main{background:blue;border:1px solid red}button{grid-row:2;grid-column:5}</style><main data-rows=\"3\" aria-label=\"Panel\"><button id=\"ok\" data-material=\"EMERALD\">OK</button></main>\n",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "html:cc63413c",
+          "title": "Panel",
+          "rows": 3,
+          "items": [
+            {
+              "slot": 0,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 1,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 2,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 3,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 4,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 5,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 6,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 7,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 8,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 9,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 10,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 11,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 12,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 13,
+              "material": "EMERALD",
+              "amount": 1,
+              "durability": 0,
+              "name": "OK",
+              "lore": [],
+              "actionId": "ok"
+            },
+            {
+              "slot": 14,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 15,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 16,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 17,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 18,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 19,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 20,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 21,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 22,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 23,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 24,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 25,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 26,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {
+              "data-rows": "3",
+              "aria-label": "Panel"
+            },
+            "children": [
+              {
+                "tag": "button",
+                "attributes": {
+                  "id": "ok",
+                  "data-material": "EMERALD"
+                },
+                "children": [
+                  {
+                    "text": "OK"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "text": "\n"
+          }
+        ]
+      }
+    },
+    {
+      "id": "html-rounded-panel",
+      "source": "<style>main{background:blue;border:1px solid red;border-radius:4px}</style><main id=\"round\" data-rows=\"3\" aria-label=\"Rounded\"></main>\n",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "round",
+          "title": "Rounded",
+          "rows": 3,
+          "items": [
+            {
+              "slot": 1,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 2,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 3,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 4,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 5,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 6,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 7,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 9,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 10,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 11,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 12,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 13,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 14,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 15,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 16,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 17,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 19,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 20,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 21,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 22,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 23,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 24,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 25,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {
+              "id": "round",
+              "data-rows": "3",
+              "aria-label": "Rounded"
+            },
+            "children": []
+          },
+          {
+            "text": "\n"
+          }
+        ]
+      }
+    },
+    {
+      "id": "html-css-specificity",
+      "source": "<style>button{color:blue}.item{color:green}#confirm{color:red}</style><main data-rows=\"1\" aria-label=\"Cascade\"><button id=\"confirm\" class=\"item\">Confirm</button><button class=\"item\" data-action=\"next\">Next</button><button data-action=\"plain\">Plain</button></main>\n",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "html:8e2b5505",
+          "title": "Cascade",
+          "rows": 1,
+          "items": [
+            {
+              "slot": 0,
+              "material": "STONE_BUTTON",
+              "amount": 1,
+              "durability": 0,
+              "name": "&cConfirm",
+              "lore": [],
+              "actionId": "confirm"
+            },
+            {
+              "slot": 1,
+              "material": "STONE_BUTTON",
+              "amount": 1,
+              "durability": 0,
+              "name": "&2Next",
+              "lore": [],
+              "actionId": "next"
+            },
+            {
+              "slot": 2,
+              "material": "STONE_BUTTON",
+              "amount": 1,
+              "durability": 0,
+              "name": "&9Plain",
+              "lore": [],
+              "actionId": "plain"
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {
+              "data-rows": "1",
+              "aria-label": "Cascade"
+            },
+            "children": [
+              {
+                "tag": "button",
+                "attributes": {
+                  "id": "confirm",
+                  "class": "item"
+                },
+                "children": [
+                  {
+                    "text": "Confirm"
+                  }
+                ]
+              },
+              {
+                "tag": "button",
+                "attributes": {
+                  "class": "item",
+                  "data-action": "next"
+                },
+                "children": [
+                  {
+                    "text": "Next"
+                  }
+                ]
+              },
+              {
+                "tag": "button",
+                "attributes": {
+                  "data-action": "plain"
+                },
+                "children": [
+                  {
+                    "text": "Plain"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "text": "\n"
+          }
+        ]
+      }
+    },
+    {
+      "id": "html-style-inheritance",
+      "source": "<style>main{color:yellow;font-weight:bold}.note{font-style:italic;text-transform:uppercase}</style><main data-rows=\"1\" aria-label=\"Styles\"><button id=\"buy\">Buy</button><span class=\"note\">ready</span></main>\n",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "html:1f76f02d",
+          "title": "Styles",
+          "rows": 1,
+          "items": [
+            {
+              "slot": 0,
+              "material": "STONE_BUTTON",
+              "amount": 1,
+              "durability": 0,
+              "name": "&e&lBuy",
+              "lore": [],
+              "actionId": "buy"
+            },
+            {
+              "slot": 1,
+              "material": "PAPER",
+              "amount": 1,
+              "durability": 0,
+              "name": "&e&l&oREADY",
+              "lore": []
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {
+              "data-rows": "1",
+              "aria-label": "Styles"
+            },
+            "children": [
+              {
+                "tag": "button",
+                "attributes": {
+                  "id": "buy"
+                },
+                "children": [
+                  {
+                    "text": "Buy"
+                  }
+                ]
+              },
+              {
+                "tag": "span",
+                "attributes": {
+                  "class": "note"
+                },
+                "children": [
+                  {
+                    "text": "ready"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "text": "\n"
+          }
+        ]
+      }
+    },
+    {
+      "id": "html-css-variables",
+      "source": "<style>main{--minecraft-material:DIAMOND;--count:3}.reward{--minecraft-amount:var(--count);--minecraft-lore:\"Rare|Keep it\"}</style><main data-rows=\"1\" aria-label=\"Rewards\"><button class=\"reward\" data-action=\"reward\">Reward</button></main>\n",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "html:47c58956",
+          "title": "Rewards",
+          "rows": 1,
+          "items": [
+            {
+              "slot": 0,
+              "material": "DIAMOND",
+              "amount": 3,
+              "durability": 0,
+              "name": "Reward",
+              "lore": [
+                "Rare",
+                "Keep it"
+              ],
+              "actionId": "reward"
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {
+              "data-rows": "1",
+              "aria-label": "Rewards"
+            },
+            "children": [
+              {
+                "tag": "button",
+                "attributes": {
+                  "class": "reward",
+                  "data-action": "reward"
+                },
+                "children": [
+                  {
+                    "text": "Reward"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "text": "\n"
+          }
+        ]
+      }
+    },
+    {
+      "id": "html-amount-bounds",
+      "source": "<main data-rows=\"1\" aria-label=\"Stacks\"><button id=\"large\" data-material=\"STONE\" data-amount=\"999\">Large</button><button id=\"small\" data-material=\"STONE\" data-amount=\"0\">Small</button><button id=\"default\" data-material=\"BOOK\">Default</button></main>\n",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "html:3ce2d043",
+          "title": "Stacks",
+          "rows": 1,
+          "items": [
+            {
+              "slot": 0,
+              "material": "STONE",
+              "amount": 64,
+              "durability": 0,
+              "name": "Large",
+              "lore": [],
+              "actionId": "large"
+            },
+            {
+              "slot": 1,
+              "material": "STONE",
+              "amount": 1,
+              "durability": 0,
+              "name": "Small",
+              "lore": [],
+              "actionId": "small"
+            },
+            {
+              "slot": 2,
+              "material": "BOOK",
+              "amount": 1,
+              "durability": 0,
+              "name": "Default",
+              "lore": [],
+              "actionId": "default"
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {
+              "data-rows": "1",
+              "aria-label": "Stacks"
+            },
+            "children": [
+              {
+                "tag": "button",
+                "attributes": {
+                  "id": "large",
+                  "data-material": "STONE",
+                  "data-amount": "999"
+                },
+                "children": [
+                  {
+                    "text": "Large"
+                  }
+                ]
+              },
+              {
+                "tag": "button",
+                "attributes": {
+                  "id": "small",
+                  "data-material": "STONE",
+                  "data-amount": "0"
+                },
+                "children": [
+                  {
+                    "text": "Small"
+                  }
+                ]
+              },
+              {
+                "tag": "button",
+                "attributes": {
+                  "id": "default",
+                  "data-material": "BOOK"
+                },
+                "children": [
+                  {
+                    "text": "Default"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "text": "\n"
+          }
+        ]
+      }
+    },
+    {
+      "id": "html-native-input",
+      "source": "<main data-rows=\"1\" aria-label=\"Rename\"><input id=\"name\" placeholder=\"New name\" value=\"Alex\" data-action=\"name.submit\" data-cancel-action=\"name.cancel\"></main>\n",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "html:7f095d67",
+          "title": "Rename",
+          "rows": 1,
+          "items": [
+            {
+              "slot": 0,
+              "material": "NAME_TAG",
+              "amount": 1,
+              "durability": 0,
+              "name": "New name",
+              "lore": [],
+              "actionId": "name.submit",
+              "input": {
+                "id": "name",
+                "title": "New name",
+                "placeholder": "New name",
+                "value": "Alex",
+                "submitActionId": "name.submit",
+                "cancelActionId": "name.cancel"
+              }
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {
+              "data-rows": "1",
+              "aria-label": "Rename"
+            },
+            "children": [
+              {
+                "tag": "input",
+                "attributes": {
+                  "id": "name",
+                  "placeholder": "New name",
+                  "value": "Alex",
+                  "data-action": "name.submit",
+                  "data-cancel-action": "name.cancel"
+                },
+                "children": []
+              }
+            ]
+          },
+          {
+            "text": "\n"
+          }
+        ]
+      }
+    },
+    {
+      "id": "html-confirm-dialog",
+      "source": "<dialog open id=\"confirm\" aria-label=\"Delete?\" data-close-action=\"dismiss\"><button id=\"yes\">Yes</button><button id=\"no\">No</button></dialog>\n",
+      "snapshot": {
+        "messages": [],
+        "modal": {
+          "id": "confirm",
+          "title": "Delete?",
+          "closeActionId": "dismiss",
+          "choices": [
+            {
+              "slot": 0,
+              "material": "LIME_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 5,
+              "name": "Yes",
+              "lore": [],
+              "actionId": "yes"
+            },
+            {
+              "slot": 1,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": "No",
+              "lore": [],
+              "actionId": "no"
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "dialog",
+            "attributes": {
+              "open": "",
+              "id": "confirm",
+              "aria-label": "Delete?",
+              "data-close-action": "dismiss"
+            },
+            "children": [
+              {
+                "tag": "button",
+                "attributes": {
+                  "id": "yes"
+                },
+                "children": [
+                  {
+                    "text": "Yes"
+                  }
+                ]
+              },
+              {
+                "tag": "button",
+                "attributes": {
+                  "id": "no"
+                },
+                "children": [
+                  {
+                    "text": "No"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "text": "\n"
+          }
+        ]
+      }
+    },
+    {
+      "id": "html-nested-grid",
+      "source": "<style>.panel{grid-row:2 / span 2;grid-column:3 / span 4;background:blue}.panel button{grid-row:2;grid-column:2}</style><main data-rows=\"3\" aria-label=\"Nested\"><section class=\"panel\"><button id=\"inner\" data-material=\"DIAMOND\">Inner</button></section></main>\n",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "html:c7999c28",
+          "title": "Nested",
+          "rows": 3,
+          "items": [
+            {
+              "slot": 11,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 12,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 13,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 14,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 20,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 21,
+              "material": "DIAMOND",
+              "amount": 1,
+              "durability": 0,
+              "name": "Inner",
+              "lore": [],
+              "actionId": "inner"
+            },
+            {
+              "slot": 22,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 23,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {
+              "data-rows": "3",
+              "aria-label": "Nested"
+            },
+            "children": [
+              {
+                "tag": "section",
+                "attributes": {
+                  "class": "panel"
+                },
+                "children": [
+                  {
+                    "tag": "button",
+                    "attributes": {
+                      "id": "inner",
+                      "data-material": "DIAMOND"
+                    },
+                    "children": [
+                      {
+                        "text": "Inner"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "text": "\n"
+          }
+        ]
+      }
+    },
+    {
+      "id": "html-grid-area",
+      "source": "<style>.action{grid-area:2 / 4 / 3 / 7}</style><main data-rows=\"3\" aria-label=\"Area\"><button class=\"action\" data-action=\"area\" data-material=\"BOOK\">Area</button></main>\n",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "html:b7bc1a79",
+          "title": "Area",
+          "rows": 3,
+          "items": [
+            {
+              "slot": 12,
+              "material": "BOOK",
+              "amount": 1,
+              "durability": 0,
+              "name": " ",
+              "lore": [],
+              "actionId": "area"
+            },
+            {
+              "slot": 13,
+              "material": "BOOK",
+              "amount": 1,
+              "durability": 0,
+              "name": "Area",
+              "lore": [],
+              "actionId": "area"
+            },
+            {
+              "slot": 14,
+              "material": "BOOK",
+              "amount": 1,
+              "durability": 0,
+              "name": " ",
+              "lore": [],
+              "actionId": "area"
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {
+              "data-rows": "3",
+              "aria-label": "Area"
+            },
+            "children": [
+              {
+                "tag": "button",
+                "attributes": {
+                  "class": "action",
+                  "data-action": "area",
+                  "data-material": "BOOK"
+                },
+                "children": [
+                  {
+                    "text": "Area"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "text": "\n"
+          }
+        ]
+      }
+    },
+    {
+      "id": "html-accessible-label",
+      "source": "<main id=\"labels\" data-rows=\"1\" aria-label=\"Actions\"><button id=\"go\" aria-label=\"Teleport home\" data-lore=\"Safe destination|Click to travel\" data-material=\"COMPASS\">→</button></main>\n",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "labels",
+          "title": "Actions",
+          "rows": 1,
+          "items": [
+            {
+              "slot": 0,
+              "material": "COMPASS",
+              "amount": 1,
+              "durability": 0,
+              "name": "Teleport home",
+              "lore": [
+                "Safe destination",
+                "Click to travel"
+              ],
+              "actionId": "go"
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {
+              "id": "labels",
+              "data-rows": "1",
+              "aria-label": "Actions"
+            },
+            "children": [
+              {
+                "tag": "button",
+                "attributes": {
+                  "id": "go",
+                  "aria-label": "Teleport home",
+                  "data-lore": "Safe destination|Click to travel",
+                  "data-material": "COMPASS"
+                },
+                "children": [
+                  {
+                    "text": "→"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "text": "\n"
+          }
+        ]
+      }
+    },
+    {
+      "id": "html-css-source-order",
+      "source": "<style>.item{color:blue}.item{color:red}</style><main data-rows=\"1\" aria-label=\"Order\"><button id=\"first\" class=\"item\">First</button><button id=\"second\" class=\"item\" style=\"color:lime\">Second</button></main>\n",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "html:6037b8ba",
+          "title": "Order",
+          "rows": 1,
+          "items": [
+            {
+              "slot": 0,
+              "material": "STONE_BUTTON",
+              "amount": 1,
+              "durability": 0,
+              "name": "&cFirst",
+              "lore": [],
+              "actionId": "first"
+            },
+            {
+              "slot": 1,
+              "material": "STONE_BUTTON",
+              "amount": 1,
+              "durability": 0,
+              "name": "&aSecond",
+              "lore": [],
+              "actionId": "second"
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {
+              "data-rows": "1",
+              "aria-label": "Order"
+            },
+            "children": [
+              {
+                "tag": "button",
+                "attributes": {
+                  "id": "first",
+                  "class": "item"
+                },
+                "children": [
+                  {
+                    "text": "First"
+                  }
+                ]
+              },
+              {
+                "tag": "button",
+                "attributes": {
+                  "id": "second",
+                  "class": "item",
+                  "style": "color:lime"
+                },
+                "children": [
+                  {
+                    "text": "Second"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "text": "\n"
+          }
+        ]
+      }
+    },
+    {
+      "id": "synthetic-root",
+      "source": "<span>Hello</span><hr><button id='next'>Next</button>",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "graaly-html-root",
+          "title": "Graaly",
+          "rows": 3,
+          "items": [
+            {
+              "slot": 0,
+              "material": "LIGHT_GRAY_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 8,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 1,
+              "material": "LIGHT_GRAY_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 8,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 2,
+              "material": "LIGHT_GRAY_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 8,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 3,
+              "material": "LIGHT_GRAY_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 8,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 4,
+              "material": "LIGHT_GRAY_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 8,
+              "name": "",
+              "lore": []
+            },
+            {
+              "slot": 5,
+              "material": "LIGHT_GRAY_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 8,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 6,
+              "material": "LIGHT_GRAY_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 8,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 7,
+              "material": "LIGHT_GRAY_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 8,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 8,
+              "material": "LIGHT_GRAY_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 8,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 9,
+              "material": "STONE_BUTTON",
+              "amount": 1,
+              "durability": 0,
+              "name": "Next",
+              "lore": [],
+              "actionId": "next"
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "span",
+            "attributes": {},
+            "children": [
+              {
+                "text": "Hello"
+              }
+            ]
+          },
+          {
+            "tag": "hr",
+            "attributes": {},
+            "children": []
+          },
+          {
+            "tag": "button",
+            "attributes": {
+              "id": "next"
+            },
+            "children": [
+              {
+                "text": "Next"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "zero-rows",
+      "source": "<style>main{grid-template-rows:repeat(2,1fr)}</style><main data-rows='0'><button>Two rows</button></main>",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "html:a0193a88",
+          "title": "Graaly",
+          "rows": 2,
+          "items": [
+            {
+              "slot": 0,
+              "material": "STONE_BUTTON",
+              "amount": 1,
+              "durability": 0,
+              "name": "Two rows",
+              "lore": []
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {
+              "data-rows": "0"
+            },
+            "children": [
+              {
+                "tag": "button",
+                "attributes": {},
+                "children": [
+                  {
+                    "text": "Two rows"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "fractional-radius",
+      "source": "<main data-rows='3' style='background:red;border:1px solid blue;border-radius:0.5px'><button>Inside</button></main>",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "html:f758e1f1",
+          "title": "Graaly",
+          "rows": 3,
+          "items": [
+            {
+              "slot": 1,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 2,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 3,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 4,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 5,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 6,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 7,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 9,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 10,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 11,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 12,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 13,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 14,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 15,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 16,
+              "material": "RED_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 14,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 17,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 19,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 20,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 21,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 22,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 23,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 24,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 25,
+              "material": "BLUE_STAINED_GLASS_PANE",
+              "amount": 1,
+              "durability": 11,
+              "name": " ",
+              "lore": []
+            },
+            {
+              "slot": 0,
+              "material": "STONE_BUTTON",
+              "amount": 1,
+              "durability": 0,
+              "name": "Inside",
+              "lore": []
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {
+              "data-rows": "3",
+              "style": "background:red;border:1px solid blue;border-radius:0.5px"
+            },
+            "children": [
+              {
+                "tag": "button",
+                "attributes": {},
+                "children": [
+                  {
+                    "text": "Inside"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "descendant-selectors",
+      "source": "<style>main .choice{color:green}main > button{color:red}button[data-action]{color:blue}</style><main><div><button class='choice'>Nested</button></div><button>Direct</button></main>",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "html:2afceb8c",
+          "title": "Graaly",
+          "rows": 3,
+          "items": [
+            {
+              "slot": 0,
+              "material": "STONE_BUTTON",
+              "amount": 1,
+              "durability": 0,
+              "name": "&2Nested",
+              "lore": []
+            },
+            {
+              "slot": 1,
+              "material": "STONE_BUTTON",
+              "amount": 1,
+              "durability": 0,
+              "name": "&cDirect",
+              "lore": []
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {},
+            "children": [
+              {
+                "tag": "div",
+                "attributes": {},
+                "children": [
+                  {
+                    "tag": "button",
+                    "attributes": {
+                      "class": "choice"
+                    },
+                    "children": [
+                      {
+                        "text": "Nested"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "tag": "button",
+                "attributes": {},
+                "children": [
+                  {
+                    "text": "Direct"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "text-order",
+      "source": "<button>Before <span>nested</span> after <b>bold</b> end</button>",
+      "snapshot": {
+        "messages": [],
+        "inventory": {
+          "id": "html:a703055",
+          "title": "Graaly",
+          "rows": 3,
+          "items": [
+            {
+              "slot": 0,
+              "material": "STONE_BUTTON",
+              "amount": 1,
+              "durability": 0,
+              "name": "Before after end nested bold",
+              "lore": []
+            }
+          ]
+        }
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "button",
+            "attributes": {},
+            "children": [
+              {
+                "text": "Before "
+              },
+              {
+                "tag": "span",
+                "attributes": {},
+                "children": [
+                  {
+                    "text": "nested"
+                  }
+                ]
+              },
+              {
+                "text": " after "
+              },
+              {
+                "tag": "b",
+                "attributes": {},
+                "children": [
+                  {
+                    "text": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " end"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "closed-dialog",
+      "source": "<dialog><button id='yes'>Yes</button><button id='no'>No</button></dialog>",
+      "snapshot": {
+        "messages": []
+      },
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "dialog",
+            "attributes": {},
+            "children": [
+              {
+                "tag": "button",
+                "attributes": {
+                  "id": "yes"
+                },
+                "children": [
+                  {
+                    "text": "Yes"
+                  }
+                ]
+              },
+              {
+                "tag": "button",
+                "attributes": {
+                  "id": "no"
+                },
+                "children": [
+                  {
+                    "text": "No"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "forbidden-script",
+      "source": "<main><script>alert(1)</script></main>",
+      "error": "HTML GUI does not support <script>",
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "main",
+            "attributes": {},
+            "children": [
+              {
+                "tag": "script",
+                "attributes": {},
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "forbidden-inline-handler",
+      "source": "<button onclick='doSomething()'>Click</button>",
+      "error": "Inline HTML event attributes are not supported; use data-action",
+      "body": {
+        "tag": "body",
+        "attributes": {},
+        "children": [
+          {
+            "tag": "button",
+            "attributes": {
+              "onclick": "doSomething()"
+            },
+            "children": [
+              {
+                "text": "Click"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

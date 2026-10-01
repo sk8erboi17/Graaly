@@ -28,6 +28,7 @@ import {
   type AcademyLesson,
   type AcademyTrack,
 } from "./academy-data";
+import { GraalyArena } from "./academy/arena";
 
 type SimulatorAction = {
   player: { id: string; name: string };
@@ -679,8 +680,7 @@ function LessonArticle({ lesson }: { lesson: AcademyLesson }) {
   );
 }
 
-export function GraalyAcademy() {
-  const [selected, setSelected] = useState(1);
+function GraalyAcademyLessons({selected,setSelected}:{selected:number;setSelected:(number:number)=>void}) {
   const [search, setSearch] = useState("");
   const [completed, setCompleted] = useState<Set<number>>(() => new Set());
   const lesson = academyLessons[selected - 1] ?? academyLessons[0];
@@ -706,11 +706,12 @@ export function GraalyAcademy() {
           <h3>Learn React and FastAPI by building one complete plugin system</h3>
           <p>
             Start with a component and finish with a transactional, realtime party shop. Every lesson connects the language
-            model to Minecraft, contrasts it with the web, and includes editable code backed by runnable tests.
+            model to Minecraft, contrasts it with the web, and includes source examples. The Problems tab provides
+            related coding exercises with executable tests, progressive hints and explained solutions.
           </p>
           <div className="academy-downloads">
             <a download href="./downloads/Graaly-Academy-Plugin.zip">Download the in-game Academy</a>
-            <a href="https://github.com/sk8erboi17/Graaly/tree/main/examples/GraalyAcademy.jsplugin" rel="noreferrer" target="_blank">Read the source on GitHub</a>
+            <a href="https://github.com/sk8erboi17/Graaly/tree/main/runtime/examples/GraalyAcademy.jsplugin" rel="noreferrer" target="_blank">Read the source on GitHub</a>
           </div>
         </div>
         <div className="academy-progress-card">
@@ -755,4 +756,10 @@ export function GraalyAcademy() {
       </div>
     </div>
   );
+}
+
+export function GraalyAcademy() {
+  const [view,setView] = useState("Problems");
+  const [lesson,setLesson] = useState(1);
+  return <div className="academy-root"><div className="academy-view-tabs" role="tablist" aria-label="Academy view">{["Problems","Lessons"].map(item=><button aria-selected={view===item} key={item} onClick={()=>setView(item)} role="tab" type="button">{item}</button>)}</div><div hidden={view!=="Problems"}><GraalyArena onLesson={number=>{setLesson(number);setView("Lessons");}}/></div><div hidden={view!=="Lessons"}><GraalyAcademyLessons selected={lesson} setSelected={setLesson}/></div></div>;
 }

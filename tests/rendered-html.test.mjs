@@ -51,7 +51,7 @@ test("renders the complete documentation in English", async () => {
   assert.match(html, /Know exactly when your code runs/);
   assert.match(html, /Every common Player workflow in one searchable browser/);
   assert.match(html, /Use real React for game UI and Python for persistent services/);
-  assert.match(html, /From your first component to a production realtime plugin/);
+  assert.match(html, /Write code\. Pass the tests\. Build complete plugins\./);
   assert.match(html, /React semantics stay intact/);
   assert.match(html, /Website boards are coming soon/);
   assert.match(html, /Learn the workflow, then search every packet and wrapper/);
@@ -986,6 +986,10 @@ test("ships a complete 36-lesson Graaly Academy with a minimal interactive playg
   const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
 
   assert.match(html, /36 long-form lessons/);
+  assert.match(html, /208.*?Medium and Hard problems/);
+  assert.match(html, /data-testid="graaly-arena"/);
+  for (const integration of ["FastAPI / ASGI", "Pydantic", "HTML / CSS", "SQL / persistence", "C / WebAssembly"]) assert.ok(html.includes(integration),integration);
+  assert.match(html, /Submit all tests/);
   assert.match(html, /aria-label="React playground"/);
   assert.match(html, /FastAPI request inspector/);
   assert.doesNotMatch(html, /Hard lab|Definition of done|Minecraft React lab|browser host simulator|Run this lesson|waiting for Run/);

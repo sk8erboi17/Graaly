@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "target": "ES2023", "allowImportingTsExtensions": true, "incremental": false },
+  "include": ["app/academy/*.ts", "app/academy/*.tsx", "app/academy-playground.tsx", "tests/e2e/academy.spec.ts"],
+  "exclude": ["node_modules", "runtime/target"]
+}

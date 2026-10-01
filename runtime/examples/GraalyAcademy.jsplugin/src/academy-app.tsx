@@ -51,10 +51,10 @@ export function AcademyApp({ initialLesson }: { initialLesson?: number } = {}) {
         <Line id="hint">Command: /academy</Line>
       </Scoreboard>
       <BossBar progress={progress}>&aAcademy progress &8· &f{completeCount}/{lessons.length}</BossBar>
-      <Tab header="&a&lGraaly Academy" footer={lesson?.concept ?? "Choose one of 26 lessons"} />
+      <Tab header="&a&lGraaly Academy" footer={lesson?.concept ?? "Choose one of " + lessons.length + " lessons"} />
 
       {lesson === null ? (
-        <Inventory id="academy-catalog" title="Graaly Academy · 26 lessons" rows={6}>
+        <Inventory id="academy-catalog" title={"Graaly Academy · " + lessons.length + " lessons"} rows={6}>
           {catalogItems}
         </Inventory>
       ) : (

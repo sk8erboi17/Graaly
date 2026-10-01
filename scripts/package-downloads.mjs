@@ -3,6 +3,8 @@ import { copyFile, mkdir, readFile, readdir } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { ZipArchive } from "archiver";
+import { academyProblems, coveredModules, problemTracks } from "../app/academy/catalog.ts";
+import { challengeLanguages } from "../app/academy/types.ts";
 
 const site = fileURLToPath(new URL("..", import.meta.url));
 const runtime = fileURLToPath(new URL("../runtime", import.meta.url));
@@ -74,6 +76,33 @@ async function zipExample(folder, file) {
 
 await zipExample("ReactFastApi.jsplugin", "Graaly-React-FastAPI.zip");
 await zipExample("GraalyAcademy.jsplugin", "Graaly-Academy-Plugin.zip");
+// The workbook contains statements and editable starters. Explained solutions remain in the guided playground.
+const workbook = new ZipArchive({ zlib: { level: 9 } });
+const workbookStream = createWriteStream(output + "/Graaly-Academy-Workbook.zip");
+const workbookDone = new Promise((resolve, reject) => {
+  workbookStream.on("close", resolve);
+  workbookStream.on("error", reject);
+  workbook.on("error", reject);
+});
+workbook.pipe(workbookStream);
+const appendWorkbook = (name, content) => workbook.append(content, {name, date:archiveDate, mode:0o644});
+appendWorkbook("README.md", `# Graaly Academy coding workbook\n\n${academyProblems.length} Medium and Hard problems across ${problemTracks.length} tracks.\n\nOpen https://sk8erboi17.github.io/Graaly/#academy to edit code, run examples and submit edge tests. Drafts and progress are saved on your device. After submitting your first attempt, reveal progressive hints and the explained solution if needed.\n\nEach folder contains the statement, public examples and a starter for each available language. An untouched starter is deliberately incomplete. The native in-game companion provides 36 theory checkpoints; the browser playground executes the coding exercises.\n\nCoverage: ${coveredModules.join(", ")}. FastAPI, Pydantic, raw ASGI, HTML/CSS, SQLite, YAML, actual native React tests and C17/WebAssembly are included. C covers bitsets, shifts, tagged unions, padding, serialization and ownership. See the playground execution notes for runtime boundaries.\n`);
+const curriculum = [];
+for (const problem of academyProblems) {
+  const {id,number,title,track,difficulty,mode,tags,modules,lessons,description,requirements,inputType,cDeclarations,sqlSchema} = problem;
+  const statement = {id,number,title,track,difficulty,mode,tags,modules,lessons,description,requirements,inputType,cDeclarations,sqlSchema,examples:problem.cases.filter(test=>!test.hidden)};
+  const prefix = String(number).padStart(3,"0") + "-" + id;
+  appendWorkbook(prefix + "/problem.json", JSON.stringify(statement,null,2) + "\n");
+  for (const language of challengeLanguages) if (problem.starters[language.id] !== undefined) {
+    const extension = mode === "react" && ["ts","js"].includes(language.id) ? language.id + "x" : language.extension;
+    appendWorkbook(prefix + "/solution." + extension, problem.starters[language.id]);
+  }
+  curriculum.push({id,number,title,track,difficulty,mode,modules,lessons,languages:Object.keys(problem.starters)});
+}
+appendWorkbook("curriculum.json", JSON.stringify({problems:curriculum,tracks:problemTracks,modules:coveredModules},null,2)+"\n");
+await workbook.finalize();
+await workbookDone;
+console.log("Packaged public/downloads/Graaly-Academy-Workbook.zip");
 await copyFile(
   runtime + "/sdk/api-conformance-matrix.json",
   output + "/api-conformance-matrix.json",

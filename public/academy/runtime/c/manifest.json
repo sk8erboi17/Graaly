@@ -1,0 +1,42 @@
+{
+  "clang": "22.1.8",
+  "standard": "C17",
+  "target": "wasm32-wasip1",
+  "files": [
+    {
+      "file": "clang.wasm.gz",
+      "sha256": "c8eb883183db12a50ecf68d645be32aa261d9339fdfb0abea04be7217e92029c",
+      "uncompressedSha256": "e01346e33b31a3b3359a317450502bd4feb78cd6ca7fed08aca8601f9ff8834d",
+      "upstreamSha256": "e01346e33b31a3b3359a317450502bd4feb78cd6ca7fed08aca8601f9ff8834d",
+      "source": "https://github.com/cppstudio-io/wasm-clang-runtime/releases/download/v0.1.0/clang22-noeh",
+      "bytes": 13503900
+    },
+    {
+      "file": "lld.wasm.gz",
+      "sha256": "4bb8aa89b202853eaf293395ff38fef0908e1604a002a593cc43b289c340bee1",
+      "uncompressedSha256": "63c397c582e193aacd96fbdeb04b1bd32f47ae505f6dc4a569ed08a80ddfeff7",
+      "upstreamSha256": "63c397c582e193aacd96fbdeb04b1bd32f47ae505f6dc4a569ed08a80ddfeff7",
+      "source": "https://github.com/cppstudio-io/wasm-clang-runtime/releases/download/v0.1.0/lld22-noeh",
+      "bytes": 7626254
+    },
+    {
+      "file": "sysroot.tar.gz",
+      "sha256": "6bf5c9e721c4378be5b0600252d6c1f55ef20654ceeb42038cd58d095d7b3103",
+      "uncompressedSha256": "4976a585806d6950d4198a3033be0f0b9eb513020e2f1a13d165c21f49b45dec",
+      "upstreamSha256": "d991c621cdf9b4640c2cd4aa21abb08491c2ae6ef9917cac5c6065553604bcec",
+      "source": "https://github.com/cppstudio-io/wasm-clang-runtime/releases/download/v0.1.0/sysroot22.tar",
+      "bytes": 1918416
+    },
+    {
+      "file": "memfs.wasm",
+      "sha256": "e265bd2a3ff0e1453d9f10ea38a58c0b772d270bcd35685cf302ab6d0b4bde22",
+      "bytes": 963881
+    },
+    {
+      "file": "bits.h",
+      "sha256": "06e91c64f3de2b24db55859810a4f93c6db5ba92b6b785682a8ecd885d3f5101",
+      "bytes": 3058,
+      "source": "runtime/sdk/c/include/graaly/bits.h"
+    }
+  ]
+}

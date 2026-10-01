@@ -1,0 +1,21 @@
+import { coreProblems } from "./problems-core.ts";
+import { pydanticProblems } from "./problems-pydantic.ts";
+import { cProblems } from "./problems-c.ts";
+import { fastapiProblems } from "./problems-fastapi.ts";
+import { htmlProblems } from "./problems-html.ts";
+import { reactProblems } from "./problems-react.ts";
+import { schedulingProblems } from "./problems-scheduling.ts";
+import { worldProblems } from "./problems-world.ts";
+import { sqlProblems } from "./problems-sql.ts";
+import { manifestProblems } from "./problems-manifests.ts";
+import { networkProblems } from "./problems-network.ts";
+import { pythonProblems } from "./problems-python.ts";
+import { architectureProblems } from "./problems-architecture.ts";
+import { algorithmProblems } from "./problems-algorithms.ts";
+import { advancedReactProblems } from "./problems-react-advanced.ts";
+import { diagnosticsProblems } from "./problems-diagnostics.ts";
+import type { Challenge } from "./types.ts";
+
+export const academyProblems:Challenge[] = [...coreProblems,...schedulingProblems,...worldProblems,...networkProblems,...reactProblems,...advancedReactProblems,...fastapiProblems,...pydanticProblems,...pythonProblems,...htmlProblems,...sqlProblems,...manifestProblems,...cProblems,...architectureProblems,...algorithmProblems,...diagnosticsProblems].map((problem,index)=>({...problem,number:index+1}));
+export const problemTracks = [...new Set(academyProblems.map(problem=>problem.track))];
+export const coveredModules = [...new Set(academyProblems.flatMap(problem=>problem.modules))];
